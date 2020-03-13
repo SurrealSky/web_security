@@ -95,10 +95,11 @@
 <li class="toctree-l3"><a class="reference internal" href="fuzz.html">4.1.2. 注入检测</a></li>
 <li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.3. 权限提升</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.4. 数据库检测</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mysql">4.1.4.1. MySQL</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#oracle">4.1.4.2. Oracle</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sqlserver">4.1.4.3. SQLServer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#postgresql">4.1.4.4. PostgreSQL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#acess">4.1.4.1. acess</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mysql">4.1.4.2. MySQL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#oracle">4.1.4.3. Oracle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqlserver">4.1.4.4. SQLServer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#postgresql">4.1.4.5. PostgreSQL</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.5. 绕过技巧</a></li>
@@ -203,21 +204,31 @@
             
   <div class="section" id="id1">
 <h1><span class="section-number">4.1.4. </span>数据库检测<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="mysql">
-<h2><span class="section-number">4.1.4.1. </span>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="acess">
+<h2><span class="section-number">4.1.4.1. </span>acess<a class="headerlink" href="#acess" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">and</span> <span class="pre">exists</span> <span class="pre">(select</span> <span class="pre">*</span> <span class="pre">from</span> <span class="pre">msysobjects</span> <span class="pre">)</span> <span class="pre">&gt;</span> <span class="pre">0</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="mysql">
+<h2><span class="section-number">4.1.4.2. </span>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
+<ul>
 <li><p>sleep <code class="docutils literal notranslate"><span class="pre">sleep(1)</span></code></p></li>
 <li><p>benchmark <code class="docutils literal notranslate"><span class="pre">BENCHMARK(5000000,</span> <span class="pre">MD5('test'))</span></code></p></li>
-<li><dl class="simple">
-<dt>字符串连接</dt><dd><ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">'a'</span> <span class="pre">'b'</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">CONCAT('some','string')</span></code></p></li>
+<li><dl>
+<dt>字符串连接</dt><dd><blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'='a'</span> <span class="pre">'b'</span></code></p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'=CONCAT('a','b')</span></code></p></li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>version</dt><dd><ul>
+<dt>version</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">&#64;&#64;version</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">version()</span></code></p></li>
 </ul>
@@ -225,7 +236,7 @@
 </dl>
 </li>
 <li><dl class="simple">
-<dt>识别用函数</dt><dd><ul>
+<dt>数字函数</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">connection_id()</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">last_insert_id()</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">row_count()</span></code></p></li>
@@ -236,12 +247,12 @@
 </ul>
 </div>
 <div class="section" id="oracle">
-<h2><span class="section-number">4.1.4.2. </span>Oracle<a class="headerlink" href="#oracle" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.4.3. </span>Oracle<a class="headerlink" href="#oracle" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>字符串连接</dt><dd><ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">'a'||'oracle'</span> <span class="pre">--</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">CONCAT('some','string')</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'='a'||'b'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'=CONCAT('a','b')</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -254,17 +265,24 @@
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>数字函数</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">BITAND(1,1)</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </div>
 <div class="section" id="sqlserver">
-<h2><span class="section-number">4.1.4.3. </span>SQLServer<a class="headerlink" href="#sqlserver" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.4.4. </span>SQLServer<a class="headerlink" href="#sqlserver" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>WAITFOR <code class="docutils literal notranslate"><span class="pre">WAITFOR</span> <span class="pre">DELAY</span> <span class="pre">'00:00:10';</span></code></p></li>
 <li><p>SERVERNAME <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">&#64;&#64;SERVERNAME</span></code></p></li>
 <li><p>version <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">&#64;&#64;version</span></code></p></li>
 <li><dl class="simple">
 <dt>字符串连接</dt><dd><ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">'some'+'string'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'a'+'b'='ab'</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -277,12 +295,17 @@
 </dd>
 </dl>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">and</span> <span class="pre">exists</span> <span class="pre">(select</span> <span class="pre">*</span> <span class="pre">from</span> <span class="pre">sysobjects</span> <span class="pre">)</span> <span class="pre">&gt;</span> <span class="pre">0</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="postgresql">
-<h2><span class="section-number">4.1.4.4. </span>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.4.5. </span>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>sleep <code class="docutils literal notranslate"><span class="pre">pg_sleep(1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">version()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'='a'||'b'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'=CONCAT('a','b')</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">EXTRACT(DOW</span> <span class="pre">FROM</span> <span class="pre">NOW())</span></code></p></li>
 </ul>
 </div>
 </div>
