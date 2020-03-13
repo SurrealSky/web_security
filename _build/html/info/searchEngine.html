@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.4. 搜索引擎利用 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.5. 社会工程学" href="social.html" />
+    <link rel="prev" title="3.3. 站点信息" href="site.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. 信息收集</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="domain.html">3.1. 域名信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port.html">3.2. 端口信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="site.html">3.3. 站点信息</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.4. 搜索引擎利用</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3.4.1. 搜索引擎处理流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.4.2. 搜索技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">3.4.3. 快照</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tips">3.4.4. tips</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social.html">3.5. 社会工程学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html">3.6. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">3. </span>信息收集</a> &raquo;</li>
+        
+      <li><span class="section-number">3.4. </span>搜索引擎利用</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/info/searchEngine.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">3.4. </span>搜索引擎利用<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>恰当地使用搜索引擎（Google/Bing/Yahoo/Baidu等）可以获取目标站点的较多信息。</p>
+<div class="section" id="id2">
+<h2><span class="section-number">3.4.1. </span>搜索引擎处理流程<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>数据预处理</dt><dd><ul>
+<li><p>长度截断</p></li>
+<li><p>大小写转化</p></li>
+<li><p>去标点符号</p></li>
+<li><p>简繁转换</p></li>
+<li><p>数字归一化，中文数字、阿拉伯数字、罗马字</p></li>
+<li><p>同义词改写</p></li>
+<li><p>拼音改写</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>处理</dt><dd><ul>
+<li><p>分词</p></li>
+<li><p>关键词抽取</p></li>
+<li><p>非法信息过滤</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">3.4.2. </span>搜索技巧<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>site:www.hao123.com</dt><dd><ul>
+<li><p>返回此目标站点被搜索引擎抓取收录的所有内容</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>site:www.hao123.com keyword</dt><dd><ul>
+<li><p>返回此目标站点被搜索引擎抓取收录的包含此关键词的所有页面</p></li>
+<li><p>此处可以将关键词设定为网站后台，管理后台，密码修改，密码找回等</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>site:www.hao123.com inurl:admin.php</dt><dd><ul>
+<li><p>返回目标站点的地址中包含admin.php的所有页面，可以使用admin.php/manage.php或者其他关键词来寻找关键功能页面</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>link:www.hao123.com</dt><dd><ul>
+<li><p>返回所有包含目标站点链接的页面，其中包括其开发人员的个人博客，开发日志，或者开放这个站点的第三方公司，合作伙伴等</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>related:www.hao123.com</dt><dd><ul>
+<li><p>返回所有与目标站点”相似”的页面，可能会包含一些通用程序的信息等</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>intitle:”500 Internal Server Error” “server at”</dt><dd><ul>
+<li><p>搜索出错的页面</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>inurl:”nph-proxy.cgi” “Start browsing”</dt><dd><ul>
+<li><p>查找代理服务器</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>除了以上的关键字，还有allintile、allinurl、allintext、inanchor、cache等。</p>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">3.4.3. </span>快照<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>搜索引擎的快照中也常包含一些关键信息，如程序报错信息可以会泄漏网站具体路径，或者一些快照中会保存一些测试用的测试信息，比如说某个网站在开发了后台功能模块的时候，还没给所有页面增加权限鉴别，此时被搜索引擎抓取了快照，即使后来网站增加了权限鉴别，但搜索引擎的快照中仍会保留这些信息。</p>
+<p>另外也有专门的站点快照提供快照功能，如 Wayback Machine 和 <a class="reference external" href="https://archive.org/">Archive.org</a> 等。</p>
+</div>
+<div class="section" id="tips">
+<h2><span class="section-number">3.4.4. </span>tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>查询不区分大小写</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*</span></code> 代表某一个单词</p></li>
+<li><p>默认用and</p></li>
+<li><p>OR 或者 | 代表逻辑或</p></li>
+<li><p>单词前跟+表强制查询</p></li>
+<li><p>引号引起来可以防止常见词被忽略</p></li>
+<li><p>括号会被忽略</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="social.html" class="btn btn-neutral float-right" title="3.5. 社会工程学" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="site.html" class="btn btn-neutral float-left" title="3.3. 站点信息" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

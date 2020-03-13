@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9.11. 其他 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. 手册速查" href="../manual/index.html" />
+    <link rel="prev" title="9.10. 运维" href="operation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">9. 工具与资源</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="resource.html">9.1. 推荐资源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="papers.html">9.2. 相关论文</a></li>
+<li class="toctree-l2"><a class="reference internal" href="info.html">9.3. 信息收集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="socialengineering.html">9.4. 社会工程学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html">9.5. 模糊测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploit.html">9.6. 漏洞利用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webpersistence.html">9.7. Web持久化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ospersistence.html">9.8. 操作系统持久化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense.html">9.9. 防御</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation.html">9.10. 运维</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9.11. 其他</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">9.11.1. 综合框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#webassembly">9.11.2. WebAssembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">9.11.3. 混淆</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#proxy-pool">9.11.4. Proxy Pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#android">9.11.5. Android</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">9.11.6. 其他</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">9. </span>工具与资源</a> &raquo;</li>
+        
+      <li><span class="section-number">9.11. </span>其他</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tools/misc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">9.11. </span>其他<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">9.11.1. </span>综合框架<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.metasploit.com/">metasploit</a></p></li>
+<li><p><a class="reference external" href="http://w3af.org/">w3af</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NullArray/AutoSploit/">AutoSploit</a></p></li>
+<li><p><a class="reference external" href="https://cirt.net/nikto2">Nikto</a></p></li>
+<li><p><a class="reference external" href="https://my.oschina.net/u/995648/blog/114321">skipfish</a></p></li>
+<li><p><a class="reference external" href="http://www.arachni-scanner.com/">Arachni</a></p></li>
+<li><p><a class="reference external" href="http://www.freebuf.com/sectool/5427.html">ZAP</a></p></li>
+<li><p><a class="reference external" href="https://portswigger.net/burp/">BrupSuite</a></p></li>
+<li><p><a class="reference external" href="https://github.com/smicallef/spiderfoot">Spiderfoot</a></p></li>
+<li><p><a class="reference external" href="https://github.com/az0ne/AZScanner">AZScanner</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jeffzh3ng/Fuxi-Scanner">Fuxi</a></p></li>
+<li><p><a class="reference external" href="https://www.vegabird.com/vooki/">vooki</a></p></li>
+<li><p><a class="reference external" href="https://github.com/MrSqar-Ye/BadMod">BadMod</a></p></li>
+</ul>
+</div>
+<div class="section" id="webassembly">
+<h2><span class="section-number">9.11.2. </span>WebAssembly<a class="headerlink" href="#webassembly" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/WebAssembly/wabt">wabt</a></p></li>
+<li><p><a class="reference external" href="https://github.com/WebAssembly/binaryen">binaryen</a></p></li>
+<li><p><a class="reference external" href="https://github.com/wwwg/wasmdec">wasmdec</a></p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">9.11.3. </span>混淆<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/mindedsecurity/JStillery">JStillery</a></p></li>
+<li><p><a class="reference external" href="https://github.com/javascript-obfuscator/javascript-obfuscator">javascript obfuscator</a></p></li>
+<li><p><a class="reference external" href="https://github.com/CaledoniaProject/php-decoder">基于hook的php混淆解密</a></p></li>
+</ul>
+</div>
+<div class="section" id="proxy-pool">
+<h2><span class="section-number">9.11.4. </span>Proxy Pool<a class="headerlink" href="#proxy-pool" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/jhao104/proxy_pool">proxy pool by jhao104</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Python3WebSpider/ProxyPool">Proxy Pool by Germey</a></p></li>
+<li><p><a class="reference external" href="https://github.com/imWildCat/scylla">scylla</a></p></li>
+</ul>
+</div>
+<div class="section" id="android">
+<h2><span class="section-number">9.11.5. </span>Android<a class="headerlink" href="#android" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/WooyunDota/DroidSSLUnpinning">DroidSSLUnpinning</a> Android certificate pinning disable tools</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">9.11.6. </span>其他<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ropnop/serverless_toolkit">Serverless Toolkit</a></p></li>
+<li><p><a class="reference external" href="https://github.com/PortSwigger/hackability">Rendering Engine Probe</a></p></li>
+<li><p><a class="reference external" href="http://www.httrack.com/">httrack</a></p></li>
+<li><p><a class="reference external" href="https://curl.haxx.se/">curl</a></p></li>
+<li><p><a class="reference external" href="https://github.com/trimstray/htrace.sh">htrace</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../manual/index.html" class="btn btn-neutral float-right" title="10. 手册速查" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="operation.html" class="btn btn-neutral float-left" title="9.10. 运维" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

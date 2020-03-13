@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.1.11. 参考链接 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.2. Python" href="../python/index.html" />
+    <link rel="prev" title="5.1.10. 其它" href="misc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. 语言与框架</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.1. PHP</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="backdoor.html">5.1.1. 后门</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unserialize.html">5.1.2. 反序列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="disablefunc.html">5.1.3. Disable Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basedir.html">5.1.4. Open Basedir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">5.1.5. 安全相关配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stream.html">5.1.6. PHP流</a></li>
+<li class="toctree-l3"><a class="reference internal" href="htaccess.html">5.1.7. htaccess injection payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webshell.html">5.1.8. WebShell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="phar.html">5.1.9. Phar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc.html">5.1.10. 其它</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.1.11. 参考链接</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bypass">5.1.11.1. Bypass</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tricks">5.1.11.2. Tricks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#webshell">5.1.11.3. WebShell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#phar">5.1.11.4. Phar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">5.1.11.5. 运行</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../python/index.html">5.2. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../java/index.html">5.3. Java</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../javascript/index.html">5.4. JavaScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">5. </span>语言与框架</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">5.1. </span>PHP</a> &raquo;</li>
+        
+      <li><span class="section-number">5.1.11. </span>参考链接</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/language/php/ref.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">5.1.11. </span>参考链接<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="bypass">
+<h2><span class="section-number">5.1.11.1. </span>Bypass<a class="headerlink" href="#bypass" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.tarlogic.com/en/blog/how-to-bypass-disable_functions-and-open_basedir/">php open basedir bypass</a></p></li>
+<li><p><a class="reference external" href="https://www.tarlogic.com/en/blog/how-to-bypass-disable_functions-and-open_basedir/">open basedir bypass</a></p></li>
+<li><p><a class="reference external" href="https://github.com/l3m0n/Bypass_Disable_functions_Shell">Bypass Disable functions Shell</a></p></li>
+</ul>
+</div>
+<div class="section" id="tricks">
+<h2><span class="section-number">5.1.11.2. </span>Tricks<a class="headerlink" href="#tricks" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.ptsecurity.com/upload/corporate/ru-ru/webinars/ics/%D0%90.%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B8%D0%BD_%D0%9E_%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF_%D0%B8%D1%81%D0%BF_%D0%A0%D0%9D%D0%A0_wrappers.pdf">php wrappers</a></p></li>
+<li><p><a class="reference external" href="http://www.cnblogs.com/iamstudy/articles/unserialize_in_php_inner_class.html">反序列化之PHP原生类的利用</a></p></li>
+<li><p><a class="reference external" href="https://www.leavesongs.com/PENETRATION/unobfuscated-phpjiami.html">php解密的数种方法</a></p></li>
+<li><p><a class="reference external" href="https://gynvael.coldwind.pl/?id=671">Surprising CTF task solution using php://filter</a></p></li>
+</ul>
+</div>
+<div class="section" id="webshell">
+<h2><span class="section-number">5.1.11.3. </span>WebShell<a class="headerlink" href="#webshell" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/sektioneins/pcc/wiki/PHP-htaccess-injection-cheat-sheet">PHP htaccess inject</a></p></li>
+<li><p><a class="reference external" href="https://blog.manchestergreyhats.co.uk/2018/11/07/php-malware-examination/">php木马加密</a></p></li>
+<li><p><a class="reference external" href="https://www.freebuf.com/articles/web/155891.html">PHP WebShell变形技术总结</a></p></li>
+<li><p><a class="reference external" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum.html">一些不包含数字和字母的webshell</a></p></li>
+</ul>
+</div>
+<div class="section" id="phar">
+<h2><span class="section-number">5.1.11.4. </span>Phar<a class="headerlink" href="#phar" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://i.blackhat.com/us-18/Thu-August-9/us-18-Thomas-Its-A-PHP-Unserialization-Vulnerability-Jim-But-Not-As-We-Know-It-wp.pdf">US Black Hat 2018 Phar</a></p></li>
+<li><p><a class="reference external" href="https://paper.seebug.org/680/">利用 phar 拓展 php 反序列化漏洞攻击面</a></p></li>
+<li><p><a class="reference external" href="https://blog.zsxsoft.com/post/38">Phar与Stream Wrapper造成PHP RCE的深入挖掘</a></p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">5.1.11.5. </span>运行<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.phpinternalsbook.com/php7/extensions_design/php_lifecycle.html">Learning the PHP lifecycle</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pangudashu/php7-internal">PHP7内核剖析</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../python/index.html" class="btn btn-neutral float-right" title="5.2. Python" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="misc.html" class="btn btn-neutral float-left" title="5.1.10. 其它" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

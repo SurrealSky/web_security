@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7.10. 应急响应 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7.11. 溯源分析" href="forensic.html" />
+    <link rel="prev" title="7.9. 入侵检测" href="intrusiondetection.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 防御技术</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="team.html">7.1. 团队建设</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdl.html">7.2. 安全开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threat.html">7.3. 威胁情报</a></li>
+<li class="toctree-l2"><a class="reference internal" href="att8ck.html">7.4. ​​ATT&amp;CK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riskcontrol.html">7.5. 风险控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reinforce.html">7.6. 加固检查</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framework.html">7.7. 防御框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeypot.html">7.8. 蜜罐技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrusiondetection.html">7.9. 入侵检测</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.10. 应急响应</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">7.10.1. 响应流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">7.10.1.1. 事件发生</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">7.10.1.2. 事件确认</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">7.10.1.3. 事件响应</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">7.10.1.4. 事件关闭</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">7.10.2. 事件分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">7.10.3. 分析方向</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id9">7.10.3.1. 文件分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">7.10.3.2. 进程分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">7.10.3.3. 网络分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">7.10.3.4. 配置分析</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">7.10.4. Linux应急响应</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id13">7.10.4.1. 文件分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">7.10.4.2. 用户分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">7.10.4.3. 进程分析</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#windows">7.10.5. Windows应急响应</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id16">7.10.5.1. 文件分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">7.10.5.2. 用户分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">7.10.5.3. 进程分析</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">7.10.6. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="forensic.html">7.11. 溯源分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">7. </span>防御技术</a> &raquo;</li>
+        
+      <li><span class="section-number">7.10. </span>应急响应</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/defense/emergency.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">7.10. </span>应急响应<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">7.10.1. </span>响应流程<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3><span class="section-number">7.10.1.1. </span>事件发生<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>运维监控人员、客服审核人员等发现问题，向上通报</p>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">7.10.1.2. </span>事件确认<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>判断事件的严重性，评估出问题的严重等级，是否向上进行汇报等</p>
+</div>
+<div class="section" id="id5">
+<h3><span class="section-number">7.10.1.3. </span>事件响应<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>各部门通力合作，处理安全问题，具体解决阶段</p>
+</div>
+<div class="section" id="id6">
+<h3><span class="section-number">7.10.1.4. </span>事件关闭<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>处理完事件之后，需要关闭事件，并写出安全应急处理分析报告，完成整个应急过程。</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h2><span class="section-number">7.10.2. </span>事件分类<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>病毒、木马、蠕虫事件</p></li>
+<li><p>Web服务器入侵事件</p></li>
+<li><p>第三方服务入侵事件</p></li>
+<li><dl class="simple">
+<dt>系统入侵事件</dt><dd><ul>
+<li><p>利用Windows漏洞攻击操作系统</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>网络攻击事件</dt><dd><ul>
+<li><p>DDoS / ARP欺骗 / DNS劫持等</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2><span class="section-number">7.10.3. </span>分析方向<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h3><span class="section-number">7.10.3.1. </span>文件分析<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>基于变化的分析</dt><dd><ul>
+<li><p>日期</p></li>
+<li><p>文件增改</p></li>
+<li><p>最近使用文件</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>源码分析</dt><dd><ul>
+<li><p>检查源码改动</p></li>
+<li><p>查杀WebShell等后门</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>系统日志分析</p></li>
+<li><dl class="simple">
+<dt>应用日志分析</dt><dd><ul>
+<li><p>分析User-Agent，e.g. <code class="docutils literal notranslate"><span class="pre">awvs</span> <span class="pre">/</span> <span class="pre">burpsuite</span> <span class="pre">/</span> <span class="pre">w3af</span> <span class="pre">/</span> <span class="pre">nessus</span> <span class="pre">/</span> <span class="pre">openvas</span></code></p></li>
+<li><p>对每种攻击进行关键字匹配，e.g. <code class="docutils literal notranslate"><span class="pre">select/alert/eval</span></code></p></li>
+<li><p>异常请求，连续的404或者500</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">md5sum</span></code> 检查常用命令二进制文件的哈希，检查是否被植入rootkit</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h3><span class="section-number">7.10.3.2. </span>进程分析<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>符合以下特征的进程</dt><dd><ul>
+<li><p>CPU或内存资源占用长时间过高</p></li>
+<li><p>没有签名验证信息</p></li>
+<li><p>没有描述信息的进程</p></li>
+<li><p>进程的路径不合法</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>dump系统内存进行分析</p></li>
+</ul>
+</div>
+<div class="section" id="id11">
+<h3><span class="section-number">7.10.3.3. </span>网络分析<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>防火墙配置</p></li>
+<li><p>DNS配置</p></li>
+<li><p>路由配置</p></li>
+</ul>
+</div>
+<div class="section" id="id12">
+<h3><span class="section-number">7.10.3.4. </span>配置分析<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>查看Linux SE等配置</p></li>
+<li><p>查看环境变量</p></li>
+<li><p>查看配套的注册表信息检索，SAM文件</p></li>
+<li><p>内核模块</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="linux">
+<h2><span class="section-number">7.10.4. </span>Linux应急响应<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id13">
+<h3><span class="section-number">7.10.4.1. </span>文件分析<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>最近使用文件</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">/</span> <span class="pre">-ctime</span> <span class="pre">-2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\Administrator\Recent</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\Default</span> <span class="pre">User\Recent</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%UserProfile%\Recent</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>系统日志分析</dt><dd><ul>
+<li><p>/var/log/</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>重点分析位置</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/log/wtmp</span></code> 登录进入，退出，数据交换、关机和重启纪录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/run/utmp</span></code> 有关当前登录用户的信息记录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/log/lastlog</span></code> 文件记录用户最后登录的信息，可用 lastlog 命令来查看。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/log/secure</span></code> 记录登入系统存取数据的文件，例如 pop3/ssh/telnet/ftp 等都会被记录。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/log/cron</span></code> 与定时任务相关的日志信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/log/message</span></code> 系统启动后的信息和错误日志</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/log/apache2/access.log</span></code> apache access log</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/passwd</span></code> 用户列表</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/init.d/</span></code> 开机启动项</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/cron*</span></code> 定时任务</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/tmp</span></code> 临时目录</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~/.ssh</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id14">
+<h3><span class="section-number">7.10.4.2. </span>用户分析<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/shadow</span></code> 密码登陆相关信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uptime</span></code> 查看用户登陆时间</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/sudoers</span></code> sudo用户列表</p></li>
+</ul>
+</div>
+<div class="section" id="id15">
+<h3><span class="section-number">7.10.4.3. </span>进程分析<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">netstat</span> <span class="pre">-ano</span></code> 查看是否打开了可疑端口</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">w</span></code> 命令，查看用户及其进程</p></li>
+<li><dl class="simple">
+<dt>分析开机自启程序/脚本</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/init.d</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>查看计划或定时任务</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">crontab</span> <span class="pre">-l</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">netstat</span> <span class="pre">-an</span></code> / <code class="docutils literal notranslate"><span class="pre">lsof</span></code> 查看进程端口占用</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="windows">
+<h2><span class="section-number">7.10.5. </span>Windows应急响应<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id16">
+<h3><span class="section-number">7.10.5.1. </span>文件分析<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>最近使用文件</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\Administrator\Recent</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\Default</span> <span class="pre">User\Recent</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%UserProfile%\Recent</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>系统日志分析</dt><dd><ul>
+<li><p>事件查看器 <code class="docutils literal notranslate"><span class="pre">eventvwr.msc</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id17">
+<h3><span class="section-number">7.10.5.2. </span>用户分析<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>查看是否有新增用户</p></li>
+<li><p>查看服务器是否有弱口令</p></li>
+<li><p>查看管理员对应键值</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lusrmgr.msc</span></code> 查看账户变化</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">net</span> <span class="pre">user</span></code> 列出当前登录账户</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wmic</span> <span class="pre">UserAccount</span> <span class="pre">get</span></code> 列出当前系统所有账户</p></li>
+</ul>
+</div>
+<div class="section" id="id18">
+<h3><span class="section-number">7.10.5.3. </span>进程分析<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">netstat</span> <span class="pre">-ano</span></code> 查看是否打开了可疑端口</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tasklist</span></code> 查看是否有可疑进程</p></li>
+<li><dl class="simple">
+<dt>分析开机自启程序</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Runonce</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policies\Explorer\Run</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(ProfilePath)\Start</span> <span class="pre">Menu\Programs\Startup</span></code> 启动项</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msconfig</span></code> 启动选项卡</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpedit.msc</span></code> 组策略编辑器</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>查看计划或定时任务</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">C:\Windows\System32\Tasks\</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C:\Windows\SysWOW64\Tasks\</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C:\Windows\tasks\</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">schtasks</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">taskschd.msc</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id19">
+<h2><span class="section-number">7.10.6. </span>参考链接<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://xz.aliyun.com/t/1140">黑客入侵应急分析手工排查</a></p></li>
+<li><p><a class="reference external" href="http://www.freebuf.com/column/147929.html">取证入门 web篇</a></p></li>
+<li><p><a class="reference external" href="https://xz.aliyun.com/t/2524">Windows 系统安全事件应急响应</a></p></li>
+<li><p><a class="reference external" href="https://xz.aliyun.com/t/1632">企业安全应急响应</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="forensic.html" class="btn btn-neutral float-right" title="7.11. 溯源分析" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intrusiondetection.html" class="btn btn-neutral float-left" title="7.9. 入侵检测" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

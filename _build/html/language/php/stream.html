@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.1.6. PHP流 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.1.7. htaccess injection payload" href="htaccess.html" />
+    <link rel="prev" title="5.1.5. 安全相关配置" href="config.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. 语言与框架</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.1. PHP</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="backdoor.html">5.1.1. 后门</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unserialize.html">5.1.2. 反序列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="disablefunc.html">5.1.3. Disable Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basedir.html">5.1.4. Open Basedir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">5.1.5. 安全相关配置</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.1.6. PHP流</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">5.1.6.1. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.1.6.2. 封装协议</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.1.6.3. PHP支持流</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filter">5.1.6.4. filter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="htaccess.html">5.1.7. htaccess injection payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webshell.html">5.1.8. WebShell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="phar.html">5.1.9. Phar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc.html">5.1.10. 其它</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">5.1.11. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../python/index.html">5.2. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../java/index.html">5.3. Java</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../javascript/index.html">5.4. JavaScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">5. </span>语言与框架</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">5.1. </span>PHP</a> &raquo;</li>
+        
+      <li><span class="section-number">5.1.6. </span>PHP流</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/language/php/stream.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="php">
+<h1><span class="section-number">5.1.6. </span>PHP流<a class="headerlink" href="#php" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">5.1.6.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>流（Streams）的概念是在php 4.3引入的，是对流式数据的抽象，用于统一数据操作，比如文件数据、网络数据、压缩数据等。</p>
+<p>流可以通过file、open、fwrite、fclose、file_get_contents、
+file_put_contents等函数操作。</p>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">5.1.6.2. </span>封装协议<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>PHP 带有很多内置 URL 风格的封装协议，可用于类似 fopen()、 copy()、 file_exists() 和 filesize() 的文件系统函数。支持的协议可用 <code class="docutils literal notranslate"><span class="pre">stream_get_wrappers()</span></code> 查看。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">file://</span></code> 访问本地文件系统</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http://</span></code> 访问 HTTP(s) 网址</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ftp://</span></code> 访问 FTP(s) URLs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">php://</span></code> 访问各个输入/输出流（I/O streams）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zlib://</span></code> 压缩流</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data://</span></code> 数据（RFC 2397）</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">glob://</span></code> 查找匹配的文件路径模式</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">phar://</span></code> PHP 归档</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ssh2://</span></code> Secure Shell 2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rar://</span></code> RAR</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ogg://</span></code> 音频流</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expect://</span></code> 处理交互式的流</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">5.1.6.3. </span>PHP支持流<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>PHP 提供了一些输入/输出（IO）流，允许访问 PHP 的输入输出流、标准输入输出和错误描述符，内存中、磁盘备份的临时文件流以及可以操作其他读取写入文件资源的过滤器。</p>
+<p>需要注意的是，流不受 <code class="docutils literal notranslate"><span class="pre">allow_url_fopen</span></code> 限制，但是 <code class="docutils literal notranslate"><span class="pre">php://input</span></code>、 <code class="docutils literal notranslate"><span class="pre">php://stdin</span></code>、 <code class="docutils literal notranslate"><span class="pre">php://memory</span></code> 和 <code class="docutils literal notranslate"><span class="pre">php://temp</span></code> 受限于 <code class="docutils literal notranslate"><span class="pre">allow_url_include</span></code> 。</p>
+<div class="section" id="id4">
+<h3><span class="section-number">5.1.6.3.1. </span>输入输出流<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">php://stdin</span></code> 、 <code class="docutils literal notranslate"><span class="pre">php://stdout</span></code> 和 <code class="docutils literal notranslate"><span class="pre">php://stderr</span></code> 允许直接访问 PHP 进程相应的输入或者输出流。数据流引用了复制的文件描述符，所以如果在打开 <code class="docutils literal notranslate"><span class="pre">php://stdin</span></code> 并在之后关了它，仅是关闭了复制品，真正被引用的 STDIN 并不受影响。</p>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">php://stdin</span></code> 是只读的， <code class="docutils literal notranslate"><span class="pre">php://stdout</span></code> 和 <code class="docutils literal notranslate"><span class="pre">php://stderr</span></code> 是只写的。</p>
+</div>
+<div class="section" id="fd">
+<h3><span class="section-number">5.1.6.3.2. </span>fd<a class="headerlink" href="#fd" title="Permalink to this headline">¶</a></h3>
+<p>php://fd 允许直接访问指定的文件描述符。例如 <code class="docutils literal notranslate"><span class="pre">php://fd/3</span></code> 引用了文件描述符 3。</p>
+</div>
+<div class="section" id="memorytemp">
+<h3><span class="section-number">5.1.6.3.3. </span>memory与temp<a class="headerlink" href="#memorytemp" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">php://memory</span></code> 和 <code class="docutils literal notranslate"><span class="pre">php://temp</span></code> 是一个类似文件包装器的数据流，允许读写临时数据。两者的唯一区别是 <code class="docutils literal notranslate"><span class="pre">php://memory</span></code> 总是把数据储存在内存中，而 <code class="docutils literal notranslate"><span class="pre">php://temp</span></code> 会在内存量达到预定义的限制后（默认是 2MB）存入临时文件中。临时文件位置的决定和 <code class="docutils literal notranslate"><span class="pre">sys_get_temp_dir()</span></code> 的方式一致。</p>
+<p><code class="docutils literal notranslate"><span class="pre">php://temp</span></code> 的内存限制可通过添加 <code class="docutils literal notranslate"><span class="pre">/maxmemory:NN</span></code> 来控制，NN 是以字节为单位、保留在内存的最大数据量，超过则使用临时文件。</p>
+</div>
+<div class="section" id="input">
+<h3><span class="section-number">5.1.6.3.4. </span>input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">php://input</span></code> 是个可以访问请求的原始数据的只读流。 POST 请求的情况下，最好使用 <code class="docutils literal notranslate"><span class="pre">php://input</span></code> 来代替 <code class="docutils literal notranslate"><span class="pre">$HTTP_RAW_POST_DATA</span></code>，因为它不依赖于特定的 php.ini 指令。而且，这样的情况下 <code class="docutils literal notranslate"><span class="pre">$HTTP_RAW_POST_DATA</span></code> 默认没有填充，比激活 <code class="docutils literal notranslate"><span class="pre">always_populate_raw_post_data</span></code> 潜在需要更少的内存。 <code class="docutils literal notranslate"><span class="pre">enctype=&quot;multipart/form-data&quot;</span></code> 的时候 <code class="docutils literal notranslate"><span class="pre">php://input</span></code> 是无效的。</p>
+</div>
+</div>
+<div class="section" id="filter">
+<h2><span class="section-number">5.1.6.4. </span>filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">php://filter</span></code> 是一种元封装器，设计用于数据流打开时的筛选过滤应用。PHP默认提供了一些流过滤器，除此之外，还可以使用各种自定义过滤器。</p>
+<p>filter有resource, read, write三个参数，resource参数是必须的。它指定了你要筛选过滤的数据流。 read和write是可选参数，可以设定一个或多个过滤器名称，以管道符（|）分隔。</p>
+<div class="section" id="id5">
+<h3><span class="section-number">5.1.6.4.1. </span>过滤器列表<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>可以通过 <code class="docutils literal notranslate"><span class="pre">stream_get_filters()</span></code> 获取已经注册的过滤器列表。其中PHP内置的过滤器如下：</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>字符串过滤器</dt><dd><ul>
+<li><p>string.rot13</p></li>
+<li><p>string.toupper</p></li>
+<li><p>string.tolower</p></li>
+<li><p>string.strip_tags</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>转换过滤器</dt><dd><ul>
+<li><p>convert.base64-encode</p></li>
+<li><p>convert.base64-decode</p></li>
+<li><p>convert.quoted-printable-encode</p></li>
+<li><p>convert.quoted-printable-decode</p></li>
+<li><p>convert.iconv.*</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>压缩过滤器</dt><dd><ul>
+<li><p>zlib.deflate</p></li>
+<li><p>zlib.inflate</p></li>
+<li><p>bzip2.compress</p></li>
+<li><p>bzip2.decompress</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>加密过滤器</dt><dd><ul>
+<li><p>mcrypt.``ciphername``</p></li>
+<li><p>mdecrypt.``ciphername``</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="tricks">
+<h3><span class="section-number">5.1.6.4.2. </span>过滤器利用tricks<a class="headerlink" href="#tricks" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>LFI</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">php://filter/convert.base64-encode/resource=index.php</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>XXE读取文件时会因而解析报错，可用base64编码</p></li>
+<li><p>base64编码会弃掉未在码表内的字符，可用于绕过一些文件格式</p></li>
+<li><p>部分 convert 会有大量的资源消耗，可用作DoS</p></li>
+<li><p>rot13 / convert 转换 过WAF</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="htaccess.html" class="btn btn-neutral float-right" title="5.1.7. htaccess injection payload" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="config.html" class="btn btn-neutral float-left" title="5.1.5. 安全相关配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

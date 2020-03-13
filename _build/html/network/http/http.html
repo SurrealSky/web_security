@@ -1,0 +1,1061 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.7.1. HTTP标准 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.7.2. HTTPS" href="https.html" />
+    <link rel="prev" title="2.7. HTTP协议簇" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 计算机网络与协议</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../basic.html">2.1. 网络基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udp.html">2.2. UDP协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tcp.html">2.3. TCP协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dhcp.html">2.4. DHCP协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../route.html">2.5. 路由算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../domain.html">2.6. 域名系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">2.7. HTTP协议簇</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.7.1. HTTP标准</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">2.7.1.1. 报文格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">2.7.1.2. 请求头列表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">2.7.1.3. 响应头列表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#http-1xx">2.7.1.4. HTTP状态返回代码 1xx（临时响应）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#http-2xx">2.7.1.5. HTTP状态返回代码 2xx （成功）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#http-3xx">2.7.1.6. HTTP状态返回代码 3xx （重定向）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#http-4xx">2.7.1.7. HTTP状态返回代码 4xx（请求错误）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#http-5xx">2.7.1.8. HTTP状态返回代码 5xx（服务器错误）</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="https.html">2.7.2. HTTPS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webdav.html">2.7.3. WebDAV</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ssl.html">2.8. SSL/TLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ipsec.html">2.9. IPsec</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">2. </span>计算机网络与协议</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">2.7. </span>HTTP协议簇</a> &raquo;</li>
+        
+      <li><span class="section-number">2.7.1. </span>HTTP标准</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/network/http/http.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="http">
+<h1><span class="section-number">2.7.1. </span>HTTP标准<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">2.7.1.1. </span>报文格式<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3><span class="section-number">2.7.1.1.1. </span>请求报文格式<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">method</span><span class="o">&gt;&lt;</span><span class="n">request</span><span class="o">-</span><span class="n">URL</span><span class="o">&gt;&lt;</span><span class="n">version</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">headers</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">entity</span><span class="o">-</span><span class="n">body</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3><span class="section-number">2.7.1.1.2. </span>响应报文格式<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;&lt;</span><span class="n">status</span><span class="o">&gt;&lt;</span><span class="n">reason</span><span class="o">-</span><span class="n">phrase</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">headers</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">entity</span><span class="o">-</span><span class="n">body</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">2.7.1.1.3. </span>字段解释<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>method</dt><dd><ul>
+<li><p>HTTP动词</p></li>
+<li><p>常见方法：HEAD / GET / POST / PUT / DELETE / PATCH / OPTIONS / TRACE</p></li>
+<li><p>扩展方法：LOCK / MKCOL / COPY / MOVE</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>version</dt><dd><ul>
+<li><p>报文使用的HTTP版本</p></li>
+<li><p>格式为HTTP/&lt;major&gt;.&lt;minor&gt;</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>url</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;scheme&gt;://&lt;user&gt;:&lt;password&gt;&#64;&lt;host&gt;:&lt;port&gt;/&lt;path&gt;;&lt;params&gt;?&lt;query&gt;#&lt;frag&gt;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">2.7.1.2. </span>请求头列表<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Accept</dt><dd><ul>
+<li><p>指定客户端能够接收的内容类型</p></li>
+<li><p>Accept: text/plain, text/html</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Accept-Charset</dt><dd><ul>
+<li><p>浏览器可以接受的字符编码集</p></li>
+<li><p>Accept-Charset: iso-8859-5</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Accept-Encoding</dt><dd><ul>
+<li><p>指定浏览器可以支持的web服务器返回内容压缩编码类型</p></li>
+<li><p>Accept-Encoding: compress, gzip</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Accept-Language</dt><dd><ul>
+<li><p>浏览器可接受的语言</p></li>
+<li><p>Accept-Language: en,zh</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Accept-Ranges</dt><dd><ul>
+<li><p>可以请求网页实体的一个或者多个子范围字段</p></li>
+<li><p>Accept-Ranges: bytes</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Authorization</dt><dd><ul>
+<li><p>HTTP授权的授权证书</p></li>
+<li><p>Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Cache-Control</dt><dd><ul>
+<li><p>指定请求和响应遵循的缓存机制 Cache-Control: no-cache</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Connection</dt><dd><ul>
+<li><p>表示是否需要持久连接 // HTTP 1.1默认进行持久连接</p></li>
+<li><p>Connection: close</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Cookie</dt><dd><ul>
+<li><p>HTTP请求发送时，会把保存在该请求域名下的所有cookie值一起发送给web服务器</p></li>
+<li><p>Cookie: role=admin;ssid=1</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-Length</dt><dd><ul>
+<li><p>请求的内容长度</p></li>
+<li><p>Content-Length: 348</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-Type</dt><dd><ul>
+<li><p>请求的与实体对应的MIME信息</p></li>
+<li><p>Content-Type: application/x-www-form-urlencoded</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Date</dt><dd><ul>
+<li><p>请求发送的日期和时间</p></li>
+<li><p>Date: Tue, 15 Nov 2010 08:12:31 GMT</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Expect</dt><dd><ul>
+<li><p>请求的特定的服务器行为</p></li>
+<li><p>Expect: 100-continue</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>From</dt><dd><ul>
+<li><p>发出请求的用户的Email</p></li>
+<li><p>From: <a class="reference external" href="mailto:user&#37;&#52;&#48;email&#46;com">user<span>&#64;</span>email<span>&#46;</span>com</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Host</dt><dd><ul>
+<li><p>指定请求的服务器的域名和端口号</p></li>
+<li><p>Host: www.github.com</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If-Match</dt><dd><ul>
+<li><p>只有请求内容与实体相匹配才有效</p></li>
+<li><p>If-Match: “737060cd8c284d8af7ad3082f209582d”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If-Modified-Since</dt><dd><ul>
+<li><p>如果请求的部分在指定时间之后被修改则请求成功，未被修改则返回304代码</p></li>
+<li><p>If-Modified-Since: Sat, 29 Oct 2018 19:43:31 GMT</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If-None-Match</dt><dd><ul>
+<li><p>如果内容未改变返回304代码，参数为服务器先前发送的Etag，与服务器回应的Etag比较判断是否改变</p></li>
+<li><p>If-None-Match: “737060cd8c284d8af7ad3082f209582d”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If-Range</dt><dd><ul>
+<li><p>如果实体未改变，服务器发送客户端丢失的部分，否则发送整个实体。参数也为Etag</p></li>
+<li><p>If-Range: “737060cd8c284d8af7ad3082f209582d”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If-Unmodified-Since</dt><dd><ul>
+<li><p>只在实体在指定时间之后未被修改才请求成功</p></li>
+<li><p>If-Unmodified-Since: Sat, 29 Oct 2010 19:43:31 GMT</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Max-Forwards</dt><dd><ul>
+<li><p>限制信息通过代理和网关传送的时间</p></li>
+<li><p>Max-Forwards: 10</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Pragma</dt><dd><ul>
+<li><p>用来包含实现特定的指令</p></li>
+<li><p>Pragma: no-cache</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Proxy-Authorization</dt><dd><ul>
+<li><p>连接到代理的授权证书</p></li>
+<li><p>Proxy-Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Range</dt><dd><ul>
+<li><p>只请求实体的一部分，指定范围</p></li>
+<li><p>Range: bytes=500-999</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Referer</dt><dd><ul>
+<li><p>先前网页的地址，当前请求网页紧随其后,即来路</p></li>
+<li><p>Referer: <a class="reference external" href="http://www.zcmhi.com/archives/71.html">http://www.zcmhi.com/archives/71.html</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>TE</dt><dd><ul>
+<li><p>客户端愿意接受的传输编码，并通知服务器接受接受尾加头信息</p></li>
+<li><p>TE: trailers,deflate;q=0.5</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Upgrade</dt><dd><ul>
+<li><p>向服务器指定某种传输协议以便服务器进行转换（如果支持）</p></li>
+<li><p>Upgrade: HTTP/2.0, SHTTP/1.3, IRC/6.9, RTA/x11</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>User-Agent</dt><dd><ul>
+<li><p>User-Agent的内容包含发出请求的用户信息</p></li>
+<li><p>User-Agent: Mozilla/5.0 (Linux; X11)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Via</dt><dd><ul>
+<li><p>通知中间网关或代理服务器地址，通信协议</p></li>
+<li><p>Via: 1.0 fred, 1.1 nowhere.com (Apache/1.1)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Warning</dt><dd><ul>
+<li><p>关于消息实体的警告信息</p></li>
+<li><p>Warn: 199 Miscellaneous warning</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2><span class="section-number">2.7.1.3. </span>响应头列表<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Accept-Ranges</dt><dd><ul>
+<li><p>表明服务器是否支持指定范围请求及哪种类型的分段请求</p></li>
+<li><p>Accept-Ranges: bytes</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Access-Control-Allow-Origin</dt><dd><ul>
+<li><p>配置有权限访问资源的域</p></li>
+<li><p>Access-Control-Allow-Origin: &lt;origin&gt;|*</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Age</dt><dd><ul>
+<li><p>从原始服务器到代理缓存形成的估算时间（以秒计，非负）</p></li>
+<li><p>Age: 12</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Allow</dt><dd><ul>
+<li><p>对某网络资源的有效的请求行为，不允许则返回405</p></li>
+<li><p>Allow: GET, HEAD</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Cache-Control</dt><dd><ul>
+<li><p>告诉所有的缓存机制是否可以缓存及哪种类型</p></li>
+<li><p>Cache-Control: no-cache</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-Encoding</dt><dd><ul>
+<li><p>web服务器支持的返回内容压缩编码类型。</p></li>
+<li><p>Content-Encoding: gzip</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-Language</dt><dd><ul>
+<li><p>响应体的语言</p></li>
+<li><p>Content-Language: en,zh</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-Length</dt><dd><ul>
+<li><p>响应体的长度</p></li>
+<li><p>Content-Length: 348</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-Location</dt><dd><ul>
+<li><p>请求资源可替代的备用的另一地址</p></li>
+<li><p>Content-Location: /index.htm</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-MD5</dt><dd><ul>
+<li><p>返回资源的MD5校验值</p></li>
+<li><p>Content-MD5: Q2hlY2sgSW50ZWdyaXR5IQ==</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-Range</dt><dd><ul>
+<li><p>在整个返回体中本部分的字节位置</p></li>
+<li><p>Content-Range: bytes 21010-47021/47022</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Content-Type</dt><dd><ul>
+<li><p>返回内容的MIME类型</p></li>
+<li><p>Content-Type: text/html; charset=utf-8</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Date</dt><dd><ul>
+<li><p>原始服务器消息发出的时间</p></li>
+<li><p>Date: Tue, 15 Nov 2010 08:12:31 GMT</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ETag</dt><dd><ul>
+<li><p>请求变量的实体标签的当前值</p></li>
+<li><p>ETag: “737060cd8c284d8af7ad3082f209582d”</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Expires</dt><dd><ul>
+<li><p>响应过期的日期和时间</p></li>
+<li><p>Expires: Thu, 01 Dec 2010 16:00:00 GMT</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Last-Modified</dt><dd><ul>
+<li><p>请求资源的最后修改时间</p></li>
+<li><p>Last-Modified: Tue, 15 Nov 2010 12:45:26 GMT</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Location</dt><dd><ul>
+<li><p>用来重定向接收方到非请求URL的位置来完成请求或标识新的资源</p></li>
+<li><p>Location: <a class="reference external" href="http://www.zcmhi.com/archives/94.html">http://www.zcmhi.com/archives/94.html</a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Pragma</dt><dd><ul>
+<li><p>包括实现特定的指令，它可应用到响应链上的任何接收方</p></li>
+<li><p>Pragma: no-cache</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Proxy-Authenticate</dt><dd><ul>
+<li><p>它指出认证方案和可应用到代理的该URL上的参数</p></li>
+<li><p>Proxy-Authenticate: Basic</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Refresh</dt><dd><ul>
+<li><p>应用于重定向或一个新的资源被创造，在5秒之后重定向（由网景提出，被大部分浏览器支持）</p></li>
+<li><p>Refresh: 5; url=http://www.zcmhi.com/archives/94.html</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Retry-After</dt><dd><ul>
+<li><p>如果实体暂时不可取，通知客户端在指定时间之后再次尝试</p></li>
+<li><p>Retry-After: 120</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Server</dt><dd><ul>
+<li><p>web服务器软件名称</p></li>
+<li><p>Server: Apache/1.3.27 (Unix) (Red-Hat/Linux)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Set-Cookie</dt><dd><ul>
+<li><p>设置Http Cookie Set-Cookie: UserID=JohnDoe; Max-Age=3600; Version=1</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Strict-Transport-Security</dt><dd><ul>
+<li><p>设置浏览器强制使用HTTPS访问</p></li>
+<li><p>max-age: x秒的时间内 访问对应域名都使用HTTPS请求</p></li>
+<li><p>includeSubDomains: 网站的子域名也启用规则</p></li>
+<li><p>Strict-Transport-Security: max-age=1000; includeSubDomains</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Trailer</dt><dd><ul>
+<li><p>指出头域在分块传输编码的尾部存在 Trailer: Max-Forwards</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Transfer-Encoding</dt><dd><ul>
+<li><p>文件传输编码</p></li>
+<li><p>Transfer-Encoding:chunked</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Vary</dt><dd><ul>
+<li><p>告诉下游代理是使用缓存响应还是从原始服务器请求</p></li>
+<li><p>Vary: *</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Via</dt><dd><ul>
+<li><p>告知代理客户端响应是通过哪里发送的</p></li>
+<li><p>Via: 1.0 fred, 1.1 nowhere.com (Apache/1.1)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Warning</dt><dd><ul>
+<li><p>警告实体可能存在的问题</p></li>
+<li><p>Warning: 199 Miscellaneous warning</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>WWW-Authenticate</dt><dd><ul>
+<li><p>表明客户端请求实体应该使用的授权方案</p></li>
+<li><p>WWW-Authenticate: Basic</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>X-Content-Type-Options</dt><dd><ul>
+<li><p>配置禁止MIME类型嗅探</p></li>
+<li><p>X-Content-Type-Options: nosniff</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>X-Frame-Options</dt><dd><ul>
+<li><p>配置页面是否能出现在 &lt;frame&gt;, &lt;iframe&gt;, &lt;embed&gt;, &lt;object&gt; 等标签中，防止点击劫持</p></li>
+<li><p>X-Frame-Options: deny</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>X-XSS-Protection</dt><dd><ul>
+<li><p>配置XSS防护机制</p></li>
+<li><p>X-XSS-Protection: 1; mode=block</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="http-1xx">
+<h2><span class="section-number">2.7.1.4. </span>HTTP状态返回代码 1xx（临时响应）<a class="headerlink" href="#http-1xx" title="Permalink to this headline">¶</a></h2>
+<p>表示临时响应并需要请求者继续执行操作的状态代码。</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 10%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>代码</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>100</p></td>
+<td><p>继续</p></td>
+<td><p>服务器返回此代码表示已收到请求的第一部分，正在等待其余部分</p></td>
+</tr>
+<tr class="row-odd"><td><p>101</p></td>
+<td><p>切换协议</p></td>
+<td><p>请求者已要求服务器切换协议，服务器已确认并准备切换</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="http-2xx">
+<h2><span class="section-number">2.7.1.5. </span>HTTP状态返回代码 2xx （成功）<a class="headerlink" href="#http-2xx" title="Permalink to this headline">¶</a></h2>
+<p>表示成功处理了请求的状态代码。</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 12%" />
+<col style="width: 82%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>代码</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>200</p></td>
+<td><p>成功</p></td>
+<td><p>服务器已成功处理了请求。 通常，这表示服务器提供了请求的网页</p></td>
+</tr>
+<tr class="row-odd"><td><p>201</p></td>
+<td><p>已创建</p></td>
+<td><p>请求成功并且服务器创建了新的资源</p></td>
+</tr>
+<tr class="row-even"><td><p>202</p></td>
+<td><p>已接受</p></td>
+<td><p>服务器已接受请求，但尚未处理</p></td>
+</tr>
+<tr class="row-odd"><td><p>203</p></td>
+<td><p>非授权信息</p></td>
+<td><p>服务器已成功处理了请求，但返回的信息可能来自另一来源</p></td>
+</tr>
+<tr class="row-even"><td><p>204</p></td>
+<td><p>无内容</p></td>
+<td><p>服务器成功处理了请求，但没有返回任何内容</p></td>
+</tr>
+<tr class="row-odd"><td><p>205</p></td>
+<td><p>重置内容</p></td>
+<td><p>m服务器成功处理了请求，但没有返回任何内容</p></td>
+</tr>
+<tr class="row-even"><td><p>206</p></td>
+<td><p>部分内容</p></td>
+<td><p>服务器成功处理了部分GET请求</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="http-3xx">
+<h2><span class="section-number">2.7.1.6. </span>HTTP状态返回代码 3xx （重定向）<a class="headerlink" href="#http-3xx" title="Permalink to this headline">¶</a></h2>
+<p>表示要完成请求，需要进一步操作。 通常，这些状态代码用来重定向。</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 10%" />
+<col style="width: 87%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>代码</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>300</p></td>
+<td><p>多种选择</p></td>
+<td><p>针对请求，服务器可执行多种操作。 服务器可根据请求者 (user agent) 选择一项操作，或提供操作列表供请求者选择。</p></td>
+</tr>
+<tr class="row-odd"><td><p>301</p></td>
+<td><p>永久移动</p></td>
+<td><p>请求的网页已永久移动到新位置。 服务器返回此响应（对 GET 或 HEAD 请求的响应）时，会自动将请求者转到新位置。</p></td>
+</tr>
+<tr class="row-even"><td><p>302</p></td>
+<td><p>临时移动</p></td>
+<td><p>服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。</p></td>
+</tr>
+<tr class="row-odd"><td><p>303</p></td>
+<td><p>查看其他位置</p></td>
+<td><p>请求者应当对不同的位置使用单独的 GET 请求来检索响应时，服务器返回此代码。</p></td>
+</tr>
+<tr class="row-even"><td><p>304</p></td>
+<td><p>未修改</p></td>
+<td><p>自从上次请求后，请求的网页未修改过。 服务器返回此响应时，不会返回网页内容。</p></td>
+</tr>
+<tr class="row-odd"><td><p>305</p></td>
+<td><p>使用代理</p></td>
+<td><p>请求者只能使用代理访问请求的网页。如果服务器返回此响应，还表示请求者应使用代理。</p></td>
+</tr>
+<tr class="row-even"><td><p>307</p></td>
+<td><p>临时重定向</p></td>
+<td><p>服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="http-4xx">
+<h2><span class="section-number">2.7.1.7. </span>HTTP状态返回代码 4xx（请求错误）<a class="headerlink" href="#http-4xx" title="Permalink to this headline">¶</a></h2>
+<p>这些状态代码表示请求可能出错，妨碍了服务器的处理。</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 19%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>代码</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>400</p></td>
+<td><p>错误请求</p></td>
+<td><p>服务器不理解请求的语法。</p></td>
+</tr>
+<tr class="row-odd"><td><p>401</p></td>
+<td><p>未授权</p></td>
+<td><p>请求要求身份验证。对于需要登录的网页，服务器可能返回此响应。</p></td>
+</tr>
+<tr class="row-even"><td><p>403</p></td>
+<td><p>禁止</p></td>
+<td><p>服务器拒绝请求。</p></td>
+</tr>
+<tr class="row-odd"><td><p>404</p></td>
+<td><p>未找到</p></td>
+<td><p>服务器找不到请求的网页。</p></td>
+</tr>
+<tr class="row-even"><td><p>405</p></td>
+<td><p>方法禁用</p></td>
+<td><p>禁用请求中指定的方法。</p></td>
+</tr>
+<tr class="row-odd"><td><p>406</p></td>
+<td><p>不接受</p></td>
+<td><p>无法使用请求的内容特性响应请求的网页。</p></td>
+</tr>
+<tr class="row-even"><td><p>407</p></td>
+<td><p>需要代理授权</p></td>
+<td><p>此状态代码与 401（未授权）类似，但指定请求者应当授权使用代理。</p></td>
+</tr>
+<tr class="row-odd"><td><p>408</p></td>
+<td><p>请求超时</p></td>
+<td><p>服务器等候请求时发生超时。</p></td>
+</tr>
+<tr class="row-even"><td><p>409</p></td>
+<td><p>冲突</p></td>
+<td><p>服务器在完成请求时发生冲突。 服务器必须在响应中包含有关冲突的信息。</p></td>
+</tr>
+<tr class="row-odd"><td><p>410</p></td>
+<td><p>已删除</p></td>
+<td><p>如果请求的资源已永久删除，服务器就会返回此响应。</p></td>
+</tr>
+<tr class="row-even"><td><p>411</p></td>
+<td><p>需要有效长度</p></td>
+<td><p>服务器不接受不含有效内容长度标头字段的请求。</p></td>
+</tr>
+<tr class="row-odd"><td><p>412</p></td>
+<td><p>未满足前提条件</p></td>
+<td><p>服务器未满足请求者在请求中设置的其中一个前提条件。</p></td>
+</tr>
+<tr class="row-even"><td><p>413</p></td>
+<td><p>请求实体过大</p></td>
+<td><p>服务器无法处理请求，因为请求实体过大，超出服务器的处理能力。</p></td>
+</tr>
+<tr class="row-odd"><td><p>414</p></td>
+<td><p>请求的 URI 过长</p></td>
+<td><p>请求的 URI（通常为网址）过长，服务器无法处理。</p></td>
+</tr>
+<tr class="row-even"><td><p>415</p></td>
+<td><p>不支持的媒体类型</p></td>
+<td><p>请求的格式不受请求页面的支持。</p></td>
+</tr>
+<tr class="row-odd"><td><p>416</p></td>
+<td><p>请求范围不符合要求</p></td>
+<td><p>如果页面无法提供请求的范围，则服务器会返回此状态代码。</p></td>
+</tr>
+<tr class="row-even"><td><p>417</p></td>
+<td><p>未满足期望值</p></td>
+<td><p>服务器未满足”期望”请求标头字段的要求。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="http-5xx">
+<h2><span class="section-number">2.7.1.8. </span>HTTP状态返回代码 5xx（服务器错误）<a class="headerlink" href="#http-5xx" title="Permalink to this headline">¶</a></h2>
+<p>这些状态代码表示服务器在尝试处理请求时发生内部错误。 这些错误可能是服务器本身的错误，而不是请求出错。</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 17%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>代码</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>500</p></td>
+<td><p>服务器内部错误</p></td>
+<td><p>服务器遇到错误，无法完成请求。</p></td>
+</tr>
+<tr class="row-odd"><td><p>501</p></td>
+<td><p>尚未实施</p></td>
+<td><p>服务器不具备完成请求的功能。例如，服务器无法识别请求方法时可能会返回此代码。</p></td>
+</tr>
+<tr class="row-even"><td><p>502</p></td>
+<td><p>错误网关</p></td>
+<td><p>服务器作为网关或代理，从上游服务器收到无效响应。</p></td>
+</tr>
+<tr class="row-odd"><td><p>503</p></td>
+<td><p>服务不可用</p></td>
+<td><p>服务器目前无法使用（由于超载或停机维护）。 通常，这只是暂时状态。</p></td>
+</tr>
+<tr class="row-even"><td><p>504</p></td>
+<td><p>网关超时</p></td>
+<td><p>服务器作为网关或代理，但是没有及时从上游服务器收到请求。</p></td>
+</tr>
+<tr class="row-odd"><td><p>505</p></td>
+<td><p>HTTP 版本不受支持</p></td>
+<td><p>服务器不支持请求中所用的 HTTP 协议版本。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="https.html" class="btn btn-neutral float-right" title="2.7.2. HTTPS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="2.7. HTTP协议簇" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

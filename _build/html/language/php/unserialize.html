@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.1.2. 反序列化 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.1.3. Disable Functions" href="disablefunc.html" />
+    <link rel="prev" title="5.1.1. 后门" href="backdoor.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. 语言与框架</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.1. PHP</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="backdoor.html">5.1.1. 后门</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.1.2. 反序列化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#php">5.1.2.1. PHP序列化实现</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.1.2.2. PHP反序列化漏洞</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="disablefunc.html">5.1.3. Disable Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basedir.html">5.1.4. Open Basedir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">5.1.5. 安全相关配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stream.html">5.1.6. PHP流</a></li>
+<li class="toctree-l3"><a class="reference internal" href="htaccess.html">5.1.7. htaccess injection payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webshell.html">5.1.8. WebShell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="phar.html">5.1.9. Phar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc.html">5.1.10. 其它</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">5.1.11. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../python/index.html">5.2. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../java/index.html">5.3. Java</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../javascript/index.html">5.4. JavaScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">5. </span>语言与框架</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">5.1. </span>PHP</a> &raquo;</li>
+        
+      <li><span class="section-number">5.1.2. </span>反序列化</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/language/php/unserialize.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">5.1.2. </span>反序列化<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="php">
+<h2><span class="section-number">5.1.2.1. </span>PHP序列化实现<a class="headerlink" href="#php" title="Permalink to this headline">¶</a></h2>
+<p>PHP序列化处理共有三种，分别为php_serialize、php_binary和WDDX（需要编译时开启支持），默认为php_serialize，可通过配置中的 <code class="docutils literal notranslate"><span class="pre">session.serialize_handler</span></code> 修改。</p>
+<p>其中PHP处理器的格式为：键名 + 竖线 + 经过serialize()函数序列化处理的值。</p>
+<p>其中php_binary处理器的格式为：键名的长度对应的 ASCII 字符 + 键名 + 经过serialize()函数序列化处理的值。</p>
+<p>其中php_serialize处理器的格式为：经过serialize()函数序列化处理的数组。</p>
+<p>其中php_serialize的实现在 <code class="docutils literal notranslate"><span class="pre">php-src/ext/standard/var.c</span></code> 中，主要函数为 <code class="docutils literal notranslate"><span class="pre">php_var_serialize_intern</span></code> ，序列化后的格式如下：</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>boolean</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">b:&lt;value&gt;;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b:1;</span></code> // true</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b:0;</span></code> // false</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>integer</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">i:&lt;value&gt;;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>double</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">d:&lt;value&gt;;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>NULL</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">N;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>string</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">s:&lt;length&gt;:&quot;&lt;value&gt;&quot;;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s:1:&quot;s&quot;;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>array</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">a:&lt;length&gt;:{key,</span> <span class="pre">value};</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a:1:{s:4:&quot;key1&quot;;s:6:&quot;value1&quot;;}</span></code> // <code class="docutils literal notranslate"><span class="pre">array(&quot;key1&quot;</span> <span class="pre">=&gt;</span> <span class="pre">&quot;value1&quot;);</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>object</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">O:&lt;class_name_length&gt;:&quot;&lt;class_name&gt;&quot;:&lt;number_of_properties&gt;:{&lt;properties&gt;};</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reference</dt><dd><ul>
+<li><p>指针类型</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">R:reference;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O:1:&quot;A&quot;:2:{s:1:&quot;a&quot;;i:1;s:1:&quot;b&quot;;R:2;}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$a</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">A();$a-&gt;a=1;$a-&gt;b=&amp;$a-&gt;a;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">5.1.2.2. </span>PHP反序列化漏洞<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>php在反序列化的时候会调用 <code class="docutils literal notranslate"><span class="pre">__wakeup</span></code> / <code class="docutils literal notranslate"><span class="pre">__sleep</span></code> 等函数，可能会造成代码执行等问题。若没有相关函数，在析构时也会调用相关的析构函数，同样会造成代码执行。</p>
+<p>另外 <code class="docutils literal notranslate"><span class="pre">__toString</span></code> / <code class="docutils literal notranslate"><span class="pre">__call</span></code> 两个函数也有利用的可能。</p>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">__wakeup</span></code> 在反序列化时被触发，<code class="docutils literal notranslate"><span class="pre">__destruct</span></code> 在GC时被触发， <code class="docutils literal notranslate"><span class="pre">__toString</span></code> 在echo时被触发, <code class="docutils literal notranslate"><span class="pre">__call</span></code> 在一个未被定义的函数调用时被触发。</p>
+<p>下面提供一个简单的demo.</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">class Demo</span>
+<span class="x">{</span>
+
+<span class="x">    public $data;</span>
+
+<span class="x">    public function __construct($data)</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;data = $data;</span>
+<span class="x">        echo &quot;construct&lt;br /&gt;&quot;;</span>
+<span class="x">    }</span>
+
+<span class="x">    public function __wakeup()</span>
+<span class="x">    {</span>
+<span class="x">        echo &quot;wake up&lt;br /&gt;&quot;;</span>
+<span class="x">    }</span>
+
+<span class="x">    public function __destruct()</span>
+<span class="x">    {</span>
+<span class="x">        echo &quot;Data&#39;s value is $this-&gt;data. &lt;br /&gt;&quot;;</span>
+<span class="x">        echo &quot;destruct&lt;br /&gt;&quot;;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+
+<span class="x">var_dump(serialize(new Demo(&quot;raw value&quot;)));</span>
+</pre></div>
+</div>
+<p>输出</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">construct</span>
+<span class="n">Data</span><span class="s1">&#39;s value is raw value.</span>
+<span class="n">destruct</span>
+<span class="n">string</span><span class="p">(</span><span class="mi">44</span><span class="p">)</span> <span class="s2">&quot;O:4:&quot;</span><span class="n">Demo</span><span class="s2">&quot;:1:{s:4:&quot;</span><span class="n">data</span><span class="s2">&quot;;s:9:&quot;</span><span class="n">raw</span> <span class="n">value</span><span class="s2">&quot;;}&quot;</span>
+</pre></div>
+</div>
+<p>把序列化的字符串修改一下后，执行</p>
+<p><code class="docutils literal notranslate"><span class="pre">unserialize('O:4:&quot;Demo&quot;:1:{s:4:&quot;data&quot;;s:15:&quot;malicious</span> <span class="pre">value&quot;;}');</span></code></p>
+<p>输出</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wake</span> <span class="n">up</span>
+<span class="n">Data</span><span class="s1">&#39;s value is malicious value.</span>
+<span class="n">destruct</span>
+</pre></div>
+</div>
+<p>这里看到，值被修改了.</p>
+<p>上面是一个 <code class="docutils literal notranslate"><span class="pre">unserialize()</span></code> 的简单应用，不难看出，如果 <code class="docutils literal notranslate"><span class="pre">__wakeup()</span></code> 或者  <code class="docutils literal notranslate"><span class="pre">__desturct()</span></code> 有敏感操作，比如读写文件、操作数据库，就可以通过函数实现文件读写或者数据读取的行为。</p>
+<p>那么，在 <code class="docutils literal notranslate"><span class="pre">__wakeup()</span></code> 中加入判断是否可以阻止这个漏洞呢？
+在 <code class="docutils literal notranslate"><span class="pre">__wakeup()</span></code> 中我们加入一行代码</p>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">public function __wakeup()</span>
+<span class="x">{</span>
+<span class="x">    if($this-&gt;data != &#39;raw value&#39;) $this-&gt;data = &#39;raw value&#39;;</span>
+<span class="x">    echo &quot;wake up&lt;br /&gt;&quot;;</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>但其实还是可以绕过的，在 PHP5 &lt; 5.6.25， PHP7 &lt; 7.0.10 的版本都存在wakeup的漏洞。当反序列化中object的个数和之前的个数不等时，wakeup就会被绕过，于是使用下面的payload</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unserialize</span><span class="p">(</span><span class="s1">&#39;O:7:&quot;HITCON&quot;:1:{s:4:&quot;data&quot;;s:15:&quot;malicious value&quot;;}&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>输出</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Data</span><span class="s1">&#39;s value is malicious value.</span>
+<span class="n">destruct</span>
+</pre></div>
+</div>
+<p>这里wakeup被绕过，值依旧被修改了。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="disablefunc.html" class="btn btn-neutral float-right" title="5.1.3. Disable Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="backdoor.html" class="btn btn-neutral float-left" title="5.1.1. 后门" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

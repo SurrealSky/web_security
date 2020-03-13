@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.4. 信息收集 - Linux &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.5. 持久化 - Linux" href="linuxpersistence.html" />
+    <link rel="prev" title="6.3. 域渗透" href="domain.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. 内网渗透</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="windows.html">6.1. 信息收集 - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winpersistence.html">6.2. 持久化 - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="domain.html">6.3. 域渗透</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.4. 信息收集 - Linux</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">6.4.1. 获取内核，操作系统和设备信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">6.4.2. 用户和组</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">6.4.3. 用户和权限信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">6.4.4. 环境信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">6.4.5. 进程信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">6.4.6. 服务信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">6.4.7. 计划任务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">6.4.8. 网络、路由和通信</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">6.4.9. 已安装程序</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">6.4.10. 文件</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="linuxpersistence.html">6.5. 持久化 - Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traceremove.html">6.6. 痕迹清理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">6.7. 综合技巧</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html">6.8. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">6. </span>内网渗透</a> &raquo;</li>
+        
+      <li><span class="section-number">6.4. </span>信息收集 - Linux</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/intranet/linux.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linux">
+<h1><span class="section-number">6.4. </span>信息收集 - Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">6.4.1. </span>获取内核，操作系统和设备信息<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>版本信息</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">uname</span> <span class="pre">-a</span></code> 所有版本</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uname</span> <span class="pre">-r</span></code> 内核版本信息</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uname</span> <span class="pre">-n</span></code> 系统主机名字</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uname</span> <span class="pre">-m</span></code> Linux内核架构</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>内核信息 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/proc/version</span></code></p></li>
+<li><p>CPU信息 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/proc/cpuinfo</span></code></p></li>
+<li><dl class="simple">
+<dt>发布信息</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/*-release</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/issue</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>主机名 <code class="docutils literal notranslate"><span class="pre">hostname</span></code></p></li>
+<li><p>文件系统 <code class="docutils literal notranslate"><span class="pre">df</span> <span class="pre">-a</span></code></p></li>
+<li><p>内核日志 <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> / <code class="docutils literal notranslate"><span class="pre">/var/log/dmesg</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">6.4.2. </span>用户和组<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>列出系统所有用户 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/passwd</span></code></p></li>
+<li><p>列出系统所有组 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/group</span></code></p></li>
+<li><p>列出所有用户hash（root）``cat /etc/shadow``</p></li>
+<li><dl class="simple">
+<dt>用户</dt><dd><ul>
+<li><p>查询用户的基本信息 <code class="docutils literal notranslate"><span class="pre">finger</span></code></p></li>
+<li><p>当前登录的用户 <code class="docutils literal notranslate"><span class="pre">users</span></code> <code class="docutils literal notranslate"><span class="pre">who</span> <span class="pre">-a</span></code> <code class="docutils literal notranslate"><span class="pre">/var/log/utmp</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>目前登录的用户 <code class="docutils literal notranslate"><span class="pre">w</span></code></p></li>
+<li><p>登入过的用户信息 <code class="docutils literal notranslate"><span class="pre">last</span></code> / <code class="docutils literal notranslate"><span class="pre">/var/log/wtmp</span></code></p></li>
+<li><p>显示系统中所有用户最近一次登录信息 <code class="docutils literal notranslate"><span class="pre">lastlog</span></code> / <code class="docutils literal notranslate"><span class="pre">/var/log/lastlog</span></code></p></li>
+<li><p>登录成功日志 <code class="docutils literal notranslate"><span class="pre">/var/log/secure</span></code></p></li>
+<li><p>登录失败日志 <code class="docutils literal notranslate"><span class="pre">/var/log/faillog</span></code></p></li>
+<li><p>查看特权用户 <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">:0</span> <span class="pre">/etc/passwd</span></code></p></li>
+<li><p>查看passwd最后修改时间 <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-l</span> <span class="pre">/etc/passwd</span></code></p></li>
+<li><p>查看是否存在空口令用户 <code class="docutils literal notranslate"><span class="pre">awk</span> <span class="pre">-F:</span> <span class="pre">'length($2)==0</span> <span class="pre">{print</span> <span class="pre">$1}'</span> <span class="pre">/etc/shadow</span></code></p></li>
+<li><p>查看远程登录的账号 <code class="docutils literal notranslate"><span class="pre">awk</span> <span class="pre">'/\$1|\$6/{print</span> <span class="pre">$1}'</span> <span class="pre">/etc/shadow</span></code></p></li>
+<li><dl class="simple">
+<dt>查看具有sudo权限的用户</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/sudoers</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-v</span> <span class="pre">&quot;^#\|^$&quot;</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">&quot;ALL=(ALL)&quot;</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">6.4.3. </span>用户和权限信息<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>当前用户 <code class="docutils literal notranslate"><span class="pre">whoami</span></code></p></li>
+<li><p>当前用户信息 <code class="docutils literal notranslate"><span class="pre">id</span></code></p></li>
+<li><p>可以使用sudo提升到root的用户（root） <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/sudoers</span></code></p></li>
+<li><p>列出目前用户可执行与无法执行的指令 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">-l</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">6.4.4. </span>环境信息<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>打印系统环境信息 <code class="docutils literal notranslate"><span class="pre">env</span></code></p></li>
+<li><p>打印系统环境信息 <code class="docutils literal notranslate"><span class="pre">set</span></code></p></li>
+<li><p>环境变量中的路径信息 <code class="docutils literal notranslate"><span class="pre">echo</span>&#160; <span class="pre">$PATH</span></code></p></li>
+<li><p>打印历史命令 <code class="docutils literal notranslate"><span class="pre">history</span></code> / <code class="docutils literal notranslate"><span class="pre">~/.bash_history</span></code></p></li>
+<li><p>显示当前路径 <code class="docutils literal notranslate"><span class="pre">pwd</span></code></p></li>
+<li><p>显示默认系统遍历 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/profile</span></code></p></li>
+<li><p>显示可用的shell <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/shells</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">6.4.5. </span>进程信息<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>查看进程信息 <code class="docutils literal notranslate"><span class="pre">ps</span> <span class="pre">aux</span></code></p></li>
+<li><p>资源占有情况 <code class="docutils literal notranslate"><span class="pre">top</span> <span class="pre">-c</span></code></p></li>
+<li><p>查看进程关联文件 <code class="docutils literal notranslate"><span class="pre">lsof</span> <span class="pre">-c</span> <span class="pre">$PID</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2><span class="section-number">6.4.6. </span>服务信息<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>由inetd管理的服务列表 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/inetd.conf</span></code></p></li>
+<li><p>由xinetd管理的服务列表 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/xinetd.conf</span></code></p></li>
+<li><p>nfs服务器的配置 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/exports</span></code></p></li>
+<li><p>邮件信息 <code class="docutils literal notranslate"><span class="pre">/var/log/mailog</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h2><span class="section-number">6.4.7. </span>计划任务<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>显示指定用户的计划作业（root） <code class="docutils literal notranslate"><span class="pre">crontab</span> <span class="pre">-l</span> <span class="pre">-u</span> <span class="pre">%user%</span></code></p></li>
+<li><dl class="simple">
+<dt>计划任务</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/spool/cron/*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/var/spool/anacron/*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/crontab</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/anacrontab</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/cron.*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/anacrontab</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>开机启动项</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">/etc/rc.d/init.d/</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2><span class="section-number">6.4.8. </span>网络、路由和通信<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>列出网络接口信息 <code class="docutils literal notranslate"><span class="pre">/sbin/ifconfig</span> <span class="pre">-a</span></code> / <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">addr</span> <span class="pre">show</span></code></p></li>
+<li><p>列出网络接口信息 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/network/interfaces</span></code></p></li>
+<li><p>查看系统arp表 <code class="docutils literal notranslate"><span class="pre">arp</span> <span class="pre">-a</span></code></p></li>
+<li><p>打印路由信息 <code class="docutils literal notranslate"><span class="pre">route</span></code> / <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">ro</span> <span class="pre">show</span></code></p></li>
+<li><p>查看dns配置信息 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/resolv.conf</span></code></p></li>
+<li><p>打印本地端口开放信息 <code class="docutils literal notranslate"><span class="pre">netstat</span> <span class="pre">-an</span></code></p></li>
+<li><p>列出iptable的配置规则 <code class="docutils literal notranslate"><span class="pre">iptables</span> <span class="pre">-L</span></code></p></li>
+<li><p>查看端口服务映射 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/services</span></code></p></li>
+<li><p>Hostname <code class="docutils literal notranslate"><span class="pre">hostname</span> <span class="pre">-f</span></code></p></li>
+<li><p>查看进程端口情况 <code class="docutils literal notranslate"><span class="pre">netstat</span> <span class="pre">-anltp</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">$PID</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h2><span class="section-number">6.4.9. </span>已安装程序<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rpm</span> <span class="pre">-qa</span> <span class="pre">--last</span></code> Redhat</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yum</span> <span class="pre">list</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">installed</span></code> CentOS</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-l</span> <span class="pre">/etc/yum.repos.d/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dpkg</span> <span class="pre">-l</span></code> Debian</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/etc/apt/sources.list</span></code> Debian APT</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pkg_info</span></code> xBSD</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pkginfo</span></code> Solaris</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pacman</span> <span class="pre">-Q</span></code> Arch Linux</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h2><span class="section-number">6.4.10. </span>文件<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>最近五天的文件 <code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">/</span> <span class="pre">-ctime</span> <span class="pre">+1</span> <span class="pre">-ctime</span> <span class="pre">-5</span></code></p></li>
+<li><p>文件系统细节 <code class="docutils literal notranslate"><span class="pre">debugfs</span></code></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linuxpersistence.html" class="btn btn-neutral float-right" title="6.5. 持久化 - Linux" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="domain.html" class="btn btn-neutral float-left" title="6.3. 域渗透" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

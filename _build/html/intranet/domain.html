@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.3. 域渗透 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.4. 信息收集 - Linux" href="linux.html" />
+    <link rel="prev" title="6.2. 持久化 - Windows" href="winpersistence.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">6. 内网渗透</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="windows.html">6.1. 信息收集 - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="winpersistence.html">6.2. 持久化 - Windows</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.3. 域渗透</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">6.3.1. 域</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#active-directory">6.3.2. Active Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ntlm">6.3.3. NTLM认证</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kerboser">6.3.4. kerboser认证</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pass-the-hash">6.3.5. Pass The Hash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pass-the-key">6.3.6. Pass The Key</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="linux.html">6.4. 信息收集 - Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linuxpersistence.html">6.5. 持久化 - Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traceremove.html">6.6. 痕迹清理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">6.7. 综合技巧</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html">6.8. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">6. </span>内网渗透</a> &raquo;</li>
+        
+      <li><span class="section-number">6.3. </span>域渗透</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/intranet/domain.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">6.3. </span>域渗透<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">6.3.1. </span>域<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>域指将网络中多台计算机逻辑上组织到一起，进行集中管理的逻辑环境。域是组织与存储资源的核心管理单元，在域中，至少有一台域控制器，域控制器中保存着整个域的用户帐号和安全数据库。</p>
+</div>
+<div class="section" id="active-directory">
+<h2><span class="section-number">6.3.2. </span>Active Directory<a class="headerlink" href="#active-directory" title="Permalink to this headline">¶</a></h2>
+<p>活动目录（AD）是面向Windows Server的目录服务。Active Directory存储了有关网络对象的信息，并且让管理员和用户能够查找和使用这些信息。</p>
+</div>
+<div class="section" id="ntlm">
+<h2><span class="section-number">6.3.3. </span>NTLM认证<a class="headerlink" href="#ntlm" title="Permalink to this headline">¶</a></h2>
+<p>NTLM是NT LAN Manager的缩写，NTLM是基于挑战/应答的身份验证协议，是 Windows NT 早期版本中的标准安全协议，基本流程为：</p>
+<ul class="simple">
+<li><p>客户端在本地加密当前用户的密码成为密码散列</p></li>
+<li><p>客户端向服务器明文发送账号</p></li>
+<li><p>服务器端产生一个16位的随机数字发送给客户端，作为一个challenge</p></li>
+<li><p>客户端用加密后的密码散列来加密challenge，然后返回给服务器，作为response</p></li>
+<li><p>服务器端将用户名、challenge、response发送给域控制器</p></li>
+<li><p>域控制器用这个用户名在SAM密码管理库中找到这个用户的密码散列，然后使用这个密码散列来加密chellenge</p></li>
+<li><p>域控制器比较两次加密的challenge，如果一样那么认证成功，反之认证失败</p></li>
+</ul>
+</div>
+<div class="section" id="kerboser">
+<h2><span class="section-number">6.3.4. </span>kerboser认证<a class="headerlink" href="#kerboser" title="Permalink to this headline">¶</a></h2>
+<p>见认证机制章中Kerberos一节。</p>
+</div>
+<div class="section" id="pass-the-hash">
+<h2><span class="section-number">6.3.5. </span>Pass The Hash<a class="headerlink" href="#pass-the-hash" title="Permalink to this headline">¶</a></h2>
+<p>Pass The Hash (PtH) 是攻击者捕获帐号登录凭证后，复用凭证Hash进行攻击的方式。</p>
+</div>
+<div class="section" id="pass-the-key">
+<h2><span class="section-number">6.3.6. </span>Pass The Key<a class="headerlink" href="#pass-the-key" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linux.html" class="btn btn-neutral float-right" title="6.4. 信息收集 - Linux" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="winpersistence.html" class="btn btn-neutral float-left" title="6.2. 持久化 - Windows" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

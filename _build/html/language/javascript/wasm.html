@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.4.3. WebAssembly &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.4.4. 作用域与闭包" href="scope.html" />
+    <link rel="prev" title="5.4.2. 引擎" href="engine.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. 语言与框架</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../php/index.html">5.1. PHP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/index.html">5.2. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../java/index.html">5.3. Java</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.4. JavaScript</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ECMAScript.html">5.4.1. ECMAScript</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engine.html">5.4.2. 引擎</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.4.3. WebAssembly</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">5.4.3.1. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.4.3.2. 执行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.4.3.3. 安全</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scope.html">5.4.4. 作用域与闭包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strict.html">5.4.5. 严格模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="async.html">5.4.6. 异步机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prototype.html">5.4.7. 原型链</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vm.html">5.4.8. 沙箱逃逸</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deserialization.html">5.4.9. 反序列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc.html">5.4.10. 其他</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">5.4.11. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">5. </span>语言与框架</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">5.4. </span>JavaScript</a> &raquo;</li>
+        
+      <li><span class="section-number">5.4.3. </span>WebAssembly</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/language/javascript/wasm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="webassembly">
+<h1><span class="section-number">5.4.3. </span>WebAssembly<a class="headerlink" href="#webassembly" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">5.4.3.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>简而言之，WASM是一种分发要在浏览器中执行的代码的新方法。它是一种二进制语言，但是无法直接在处理器上运行。在运行时，代码被编译为中间字节代码，可以在浏览器内快速转换为机器代码，然后比传统JavaScript更有效地执行。</p>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">5.4.3.2. </span>执行<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>虽然浏览器可能以不同的方式来实现Wasm支持，但是使用的沙盒环境通常是JavaScript沙箱。</p>
+<p>在浏览器中运行时，Wasm应用程序需要将其代码定义为单独的文件或JavaScript块内的字节数组。 然后使用JavaScript实例化文件或代码块，目前不能在没有JavaScript包装器的情况下直接在页面中调用Wasm。</p>
+<p>虽然Wasm可以用C / C++等语言编写，但它本身不能与沙箱之外的环境进行交互。这意味着当Wasm应用程序想要进行输出文本等操作时，它需要调用浏览器提供的功能，然后使用浏览器在某处输出文本。</p>
+<p>Wasm中的内存是线性的，它在Wasm应用程序和JavaScript之间共享。 当Wasm函数将字符串返回给JavaScript时，它实际上返回一个指向Wasm应用程序内存空间内位置的指针。 Wasm应用程序本身只能访问分配给它的JavaScript内存部分，而不是整个内存空间。</p>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">5.4.3.3. </span>安全<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>Wasm的设计从如下几个方面考虑来保证Wasm的安全性</p>
+<ul class="simple">
+<li><p>保护用户免受由于无意的错误而导致漏洞的应用程序的侵害</p></li>
+<li><p>保护用户免受故意编写为恶意的应用程序的侵害</p></li>
+<li><p>为开发人员提供良好的缓解措施</p></li>
+</ul>
+<p>具体的安全措施有</p>
+<ul class="simple">
+<li><p>Wasm应用程序在沙箱内运行</p></li>
+<li><p>Wasm无法对任意地址进行函数调用。Wasm采用对函数进行编号的方式，编号存储在函数表中</p></li>
+<li><p>间接函数调用受类型签名检查的约束</p></li>
+<li><p>调用堆栈受到保护，这意味着无法覆盖返回指针</p></li>
+<li><p>实现了控制流完整性，这意味着调用意外的函数将失败</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="scope.html" class="btn btn-neutral float-right" title="5.4.4. 作用域与闭包" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="engine.html" class="btn btn-neutral float-left" title="5.4.2. 引擎" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

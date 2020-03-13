@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.3.5. 反序列化 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3.6. RMI" href="rmi.html" />
+    <link rel="prev" title="5.3.4. 沙箱" href="sandbox.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. 语言与框架</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../php/index.html">5.1. PHP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/index.html">5.2. Python</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.3. Java</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic.html">5.3.1. 基本概念</a></li>
+<li class="toctree-l3"><a class="reference internal" href="framework.html">5.3.2. 框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="container.html">5.3.3. 容器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sandbox.html">5.3.4. 沙箱</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.3.5. 反序列化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.3.5.1. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sink">5.3.5.2. Sink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">5.3.5.3. 漏洞利用</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">5.3.5.4. 漏洞修复和防护</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rmi.html">5.3.6. RMI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jndi.html">5.3.7. JNDI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jdk.html">5.3.8. JDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">5.3.9. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../javascript/index.html">5.4. JavaScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">5. </span>语言与框架</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">5.3. </span>Java</a> &raquo;</li>
+        
+      <li><span class="section-number">5.3.5. </span>反序列化</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/language/java/unserialize.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">5.3.5. </span>反序列化<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">5.3.5.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>序列化就是把对象转换成字节流，便于保存在内存、文件、数据库中；反序列化即逆过程，由字节流还原成对象。一般用于远程调用、通过网络将对象传输至远程服务器、存储对象到数据库或本地等待重用等场景中。Java中的 <code class="docutils literal notranslate"><span class="pre">ObjectOutputStream</span></code> 类的 <code class="docutils literal notranslate"><span class="pre">writeObject()</span></code> 方法可以实现序列化，类 <code class="docutils literal notranslate"><span class="pre">ObjectInputStream类的readObject()</span></code> 方法用于反序列化。如果要实现类的反序列化，则是对其实现 <code class="docutils literal notranslate"><span class="pre">Serializable</span></code> 接口。</p>
+<p>当远程服务接受不可信的数据并进行反序列化且当前环境中存在可利用的类时，就认为存在反序列化漏洞。</p>
+<div class="section" id="id3">
+<h3><span class="section-number">5.3.5.1.1. </span>序列数据结构<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0xaced</span></code> 魔术头</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">5.3.5.1.2. </span>序列化流程<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>ObjectOutputStream实例初始化时，将魔术头和版本号写入bout （BlockDataOutputStream类型） 中</p></li>
+<li><dl class="simple">
+<dt>调用ObjectOutputStream.writeObject()开始写对象数据</dt><dd><ul>
+<li><p>ObjectStreamClass.lookup()封装待序列化的类描述 （返回ObjectStreamClass类型） ，获取包括类名、自定义serialVersionUID、可序列化字段 （返回ObjectStreamField类型） 和构造方法，以及writeObject、readObject方法等</p></li>
+<li><dl class="simple">
+<dt>writeOrdinaryObject()写入对象数据</dt><dd><ul>
+<li><p>写入对象类型标识</p></li>
+<li><dl class="simple">
+<dt>writeClassDesc()进入分支writeNonProxyDesc()写入类描述数据</dt><dd><ul>
+<li><p>写入类描述符标识</p></li>
+<li><p>写入类名</p></li>
+<li><p>写入SUID （当SUID为空时，会进行计算并赋值）</p></li>
+<li><p>计算并写入序列化属性标志位</p></li>
+<li><p>写入字段信息数据</p></li>
+<li><p>写入Block Data结束标识</p></li>
+<li><p>写入父类描述数据</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>writeSerialData()写入对象的序列化数据</dt><dd><ul>
+<li><p>若类自定义了writeObject()，则调用该方法写对象，否则调用defaultWriteFields()写入对象的字段数据 （若是非原始类型，则递归处理子对象）</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3><span class="section-number">5.3.5.1.3. </span>反序列化流程<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>ObjectInputStream实例初始化时，读取魔术头和版本号进行校验</p></li>
+<li><dl class="simple">
+<dt>调用ObjectInputStream.readObject()开始读对象数据</dt><dd><ul>
+<li><p>读取对象类型标识</p></li>
+<li><dl class="simple">
+<dt>readOrdinaryObject()读取数据对象</dt><dd><ul>
+<li><dl class="simple">
+<dt>readClassDesc()读取类描述数据</dt><dd><ul>
+<li><p>读取类描述符标识，进入分支readNonProxyDesc()</p></li>
+<li><p>读取类名</p></li>
+<li><p>读取SUID</p></li>
+<li><p>读取并分解序列化属性标志位</p></li>
+<li><p>读取字段信息数据</p></li>
+<li><p>resolveClass()根据类名获取待反序列化的类的Class对象，如果获取失败，则抛出ClassNotFoundException</p></li>
+<li><p>skipCustomData()循环读取字节直到Block Data结束标识为止</p></li>
+<li><p>读取父类描述数据</p></li>
+<li><p>initNonProxy()中判断对象与本地对象的SUID和类名 （不含包名） 是否相同，若不同，则抛出InvalidClassException</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>ObjectStreamClass.newInstance()获取并调用离对象最近的非Serializable的父类的无参构造方法 （若不存在，则返回null） 创建对象实例</p></li>
+<li><dl class="simple">
+<dt>readSerialData()读取对象的序列化数据</dt><dd><ul>
+<li><p>若类自定义了readObject()，则调用该方法读对象，否则调用defaultReadFields()读取并填充对象的字段数据</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="sink">
+<h2><span class="section-number">5.3.5.2. </span>Sink<a class="headerlink" href="#sink" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h3><span class="section-number">5.3.5.2.1. </span>相关Sink函数<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ObjectInputStream.readObject</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ObjectInputStream.readUnshared</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XMLDecoder.readObject</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Yaml.load</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">XStream.fromXML</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ObjectMapper.readValue</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JSON.parseObject</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="magic-call">
+<h3><span class="section-number">5.3.5.2.2. </span>Magic Call<a class="headerlink" href="#magic-call" title="Permalink to this headline">¶</a></h3>
+<p>以下的魔术方法都会在反序列化过程中被自动的调用。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">readObject</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">readExternal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">readResolve</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">readObjectNoData</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">validateObject</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">finalize</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="json">
+<h3><span class="section-number">5.3.5.2.3. </span>主流JSON库<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
+<p>主流的JSON库有Gson、Jackson、Fastjson等，因为JSON常在反序列化中使用，所以相关库都有较大的影响。</p>
+<p>其中Gson默认只能反序列化基本类型，如果是复杂类型，需要程序员实现反序列化机制，相对比较安全。</p>
+<p>Jackson除非指明&#64;jsonAutoDetect，Jackson不会反序列化非public属性。在防御时，可以不使用enableDefaultTyping方法。相关CVE有CVE-2017-7525、CVE-2017-15095。</p>
+<p>Fastjson相关CVE有CVE-2017-18349。</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h2><span class="section-number">5.3.5.3. </span>漏洞利用<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h3><span class="section-number">5.3.5.3.1. </span>存在危险的基础库<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">commons-fileupload</span> <span class="pre">1.3.1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">commons-io</span> <span class="pre">2.4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">commons-collections</span> <span class="pre">3.1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">commons-logging</span> <span class="pre">1.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">commons-beanutils</span> <span class="pre">1.9.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.slf4j:slf4j-api</span> <span class="pre">1.7.21</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">com.mchange:mchange-commons-java</span> <span class="pre">0.2.11</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.apache.commons:commons-collections</span> <span class="pre">4.0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">com.mchange:c3p0</span> <span class="pre">0.9.5.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.beanshell:bsh</span> <span class="pre">2.0b5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.codehaus.groovy:groovy</span> <span class="pre">2.3.9</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.springframework:spring-aop</span> <span class="pre">4.1.4.RELEASE</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id9">
+<h2><span class="section-number">5.3.5.4. </span>漏洞修复和防护<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="hook-resolveclass">
+<h3><span class="section-number">5.3.5.4.1. </span>Hook resolveClass<a class="headerlink" href="#hook-resolveclass" title="Permalink to this headline">¶</a></h3>
+<p>在使用 <code class="docutils literal notranslate"><span class="pre">readObject()</span></code> 反序列化时会调用 <code class="docutils literal notranslate"><span class="pre">resolveClass</span></code> 方法读取反序列化的类名，可以通过hook该方法来校验反序列化的类，一个Demo如下</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">resolveClass</span><span class="o">(</span><span class="n">ObjectStreamClass</span> <span class="n">desc</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ClassNotFoundException</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">desc</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">SerialObject</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidClassException</span><span class="o">(</span>
+                <span class="s">&quot;Unauthorized deserialization attempt&quot;</span><span class="o">,</span>
+                <span class="n">desc</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">resolveClass</span><span class="o">(</span><span class="n">desc</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>以上的Demo就只允许序列化 <code class="docutils literal notranslate"><span class="pre">SerialObject</span></code> ，通过这种方式，就可以设置允许序列化的白名单，来防止反序列化漏洞被利用。SerialKiller/Jackson/Weblogic等都使用了这种方式来防御。</p>
+</div>
+<div class="section" id="validatingobjectinputstream">
+<h3><span class="section-number">5.3.5.4.2. </span>ValidatingObjectInputStream<a class="headerlink" href="#validatingobjectinputstream" title="Permalink to this headline">¶</a></h3>
+<p>Apache Commons IO Serialization包中的 <code class="docutils literal notranslate"><span class="pre">ValidatingObjectInputStream</span></code> 类提供了 <code class="docutils literal notranslate"><span class="pre">accept</span></code> 方法，可以通过该方法来实现反序列化类白/黑名单控制，一个demo如下</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kd">static</span> <span class="n">Object</span> <span class="nf">deserialize</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">buffer</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ClassNotFoundException</span> <span class="o">,</span> <span class="n">ConfigurationException</span> <span class="o">{</span>
+    <span class="n">Object</span> <span class="n">obj</span><span class="o">;</span>
+    <span class="n">ByteArrayInputStream</span> <span class="n">bais</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
+    <span class="n">ValidatingObjectInputStream</span> <span class="n">ois</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ValidatingObjectInputStream</span><span class="o">(</span><span class="n">bais</span><span class="o">);</span>
+    <span class="n">ois</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">SerialObject</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">ois</span><span class="o">.</span><span class="na">readObject</span><span class="o">();</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="objectinputfilter-jep290">
+<h3><span class="section-number">5.3.5.4.3. </span>ObjectInputFilter(JEP290)<a class="headerlink" href="#objectinputfilter-jep290" title="Permalink to this headline">¶</a></h3>
+<p>Java 9提供了支持序列化数据过滤的新特性，可以继承 <code class="docutils literal notranslate"><span class="pre">java.io.ObjectInputFilter</span></code> 类重写 <code class="docutils literal notranslate"><span class="pre">checkInput</span></code> 方法来实现自定义的过滤器，并使用 <code class="docutils literal notranslate"><span class="pre">ObjectInputStream</span></code> 对象的 <code class="docutils literal notranslate"><span class="pre">setObjectInputFilter</span></code> 设置过滤器来实现反序列化类白/黑名单控制。这个机制本身是针对Java 9的一个新特性，但是随后官方突然决定向下引进该增强机制，分别对JDK 6,7,8进行了支持。这个机制主要描述了如下的机制：</p>
+<ul class="simple">
+<li><p>提供一个限制反序列化类的机制，白名单或者黑名单</p></li>
+<li><p>限制反序列化的深度和复杂度</p></li>
+<li><p>为RMI远程调用对象提供了一个验证类的机制</p></li>
+<li><p>定义一个可配置的过滤机制，比如可以通过配置properties文件的形式来定义过滤器</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rmi.html" class="btn btn-neutral float-right" title="5.3.6. RMI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sandbox.html" class="btn btn-neutral float-left" title="5.3.4. 沙箱" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

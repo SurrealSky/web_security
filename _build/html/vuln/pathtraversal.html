@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.6. 目录穿越 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.7. 文件读取" href="fileread.html" />
+    <link rel="prev" title="4.5. 命令注入" href="cmdinjection.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. 目录穿越</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.6.2. 攻击载荷</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#url">4.6.2.1. URL参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nginx-off-by-slash">4.6.2.2. Nginx Off by Slash</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unc-bypass">4.6.2.3. UNC Bypass</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.6.3. 过滤绕过</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.6.4. 防御</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4.6.5. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
+        
+      <li><span class="section-number">4.6. </span>目录穿越</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/vuln/pathtraversal.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">4.6. </span>目录穿越<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">4.6.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>目录穿越（也被称为目录遍历/directory traversal/path traversal）是通过使用 <code class="docutils literal notranslate"><span class="pre">../</span></code> 等目录控制序列或者文件的绝对路径来访问存储在文件系统上的任意文件和目录，特别是应用程序源代码、配置文件、重要的系统文件等。</p>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">4.6.2. </span>攻击载荷<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="url">
+<h3><span class="section-number">4.6.2.1. </span>URL参数<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">../</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">..\</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">..;/</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="nginx-off-by-slash">
+<h3><span class="section-number">4.6.2.2. </span>Nginx Off by Slash<a class="headerlink" href="#nginx-off-by-slash" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">https://vuln.site.com/files../</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="unc-bypass">
+<h3><span class="section-number">4.6.2.3. </span>UNC Bypass<a class="headerlink" href="#unc-bypass" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">\\localhost\c$\windows\win.ini</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">4.6.3. </span>过滤绕过<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>单次替换</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">...//</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>URL编码</p></li>
+<li><dl class="simple">
+<dt>16位Unicode编码</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">\u002e</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>超长UTF-8编码</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">\%e0%40%ae</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">4.6.4. </span>防御<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>在进行文件操作相关的API前，应该对用户输入做过滤。较强的规则下可以使用白名单，仅允许纯字母或数字字符等。</p>
+<p>若规则允许的字符较多，最好使用当前操作系统路径规范化函数规范化路径后，进行过滤，最后再进行相关调用。</p>
+</div>
+<div class="section" id="id6">
+<h2><span class="section-number">4.6.5. </span>参考链接<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://portswigger.net/web-security/file-path-traversal">Directory traversal by portswigger</a></p></li>
+<li><p><a class="reference external" href="https://www.owasp.org/index.php/Path_Traversal">Path Traversal by OWASP</a></p></li>
+<li><p><a class="reference external" href="https://blogs.msdn.microsoft.com/jeremykuhne/2016/04/21/path-normalization/">path normalization</a></p></li>
+<li><p><a class="reference external" href="https://i.blackhat.com/us-18/Wed-August-8/us-18-Orange-Tsai-Breaking-Parser-Logic-Take-Your-Path-Normalization-Off-And-Pop-0days-Out-2.pdf">Breaking Parser Logic: Take Your Path Normalization Off and Pop 0days Out defcon</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fileread.html" class="btn btn-neutral float-right" title="4.7. 文件读取" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cmdinjection.html" class="btn btn-neutral float-left" title="4.5. 命令注入" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

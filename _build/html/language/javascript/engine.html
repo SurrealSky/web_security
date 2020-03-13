@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.4.2. 引擎 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.4.3. WebAssembly" href="wasm.html" />
+    <link rel="prev" title="5.4.1. ECMAScript" href="ECMAScript.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. 语言与框架</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../php/index.html">5.1. PHP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/index.html">5.2. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../java/index.html">5.3. Java</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.4. JavaScript</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ECMAScript.html">5.4.1. ECMAScript</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.4.2. 引擎</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#v8">5.4.2.1. V8</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spidermonkey">5.4.2.2. SpiderMonkey</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#javascriptcore">5.4.2.3. JavaScriptCore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chakracore">5.4.2.4. ChakraCore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jscript">5.4.2.5. JScript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jerryscript">5.4.2.6. JerryScript</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="wasm.html">5.4.3. WebAssembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scope.html">5.4.4. 作用域与闭包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strict.html">5.4.5. 严格模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="async.html">5.4.6. 异步机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prototype.html">5.4.7. 原型链</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vm.html">5.4.8. 沙箱逃逸</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deserialization.html">5.4.9. 反序列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc.html">5.4.10. 其他</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">5.4.11. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">5. </span>语言与框架</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">5.4. </span>JavaScript</a> &raquo;</li>
+        
+      <li><span class="section-number">5.4.2. </span>引擎</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/language/javascript/engine.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">5.4.2. </span>引擎<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="v8">
+<h2><span class="section-number">5.4.2.1. </span>V8<a class="headerlink" href="#v8" title="Permalink to this headline">¶</a></h2>
+<p>V8是Chrome的JavaScript语言处理程序（VM）。其引擎由TurboFan、Ignition和Liftoff组成。其中Turbofan是其优化编译器，Ignition则是其解释器，Liftoff是WebAssembly的代码生成器。</p>
+</div>
+<div class="section" id="spidermonkey">
+<h2><span class="section-number">5.4.2.2. </span>SpiderMonkey<a class="headerlink" href="#spidermonkey" title="Permalink to this headline">¶</a></h2>
+<p>SpiderMonkey是Mozilla项目的一部分，是一个用 C/C++ 实现的JavaScript脚本引擎。</p>
+</div>
+<div class="section" id="javascriptcore">
+<h2><span class="section-number">5.4.2.3. </span>JavaScriptCore<a class="headerlink" href="#javascriptcore" title="Permalink to this headline">¶</a></h2>
+<p>JavaScriptCore的优化执行分为四个部分，LLInt、Baseline、DFG、FTL。LLInt是最开始的解释执行部分，Baseline是暂时的JIT，DFG阶段开始做一定的优化，FTL阶段做了充分的优化。</p>
+</div>
+<div class="section" id="chakracore">
+<h2><span class="section-number">5.4.2.4. </span>ChakraCore<a class="headerlink" href="#chakracore" title="Permalink to this headline">¶</a></h2>
+<p>ChakraCore是一个完整的JavaScript虚拟机，由微软实现，用于Edge浏览器以及IE的后期版本中。</p>
+</div>
+<div class="section" id="jscript">
+<h2><span class="section-number">5.4.2.5. </span>JScript<a class="headerlink" href="#jscript" title="Permalink to this headline">¶</a></h2>
+<p>JScript是由微软开发的脚本语言，是微软对ECMAScript规范的实现，用于IE的早期版本中。</p>
+</div>
+<div class="section" id="jerryscript">
+<h2><span class="section-number">5.4.2.6. </span>JerryScript<a class="headerlink" href="#jerryscript" title="Permalink to this headline">¶</a></h2>
+<p>JerryScript是一个适用于嵌入式设备的小型JavaScript引擎，由三星开发并维护。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="wasm.html" class="btn btn-neutral float-right" title="5.4.3. WebAssembly" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ECMAScript.html" class="btn btn-neutral float-left" title="5.4.1. ECMAScript" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

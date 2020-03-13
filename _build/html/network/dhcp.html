@@ -1,0 +1,292 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.4. DHCP协议 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2.5. 路由算法" href="route.html" />
+    <link rel="prev" title="2.3. TCP协议" href="tcp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. 计算机网络与协议</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic.html">2.1. 网络基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="udp.html">2.2. UDP协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcp.html">2.3. TCP协议</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. DHCP协议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.4.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dchp">2.4.2. DCHP 报文格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.4.3. 参考链接</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rfc">2.4.3.1. RFC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="route.html">2.5. 路由算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="domain.html">2.6. 域名系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http/index.html">2.7. HTTP协议簇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl.html">2.8. SSL/TLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec.html">2.9. IPsec</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">2. </span>计算机网络与协议</a> &raquo;</li>
+        
+      <li><span class="section-number">2.4. </span>DHCP协议</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/network/dhcp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dhcp">
+<h1><span class="section-number">2.4. </span>DHCP协议<a class="headerlink" href="#dhcp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">2.4.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>DHCP（Dynamic Host Configuration Protocol，动态主机配置协议）是一个用于局域网的网络协议，位于OSI模型的应用层，使用UDP协议工作，主要用于自动分配IP地址给用户，方便管理员进行统一管理。</p>
+<p>DHCP服务器端使用67/udp，客户端使用68/udp。DHCP运行分为四个基本过程，分别为请求IP租约、提供IP租约、选择IP租约和确认IP租约。客户端在获得了一个IP地址以后，就可以发送一个ARP请求来避免由于DHCP服务器地址池重叠而引发的IP冲突。</p>
+</div>
+<div class="section" id="dchp">
+<h2><span class="section-number">2.4.2. </span>DCHP 报文格式<a class="headerlink" href="#dchp" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span>     <span class="n">op</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>    <span class="o">|</span>   <span class="n">htype</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>   <span class="o">|</span>   <span class="n">hlen</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>    <span class="o">|</span>   <span class="n">hops</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>    <span class="o">|</span>
+<span class="o">+---------------+---------------+---------------+---------------+</span>
+<span class="o">|</span>                            <span class="n">xid</span> <span class="p">(</span><span class="mi">4</span><span class="p">)</span>                            <span class="o">|</span>
+<span class="o">+-------------------------------+-------------------------------+</span>
+<span class="o">|</span>           <span class="n">secs</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span>            <span class="o">|</span>           <span class="n">flags</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span>           <span class="o">|</span>
+<span class="o">+-------------------------------+-------------------------------+</span>
+<span class="o">|</span>                          <span class="n">ciaddr</span>  <span class="p">(</span><span class="mi">4</span><span class="p">)</span>                          <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------+</span>
+<span class="o">|</span>                          <span class="n">yiaddr</span>  <span class="p">(</span><span class="mi">4</span><span class="p">)</span>                          <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------+</span>
+<span class="o">|</span>                          <span class="n">siaddr</span>  <span class="p">(</span><span class="mi">4</span><span class="p">)</span>                          <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------+</span>
+<span class="o">|</span>                          <span class="n">giaddr</span>  <span class="p">(</span><span class="mi">4</span><span class="p">)</span>                          <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------+</span>
+<span class="o">|</span>                          <span class="n">chaddr</span>  <span class="p">(</span><span class="mi">16</span><span class="p">)</span>                         <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------+</span>
+<span class="o">|</span>                          <span class="n">sname</span>   <span class="p">(</span><span class="mi">64</span><span class="p">)</span>                         <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------+</span>
+<span class="o">|</span>                          <span class="n">file</span>    <span class="p">(</span><span class="mi">128</span><span class="p">)</span>                        <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------+</span>
+<span class="o">|</span>                          <span class="n">options</span> <span class="p">(</span><span class="n">variable</span><span class="p">)</span>                   <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">2.4.3. </span>参考链接<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol">DHCP Wiki</a></p></li>
+</ul>
+<div class="section" id="rfc">
+<h3><span class="section-number">2.4.3.1. </span>RFC<a class="headerlink" href="#rfc" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc2131">RFC 2131 Dynamic Host Configuration Protocol</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc2132">RFC 2132 DHCP Options and BOOTP Vendor Extensions</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc3046">RFC 3046 DHCP Relay Agent Information Option</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc3397">RFC 3397 Dynamic Host Configuration Protocol (DHCP) Domain Search Option</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc3442">RFC 3442 Classless Static Route Option for Dynamic Host Configuration Protocol (DHCP) version 4</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc3942">RFC 3942 Reclassifying Dynamic Host Configuration Protocol Version Four (DHCPv4) Options</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc4242">RFC 4242 Information Refresh Time Option for Dynamic Host Configuration Protocol for IPv6</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc4361">RFC 4361 Node-specific Client Identifiers for Dynamic Host Configuration Protocol Version Four (DHCPv4)</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc4436">RFC 4436 Detecting Network Attachment in IPv4 (DNAv4)</a></p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="route.html" class="btn btn-neutral float-right" title="2.5. 路由算法" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tcp.html" class="btn btn-neutral float-left" title="2.3. TCP协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

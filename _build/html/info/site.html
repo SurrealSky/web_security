@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.3. 站点信息 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.4. 搜索引擎利用" href="searchEngine.html" />
+    <link rel="prev" title="3.2. 端口信息" href="port.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. 信息收集</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="domain.html">3.1. 域名信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port.html">3.2. 端口信息</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.3. 站点信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchEngine.html">3.4. 搜索引擎利用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html">3.5. 社会工程学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html">3.6. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">3. </span>信息收集</a> &raquo;</li>
+        
+      <li><span class="section-number">3.3. </span>站点信息</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/info/site.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">3.3. </span>站点信息<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><dl class="simple">
+<dt>判断网站操作系统</dt><dd><ul>
+<li><p>Linux大小写敏感</p></li>
+<li><p>Windows大小写不敏感</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>扫描敏感文件</dt><dd><ul>
+<li><p>robots.txt</p></li>
+<li><p>crossdomain.xml</p></li>
+<li><p>sitemap.xml</p></li>
+<li><p>xx.tar.gz</p></li>
+<li><p>xx.bak</p></li>
+<li><p>等</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>确定网站采用的语言</dt><dd><ul>
+<li><p>如PHP / Java / Python等</p></li>
+<li><p>找后缀，比如php/asp/jsp</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>前端框架</dt><dd><ul>
+<li><p>如jQuery / BootStrap / Vue / React / Angular等</p></li>
+<li><p>查看源代码</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>中间服务器</dt><dd><ul>
+<li><p>如 Apache / Nginx / IIS 等</p></li>
+<li><p>查看header中的信息</p></li>
+<li><p>根据报错信息判断</p></li>
+<li><p>根据默认页面判断</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Web容器服务器</dt><dd><ul>
+<li><p>如Tomcat / Jboss / Weblogic等</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>后端框架</dt><dd><ul>
+<li><p>根据Cookie判断</p></li>
+<li><p>根据CSS / 图片等资源的hash值判断</p></li>
+<li><dl class="simple">
+<dt>根据URL路由判断</dt><dd><ul>
+<li><p>如wp-admin</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>根据网页中的关键字判断</p></li>
+<li><p>根据响应头中的X-Powered-By</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>CDN信息</dt><dd><ul>
+<li><p>常见的有Cloudflare、yunjiasu</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>探测有没有WAF，如果有，什么类型的</dt><dd><ul>
+<li><p>有WAF，找绕过方式</p></li>
+<li><p>没有，进入下一步</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>扫描敏感目录，看是否存在信息泄漏</dt><dd><ul>
+<li><p>扫描之前先自己尝试几个的url，人为看看反应</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>使用爬虫爬取网站信息</p></li>
+<li><p>拿到一定信息后，通过拿到的目录名称，文件名称及文件扩展名了解网站开发人员的命名思路，确定其命名规则，推测出更多的目录及文件名</p></li>
+<li><dl class="simple">
+<dt>常见入口目标</dt><dd><ul>
+<li><p>关注度低的系统</p></li>
+<li><p>业务线较长的系统</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="searchEngine.html" class="btn btn-neutral float-right" title="3.4. 搜索引擎利用" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="port.html" class="btn btn-neutral float-left" title="3.2. 端口信息" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

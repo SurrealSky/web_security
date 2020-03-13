@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Web安全学习笔记 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. 序章" href="basic/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Web安全学习笔记</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="web">
+<h1>Web安全学习笔记<a class="headerlink" href="#web" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basic/index.html">1. 序章</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic/history.html">1.1. Web技术演化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic/atkhistory.html">1.2. Web攻防技术演化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic/outlook.html">1.3. 安全观</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="network/index.html">2. 计算机网络与协议</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="network/basic.html">2.1. 网络基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network/udp.html">2.2. UDP协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network/tcp.html">2.3. TCP协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network/dhcp.html">2.4. DHCP协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network/route.html">2.5. 路由算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network/domain.html">2.6. 域名系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network/http/index.html">2.7. HTTP协议簇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network/ssl.html">2.8. SSL/TLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="network/ipsec.html">2.9. IPsec</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="info/index.html">3. 信息收集</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="info/domain.html">3.1. 域名信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="info/port.html">3.2. 端口信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="info/site.html">3.3. 站点信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="info/searchEngine.html">3.4. 搜索引擎利用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="info/social.html">3.5. 社会工程学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="info/ref.html">3.6. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vuln/index.html">4. 常见漏洞攻防</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vuln/sql/index.html">4.1. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/xss/index.html">4.2. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/csrf.html">4.3. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/ssrf.html">4.4. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/cmdinjection.html">4.5. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/pathtraversal.html">4.6. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/fileread.html">4.7. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/fileupload.html">4.8. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/fileinclude.html">4.9. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/xxe.html">4.10. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/ssti.html">4.11. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/xpath.html">4.12. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/config.html">4.14. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/middleware/index.html">4.15. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/webcache.html">4.16. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vuln/httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="language/index.html">5. 语言与框架</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="language/php/index.html">5.1. PHP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language/python/index.html">5.2. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language/java/index.html">5.3. Java</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language/javascript/index.html">5.4. JavaScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language/golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language/ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language/asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="intranet/index.html">6. 内网渗透</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intranet/windows.html">6.1. 信息收集 - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intranet/winpersistence.html">6.2. 持久化 - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intranet/domain.html">6.3. 域渗透</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intranet/linux.html">6.4. 信息收集 - Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intranet/linuxpersistence.html">6.5. 持久化 - Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intranet/traceremove.html">6.6. 痕迹清理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intranet/misc.html">6.7. 综合技巧</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intranet/ref.html">6.8. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="defense/index.html">7. 防御技术</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="defense/team.html">7.1. 团队建设</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/sdl.html">7.2. 安全开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/threat.html">7.3. 威胁情报</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/att8ck.html">7.4. ​​ATT&amp;CK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/riskcontrol.html">7.5. 风险控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/reinforce.html">7.6. 加固检查</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/framework.html">7.7. 防御框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/honeypot.html">7.8. 蜜罐技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/intrusiondetection.html">7.9. 入侵检测</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/emergency.html">7.10. 应急响应</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defense/forensic.html">7.11. 溯源分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auth/index.html">8. 认证机制</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auth/sso.html">8.1. SSO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth/oauth.html">8.2. OAuth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth/jwt.html">8.3. JWT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth/kerberos.html">8.4. Kerberos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth/saml.html">8.5. SAML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth/windows.html">8.6. Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools/index.html">9. 工具与资源</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools/resource.html">9.1. 推荐资源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/papers.html">9.2. 相关论文</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/info.html">9.3. 信息收集</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/socialengineering.html">9.4. 社会工程学</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/fuzz.html">9.5. 模糊测试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/exploit.html">9.6. 漏洞利用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/webpersistence.html">9.7. Web持久化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/ospersistence.html">9.8. 操作系统持久化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/defense.html">9.9. 防御</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/operation.html">9.10. 运维</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools/misc.html">9.11. 其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual/index.html">10. 手册速查</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual/brute.html">10.1. 爆破工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/download.html">10.2. 下载工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/traffic.html">10.3. 流量相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/sniffing.html">10.4. 嗅探工具</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual/sqlmap.html">10.5. SQLMap使用</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="misc/index.html">11. 其他</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="misc/aduit.html">11.1. 代码审计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/waf.html">11.2. WAF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/unicode.html">11.3. Unicode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/dos.html">11.4. 拒绝服务攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/docker.html">11.5. Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc/apt.html">11.6. APT</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="basic/index.html" class="btn btn-neutral float-right" title="1. 序章" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

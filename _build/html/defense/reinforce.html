@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7.6. 加固检查 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7.7. 防御框架" href="framework.html" />
+    <link rel="prev" title="7.5. 风险控制" href="riskcontrol.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 防御技术</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="team.html">7.1. 团队建设</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdl.html">7.2. 安全开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threat.html">7.3. 威胁情报</a></li>
+<li class="toctree-l2"><a class="reference internal" href="att8ck.html">7.4. ​​ATT&amp;CK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riskcontrol.html">7.5. 风险控制</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.6. 加固检查</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">7.6.1. 网络设备</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">7.6.2. 操作系统</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linux">7.6.2.1. Linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#windows">7.6.2.2. Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">7.6.3. 应用</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ftp">7.6.3.1. FTP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ssh">7.6.3.2. SSH</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mysql">7.6.3.3. MySQL</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#web">7.6.4. Web中间件</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apache">7.6.4.1. Apache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nginx">7.6.4.2. Nginx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iis">7.6.4.3. IIS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jboss">7.6.4.4. JBoss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tomcat">7.6.4.5. Tomcat</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">7.6.5. 密码管理策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">7.6.6. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="framework.html">7.7. 防御框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeypot.html">7.8. 蜜罐技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrusiondetection.html">7.9. 入侵检测</a></li>
+<li class="toctree-l2"><a class="reference internal" href="emergency.html">7.10. 应急响应</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forensic.html">7.11. 溯源分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">7. </span>防御技术</a> &raquo;</li>
+        
+      <li><span class="section-number">7.6. </span>加固检查</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/defense/reinforce.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">7.6. </span>加固检查<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">7.6.1. </span>网络设备<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>及时检查系统版本号</p></li>
+<li><p>敏感服务设置访问IP/MAC白名单</p></li>
+<li><p>开启权限分级控制</p></li>
+<li><p>关闭不必要的服务</p></li>
+<li><p>打开操作日志</p></li>
+<li><p>配置异常告警</p></li>
+<li><p>关闭ICMP回应</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">7.6.2. </span>操作系统<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="linux">
+<h3><span class="section-number">7.6.2.1. </span>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>无用用户/用户组检查</p></li>
+<li><p>空口令帐号检查</p></li>
+<li><dl class="simple">
+<dt>用户密码策略</dt><dd><ul>
+<li><p>/etc/login.defs</p></li>
+<li><p>/etc/pam.d/system-auth</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>敏感文件权限配置</dt><dd><ul>
+<li><p>/etc/passwd</p></li>
+<li><p>/etc/shadow</p></li>
+<li><p>~/.ssh/</p></li>
+<li><p>/var/log/messages</p></li>
+<li><p>/var/log/secure</p></li>
+<li><p>/var/log/maillog</p></li>
+<li><p>/var/log/cron</p></li>
+<li><p>/var/log/spooler</p></li>
+<li><p>/var/log/boot.log</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>日志是否打开</p></li>
+<li><p>及时安装补丁</p></li>
+<li><dl class="simple">
+<dt>开机自启</dt><dd><ul>
+<li><p>/etc/init.d</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>检查系统时钟</p></li>
+</ul>
+</div>
+<div class="section" id="windows">
+<h3><span class="section-number">7.6.2.2. </span>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>异常进程监控</p></li>
+<li><p>异常启动项监控</p></li>
+<li><p>异常服务监控</p></li>
+<li><p>配置系统日志</p></li>
+<li><dl class="simple">
+<dt>用户账户</dt><dd><ul>
+<li><p>设置口令有效期</p></li>
+<li><p>设置口令强度限制</p></li>
+<li><p>设置口令重试次数</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>安装EMET</p></li>
+<li><p>启用PowerShell日志</p></li>
+<li><dl class="simple">
+<dt>限制以下敏感文件的下载和执行</dt><dd><ul>
+<li><p>ade, adp, ani, bas, bat, chm, cmd, com, cpl, crt, hlp, ht, hta, inf, ins, isp, job, js, jse, lnk, mda, mdb, mde, mdz, msc, msi, msp, mst, pcd, pif, reg, scr, sct, shs, url, vb, vbe, vbs, wsc, wsf, wsh, exe, pif</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>限制会调起wscript的后缀</dt><dd><ul>
+<li><p>bat, js, jse, vbe, vbs, wsf, wsh</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">7.6.3. </span>应用<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ftp">
+<h3><span class="section-number">7.6.3.1. </span>FTP<a class="headerlink" href="#ftp" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>禁止匿名登录</p></li>
+<li><p>修改Banner</p></li>
+</ul>
+</div>
+<div class="section" id="ssh">
+<h3><span class="section-number">7.6.3.2. </span>SSH<a class="headerlink" href="#ssh" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>是否禁用ROOT登录</p></li>
+<li><p>是否禁用密码连接</p></li>
+</ul>
+</div>
+<div class="section" id="mysql">
+<h3><span class="section-number">7.6.3.3. </span>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>文件写权限设置</p></li>
+<li><p>用户授权表管理</p></li>
+<li><p>日志是否启用</p></li>
+<li><p>版本是否最新</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="web">
+<h2><span class="section-number">7.6.4. </span>Web中间件<a class="headerlink" href="#web" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="apache">
+<h3><span class="section-number">7.6.4.1. </span>Apache<a class="headerlink" href="#apache" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>版本号隐藏</p></li>
+<li><p>版本是否最新</p></li>
+<li><p>禁用部分HTTP动词</p></li>
+<li><p>关闭Trace</p></li>
+<li><p>禁止 <code class="docutils literal notranslate"><span class="pre">server-status</span></code></p></li>
+<li><p>上传文件大小限制</p></li>
+<li><p>目录权限设置</p></li>
+<li><p>是否允许路由重写</p></li>
+<li><p>是否允许列目录</p></li>
+<li><p>日志配置</p></li>
+<li><p>配置超时时间防DoS</p></li>
+</ul>
+</div>
+<div class="section" id="nginx">
+<h3><span class="section-number">7.6.4.2. </span>Nginx<a class="headerlink" href="#nginx" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>禁用部分HTTP动词</p></li>
+<li><p>禁用目录遍历</p></li>
+<li><p>检查重定向配置</p></li>
+<li><p>配置超时时间防DoS</p></li>
+</ul>
+</div>
+<div class="section" id="iis">
+<h3><span class="section-number">7.6.4.3. </span>IIS<a class="headerlink" href="#iis" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>版本是否最新</p></li>
+<li><p>日志配置</p></li>
+<li><p>用户口令配置</p></li>
+<li><p>ASP.NET功能配置</p></li>
+<li><p>配置超时时间防DoS</p></li>
+</ul>
+</div>
+<div class="section" id="jboss">
+<h3><span class="section-number">7.6.4.4. </span>JBoss<a class="headerlink" href="#jboss" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>jmx console配置</p></li>
+<li><p>web console配置</p></li>
+</ul>
+</div>
+<div class="section" id="tomcat">
+<h3><span class="section-number">7.6.4.5. </span>Tomcat<a class="headerlink" href="#tomcat" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>禁用部分HTTP动词</p></li>
+<li><p>禁止列目录</p></li>
+<li><p>禁止manager功能</p></li>
+<li><p>用户密码配置</p></li>
+<li><p>用户权限配置</p></li>
+<li><p>配置超时时间防DoS</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">7.6.5. </span>密码管理策略<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>长度不少于8个字符</p></li>
+<li><p>不存在于已有字典之中</p></li>
+<li><p>不使用基于知识的认证方式</p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2><span class="section-number">7.6.6. </span>参考链接<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/PaulSec/awesome-windows-domain-hardening">awesome windows domain hardening</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="framework.html" class="btn btn-neutral float-right" title="7.7. 防御框架" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="riskcontrol.html" class="btn btn-neutral float-left" title="7.5. 风险控制" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

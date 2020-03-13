@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.3.2. 框架 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3.3. 容器" href="container.html" />
+    <link rel="prev" title="5.3.1. 基本概念" href="basic.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. 语言与框架</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../php/index.html">5.1. PHP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/index.html">5.2. Python</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.3. Java</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic.html">5.3.1. 基本概念</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.3.2. 框架</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#servlet">5.3.2.1. Servlet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#struts-2">5.3.2.2. Struts 2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spring">5.3.2.3. Spring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="container.html">5.3.3. 容器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sandbox.html">5.3.4. 沙箱</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unserialize.html">5.3.5. 反序列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rmi.html">5.3.6. RMI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jndi.html">5.3.7. JNDI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jdk.html">5.3.8. JDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">5.3.9. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../javascript/index.html">5.4. JavaScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">5. </span>语言与框架</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">5.3. </span>Java</a> &raquo;</li>
+        
+      <li><span class="section-number">5.3.2. </span>框架</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/language/java/framework.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">5.3.2. </span>框架<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="servlet">
+<h2><span class="section-number">5.3.2.1. </span>Servlet<a class="headerlink" href="#servlet" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3><span class="section-number">5.3.2.1.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Servlet（Server Applet）是Java Servlet的简称，称为小服务程序或服务连接器，是用Java编写的服务器端程序，主要功能在于交互式地浏览和修改数据，生成动态Web内容。</p>
+<p>狭义的Servlet是指Java语言实现的一个接口，广义的Servlet是指任何实现了这个Servlet接口的类，一般情况下，人们将Servlet理解为后者。Servlet运行于支持Java的应用服务器中。从原理上讲，Servlet可以响应任何类型的请求，但绝大多数情况下Servlet只用来扩展基于HTTP协议的Web服务器。</p>
+</div>
+<div class="section" id="id3">
+<h3><span class="section-number">5.3.2.1.2. </span>生命周期为<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>客户端请求该 Servlet</p></li>
+<li><p>加载 Servlet 类到内存</p></li>
+<li><p>实例化并调用init()方法初始化该 Servlet</p></li>
+<li><p>service()（根据请求方法不同调用 <code class="docutils literal notranslate"><span class="pre">doGet()</span></code> / <code class="docutils literal notranslate"><span class="pre">doPost()</span></code> / … / <code class="docutils literal notranslate"><span class="pre">destroy()</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">5.3.2.1.3. </span>接口<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">init()</span></code></p>
+<p>在 Servlet 的生命期中，仅执行一次 init() 方法，在服务器装入 Servlet 时执行。</p>
+<p><code class="docutils literal notranslate"><span class="pre">service()</span></code></p>
+<p>service() 方法是 Servlet 的核心。每当一个客户请求一个HttpServlet对象，该对象的 <code class="docutils literal notranslate"><span class="pre">service()</span></code> 方法就要被调用，而且传递给这个方法一个”请求”(ServletRequest)对象和一个”响应”(ServletResponse)对象作为参数。</p>
+</div>
+</div>
+<div class="section" id="struts-2">
+<h2><span class="section-number">5.3.2.2. </span>Struts 2<a class="headerlink" href="#struts-2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h3><span class="section-number">5.3.2.2.1. </span>简介<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Struts2是一个基于MVC设计模式的Web应用框架，它本质上相当于一个servlet，在MVC设计模式中，Struts2作为控制器(Controller)来建立模型与视图的数据交互。</p>
+</div>
+<div class="section" id="id6">
+<h3><span class="section-number">5.3.2.2.2. </span>请求流程<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>客户端发送请求的tomcat服务器</p></li>
+<li><p>请求经过一系列过滤器</p></li>
+<li><p>FilterDispatcher调用ActionMapper来决定这个请求是否要调用某个Action</p></li>
+<li><p>ActionMppaer决定调用某个ActionFilterDispatcher把请求给ActionProxy</p></li>
+<li><p>ActionProxy通过Configuration Manager查看structs.xml，找到对应的Action类</p></li>
+<li><p>ActionProxy创建一个ActionInvocation对象</p></li>
+<li><p>ActionInvocation对象回调Action的execute方法</p></li>
+<li><p>Action执行完毕后，ActionInvocation根据返回的字符串，找到相应的result，通过HttpServletResponse返回给服务器</p></li>
+</ul>
+</div>
+<div class="section" id="cve">
+<h3><span class="section-number">5.3.2.2.3. </span>相关CVE<a class="headerlink" href="#cve" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>CVE-2016-3081 (S2-032)</p></li>
+<li><p>CVE-2016-3687 (S2-033)</p></li>
+<li><p>CVE-2016-4438 (S2-037)</p></li>
+<li><p><a class="reference external" href="https://github.com/immunio/apache-struts2-CVE-2017-5638">CVE-2017-5638</a></p></li>
+<li><p>CVE-2017-7672</p></li>
+<li><p>CVE-2017-9787</p></li>
+<li><p>CVE-2017-9793</p></li>
+<li><p>CVE-2017-9804</p></li>
+<li><p><a class="reference external" href="https://github.com/mazen160/struts-pwn_CVE-2017-9805">CVE-2017-9805</a></p></li>
+<li><p><a class="reference external" href="https://github.com/brianwrf/S2-053-CVE-2017-12611">CVE-2017-12611</a></p></li>
+<li><p>CVE-2017-15707</p></li>
+<li><p>CVE-2018-1327</p></li>
+<li><p>CVE-2018-11776</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="spring">
+<h2><span class="section-number">5.3.2.3. </span>Spring<a class="headerlink" href="#spring" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h3><span class="section-number">5.3.2.3.1. </span>简介<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>Spring一般指的是Spring Framework，一个轻量级Java应用程序开源框架，提供了简易的开发方式。</p>
+</div>
+<div class="section" id="spring-mvc">
+<h3><span class="section-number">5.3.2.3.2. </span>Spring MVC<a class="headerlink" href="#spring-mvc" title="Permalink to this headline">¶</a></h3>
+<p>Spring MVC根据Spring的模式设计的MVC框架，主要用于开发Web应用，简化开发。</p>
+</div>
+<div class="section" id="spring-boot">
+<h3><span class="section-number">5.3.2.3.3. </span>Spring Boot<a class="headerlink" href="#spring-boot" title="Permalink to this headline">¶</a></h3>
+<p>Spring在推出之初方案较为繁琐，因此提供了Spring Boot作为自动化配置工具，降低项目搭建的复杂度。</p>
+</div>
+<div class="section" id="id8">
+<h3><span class="section-number">5.3.2.3.4. </span>请求流程<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>用户发送请求给服务器</p></li>
+<li><p>服务器收到请求，使用DispatchServlet处理</p></li>
+<li><p>Dispatch使用HandleMapping检查url是否有对应的Controller，如果有，执行</p></li>
+<li><p>如果Controller返回字符串，ViewResolver将字符串转换成相应的视图对象</p></li>
+<li><p>DispatchServlet将视图对象中的数据，输出给服务器</p></li>
+<li><p>服务器将数据输出给客户端</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="container.html" class="btn btn-neutral float-right" title="5.3.3. 容器" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="basic.html" class="btn btn-neutral float-left" title="5.3.1. 基本概念" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.15.3. Nginx &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4.16. Web Cache欺骗攻击" href="../webcache.html" />
+    <link rel="prev" title="4.15.2. Apache" href="apache.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. 常见漏洞攻防</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../sql/index.html">4.1. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xss/index.html">4.2. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../csrf.html">4.3. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ssrf.html">4.4. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmdinjection.html">4.5. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pathtraversal.html">4.6. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileread.html">4.7. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileupload.html">4.8. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileinclude.html">4.9. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xxe.html">4.10. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ssti.html">4.11. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xpath.html">4.12. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config.html">4.14. 配置安全</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.15. 中间件</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="iis.html">4.15.1. IIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="apache.html">4.15.2. Apache</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.15.3. Nginx</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fast-cgi">4.15.3.1. Fast-CGI关闭</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.15.3.2. Fast-CGI开启</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cve-2013-4547">4.15.3.3. CVE-2013-4547</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.15.3.4. 配置错误</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.15.3.5. 参考链接</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../webcache.html">4.16. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">4.15. </span>中间件</a> &raquo;</li>
+        
+      <li><span class="section-number">4.15.3. </span>Nginx</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/vuln/middleware/nginx.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nginx">
+<h1><span class="section-number">4.15.3. </span>Nginx<a class="headerlink" href="#nginx" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fast-cgi">
+<h2><span class="section-number">4.15.3.1. </span>Fast-CGI关闭<a class="headerlink" href="#fast-cgi" title="Permalink to this headline">¶</a></h2>
+<p>在Fast-CGI关闭的情况下， Nginx 仍然存在解析漏洞：
+在文件路径(xx.jpg)后面加上 <code class="docutils literal notranslate"><span class="pre">%00.php</span></code> ， 即 <code class="docutils literal notranslate"><span class="pre">xx.jpg%00.php</span></code> 会被当做 php 文件来解析</p>
+</div>
+<div class="section" id="id1">
+<h2><span class="section-number">4.15.3.2. </span>Fast-CGI开启<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>在Fast-CGI开启状态下，在文件路径后加上 <code class="docutils literal notranslate"><span class="pre">/xx.php</span></code> ，则 <code class="docutils literal notranslate"><span class="pre">xx.jpg/xx.php</span></code> 会被解析为php文件</p>
+</div>
+<div class="section" id="cve-2013-4547">
+<h2><span class="section-number">4.15.3.3. </span>CVE-2013-4547<a class="headerlink" href="#cve-2013-4547" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">a.jpg\x20\x00.php</span></code></p>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">4.15.3.4. </span>配置错误<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3><span class="section-number">4.15.3.4.1. </span>目录穿越<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>如果配置中存在类似 <code class="docutils literal notranslate"><span class="pre">location</span> <span class="pre">/foo</span> <span class="pre">{</span> <span class="pre">alias</span> <span class="pre">/bar/;</span> <span class="pre">}</span></code> 的配置时，<code class="docutils literal notranslate"><span class="pre">/foo../</span></code> 会被解析为 <code class="docutils literal notranslate"><span class="pre">/bar/../</span></code> 从而导致目录穿越的发生。</p>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">4.15.3.4.2. </span>目录遍历<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>配置中 <code class="docutils literal notranslate"><span class="pre">autoindex</span> <span class="pre">on</span></code> 开启时，Nginx中存在目录遍历漏洞。</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">4.15.3.5. </span>参考链接<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.91ri.org/9064.html">CVE-2013-4547 Nginx解析漏洞深入利用及分析</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../webcache.html" class="btn btn-neutral float-right" title="4.16. Web Cache欺骗攻击" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="apache.html" class="btn btn-neutral float-left" title="4.15.2. Apache" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

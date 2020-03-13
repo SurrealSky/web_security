@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>8.3. JWT &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8.4. Kerberos" href="kerberos.html" />
+    <link rel="prev" title="8.2. OAuth" href="oauth.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">8. 认证机制</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sso.html">8.1. SSO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oauth.html">8.2. OAuth</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8.3. JWT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">8.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">8.3.2. 构成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">8.3.3. 安全问题</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#header">8.3.3.1. Header部分</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payload">8.3.3.2. Payload部分</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#signature">8.3.3.3. Signature部分</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">8.3.3.4. 其他</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">8.3.4. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kerberos.html">8.4. Kerberos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="saml.html">8.5. SAML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="windows.html">8.6. Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">8. </span>认证机制</a> &raquo;</li>
+        
+      <li><span class="section-number">8.3. </span>JWT</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auth/jwt.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="jwt">
+<h1><span class="section-number">8.3. </span>JWT<a class="headerlink" href="#jwt" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">8.3.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Json web token (JWT), 是为了在网络应用环境间传递声明而执行的一种基于JSON的开放标准（(RFC 7519).该token被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该token也可直接被用于认证，也可被加密。</p>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">8.3.2. </span>构成<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>分为三个部分，分别为header/payload/signature。其中header是声明的类型和加密使用的算法。payload是载荷，最后是加上 <code class="docutils literal notranslate"><span class="pre">HMAC(base64(header)+base64(payload),</span> <span class="pre">secret)</span></code></p>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">8.3.3. </span>安全问题<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="header">
+<h3><span class="section-number">8.3.3.1. </span>Header部分<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>是否支持修改算法为none/对称加密算法</p></li>
+<li><p>删除签名</p></li>
+<li><p>插入错误信息</p></li>
+<li><p>kid字段是否有SQL注入/命令注入/目录遍历</p></li>
+<li><p>jwk元素是否可信</p></li>
+<li><p>是否强制使用白名单上的加密算法</p></li>
+</ul>
+</div>
+<div class="section" id="payload">
+<h3><span class="section-number">8.3.3.2. </span>Payload部分<a class="headerlink" href="#payload" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>其中是否存在敏感信息</p></li>
+<li><p>检查过期策略，比如 <code class="docutils literal notranslate"><span class="pre">exp</span></code> , <code class="docutils literal notranslate"><span class="pre">iat</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="signature">
+<h3><span class="section-number">8.3.3.3. </span>Signature部分<a class="headerlink" href="#signature" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>检查是否强制检查签名</p></li>
+<li><p>密钥是否可以爆破</p></li>
+<li><p>是否可以通过其他方式拿到密钥</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">8.3.3.4. </span>其他<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>重放</p></li>
+<li><p>通过匹配校验的时间做时间攻击</p></li>
+<li><p>修改算法RS256为HS256</p></li>
+<li><p>弱密钥破解</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">8.3.4. </span>参考链接<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://auth0.com/blog/">Critical vulnerabilities in JSON Web Token libraries</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kerberos.html" class="btn btn-neutral float-right" title="8.4. Kerberos" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="oauth.html" class="btn btn-neutral float-left" title="8.2. OAuth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

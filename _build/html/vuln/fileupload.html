@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.8. 文件上传 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.9. 文件包含" href="fileinclude.html" />
+    <link rel="prev" title="4.7. 文件读取" href="fileread.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.8. 文件上传</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.8.1. 文件类型检测绕过</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.8.1.1. 更改请求绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#magic">4.8.1.2. Magic检测绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.8.1.3. 后缀绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.8.1.4. 系统命名绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-ini">4.8.1.5. .user.ini</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#waf">4.8.1.6. WAF绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">4.8.1.7. 竞争上传绕过</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4.8.2. 攻击技巧</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apachegetshell">4.8.2.1. Apache重写GetShell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">4.8.2.2. 软链接任意读文件</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">4.8.3. 防护技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">4.8.4. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
+        
+      <li><span class="section-number">4.8. </span>文件上传</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/vuln/fileupload.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">4.8. </span>文件上传<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">4.8.1. </span>文件类型检测绕过<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3><span class="section-number">4.8.1.1. </span>更改请求绕过<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>有的站点仅仅在前端检测了文件类型，这种类型的检测可以直接修改网络请求绕过。
+同样的，有的站点在后端仅检查了HTTP Header中的信息，比如 <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> 等，这种检查同样可以通过修改网络请求绕过。</p>
+</div>
+<div class="section" id="magic">
+<h3><span class="section-number">4.8.1.2. </span>Magic检测绕过<a class="headerlink" href="#magic" title="Permalink to this headline">¶</a></h3>
+<p>有的站点使用文件头来检测文件类型，这种检查可以在Shell前加入对应的字节以绕过检查。几种常见的文件类型的头字节如下表所示</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>类型</p></th>
+<th class="head"><p>二进制值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>JPG</p></td>
+<td><p>FF D8 FF E0 00 10 4A 46 49 46</p></td>
+</tr>
+<tr class="row-odd"><td><p>GIF</p></td>
+<td><p>47 49 46 38 39 61</p></td>
+</tr>
+<tr class="row-even"><td><p>PNG</p></td>
+<td><p>89 50 4E 47</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIF</p></td>
+<td><p>49 49 2A 00</p></td>
+</tr>
+<tr class="row-even"><td><p>BMP</p></td>
+<td><p>42 4D</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">4.8.1.3. </span>后缀绕过<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>部分服务仅根据后缀、上传时的信息或Magic Header来判断文件类型，此时可以绕过。</p>
+<p>php由于历史原因，部分解释器可能支持符合正则 <code class="docutils literal notranslate"><span class="pre">/ph(p[2-7]?|t(ml)?)/</span></code> 的后缀，如 <code class="docutils literal notranslate"><span class="pre">php</span></code> / <code class="docutils literal notranslate"><span class="pre">php5</span></code> / <code class="docutils literal notranslate"><span class="pre">pht</span></code> / <code class="docutils literal notranslate"><span class="pre">phtml</span></code> / <code class="docutils literal notranslate"><span class="pre">shtml</span></code> / <code class="docutils literal notranslate"><span class="pre">pwml</span></code> / <code class="docutils literal notranslate"><span class="pre">phtm</span></code> 等 可在禁止上传php文件时测试该类型。</p>
+<p>jsp引擎则可能会解析 <code class="docutils literal notranslate"><span class="pre">jspx</span></code> / <code class="docutils literal notranslate"><span class="pre">jspf</span></code> / <code class="docutils literal notranslate"><span class="pre">jspa</span></code> / <code class="docutils literal notranslate"><span class="pre">jsw</span></code> / <code class="docutils literal notranslate"><span class="pre">jsv</span></code> / <code class="docutils literal notranslate"><span class="pre">jtml</span></code> 等后缀，asp支持 <code class="docutils literal notranslate"><span class="pre">asa</span></code> / <code class="docutils literal notranslate"><span class="pre">asax</span></code> / <code class="docutils literal notranslate"><span class="pre">cer</span></code> / <code class="docutils literal notranslate"><span class="pre">cdx</span></code> / <code class="docutils literal notranslate"><span class="pre">aspx</span></code> / <code class="docutils literal notranslate"><span class="pre">ascx</span></code> / <code class="docutils literal notranslate"><span class="pre">ashx</span></code> / <code class="docutils literal notranslate"><span class="pre">asmx</span></code> / <code class="docutils literal notranslate"><span class="pre">asp{80-90}</span></code> 等后缀。</p>
+<p>除了这些绕过，其他的后缀同样可能带来问题，如 <code class="docutils literal notranslate"><span class="pre">vbs</span></code> / <code class="docutils literal notranslate"><span class="pre">asis</span></code> / <code class="docutils literal notranslate"><span class="pre">sh</span></code> / <code class="docutils literal notranslate"><span class="pre">reg</span></code> / <code class="docutils literal notranslate"><span class="pre">cgi</span></code> / <code class="docutils literal notranslate"><span class="pre">exe</span></code> / <code class="docutils literal notranslate"><span class="pre">dll</span></code> / <code class="docutils literal notranslate"><span class="pre">com</span></code> / <code class="docutils literal notranslate"><span class="pre">bat</span></code> / <code class="docutils literal notranslate"><span class="pre">pl</span></code> / <code class="docutils literal notranslate"><span class="pre">cfc</span></code> / <code class="docutils literal notranslate"><span class="pre">cfm</span></code> / <code class="docutils literal notranslate"><span class="pre">ini</span></code> 等。</p>
+</div>
+<div class="section" id="id5">
+<h3><span class="section-number">4.8.1.4. </span>系统命名绕过<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>在Windows系统中，上传 <code class="docutils literal notranslate"><span class="pre">index.php.</span></code> 会重命名为 <code class="docutils literal notranslate"><span class="pre">.</span></code> ，可以绕过后缀检查。
+也可尝试 <code class="docutils literal notranslate"><span class="pre">index.php%20</span></code> ， <code class="docutils literal notranslate"><span class="pre">index.php:1.jpg</span></code> <code class="docutils literal notranslate"><span class="pre">index.php::$DATA</span></code> 等。
+在Linux系统中，可以尝试上传名为 <code class="docutils literal notranslate"><span class="pre">index.php/.</span></code> 或 <code class="docutils literal notranslate"><span class="pre">./aa/../index.php/.</span></code> 的文件</p>
+</div>
+<div class="section" id="user-ini">
+<h3><span class="section-number">4.8.1.5. </span>.user.ini<a class="headerlink" href="#user-ini" title="Permalink to this headline">¶</a></h3>
+<p>在php执行的过程中，除了主 <code class="docutils literal notranslate"><span class="pre">php.ini</span></code> 之外，PHP 还会在每个目录下扫描 INI 文件，从被执行的 PHP 文件所在目录开始一直上升到 web 根目录（$_SERVER[‘DOCUMENT_ROOT’] 所指定的）。如果被执行的 PHP 文件在 web 根目录之外，则只扫描该目录。 <code class="docutils literal notranslate"><span class="pre">.user.ini</span></code> 中可以定义除了PHP_INI_SYSTEM以外的模式的选项，故可以使用 <code class="docutils literal notranslate"><span class="pre">.user.ini</span></code> 加上非php后缀的文件构造一个shell，比如 <code class="docutils literal notranslate"><span class="pre">auto_prepend_file=01.gif</span></code> 。</p>
+</div>
+<div class="section" id="waf">
+<h3><span class="section-number">4.8.1.6. </span>WAF绕过<a class="headerlink" href="#waf" title="Permalink to this headline">¶</a></h3>
+<p>有的waf在编写过程中考虑到性能原因，只处理一部分数据，这时可以通过加入大量垃圾数据来绕过其处理函数。</p>
+<p>另外，Waf和Web系统对 <code class="docutils literal notranslate"><span class="pre">boundary</span></code> 的处理不一致，可以使用错误的 <code class="docutils literal notranslate"><span class="pre">boundary</span></code> 来完成绕过。</p>
+</div>
+<div class="section" id="id6">
+<h3><span class="section-number">4.8.1.7. </span>竞争上传绕过<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>有的服务器采用了先保存，再删除不合法文件的方式，在这种服务器中，可以反复上传一个会生成Web Shell的文件并尝试访问，多次之后即可获得Shell。</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h2><span class="section-number">4.8.2. </span>攻击技巧<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="apachegetshell">
+<h3><span class="section-number">4.8.2.1. </span>Apache重写GetShell<a class="headerlink" href="#apachegetshell" title="Permalink to this headline">¶</a></h3>
+<p>Apache可根据是否允许重定向考虑上传.htaccess</p>
+<p>内容为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AddType</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">php</span> <span class="o">.</span><span class="n">png</span>
+<span class="n">php_flag</span> <span class="n">engine</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>就可以用png或者其他后缀的文件做php脚本了</p>
+</div>
+<div class="section" id="id8">
+<h3><span class="section-number">4.8.2.2. </span>软链接任意读文件<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>上传的压缩包文件会被解压的文件时，可以考虑上传含符号链接的文件
+若服务器没有做好防护，可实现任意文件读取的效果</p>
+</div>
+</div>
+<div class="section" id="id9">
+<h2><span class="section-number">4.8.3. </span>防护技巧<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>使用白名单限制上传文件的类型</p></li>
+<li><p>使用更严格的文件类型检查方式</p></li>
+<li><p>限制Web Server对上传文件夹的解析</p></li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h2><span class="section-number">4.8.4. </span>参考链接<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.freebuf.com/articles/web/188464.html">构造优质上传漏洞Fuzz字典</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fileinclude.html" class="btn btn-neutral float-right" title="4.9. 文件包含" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fileread.html" class="btn btn-neutral float-left" title="4.7. 文件读取" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

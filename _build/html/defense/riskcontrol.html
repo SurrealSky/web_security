@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7.5. 风险控制 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7.6. 加固检查" href="reinforce.html" />
+    <link rel="prev" title="7.4. ​​ATT&amp;CK" href="att8ck.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 防御技术</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="team.html">7.1. 团队建设</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdl.html">7.2. 安全开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threat.html">7.3. 威胁情报</a></li>
+<li class="toctree-l2"><a class="reference internal" href="att8ck.html">7.4. ​​ATT&amp;CK</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.5. 风险控制</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">7.5.1. 常见风险</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">7.5.2. 防御策略</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">7.5.3. 异常特征</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">7.5.4. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reinforce.html">7.6. 加固检查</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framework.html">7.7. 防御框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeypot.html">7.8. 蜜罐技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrusiondetection.html">7.9. 入侵检测</a></li>
+<li class="toctree-l2"><a class="reference internal" href="emergency.html">7.10. 应急响应</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forensic.html">7.11. 溯源分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">7. </span>防御技术</a> &raquo;</li>
+        
+      <li><span class="section-number">7.5. </span>风险控制</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/defense/riskcontrol.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">7.5. </span>风险控制<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">7.5.1. </span>常见风险<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>会员</dt><dd><ul>
+<li><p>撞库盗号</p></li>
+<li><p>账号分享</p></li>
+<li><p>批量注册</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>视频</dt><dd><ul>
+<li><p>盗播盗看</p></li>
+<li><p>广告屏蔽</p></li>
+<li><p>刷量作弊</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>活动</dt><dd><ul>
+<li><p>恶意刷</p></li>
+<li><p>薅羊毛</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>直播</dt><dd><ul>
+<li><p>挂站人气</p></li>
+<li><p>恶意图文</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>电商</dt><dd><ul>
+<li><p>恶意下单</p></li>
+<li><p>订单欺诈</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>支付</dt><dd><ul>
+<li><p>盗号盗卡</p></li>
+<li><p>洗钱</p></li>
+<li><p>恶意下单</p></li>
+<li><p>恶意提现</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>其他</dt><dd><ul>
+<li><p>钓鱼邮件</p></li>
+<li><p>恶意爆破</p></li>
+<li><p>短信轰炸</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">7.5.2. </span>防御策略<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>核身策略</dt><dd><ul>
+<li><p>同一收货手机号</p></li>
+<li><p>同一收货地址</p></li>
+<li><p>同一历史行为</p></li>
+<li><p>同一IP</p></li>
+<li><p>同一设备</p></li>
+<li><p>同一支付ID</p></li>
+<li><p>LBS</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">7.5.3. </span>异常特征<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>APP用户异常特征</dt><dd><ul>
+<li><p>IP</p></li>
+<li><p>设备为特定型号</p></li>
+<li><p>本地APP列表中有沙盒APP</p></li>
+<li><p>Root用户</p></li>
+<li><p>同设备登录过多个账号</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2><span class="section-number">7.5.4. </span>参考链接<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://doc.cocolian.cn/essay/risk/2016/12/18/risk-2-database/">支付风控模型和流程分析</a></p></li>
+<li><p><a class="reference external" href="https://mp.weixin.qq.com/s?__biz=MzI0MjczMjM2NA==&amp;mid=2247483836&amp;idx=1&amp;sn=d46875c957289d8e035345992ad7053e">爱奇艺业务安全风控体系的建设实践</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reinforce.html" class="btn btn-neutral float-right" title="7.6. 加固检查" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="att8ck.html" class="btn btn-neutral float-left" title="7.4. ​​ATT&amp;CK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

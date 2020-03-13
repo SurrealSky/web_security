@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7.3. 威胁情报 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7.4. ​​ATT&amp;CK" href="att8ck.html" />
+    <link rel="prev" title="7.2. 安全开发" href="sdl.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 防御技术</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="team.html">7.1. 团队建设</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sdl.html">7.2. 安全开发</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.3. 威胁情报</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">7.3.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">7.3.2. 相关概念</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#asset">7.3.2.1. 资产(Asset)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#threat">7.3.2.2. 威胁(Threat)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vulnerability">7.3.2.3. 脆弱性 / 漏洞(Vulnerability)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#risk">7.3.2.4. 风险(Risk)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event">7.3.2.5. 安全事件(Event)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">7.3.3. 情报来源</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="att8ck.html">7.4. ​​ATT&amp;CK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="riskcontrol.html">7.5. 风险控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reinforce.html">7.6. 加固检查</a></li>
+<li class="toctree-l2"><a class="reference internal" href="framework.html">7.7. 防御框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="honeypot.html">7.8. 蜜罐技术</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrusiondetection.html">7.9. 入侵检测</a></li>
+<li class="toctree-l2"><a class="reference internal" href="emergency.html">7.10. 应急响应</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forensic.html">7.11. 溯源分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">7. </span>防御技术</a> &raquo;</li>
+        
+      <li><span class="section-number">7.3. </span>威胁情报</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/defense/threat.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">7.3. </span>威胁情报<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">7.3.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>威胁情报(Threat Intelligence)一般指从安全数据中提炼的，与网络空间威胁相关的信息，包括威胁来源、攻击意图、攻击手法、攻击目标信息，以及可用于解决威胁或应对危害的知识。广义的威胁情报也包括情报的加工生产、分析应用及协同共享机制。相关的概念有资产、威胁、脆弱性等，具体定义如下。</p>
+<p>一般威胁情报需要包含威胁源、攻击目的、攻击对象、攻击手法、漏洞、攻击特征、防御措施等。威胁情报在事前可以起到预警的作用，在威胁发生时可以协助进行检测和响应，在事后可以用于分析和溯源。</p>
+<p>常见的网络威胁情报服务有黑客或欺诈团体分析、社会媒体和开源信息监控、定向漏洞研究、定制的人工分析、实时事件通知、凭据恢复、事故调查、伪造域名检测等。</p>
+<p>在威胁情报方面，比较有代表性的厂商有RSA、IBM、McAfee、赛门铁克、FireEye等。</p>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">7.3.2. </span>相关概念<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="asset">
+<h3><span class="section-number">7.3.2.1. </span>资产(Asset)<a class="headerlink" href="#asset" title="Permalink to this headline">¶</a></h3>
+<p>对组织具有价值的信息或资源，属于内部情报，通过资产测绘等方式发现。</p>
+</div>
+<div class="section" id="threat">
+<h3><span class="section-number">7.3.2.2. </span>威胁(Threat)<a class="headerlink" href="#threat" title="Permalink to this headline">¶</a></h3>
+<p>能够通过未授权访问、毁坏、揭露、数据修改和或拒绝服务对系统造成潜在危害的起因，威胁可由威胁的主体（威胁源）、能力、资源、动机、途径、可能性和后果等多种属性来刻画</p>
+</div>
+<div class="section" id="vulnerability">
+<h3><span class="section-number">7.3.2.3. </span>脆弱性 / 漏洞(Vulnerability)<a class="headerlink" href="#vulnerability" title="Permalink to this headline">¶</a></h3>
+<p>可能被威胁如攻击者利用的资产或若干资产薄弱环节。</p>
+<p>漏洞存在多个周期，最开始由安全研究员或者攻击者发现，而后出现在社区公告/官方邮件/博客中。随着信息的不断地传递，漏洞情报出现在开源社区等地方，并带有PoC和漏洞细节分析。再之后出现自动化工具开始大规模传播，部分漏洞会造成社会影响并被媒体报道，最后漏洞基本修复。</p>
+</div>
+<div class="section" id="risk">
+<h3><span class="section-number">7.3.2.4. </span>风险(Risk)<a class="headerlink" href="#risk" title="Permalink to this headline">¶</a></h3>
+<p>威胁利用资产或一组资产的脆弱性对组织机构造成伤害的潜在可能。</p>
+</div>
+<div class="section" id="event">
+<h3><span class="section-number">7.3.2.5. </span>安全事件(Event)<a class="headerlink" href="#event" title="Permalink to this headline">¶</a></h3>
+<p>威胁利用资产的脆弱性后实际产生危害的情景。</p>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">7.3.3. </span>情报来源<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>为了实现情报的同步和交换，各组织都制定了相应的标准和规范。主要有国标，美国联邦政府标准等。</p>
+<p>除了国家外，企业也有各自的情报来源，例如厂商、CERT、开发者社区、安全媒体、漏洞作者或团队、公众号、个人博客、代码仓库等。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="att8ck.html" class="btn btn-neutral float-right" title="7.4. ​​ATT&amp;CK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sdl.html" class="btn btn-neutral float-left" title="7.2. 安全开发" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5.4.5. 严格模式 &mdash; Web安全学习笔记 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.4.6. 异步机制" href="async.html" />
+    <link rel="prev" title="5.4.4. 作用域与闭包" href="scope.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Web安全学习笔记
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">内容索引:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../basic/index.html">1. 序章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vuln/index.html">4. 常见漏洞攻防</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. 语言与框架</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../php/index.html">5.1. PHP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/index.html">5.2. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../java/index.html">5.3. Java</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.4. JavaScript</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ECMAScript.html">5.4.1. ECMAScript</a></li>
+<li class="toctree-l3"><a class="reference internal" href="engine.html">5.4.2. 引擎</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wasm.html">5.4.3. WebAssembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scope.html">5.4.4. 作用域与闭包</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.4.5. 严格模式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.4.5.1. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.4.5.2. 调用</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">5.4.5.3. 行为改变</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="async.html">5.4.6. 异步机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="prototype.html">5.4.7. 原型链</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vm.html">5.4.8. 沙箱逃逸</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deserialization.html">5.4.9. 反序列化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc.html">5.4.10. 其他</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">5.4.11. 参考链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../golang.html">5.5. Golang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ruby.html">5.6. Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../asp.html">5.7. ASP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../intranet/index.html">6. 内网渗透</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../defense/index.html">7. 防御技术</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auth/index.html">8. 认证机制</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">9. 工具与资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../manual/index.html">10. 手册速查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">11. 其他</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Web安全学习笔记</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">5. </span>语言与框架</a> &raquo;</li>
+        
+          <li><a href="index.html"><span class="section-number">5.4. </span>JavaScript</a> &raquo;</li>
+        
+      <li><span class="section-number">5.4.5. </span>严格模式</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/language/javascript/strict.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">5.4.5. </span>严格模式<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2><span class="section-number">5.4.5.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>在ES5中，除了正常的运行模式之外，添加了严格模式（strict mode），这种模式使得代码显式地脱离“马虎模式/稀松模式/懒散模式“（sloppy）模式在更严格的条件下运行。严格模式不仅仅是一个子集：它的产生是为了形成与正常代码不同的语义。</p>
+<p>引入严格模式的目的主要是：</p>
+<ul class="simple">
+<li><p>通过抛出错误来消除了一些原有静默错误</p></li>
+<li><p>消除JavaScript语法的一些不合理、不严谨之处，减少一些怪异行为</p></li>
+<li><p>消除代码运行的一些不安全之处，保证代码运行的安全</p></li>
+<li><p>修复了一些导致 JavaScript引擎难以执行优化的缺陷，提高编译器效率，增加运行速度</p></li>
+<li><p>禁用了在ECMAScript的未来版本中可能会定义的一些语法，为未来新版本的JavaScript做铺垫</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">5.4.5.2. </span>调用<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>严格模式使用 <code class="docutils literal notranslate"><span class="pre">&quot;use</span> <span class="pre">strict&quot;;</span></code> 字符串开启。对整个脚本文件而言，可以将 <code class="docutils literal notranslate"><span class="pre">&quot;use</span> <span class="pre">strict&quot;</span></code> 放在脚本文件的第一行使整个脚本以严格模式运行。如果这行语句不在第一行则不会生效，会以正常模式运行。</p>
+<p>对单个函数而言，将 <code class="docutils literal notranslate"><span class="pre">&quot;use</span> <span class="pre">strict&quot;</span></code> 放在函数体的第一行，则整个函数以严格模式运行。</p>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">5.4.5.3. </span>行为改变<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>在严格模式中，主要有以下的行为更改：</p>
+<div class="section" id="id5">
+<h3><span class="section-number">5.4.5.3.1. </span>全局变量显式声明<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>在正常模式中，如果一个变量没有声明就赋值，默认是全局变量。严格模式禁止这种用法，全局变量必须显式声明。</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// ReferenceError: i is not defined</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="with">
+<h3><span class="section-number">5.4.5.3.2. </span>禁止使用with语句<a class="headerlink" href="#with" title="Permalink to this headline">¶</a></h3>
+<p>with语句无法在编译时就确定，属性到底归属哪个对象，这会影响编译效率，所以在严格模式中被禁止。</p>
+</div>
+<div class="section" id="eval">
+<h3><span class="section-number">5.4.5.3.3. </span>创设eval作用域<a class="headerlink" href="#eval" title="Permalink to this headline">¶</a></h3>
+<p>正常模式下，eval语句的作用域，取决于它处于全局作用域，还是处于函数作用域。严格模式下，eval语句本身就是一个作用域，不再能够生成全局变量了，它所生成的变量只能用于eval内部。</p>
+</div>
+<div class="section" id="id6">
+<h3><span class="section-number">5.4.5.3.4. </span>禁止删除变量<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>严格模式下无法删除变量。只有configurable设置为true的对象属性，才能被删除。</p>
+</div>
+<div class="section" id="id7">
+<h3><span class="section-number">5.4.5.3.5. </span>显式报错<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>正常模式下一些错误只会默默地失败，但是严格模式下将会报错，包括以下几种场景：</p>
+<ul class="simple">
+<li><p>对一个对象的只读属性进行赋值</p></li>
+<li><p>对一个使用getter方法读取的属性进行赋值</p></li>
+<li><p>对禁止扩展的对象添加新属性</p></li>
+<li><p>删除一个不可删除的属性</p></li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h3><span class="section-number">5.4.5.3.6. </span>语法错误<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>严格模式新增了一些语法错误，包括：</p>
+<ul class="simple">
+<li><p>对象不能有重名的属性</p></li>
+<li><p>函数不能有重名的参数</p></li>
+<li><p>禁止八进制表示法</p></li>
+<li><p>函数必须声明在顶层</p></li>
+<li><dl class="simple">
+<dt>新增保留字</dt><dd><ul>
+<li><p>class</p></li>
+<li><p>enum</p></li>
+<li><p>export</p></li>
+<li><p>extends</p></li>
+<li><p>import</p></li>
+<li><p>super</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h3><span class="section-number">5.4.5.3.7. </span>安全增强<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>禁止this关键字指向全局对象</p></li>
+<li><p>禁止在函数内部遍历调用栈</p></li>
+</ul>
+</div>
+<div class="section" id="arguments">
+<h3><span class="section-number">5.4.5.3.8. </span>限制arguments对象<a class="headerlink" href="#arguments" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>不允许对arguments赋值</p></li>
+<li><p>arguments不再追踪参数的变化</p></li>
+<li><p>禁止使用arguments.callee</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="async.html" class="btn btn-neutral float-right" title="5.4.6. 异步机制" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="scope.html" class="btn btn-neutral float-left" title="5.4.4. 作用域与闭包" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Lyle
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
