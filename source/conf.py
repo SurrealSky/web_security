@@ -38,8 +38,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Web安全学习笔记'
-copyright = u'2019, Lyle'
-author = u'Lyle'
+copyright = u'2019, Surreal'
+author = u'Surreal'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -125,7 +125,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'Web-Sec.tex', u'Web-Sec Documentation',
-     u'Lyle', 'manual'),
+     u'Surreal', 'manual'),
 ]
 
 

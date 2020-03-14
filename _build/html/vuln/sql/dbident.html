@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.1.4. 数据库检测 &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.1.5. 数据库检测 &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.1.5. 绕过技巧" href="bypass.html" />
-    <link rel="prev" title="4.1.3. 权限提升" href="privilege.html" /> 
+    <link rel="next" title="4.1.6. 绕过技巧" href="bypass.html" />
+    <link rel="prev" title="4.1.4. 权限提升" href="privilege.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,22 +91,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. 常见漏洞攻防</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">4.1. SQL注入</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="classify.html">4.1.1. 注入分类</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fuzz.html">4.1.2. 注入检测</a></li>
-<li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.3. 权限提升</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.4. 数据库检测</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#acess">4.1.4.1. acess</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mysql">4.1.4.2. MySQL</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#oracle">4.1.4.3. Oracle</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sqlserver">4.1.4.4. SQLServer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#postgresql">4.1.4.5. PostgreSQL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reason.html">4.1.1. 产生原因</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classify.html">4.1.2. 注入分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzz.html">4.1.3. 注入方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.4. 权限提升</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.5. 数据库检测</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acess">4.1.5.1. acess</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mysql">4.1.5.2. MySQL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#oracle">4.1.5.3. Oracle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqlserver">4.1.5.4. SQLServer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#postgresql">4.1.5.5. PostgreSQL</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.5. 绕过技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tricks.html">4.1.6. SQL注入小技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cheatsheet/index.html">4.1.7. CheatSheet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="precompile.html">4.1.8. 预编译</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ref.html">4.1.9. 参考文章</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.6. 绕过技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tricks.html">4.1.7. SQL注入小技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cheatsheet/index.html">4.1.8. CheatSheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="precompile.html">4.1.9. 预编译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">4.1.10. 参考文章</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../xss/index.html">4.2. XSS</a></li>
@@ -183,7 +184,7 @@
         
           <li><a href="index.html"><span class="section-number">4.1. </span>SQL注入</a> &raquo;</li>
         
-      <li><span class="section-number">4.1.4. </span>数据库检测</li>
+      <li><span class="section-number">4.1.5. </span>数据库检测</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -203,32 +204,40 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><span class="section-number">4.1.4. </span>数据库检测<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.1.5. </span>数据库检测<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="acess">
-<h2><span class="section-number">4.1.4.1. </span>acess<a class="headerlink" href="#acess" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.5.1. </span>acess<a class="headerlink" href="#acess" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">and</span> <span class="pre">exists</span> <span class="pre">(select</span> <span class="pre">*</span> <span class="pre">from</span> <span class="pre">msysobjects</span> <span class="pre">)</span> <span class="pre">&gt;</span> <span class="pre">0</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="mysql">
-<h2><span class="section-number">4.1.4.2. </span>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p>sleep <code class="docutils literal notranslate"><span class="pre">sleep(1)</span></code></p></li>
-<li><p>benchmark <code class="docutils literal notranslate"><span class="pre">BENCHMARK(5000000,</span> <span class="pre">MD5('test'))</span></code></p></li>
-<li><dl>
-<dt>字符串连接</dt><dd><blockquote>
-<div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'='a'</span> <span class="pre">'b'</span></code></p></li>
-</ul>
-</div></blockquote>
+<h2><span class="section-number">4.1.5.2. </span>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><dl class="simple">
+<dt>sleep</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sleep(1)</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>benchmark</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">BENCHMARK(5000000,</span> <span class="pre">MD5('test'))</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>字符串连接</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'='a'</span> <span class="pre">'b'</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'=CONCAT('a','b')</span></code></p></li>
 </ul>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>version</dt><dd><ul class="simple">
+<dt>version</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">&#64;&#64;version</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">version()</span></code></p></li>
 </ul>
@@ -236,7 +245,7 @@
 </dl>
 </li>
 <li><dl class="simple">
-<dt>数字函数</dt><dd><ul class="simple">
+<dt>数字函数</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">connection_id()</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">last_insert_id()</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">row_count()</span></code></p></li>
@@ -247,7 +256,7 @@
 </ul>
 </div>
 <div class="section" id="oracle">
-<h2><span class="section-number">4.1.4.3. </span>Oracle<a class="headerlink" href="#oracle" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.5.3. </span>Oracle<a class="headerlink" href="#oracle" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>字符串连接</dt><dd><ul>
@@ -275,11 +284,29 @@
 </ul>
 </div>
 <div class="section" id="sqlserver">
-<h2><span class="section-number">4.1.4.4. </span>SQLServer<a class="headerlink" href="#sqlserver" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.5.4. </span>SQLServer<a class="headerlink" href="#sqlserver" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>WAITFOR <code class="docutils literal notranslate"><span class="pre">WAITFOR</span> <span class="pre">DELAY</span> <span class="pre">'00:00:10';</span></code></p></li>
-<li><p>SERVERNAME <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">&#64;&#64;SERVERNAME</span></code></p></li>
-<li><p>version <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">&#64;&#64;version</span></code></p></li>
+<li><dl class="simple">
+<dt>WAITFOR</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">WAITFOR</span> <span class="pre">DELAY</span> <span class="pre">'00:00:10';</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>SERVERNAME</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">&#64;&#64;SERVERNAME</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>version</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">&#64;&#64;version</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
 <li><dl class="simple">
 <dt>字符串连接</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'a'+'b'='ab'</span></code></p></li>
@@ -295,13 +322,19 @@
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>other</dt><dd><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">and</span> <span class="pre">exists</span> <span class="pre">(select</span> <span class="pre">*</span> <span class="pre">from</span> <span class="pre">sysobjects</span> <span class="pre">)</span> <span class="pre">&gt;</span> <span class="pre">0</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </div>
 <div class="section" id="postgresql">
-<h2><span class="section-number">4.1.4.5. </span>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.5.5. </span>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>sleep <code class="docutils literal notranslate"><span class="pre">pg_sleep(1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pg_sleep(1)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">version()</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'='a'||'b'</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">'ab'=CONCAT('a','b')</span></code></p></li>
@@ -318,10 +351,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="bypass.html" class="btn btn-neutral float-right" title="4.1.5. 绕过技巧" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="bypass.html" class="btn btn-neutral float-right" title="4.1.6. 绕过技巧" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="privilege.html" class="btn btn-neutral float-left" title="4.1.3. 权限提升" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="privilege.html" class="btn btn-neutral float-left" title="4.1.4. 权限提升" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -330,7 +363,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Lyle
+        &copy; Copyright 2019, Surreal
 
     </p>
   </div>

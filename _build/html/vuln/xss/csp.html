@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.2.4. CSP &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.2.5. CSP &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.2.5. XSS数据源" href="source.html" />
-    <link rel="prev" title="4.2.3. 同源策略" href="sop.html" /> 
+    <link rel="next" title="4.2.6. XSS数据源" href="source.html" />
+    <link rel="prev" title="4.2.4. 同源策略" href="sop.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,21 +94,22 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">4.2. XSS</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="classify.html">4.2.1. 分类</a></li>
 <li class="toctree-l3"><a class="reference internal" href="harm.html">4.2.2. 危害</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sop.html">4.2.3. 同源策略</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">4.2.4. CSP</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id1">4.2.4.1. CSP是什么？</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id2">4.2.4.2. 配置</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#bypass">4.2.4.3. Bypass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security.html">4.2.3. 安全防护</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sop.html">4.2.4. 同源策略</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.2.5. CSP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.2.5.1. CSP是什么？</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.2.5.2. 配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bypass">4.2.5.3. Bypass</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="source.html">4.2.5. XSS数据源</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sink.html">4.2.6. Sink</a></li>
-<li class="toctree-l3"><a class="reference internal" href="mitigation.html">4.2.7. XSS保护</a></li>
-<li class="toctree-l3"><a class="reference internal" href="wafbypass.html">4.2.8. WAF Bypass</a></li>
-<li class="toctree-l3"><a class="reference internal" href="trick/index.html">4.2.9. 技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="payload.html">4.2.10. Payload</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rootkit.html">4.2.11. 持久化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ref.html">4.2.12. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source.html">4.2.6. XSS数据源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sink.html">4.2.7. Sink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mitigation.html">4.2.8. XSS保护</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wafbypass.html">4.2.9. WAF Bypass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trick/index.html">4.2.10. 技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="payload.html">4.2.11. Payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rootkit.html">4.2.12. 持久化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">4.2.13. 参考链接</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../csrf.html">4.3. CSRF</a></li>
@@ -184,7 +185,7 @@
         
           <li><a href="index.html"><span class="section-number">4.2. </span>XSS</a> &raquo;</li>
         
-      <li><span class="section-number">4.2.4. </span>CSP</li>
+      <li><span class="section-number">4.2.5. </span>CSP</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -204,13 +205,13 @@
            <div itemprop="articleBody">
             
   <div class="section" id="csp">
-<h1><span class="section-number">4.2.4. </span>CSP<a class="headerlink" href="#csp" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.2.5. </span>CSP<a class="headerlink" href="#csp" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2><span class="section-number">4.2.4.1. </span>CSP是什么？<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.5.1. </span>CSP是什么？<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Content Security Policy，简称 CSP。顾名思义，这个规范与内容安全有关，主要是用来定义页面可以加载哪些资源，减少 XSS 的发生。</p>
 </div>
 <div class="section" id="id2">
-<h2><span class="section-number">4.2.4.2. </span>配置<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.5.2. </span>配置<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>CSP策略可以通过 HTTP 头信息或者 meta 元素定义。</p>
 <p>CSP 有三类：</p>
 <ul class="simple">
@@ -230,7 +231,7 @@
 </pre></div>
 </div>
 <div class="section" id="id3">
-<h3><span class="section-number">4.2.4.2.1. </span>指令说明<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.2.5.2.1. </span>指令说明<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 19%" />
@@ -282,7 +283,7 @@
 </table>
 </div>
 <div class="section" id="id4">
-<h3><span class="section-number">4.2.4.2.2. </span>关键字<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.2.5.2.2. </span>关键字<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">-</span></code></dt><dd><ul>
@@ -383,7 +384,7 @@
 </ul>
 </div>
 <div class="section" id="id5">
-<h3><span class="section-number">4.2.4.2.3. </span>配置范例<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.2.5.2.3. </span>配置范例<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>允许执行内联 JS 代码，但不允许加载外部资源</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Content</span><span class="o">-</span><span class="n">Security</span><span class="o">-</span><span class="n">Policy</span><span class="p">:</span> <span class="n">default</span><span class="o">-</span><span class="n">src</span> <span class="s1">&#39;self&#39;</span><span class="p">;</span> <span class="n">script</span><span class="o">-</span><span class="n">src</span> <span class="s1">&#39;self&#39;</span> <span class="s1">&#39;unsafe-inline&#39;</span><span class="p">;</span>
 </pre></div>
@@ -391,9 +392,9 @@
 </div>
 </div>
 <div class="section" id="bypass">
-<h2><span class="section-number">4.2.4.3. </span>Bypass<a class="headerlink" href="#bypass" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.5.3. </span>Bypass<a class="headerlink" href="#bypass" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id6">
-<h3><span class="section-number">4.2.4.3.1. </span>预加载<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.2.5.3.1. </span>预加载<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>浏览器为了增强用户体验，让浏览器更有效率，就有一个预加载的功能，大体是利用浏览器空闲时间去加载指定的内容，然后缓存起来。这个技术又细分为DNS-prefetch、subresource、prefetch、preconnect、prerender。</p>
 <p>HTML5页面预加载是用link标签的rel属性来指定的。如果csp头有unsafe-inline，则用预加载的方式可以向外界发出请求，例如</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- 预加载某个页面 --&gt;
@@ -421,11 +422,11 @@
 </ul>
 </div>
 <div class="section" id="mime-sniff">
-<h3><span class="section-number">4.2.4.3.2. </span>MIME Sniff<a class="headerlink" href="#mime-sniff" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.2.5.3.2. </span>MIME Sniff<a class="headerlink" href="#mime-sniff" title="Permalink to this headline">¶</a></h3>
 <p>举例来说，csp禁止跨站读取脚本，但是可以跨站读img，那么传一个含有脚本的img，再``&lt;script href=’<a class="reference external" href="http://xxx.com/xx.jpg'">http://xxx.com/xx.jpg’</a>&gt;``，这里csp认为是一个img，绕过了检查，如果网站没有回正确的mime type，浏览器会进行猜测，就可能加载该img作为脚本</p>
 </div>
 <div class="section" id="id7">
-<h3><span class="section-number">4.2.4.3.3. </span>302跳转<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.2.5.3.3. </span>302跳转<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>对于302跳转绕过CSP而言，实际上有以下几点限制：</p>
 <ul class="simple">
 <li><p>跳板必须在允许的域内。</p></li>
@@ -433,11 +434,11 @@
 </ul>
 </div>
 <div class="section" id="iframe">
-<h3><span class="section-number">4.2.4.3.4. </span>iframe<a class="headerlink" href="#iframe" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.2.5.3.4. </span>iframe<a class="headerlink" href="#iframe" title="Permalink to this headline">¶</a></h3>
 <p>当可以执行代码时，可以创建一个源为 <code class="docutils literal notranslate"><span class="pre">css</span></code> <code class="docutils literal notranslate"><span class="pre">js</span></code> 等静态文件的frame，在配置不当时，该frame并不存在csp，则在该frame下再次创建frame，达到bypass的目的。同理，使用 <code class="docutils literal notranslate"><span class="pre">../../../</span></code> <code class="docutils literal notranslate"><span class="pre">/%2e%2e%2f</span></code> 等可能触发服务器报错的链接也可以到达相应的目的。</p>
 </div>
 <div class="section" id="id8">
-<h3><span class="section-number">4.2.4.3.5. </span>其他<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.2.5.3.5. </span>其他<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p>CND Bypass,如果网站信任了某个CDN, 那么可利用相应的CDN bypass</p></li>
 <li><p>Angular versions &lt;1.5.9 &gt;=1.5.0，存在漏洞 <a class="reference external" href="https://github.com/angular/angular.js/pull/15346">Git Pull Request</a></p></li>
@@ -474,10 +475,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="source.html" class="btn btn-neutral float-right" title="4.2.5. XSS数据源" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="source.html" class="btn btn-neutral float-right" title="4.2.6. XSS数据源" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="sop.html" class="btn btn-neutral float-left" title="4.2.3. 同源策略" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="sop.html" class="btn btn-neutral float-left" title="4.2.4. 同源策略" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.1.1. 注入分类" href="classify.html" />
+    <link rel="next" title="4.1.1. 产生原因" href="reason.html" />
     <link rel="prev" title="4. 常见漏洞攻防" href="../index.html" /> 
 </head>
 
@@ -91,15 +91,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. 常见漏洞攻防</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. SQL注入</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="classify.html">4.1.1. 注入分类</a></li>
-<li class="toctree-l3"><a class="reference internal" href="fuzz.html">4.1.2. 注入检测</a></li>
-<li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.3. 权限提升</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dbident.html">4.1.4. 数据库检测</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.5. 绕过技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tricks.html">4.1.6. SQL注入小技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cheatsheet/index.html">4.1.7. CheatSheet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="precompile.html">4.1.8. 预编译</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ref.html">4.1.9. 参考文章</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reason.html">4.1.1. 产生原因</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classify.html">4.1.2. 注入分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzz.html">4.1.3. 注入方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.4. 权限提升</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dbident.html">4.1.5. 数据库检测</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.6. 绕过技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tricks.html">4.1.7. SQL注入小技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cheatsheet/index.html">4.1.8. CheatSheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="precompile.html">4.1.9. 预编译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">4.1.10. 参考文章</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../xss/index.html">4.2. XSS</a></li>
@@ -198,55 +199,57 @@
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">内容索引:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="classify.html">4.1.1. 注入分类</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="classify.html#id2">4.1.1.1. 按技巧分类</a></li>
-<li class="toctree-l2"><a class="reference internal" href="classify.html#id3">4.1.1.2. 按获取数据的方式分类</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reason.html">4.1.1. 产生原因</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify.html">4.1.2. 注入分类</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#id2">4.1.2.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#id3">4.1.2.2. 按技巧分类</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#id4">4.1.2.3. 按获取数据的方式分类</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="fuzz.html">4.1.2. 注入检测</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id2">4.1.2.1. 常见的注入点</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#fuzz">4.1.2.2. Fuzz注入点</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id3">4.1.2.3. 测试列数</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id4">4.1.2.4. 堆叠注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id5">4.1.2.5. 注释符</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id6">4.1.2.6. 判断过滤规则</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id7">4.1.2.7. 获取信息</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id8">4.1.2.8. 测试权限</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fuzz.html#mysql">4.1.2.9. MYSQL实战</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fuzz.html">4.1.3. 注入方法</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id2">4.1.3.1. 常见的注入点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#fuzz">4.1.3.2. Fuzz注入点</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id3">4.1.3.3. 测试列数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id4">4.1.3.4. 堆叠注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id5">4.1.3.5. 注释符</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id6">4.1.3.6. 判断过滤规则</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id7">4.1.3.7. 获取信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#id8">4.1.3.8. 测试权限</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzz.html#mysql">4.1.3.9. MYSQL实战</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="privilege.html">4.1.3. 权限提升</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="privilege.html#udf">4.1.3.1. UDF提权</a></li>
+<li class="toctree-l1"><a class="reference internal" href="privilege.html">4.1.4. 权限提升</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="privilege.html#udf">4.1.4.1. UDF提权</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="dbident.html">4.1.4. 数据库检测</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dbident.html#acess">4.1.4.1. acess</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dbident.html#mysql">4.1.4.2. MySQL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dbident.html#oracle">4.1.4.3. Oracle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dbident.html#sqlserver">4.1.4.4. SQLServer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dbident.html#postgresql">4.1.4.5. PostgreSQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbident.html">4.1.5. 数据库检测</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dbident.html#acess">4.1.5.1. acess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dbident.html#mysql">4.1.5.2. MySQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dbident.html#oracle">4.1.5.3. Oracle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dbident.html#sqlserver">4.1.5.4. SQLServer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dbident.html#postgresql">4.1.5.5. PostgreSQL</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="bypass.html">4.1.5. 绕过技巧</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tricks.html">4.1.6. SQL注入小技巧</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tricks.html#id1">4.1.6.1. 宽字节注入</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bypass.html">4.1.6. 绕过技巧</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tricks.html">4.1.7. SQL注入小技巧</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tricks.html#id1">4.1.7.1. 宽字节注入</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cheatsheet/index.html">4.1.7. CheatSheet</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cheatsheet/mssql.html">4.1.7.1. SQL Server Payload</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cheatsheet/mysql.html">4.1.7.2. MySQL Payload</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cheatsheet/psql.html">4.1.7.3. PostgresSQL Payload</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cheatsheet/oracle.html">4.1.7.4. Oracle Payload</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cheatsheet/sqlite3.html">4.1.7.5. SQLite3 Payload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet/index.html">4.1.8. CheatSheet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet/mssql.html">4.1.8.1. SQL Server Payload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet/mysql.html">4.1.8.2. MySQL Payload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet/psql.html">4.1.8.3. PostgresSQL Payload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet/oracle.html">4.1.8.4. Oracle Payload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet/sqlite3.html">4.1.8.5. SQLite3 Payload</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="precompile.html">4.1.8. 预编译</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="precompile.html#id2">4.1.8.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="precompile.html#id3">4.1.8.2. 模拟预编译</a></li>
-<li class="toctree-l2"><a class="reference internal" href="precompile.html#id4">4.1.8.3. 绕过</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompile.html">4.1.9. 预编译</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="precompile.html#id2">4.1.9.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precompile.html#id3">4.1.9.2. 模拟预编译</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precompile.html#id4">4.1.9.3. 绕过</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ref.html">4.1.9. 参考文章</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref.html">4.1.10. 参考文章</a></li>
 </ul>
 </div>
 </div>
@@ -259,7 +262,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="classify.html" class="btn btn-neutral float-right" title="4.1.1. 注入分类" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="reason.html" class="btn btn-neutral float-right" title="4.1.1. 产生原因" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-neutral float-left" title="4. 常见漏洞攻防" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -271,7 +274,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Lyle
+        &copy; Copyright 2019, Surreal
 
     </p>
   </div>

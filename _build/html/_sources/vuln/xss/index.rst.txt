@@ -7,11 +7,9 @@ XSS
 
    classify
    harm
-   sop
-   csp
+   security/index
    source
    sink
-   mitigation
    wafbypass
    trick/index
    payload

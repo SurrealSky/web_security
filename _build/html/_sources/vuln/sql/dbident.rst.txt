@@ -7,11 +7,13 @@ acess
 
 MySQL
 --------------------------------
-- sleep ``sleep(1)``
-- benchmark ``BENCHMARK(5000000, MD5('test'))``
+- sleep 
+	- ``sleep(1)``
+- benchmark
+	- ``BENCHMARK(5000000, MD5('test'))``
 - 字符串连接
 	- ``select 'ab'='a' 'b'``
-    - ``select 'ab'=CONCAT('a','b')``
+	- ``select 'ab'=CONCAT('a','b')``
 - version 
     - ``SELECT @@version``
     - ``SELECT version()``
@@ -33,19 +35,23 @@ Oracle
 
 SQLServer
 --------------------------------
-- WAITFOR ``WAITFOR DELAY '00:00:10';``
-- SERVERNAME ``SELECT @@SERVERNAME``
-- version ``SELECT @@version``
+- WAITFOR 
+	- ``WAITFOR DELAY '00:00:10';``
+- SERVERNAME
+	- ``SELECT @@SERVERNAME``
+- version
+	- ``SELECT @@version``
 - 字符串连接
 	- ``select 'a'+'b'='ab'``
 - 常量
     - ``@@pack_received``
     - ``@@rowcount``
-- ``and exists (select * from sysobjects ) > 0``
+- other
+	- ``and exists (select * from sysobjects ) > 0``
 
 PostgreSQL
 --------------------------------
-- sleep ``pg_sleep(1)``
+- ``pg_sleep(1)``
 - ``select version()``
 - ``select 'ab'='a'||'b'``
 - ``select 'ab'=CONCAT('a','b')``

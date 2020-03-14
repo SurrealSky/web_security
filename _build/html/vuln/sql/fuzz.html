@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.1.2. 注入检测 &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.1.3. 注入方法 &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.1.3. 权限提升" href="privilege.html" />
-    <link rel="prev" title="4.1.1. 注入分类" href="classify.html" /> 
+    <link rel="next" title="4.1.4. 权限提升" href="privilege.html" />
+    <link rel="prev" title="4.1.2. 注入分类" href="classify.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,26 +91,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. 常见漏洞攻防</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">4.1. SQL注入</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="classify.html">4.1.1. 注入分类</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.2. 注入检测</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">4.1.2.1. 常见的注入点</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fuzz">4.1.2.2. Fuzz注入点</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">4.1.2.3. 测试列数</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">4.1.2.4. 堆叠注入</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">4.1.2.5. 注释符</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">4.1.2.6. 判断过滤规则</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">4.1.2.7. 获取信息</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id8">4.1.2.8. 测试权限</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mysql">4.1.2.9. MYSQL实战</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reason.html">4.1.1. 产生原因</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classify.html">4.1.2. 注入分类</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.3. 注入方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.1.3.1. 常见的注入点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fuzz">4.1.3.2. Fuzz注入点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.1.3.3. 测试列数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.1.3.4. 堆叠注入</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.1.3.5. 注释符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">4.1.3.6. 判断过滤规则</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">4.1.3.7. 获取信息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">4.1.3.8. 测试权限</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mysql">4.1.3.9. MYSQL实战</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.3. 权限提升</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dbident.html">4.1.4. 数据库检测</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.5. 绕过技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tricks.html">4.1.6. SQL注入小技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cheatsheet/index.html">4.1.7. CheatSheet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="precompile.html">4.1.8. 预编译</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ref.html">4.1.9. 参考文章</a></li>
+<li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.4. 权限提升</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dbident.html">4.1.5. 数据库检测</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.6. 绕过技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tricks.html">4.1.7. SQL注入小技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cheatsheet/index.html">4.1.8. CheatSheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="precompile.html">4.1.9. 预编译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">4.1.10. 参考文章</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../xss/index.html">4.2. XSS</a></li>
@@ -187,7 +188,7 @@
         
           <li><a href="index.html"><span class="section-number">4.1. </span>SQL注入</a> &raquo;</li>
         
-      <li><span class="section-number">4.1.2. </span>注入检测</li>
+      <li><span class="section-number">4.1.3. </span>注入方法</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -207,9 +208,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><span class="section-number">4.1.2. </span>注入检测<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.1.3. </span>注入方法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id2">
-<h2><span class="section-number">4.1.2.1. </span>常见的注入点<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.1. </span>常见的注入点<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>GET/POST/PUT/DELETE参数(查询字符串，表单)</p></li>
 <li><p>X-Forwarded-For</p></li>
@@ -218,7 +219,7 @@
 </ul>
 </div>
 <div class="section" id="fuzz">
-<h2><span class="section-number">4.1.2.2. </span>Fuzz注入点<a class="headerlink" href="#fuzz" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.2. </span>Fuzz注入点<a class="headerlink" href="#fuzz" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">'</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1/1</span></code></p></li>
@@ -238,22 +239,22 @@
 </ul>
 </div>
 <div class="section" id="id3">
-<h2><span class="section-number">4.1.2.3. </span>测试列数<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.3. </span>测试列数<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">http://www.foo.com/index.asp?id=12+union+select+null,null--</span></code> ，不断增加 <code class="docutils literal notranslate"><span class="pre">null</span></code> 至不返回</p>
 </div>
 <div class="section" id="id4">
-<h2><span class="section-number">4.1.2.4. </span>堆叠注入<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.4. </span>堆叠注入<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">;select</span> <span class="pre">1</span></code></p>
 </div>
 <div class="section" id="id5">
-<h2><span class="section-number">4.1.2.5. </span>注释符<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.5. </span>注释符<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>MYSQL：<code class="docutils literal notranslate"><span class="pre">#(单行注释)</span></code> , <code class="docutils literal notranslate"><span class="pre">--+(单行注释)</span></code> , <code class="docutils literal notranslate"><span class="pre">/*...*/(多行注释)</span></code></p></li>
 <li><p>ORACLE: <code class="docutils literal notranslate"><span class="pre">--(单行注释)</span></code> , <code class="docutils literal notranslate"><span class="pre">/*...*/(多行注释)</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="id6">
-<h2><span class="section-number">4.1.2.6. </span>判断过滤规则<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.6. </span>判断过滤规则<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>是否有trunc</p></li>
 <li><p>是否过滤某个字符</p></li>
@@ -262,7 +263,7 @@
 </ul>
 </div>
 <div class="section" id="id7">
-<h2><span class="section-number">4.1.2.7. </span>获取信息<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.7. </span>获取信息<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>判断数据库表是否存在</dt><dd><p><code class="docutils literal notranslate"><span class="pre">and</span> <span class="pre">exsits</span> <span class="pre">(select</span> <span class="pre">*</span> <span class="pre">from</span> <span class="pre">admin)</span></code> MySQL
@@ -290,7 +291,7 @@
 </ul>
 </div>
 <div class="section" id="id8">
-<h2><span class="section-number">4.1.2.8. </span>测试权限<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.8. </span>测试权限<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>文件操作</dt><dd><ul>
@@ -310,7 +311,7 @@
 </ul>
 </div>
 <div class="section" id="mysql">
-<h2><span class="section-number">4.1.2.9. </span>MYSQL实战<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.3.9. </span>MYSQL实战<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><dl>
 <dt>查询数据库</dt><dd><p><code class="docutils literal notranslate"><span class="pre">http://192.168.42.129/dvwa/vulnerabilities/sqli/?id=1'</span> <span class="pre">union</span> <span class="pre">select</span> <span class="pre">null,schema_name</span> <span class="pre">from</span> <span class="pre">information_schema.schemata--+&amp;Submit=Submit#</span></code></p>
@@ -428,10 +429,10 @@ Surname: dvwa``
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="privilege.html" class="btn btn-neutral float-right" title="4.1.3. 权限提升" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="privilege.html" class="btn btn-neutral float-right" title="4.1.4. 权限提升" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="classify.html" class="btn btn-neutral float-left" title="4.1.1. 注入分类" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="classify.html" class="btn btn-neutral float-left" title="4.1.2. 注入分类" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -440,7 +441,7 @@ Surname: dvwa``
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Lyle
+        &copy; Copyright 2019, Surreal
 
     </p>
   </div>

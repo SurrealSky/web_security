@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.2.6. Sink &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.2.5. Sink &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.2.7. XSS保护" href="mitigation.html" />
-    <link rel="prev" title="4.2.5. XSS数据源" href="source.html" /> 
+    <link rel="next" title="4.2.6. WAF Bypass" href="wafbypass.html" />
+    <link rel="prev" title="4.2.4. XSS数据源" href="source.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,21 +94,20 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">4.2. XSS</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="classify.html">4.2.1. 分类</a></li>
 <li class="toctree-l3"><a class="reference internal" href="harm.html">4.2.2. 危害</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sop.html">4.2.3. 同源策略</a></li>
-<li class="toctree-l3"><a class="reference internal" href="csp.html">4.2.4. CSP</a></li>
-<li class="toctree-l3"><a class="reference internal" href="source.html">4.2.5. XSS数据源</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">4.2.6. Sink</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#javascript">4.2.6.1. 执行JavaScript</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#url">4.2.6.2. 加载URL</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#html">4.2.6.3. 执行HTML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/index.html">4.2.3. 安全防护</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source.html">4.2.4. XSS数据源</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.2.5. Sink</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.2.5.1. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#javascript">4.2.5.2. 执行JavaScript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#url">4.2.5.3. 加载URL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#html">4.2.5.4. 执行HTML</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="mitigation.html">4.2.7. XSS保护</a></li>
-<li class="toctree-l3"><a class="reference internal" href="wafbypass.html">4.2.8. WAF Bypass</a></li>
-<li class="toctree-l3"><a class="reference internal" href="trick/index.html">4.2.9. 技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="payload.html">4.2.10. Payload</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rootkit.html">4.2.11. 持久化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ref.html">4.2.12. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wafbypass.html">4.2.6. WAF Bypass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trick/index.html">4.2.7. 技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="payload.html">4.2.8. Payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rootkit.html">4.2.9. 持久化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">4.2.10. 参考链接</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../csrf.html">4.3. CSRF</a></li>
@@ -184,7 +183,7 @@
         
           <li><a href="index.html"><span class="section-number">4.2. </span>XSS</a> &raquo;</li>
         
-      <li><span class="section-number">4.2.6. </span>Sink</li>
+      <li><span class="section-number">4.2.5. </span>Sink</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -204,9 +203,13 @@
            <div itemprop="articleBody">
             
   <div class="section" id="sink">
-<h1><span class="section-number">4.2.6. </span>Sink<a class="headerlink" href="#sink" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.2.5. </span>Sink<a class="headerlink" href="#sink" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">4.2.5.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>即可能导致漏洞的潜在危险方法</p>
+</div>
 <div class="section" id="javascript">
-<h2><span class="section-number">4.2.6.1. </span>执行JavaScript<a class="headerlink" href="#javascript" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.5.2. </span>执行JavaScript<a class="headerlink" href="#javascript" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">eval(payload)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">setTimeout(payload,</span> <span class="pre">100)</span></code></p></li>
@@ -217,7 +220,7 @@
 </ul>
 </div>
 <div class="section" id="url">
-<h2><span class="section-number">4.2.6.2. </span>加载URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.5.3. </span>加载URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">location=javascript:alert(/xss/)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">location.href=javascript:alert(/xss/)</span></code></p></li>
@@ -226,7 +229,7 @@
 </ul>
 </div>
 <div class="section" id="html">
-<h2><span class="section-number">4.2.6.3. </span>执行HTML<a class="headerlink" href="#html" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.5.4. </span>执行HTML<a class="headerlink" href="#html" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">xx.innerHTML=payload</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">xx.outerHTML=payload</span></code></p></li>
@@ -244,10 +247,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mitigation.html" class="btn btn-neutral float-right" title="4.2.7. XSS保护" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="wafbypass.html" class="btn btn-neutral float-right" title="4.2.6. WAF Bypass" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="source.html" class="btn btn-neutral float-left" title="4.2.5. XSS数据源" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="source.html" class="btn btn-neutral float-left" title="4.2.4. XSS数据源" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -256,7 +259,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Lyle
+        &copy; Copyright 2019, Surreal
 
     </p>
   </div>

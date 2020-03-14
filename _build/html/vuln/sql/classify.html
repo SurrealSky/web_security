@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.1.1. 注入分类 &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.1.2. 注入分类 &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.1.2. 注入检测" href="fuzz.html" />
-    <link rel="prev" title="4.1. SQL注入" href="index.html" /> 
+    <link rel="next" title="4.1.3. 注入方法" href="fuzz.html" />
+    <link rel="prev" title="4.1.1. 产生原因" href="reason.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,19 +91,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. 常见漏洞攻防</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">4.1. SQL注入</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.1. 注入分类</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">4.1.1.1. 按技巧分类</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">4.1.1.2. 按获取数据的方式分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reason.html">4.1.1. 产生原因</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.2. 注入分类</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.1.2.1. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.1.2.2. 按技巧分类</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.1.2.3. 按获取数据的方式分类</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="fuzz.html">4.1.2. 注入检测</a></li>
-<li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.3. 权限提升</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dbident.html">4.1.4. 数据库检测</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.5. 绕过技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tricks.html">4.1.6. SQL注入小技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cheatsheet/index.html">4.1.7. CheatSheet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="precompile.html">4.1.8. 预编译</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ref.html">4.1.9. 参考文章</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzz.html">4.1.3. 注入方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="privilege.html">4.1.4. 权限提升</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dbident.html">4.1.5. 数据库检测</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bypass.html">4.1.6. 绕过技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tricks.html">4.1.7. SQL注入小技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cheatsheet/index.html">4.1.8. CheatSheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="precompile.html">4.1.9. 预编译</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">4.1.10. 参考文章</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../xss/index.html">4.2. XSS</a></li>
@@ -180,7 +182,7 @@
         
           <li><a href="index.html"><span class="section-number">4.1. </span>SQL注入</a> &raquo;</li>
         
-      <li><span class="section-number">4.1.1. </span>注入分类</li>
+      <li><span class="section-number">4.1.2. </span>注入分类</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -200,11 +202,13 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><span class="section-number">4.1.1. </span>注入分类<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
-<p>SQL注入是一种代码注入技术，用于攻击数据驱动的应用程序。
-在应用程序中，如果没有做恰当的过滤，则可能使得恶意的SQL语句被插入输入字段中执行（例如将数据库内容转储给攻击者）。</p>
+<h1><span class="section-number">4.1.2. </span>注入分类<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id2">
-<h2><span class="section-number">4.1.1.1. </span>按技巧分类<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.2.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>SQL注入是一种代码注入技术，用于攻击数据驱动的应用程序。</p>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">4.1.2.2. </span>按技巧分类<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>根据使用的技巧，SQL注入类型可分为</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -220,8 +224,8 @@
 <li><p>其他</p></li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2><span class="section-number">4.1.1.2. </span>按获取数据的方式分类<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2><span class="section-number">4.1.2.3. </span>按获取数据的方式分类<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>另外也可以根据获取数据的方式分为3类</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -262,10 +266,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="fuzz.html" class="btn btn-neutral float-right" title="4.1.2. 注入检测" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="fuzz.html" class="btn btn-neutral float-right" title="4.1.3. 注入方法" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="4.1. SQL注入" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="reason.html" class="btn btn-neutral float-left" title="4.1.1. 产生原因" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -274,7 +278,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Lyle
+        &copy; Copyright 2019, Surreal
 
     </p>
   </div>
