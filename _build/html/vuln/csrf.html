@@ -100,8 +100,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#xmlhttprequest">4.3.2.3. XMLHttpRequest</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">4.3.3. 防御</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">4.3.4. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.3.3. 攻击原理及过程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4.3.4. 防御</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4.3.5. 参考链接</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
@@ -198,6 +199,20 @@
 <div class="section" id="id1">
 <h2><span class="section-number">4.3.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>CSRF（Cross-site request forgery）跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF，是一种对网站的恶意利用。尽管听起来像跨站脚本（XSS），但它与XSS非常不同，XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    CSRF漏洞一般分为站外和站内两种类型。
+    CSRF站外类型的漏洞本质上就是传统意义上的外部提交数据问题。通常程序员会考虑给一些留言或者评论的表单
+加上水印以防止SPAM问题（这里，SPAM可以简单的理解为垃圾留言、垃圾评论，或者是带有站外链接的恶意回复），
+但是有时为了提高用户的体验性，可能没有对一些操作做任何限制，所以攻击者可以事先预测并设置请求的参数，在
+站外的Web页面里编写脚本伪造文件请求，或者和自动提交的表单一起使用来实现GET、POST请求，当用户在会话状态
+下点击链接访问站外Web页面，客户端就被强迫发起请求。
+    CSRF站内类型的漏洞在一定程度上是由于程序员滥用类变量造成的。在一些敏感的操作中（如修改密码、添加用
+户等），本来要求用户从表单提交发起请求传递参数给程序，但是由于使用了REQUEST类变量造成的。在一些敏感的
+操作中（如修改密码、添加用户等），本来要求用户从表单提交发起POST请求传递参数给程序，但是由于使用了_REQ
+UEST等变量，程序除支持接收POST请求传递的参数外也支持接收GET请求传递的参数，这样就会为攻击者使用CSRF攻击
+创造条件。一般攻击者只要把预测的请求参数放在站内一个贴子或者留言的图片链接里，受害者浏览了这样的页面就
+会被强迫发起这些请求。
+</pre></div>
+</div>
 </div>
 <div class="section" id="id2">
 <h2><span class="section-number">4.3.2. </span>分类<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
@@ -221,7 +236,20 @@
 </div>
 </div>
 <div class="section" id="id5">
-<h2><span class="section-number">4.3.3. </span>防御<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3.3. </span>攻击原理及过程<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p><img alt="csrf" src="../_images/csrf.jpg" /></p>
+</div></blockquote>
+<ul class="simple">
+<li><p>用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；</p></li>
+<li><p>在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；</p></li>
+<li><p>用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；</p></li>
+<li><p>网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；</p></li>
+<li><p>浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。</p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2><span class="section-number">4.3.4. </span>防御<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>通过CSRF-token或者验证码来检测用户提交</p></li>
 <li><p>验证Referer/Content-Type</p></li>
@@ -229,8 +257,8 @@
 <li><p>避免全站通用的cookie，严格设置cookie的域</p></li>
 </ul>
 </div>
-<div class="section" id="id6">
-<h2><span class="section-number">4.3.4. </span>参考链接<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h2><span class="section-number">4.3.5. </span>参考链接<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.github.com/jrozner/csrf-demo">demo</a></p></li>
 <li><p><a class="reference external" href="https://medium.com/&#64;jrozner/wiping-out-csrf-ded97ae7e83f">Wiping Out CSRF</a></p></li>
