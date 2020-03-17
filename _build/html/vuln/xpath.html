@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.12. Xpath注入 &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.13. Xpath注入 &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.13. 逻辑漏洞 / 业务漏洞" href="logic.html" />
-    <link rel="prev" title="4.11. 模版注入" href="ssti.html" /> 
+    <link rel="next" title="4.14. 逻辑漏洞 / 业务漏洞" href="logic.html" />
+    <link rel="prev" title="4.12. 模版注入" href="ssti.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,27 +90,28 @@
 <li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.12. Xpath注入</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">4.12.1. Xpath定义</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">4.12.2. Xpath注入攻击原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.3. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.4. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.6. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.9. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.10. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.11. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.13. Xpath注入</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.13.1. Xpath定义</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.13.2. Xpath注入攻击原理</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.14. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.16. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
@@ -167,7 +168,7 @@
         
           <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-      <li><span class="section-number">4.12. </span>Xpath注入</li>
+      <li><span class="section-number">4.13. </span>Xpath注入</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -187,13 +188,13 @@
            <div itemprop="articleBody">
             
   <div class="section" id="xpath">
-<h1><span class="section-number">4.12. </span>Xpath注入<a class="headerlink" href="#xpath" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.13. </span>Xpath注入<a class="headerlink" href="#xpath" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2><span class="section-number">4.12.1. </span>Xpath定义<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.13.1. </span>Xpath定义<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>XPath注入攻击是指利用XPath解析器的松散输入和容错特性，能够在 URL、表单或其它信息上附带恶意的XPath 查询代码，以获得权限信息的访问权并更改这些信息。XPath注入攻击是针对Web服务应用新的攻击方法，它允许攻击者在事先不知道XPath查询相关知识的情况下，通过XPath查询得到一个XML文档的完整内容。</p>
 </div>
 <div class="section" id="id2">
-<h2><span class="section-number">4.12.2. </span>Xpath注入攻击原理<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.13.2. </span>Xpath注入攻击原理<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p>XPath注入攻击主要是通过构建特殊的输入，这些输入往往是XPath语法中的一些组合，这些输入将作为参数传入Web 应用程序，通过执行XPath查询而执行入侵者想要的操作，下面以登录验证中的模块为例，说明 XPath注入攻击的实现原理。</p>
 </div></blockquote>
@@ -228,10 +229,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="logic.html" class="btn btn-neutral float-right" title="4.13. 逻辑漏洞 / 业务漏洞" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="logic.html" class="btn btn-neutral float-right" title="4.14. 逻辑漏洞 / 业务漏洞" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ssti.html" class="btn btn-neutral float-left" title="4.11. 模版注入" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ssti.html" class="btn btn-neutral float-left" title="4.12. 模版注入" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

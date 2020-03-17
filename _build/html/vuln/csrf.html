@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.3. CSRF &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.4. CSRF &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.4. SSRF" href="ssrf.html" />
-    <link rel="prev" title="4.2.10. 参考链接" href="xss/ref.html" /> 
+    <link rel="next" title="4.5. SSRF" href="ssrf.html" />
+    <link rel="prev" title="4.3.10. 参考链接" href="xss/ref.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,35 +90,36 @@
 <li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. CSRF</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">4.3.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">4.3.2. 分类</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id3">4.3.2.1. 资源包含</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">4.3.2.2. 基于表单</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#xmlhttprequest">4.3.2.3. XMLHttpRequest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.3. XSS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. CSRF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.4.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.4.2. 分类</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.4.2.1. 资源包含</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.4.2.2. 基于表单</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xmlhttprequest">4.4.2.3. XMLHttpRequest</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">4.3.3. 攻击原理及过程</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">4.3.4. 防御</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">4.3.5. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.4.3. 攻击原理及过程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4.4.4. 防御</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4.4.5. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.6. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.9. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.10. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.11. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.13. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.14. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.16. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
@@ -175,7 +176,7 @@
         
           <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-      <li><span class="section-number">4.3. </span>CSRF</li>
+      <li><span class="section-number">4.4. </span>CSRF</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -195,9 +196,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="csrf">
-<h1><span class="section-number">4.3. </span>CSRF<a class="headerlink" href="#csrf" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.4. </span>CSRF<a class="headerlink" href="#csrf" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2><span class="section-number">4.3.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>CSRF（Cross-site request forgery）跨站请求伪造，也被称为“One Click Attack”或者Session Riding，通常缩写为CSRF，是一种对网站的恶意利用。尽管听起来像跨站脚本（XSS），但它与XSS非常不同，XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    CSRF漏洞一般分为站外和站内两种类型。
     CSRF站外类型的漏洞本质上就是传统意义上的外部提交数据问题。通常程序员会考虑给一些留言或者评论的表单
@@ -215,20 +216,20 @@ UEST等变量，程序除支持接收POST请求传递的参数外也支持接收
 </div>
 </div>
 <div class="section" id="id2">
-<h2><span class="section-number">4.3.2. </span>分类<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.2. </span>分类<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id3">
-<h3><span class="section-number">4.3.2.1. </span>资源包含<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.4.2.1. </span>资源包含<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>资源包含是在大多数介绍CSRF概念的演示或基础课程中可能看到的类型。这种类型归结为控制HTML标签（例如&lt;image&gt;、&lt;audio&gt;、&lt;video&gt;、&lt;object&gt;、&lt;script&gt;等）所包含的资源的攻击者。如果攻击者能够影响URL被加载的话，包含远程资源的任何标签都可以完成攻击。</p>
 <p>由于缺少对Cookie的源点检查，如上所述，此攻击不需要XSS，可以由任何攻击者控制的站点或站点本身执行。此类型仅限于GET请求，因为这些是浏览器对资源URL唯一的请求类型。这种类型的主要限制是它需要错误地使用安全的HTTP请求方式。</p>
 </div>
 <div class="section" id="id4">
-<h3><span class="section-number">4.3.2.2. </span>基于表单<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.4.2.2. </span>基于表单<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>通常在正确使用安全的请求方式时看到。攻击者创建一个想要受害者提交的表单; 其包含一个JavaScript片段，强制受害者的浏览器提交。</p>
 <p>该表单可以完全由隐藏的元素组成，以致受害者很难发现它。</p>
 <p>如果处理cookies不当，攻击者可以在任何站点上发动攻击，只要受害者使用有效的cookie登录，攻击就会成功。如果请求是有目的性的，成功的攻击将使受害者回到他们平时正常的页面。该方法对于攻击者可以将受害者指向特定页面的网络钓鱼攻击特别有效。</p>
 </div>
 <div class="section" id="xmlhttprequest">
-<h3><span class="section-number">4.3.2.3. </span>XMLHttpRequest<a class="headerlink" href="#xmlhttprequest" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.4.2.3. </span>XMLHttpRequest<a class="headerlink" href="#xmlhttprequest" title="Permalink to this headline">¶</a></h3>
 <p>这可能是最少看到的方式。</p>
 <p>由于许多现代Web应用程序依赖XHR，许多应用花费大量的时间来构建和实现这一特定的对策。</p>
 <p>基于XHR的CSRF通常由于SOP而以XSS有效载荷的形式出现。没有跨域资源共享策略（CORS），XHR仅限于攻击者托管自己的有效载荷的原始请求。</p>
@@ -236,7 +237,7 @@ UEST等变量，程序除支持接收POST请求传递的参数外也支持接收
 </div>
 </div>
 <div class="section" id="id5">
-<h2><span class="section-number">4.3.3. </span>攻击原理及过程<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.3. </span>攻击原理及过程<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p><img alt="csrf" src="../_images/csrf.jpg" /></p>
 </div></blockquote>
@@ -249,7 +250,7 @@ UEST等变量，程序除支持接收POST请求传递的参数外也支持接收
 </ul>
 </div>
 <div class="section" id="id6">
-<h2><span class="section-number">4.3.4. </span>防御<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.4. </span>防御<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>通过CSRF-token或者验证码来检测用户提交</p></li>
 <li><p>验证Referer/Content-Type</p></li>
@@ -258,7 +259,7 @@ UEST等变量，程序除支持接收POST请求传递的参数外也支持接收
 </ul>
 </div>
 <div class="section" id="id7">
-<h2><span class="section-number">4.3.5. </span>参考链接<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.5. </span>参考链接<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.github.com/jrozner/csrf-demo">demo</a></p></li>
 <li><p><a class="reference external" href="https://medium.com/&#64;jrozner/wiping-out-csrf-ded97ae7e83f">Wiping Out CSRF</a></p></li>
@@ -275,10 +276,10 @@ UEST等变量，程序除支持接收POST请求传递的参数外也支持接收
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ssrf.html" class="btn btn-neutral float-right" title="4.4. SSRF" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ssrf.html" class="btn btn-neutral float-right" title="4.5. SSRF" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="xss/ref.html" class="btn btn-neutral float-left" title="4.2.10. 参考链接" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="xss/ref.html" class="btn btn-neutral float-left" title="4.3.10. 参考链接" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

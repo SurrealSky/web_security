@@ -1,2 +1,7 @@
 # web_security
- 编辑CSRF
+SQL注入
+XSS
+CSRF
+文件上传
+文件包含
+owasp10

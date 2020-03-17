@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.2. XSS &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.3. XSS &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.2.1. 分类" href="classify.html" />
-    <link rel="prev" title="4.1.9. 参考文章" href="../sql/ref.html" /> 
+    <link rel="next" title="4.3.1. 分类" href="classify.html" />
+    <link rel="prev" title="4.2.10. 参考文章" href="../sql/ref.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,35 +90,36 @@
 <li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. XSS</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="classify.html">4.2.1. 分类</a></li>
-<li class="toctree-l3"><a class="reference internal" href="harm.html">4.2.2. 危害</a></li>
-<li class="toctree-l3"><a class="reference internal" href="security/index.html">4.2.3. 安全防护</a></li>
-<li class="toctree-l3"><a class="reference internal" href="source.html">4.2.4. XSS数据源</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sink.html">4.2.5. Sink</a></li>
-<li class="toctree-l3"><a class="reference internal" href="wafbypass.html">4.2.6. WAF Bypass</a></li>
-<li class="toctree-l3"><a class="reference internal" href="trick/index.html">4.2.7. 技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="payload.html">4.2.8. Payload</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rootkit.html">4.2.9. 持久化</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ref.html">4.2.10. 参考链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. XSS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classify.html">4.3.1. 分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="harm.html">4.3.2. 危害</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/index.html">4.3.3. 安全防护</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source.html">4.3.4. XSS数据源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sink.html">4.3.5. Sink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wafbypass.html">4.3.6. WAF Bypass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trick/index.html">4.3.7. 技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="payload.html">4.3.8. Payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rootkit.html">4.3.9. 持久化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ref.html">4.3.10. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../csrf.html">4.3. CSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cmdinjection.html">4.5. 命令注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../fileupload.html">4.8. 文件上传</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../fileinclude.html">4.9. 文件包含</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../xxe.html">4.10. XXE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../xpath.html">4.12. Xpath注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../middleware/index.html">4.15. 中间件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../csrf.html">4.4. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmdinjection.html">4.6. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileupload.html">4.9. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileinclude.html">4.10. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xxe.html">4.11. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xpath.html">4.13. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logic.html">4.14. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../middleware/index.html">4.16. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../language/index.html">5. 语言与框架</a></li>
@@ -175,7 +176,7 @@
         
           <li><a href="../index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-      <li><span class="section-number">4.2. </span>XSS</li>
+      <li><span class="section-number">4.3. </span>XSS</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -195,79 +196,79 @@
            <div itemprop="articleBody">
             
   <div class="section" id="xss">
-<h1><span class="section-number">4.2. </span>XSS<a class="headerlink" href="#xss" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.3. </span>XSS<a class="headerlink" href="#xss" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">内容索引:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="classify.html">4.2.1. 分类</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="classify.html#xss">4.2.1.1. 反射型XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="classify.html#id2">4.2.1.2. 存储型XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="classify.html#dom-xss">4.2.1.3. DOM XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="classify.html#blind-xss">4.2.1.4. Blind XSS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify.html">4.3.1. 分类</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#xss">4.3.1.1. 反射型XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#id2">4.3.1.2. 存储型XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#dom-xss">4.3.1.3. DOM XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#blind-xss">4.3.1.4. Blind XSS</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="harm.html">4.2.2. 危害</a></li>
-<li class="toctree-l1"><a class="reference internal" href="security/index.html">4.2.3. 安全防护</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="security/explorer.html">4.2.3.1. 沙箱</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security/sop.html">4.2.3.2. 同源策略</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security/csp.html">4.2.3.3. CSP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="security/mitigation.html">4.2.3.4. XSS保护</a></li>
+<li class="toctree-l1"><a class="reference internal" href="harm.html">4.3.2. 危害</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security/index.html">4.3.3. 安全防护</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security/explorer.html">4.3.3.1. 沙箱</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/sop.html">4.3.3.2. 同源策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/csp.html">4.3.3.3. CSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/mitigation.html">4.3.3.4. XSS保护</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="source.html">4.2.4. XSS数据源</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="source.html#url">4.2.4.1. URL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source.html#navigation">4.2.4.2. Navigation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source.html#communication">4.2.4.3. Communication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source.html#storage">4.2.4.4. Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source.html">4.3.4. XSS数据源</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="source.html#url">4.3.4.1. URL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html#navigation">4.3.4.2. Navigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html#communication">4.3.4.3. Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html#storage">4.3.4.4. Storage</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="sink.html">4.2.5. Sink</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="sink.html#id1">4.2.5.1. 简介</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sink.html#javascript">4.2.5.2. 执行JavaScript</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sink.html#url">4.2.5.3. 加载URL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sink.html#html">4.2.5.4. 执行HTML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sink.html">4.3.5. Sink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sink.html#id1">4.3.5.1. 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink.html#javascript">4.3.5.2. 执行JavaScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink.html#url">4.3.5.3. 加载URL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink.html#html">4.3.5.4. 执行HTML</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="wafbypass.html">4.2.6. WAF Bypass</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trick/index.html">4.2.7. 技巧</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="trick/httponly.html">4.2.7.1. httponly</a></li>
-<li class="toctree-l2"><a class="reference internal" href="trick/cssi.html">4.2.7.2. CSS 注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="trick/gadget.html">4.2.7.3. Bypass Via Script Gadgets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="trick/jsfuck.html">4.2.7.4. jsfuck cheat sheet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="trick/rpo.html">4.2.7.5. RPO(Relative Path Overwrite)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wafbypass.html">4.3.6. WAF Bypass</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trick/index.html">4.3.7. 技巧</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="trick/httponly.html">4.3.7.1. httponly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trick/cssi.html">4.3.7.2. CSS 注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trick/gadget.html">4.3.7.3. Bypass Via Script Gadgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trick/jsfuck.html">4.3.7.4. jsfuck cheat sheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trick/rpo.html">4.3.7.5. RPO(Relative Path Overwrite)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="payload.html">4.2.8. Payload</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#id1">4.2.8.1. 常用</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#id2">4.2.8.2. 大小写绕过</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#alert">4.2.8.3. 各种alert</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#id3">4.2.8.4. 伪协议</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#chrome-xss-auditor-bypass">4.2.8.5. Chrome XSS auditor bypass</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#id4">4.2.8.6. 长度限制</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#jquery-sourcemappingurl">4.2.8.7. jquery sourceMappingURL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#id5">4.2.8.8. 图片名</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#id6">4.2.8.9. 过期的payload</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#css">4.2.8.10. css</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#markdown">4.2.8.11. markdown</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#iframe">4.2.8.12. iframe</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#form">4.2.8.13. form</a></li>
-<li class="toctree-l2"><a class="reference internal" href="payload.html#meta">4.2.8.14. meta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="payload.html">4.3.8. Payload</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#id1">4.3.8.1. 常用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#id2">4.3.8.2. 大小写绕过</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#alert">4.3.8.3. 各种alert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#id3">4.3.8.4. 伪协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#chrome-xss-auditor-bypass">4.3.8.5. Chrome XSS auditor bypass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#id4">4.3.8.6. 长度限制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#jquery-sourcemappingurl">4.3.8.7. jquery sourceMappingURL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#id5">4.3.8.8. 图片名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#id6">4.3.8.9. 过期的payload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#css">4.3.8.10. css</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#markdown">4.3.8.11. markdown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#iframe">4.3.8.12. iframe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#form">4.3.8.13. form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="payload.html#meta">4.3.8.14. meta</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="rootkit.html">4.2.9. 持久化</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rootkit.html#id2">4.2.9.1. 基于存储</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rootkit.html#service-worker">4.2.9.2. Service Worker</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rootkit.html#appcache">4.2.9.3. AppCache</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rootkit.html">4.3.9. 持久化</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rootkit.html#id2">4.3.9.1. 基于存储</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rootkit.html#service-worker">4.3.9.2. Service Worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rootkit.html#appcache">4.3.9.3. AppCache</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ref.html">4.2.10. 参考链接</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ref.html#wiki">4.2.10.1. wiki</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ref.html#challenges">4.2.10.2. Challenges</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ref.html#css">4.2.10.3. CSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ref.html#id3">4.2.10.4. 同源策略</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ref.html#bypass">4.2.10.5. bypass</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ref.html#id4">4.2.10.6. 持久化</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ref.html#tricks">4.2.10.7. Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref.html">4.3.10. 参考链接</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ref.html#wiki">4.3.10.1. wiki</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html#challenges">4.3.10.2. Challenges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html#css">4.3.10.3. CSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html#id3">4.3.10.4. 同源策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html#bypass">4.3.10.5. bypass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html#id4">4.3.10.6. 持久化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref.html#tricks">4.3.10.7. Tricks</a></li>
 </ul>
 </li>
 </ul>
@@ -282,10 +283,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="classify.html" class="btn btn-neutral float-right" title="4.2.1. 分类" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="classify.html" class="btn btn-neutral float-right" title="4.3.1. 分类" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../sql/ref.html" class="btn btn-neutral float-left" title="4.1.9. 参考文章" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../sql/ref.html" class="btn btn-neutral float-left" title="4.2.10. 参考文章" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

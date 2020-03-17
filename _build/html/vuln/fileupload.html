@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.8. 文件上传 &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.9. 文件上传 &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.9. 文件包含" href="fileinclude.html" />
-    <link rel="prev" title="4.7. 文件读取" href="fileread.html" /> 
+    <link rel="next" title="4.10. 文件包含" href="fileinclude.html" />
+    <link rel="prev" title="4.8. 文件读取" href="fileread.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,46 +90,47 @@
 <li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.8. 文件上传</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">4.8.1. 检测方法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">4.8.2. 攻击流程</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">4.8.3. 检测绕过</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id5">4.8.3.1. 更改请求绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">4.8.3.2. 服务端目录路径检测</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">4.8.3.3. 服务端文件扩展名检测</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id8">4.8.3.4. 文件内容检测</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">4.8.3.5. 后缀配置错误</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id10">4.8.3.6. 系统命名绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#user-ini">4.8.3.7. .user.ini</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#waf">4.8.3.8. WAF绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id11">4.8.3.9. 竞争上传绕过</a></li>
+<li class="toctree-l2"><a class="reference internal" href="owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.3. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.4. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.6. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.9. 文件上传</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.9.1. 检测方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.9.2. 攻击流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.9.3. 检测绕过</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.9.3.1. 更改请求绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">4.9.3.2. 服务端目录路径检测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">4.9.3.3. 服务端文件扩展名检测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">4.9.3.4. 文件内容检测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">4.9.3.5. 后缀配置错误</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">4.9.3.6. 系统命名绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-ini">4.9.3.7. .user.ini</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#waf">4.9.3.8. WAF绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">4.9.3.9. 竞争上传绕过</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">4.8.4. 攻击技巧</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#apachegetshell">4.8.4.1. Apache重写GetShell</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id13">4.8.4.2. 软链接任意读文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">4.9.4. 攻击技巧</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#apachegetshell">4.9.4.1. Apache重写GetShell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">4.9.4.2. 软链接任意读文件</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id14">4.8.5. 防护技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id15">4.8.6. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">4.9.5. 防护技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">4.9.6. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.10. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.11. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.13. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.14. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.16. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
@@ -186,7 +187,7 @@
         
           <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-      <li><span class="section-number">4.8. </span>文件上传</li>
+      <li><span class="section-number">4.9. </span>文件上传</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -206,24 +207,24 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><span class="section-number">4.8. </span>文件上传<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.9. </span>文件上传<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id2">
-<h2><span class="section-number">4.8.1. </span>检测方法<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.9.1. </span>检测方法<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p><img alt="fileupload" src="../_images/fileupload.jpg" /></p>
 </div></blockquote>
 </div>
 <div class="section" id="id3">
-<h2><span class="section-number">4.8.2. </span>攻击流程<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.9.2. </span>攻击流程<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p><img alt="fileuploadattack1" src="../_images/fileuploadattack1.jpg" />
 <img alt="fileuploadattack2" src="../_images/fileuploadattack2.jpg" /></p>
 </div></blockquote>
 </div>
 <div class="section" id="id4">
-<h2><span class="section-number">4.8.3. </span>检测绕过<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.9.3. </span>检测绕过<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id5">
-<h3><span class="section-number">4.8.3.1. </span>更改请求绕过<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.1. </span>更改请求绕过<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>客户端文件扩展名检测</p></li>
 </ul>
@@ -238,7 +239,7 @@
 </div>
 </div>
 <div class="section" id="id6">
-<h3><span class="section-number">4.8.3.2. </span>服务端目录路径检测<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.2. </span>服务端目录路径检测<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>00截断绕过</p></li>
 </ul>
@@ -251,7 +252,7 @@
 </div>
 </div>
 <div class="section" id="id7">
-<h3><span class="section-number">4.8.3.3. </span>服务端文件扩展名检测<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.3. </span>服务端文件扩展名检测<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>服务器文件扩展名检测一般有黑名单和白名单检测，白名单比黑名单的安全性高，攻击的手法较少。
 </pre></div>
 </div>
@@ -261,7 +262,7 @@
 </ul>
 </div>
 <div class="section" id="id8">
-<h3><span class="section-number">4.8.3.4. </span>文件内容检测<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.4. </span>文件内容检测<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><dl>
 <dt>文件头Magic检测绕过</dt><dd><p>有的站点使用文件头来检测文件类型，这种检查可以在Shell前加入对应的字节以绕过检查。几种常见的文件类型的头字节如下表所示</p>
@@ -320,23 +321,23 @@ http://www.secgeek.net/bookfresh-vulnerability/
 </ul>
 </div>
 <div class="section" id="id9">
-<h3><span class="section-number">4.8.3.5. </span>后缀配置错误<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.5. </span>后缀配置错误<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>php由于历史原因，部分解释器可能支持符合正则 <code class="docutils literal notranslate"><span class="pre">/ph(p[2-7]?|t(ml)?)/</span></code> 的后缀，如 <code class="docutils literal notranslate"><span class="pre">php</span></code> / <code class="docutils literal notranslate"><span class="pre">php5</span></code> / <code class="docutils literal notranslate"><span class="pre">pht</span></code> / <code class="docutils literal notranslate"><span class="pre">phtml</span></code> / <code class="docutils literal notranslate"><span class="pre">shtml</span></code> / <code class="docutils literal notranslate"><span class="pre">pwml</span></code> / <code class="docutils literal notranslate"><span class="pre">phtm</span></code> 等 可在禁止上传php文件时测试该类型。</p>
 <p>jsp引擎则可能会解析 <code class="docutils literal notranslate"><span class="pre">jspx</span></code> / <code class="docutils literal notranslate"><span class="pre">jspf</span></code> / <code class="docutils literal notranslate"><span class="pre">jspa</span></code> / <code class="docutils literal notranslate"><span class="pre">jsw</span></code> / <code class="docutils literal notranslate"><span class="pre">jsv</span></code> / <code class="docutils literal notranslate"><span class="pre">jtml</span></code> 等后缀，asp支持 <code class="docutils literal notranslate"><span class="pre">asa</span></code> / <code class="docutils literal notranslate"><span class="pre">asax</span></code> / <code class="docutils literal notranslate"><span class="pre">cer</span></code> / <code class="docutils literal notranslate"><span class="pre">cdx</span></code> / <code class="docutils literal notranslate"><span class="pre">aspx</span></code> / <code class="docutils literal notranslate"><span class="pre">ascx</span></code> / <code class="docutils literal notranslate"><span class="pre">ashx</span></code> / <code class="docutils literal notranslate"><span class="pre">asmx</span></code> / <code class="docutils literal notranslate"><span class="pre">asp{80-90}</span></code> 等后缀。</p>
 <p>除了这些绕过，其他的后缀同样可能带来问题，如 <code class="docutils literal notranslate"><span class="pre">vbs</span></code> / <code class="docutils literal notranslate"><span class="pre">asis</span></code> / <code class="docutils literal notranslate"><span class="pre">sh</span></code> / <code class="docutils literal notranslate"><span class="pre">reg</span></code> / <code class="docutils literal notranslate"><span class="pre">cgi</span></code> / <code class="docutils literal notranslate"><span class="pre">exe</span></code> / <code class="docutils literal notranslate"><span class="pre">dll</span></code> / <code class="docutils literal notranslate"><span class="pre">com</span></code> / <code class="docutils literal notranslate"><span class="pre">bat</span></code> / <code class="docutils literal notranslate"><span class="pre">pl</span></code> / <code class="docutils literal notranslate"><span class="pre">cfc</span></code> / <code class="docutils literal notranslate"><span class="pre">cfm</span></code> / <code class="docutils literal notranslate"><span class="pre">ini</span></code> 等。</p>
 </div>
 <div class="section" id="id10">
-<h3><span class="section-number">4.8.3.6. </span>系统命名绕过<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.6. </span>系统命名绕过<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>在Windows系统中，上传 <code class="docutils literal notranslate"><span class="pre">index.php.</span></code> 会重命名为 <code class="docutils literal notranslate"><span class="pre">.</span></code> ，可以绕过后缀检查。
 也可尝试 <code class="docutils literal notranslate"><span class="pre">index.php%20</span></code> ， <code class="docutils literal notranslate"><span class="pre">index.php:1.jpg</span></code> <code class="docutils literal notranslate"><span class="pre">index.php::$DATA</span></code> 等。
 在Linux系统中，可以尝试上传名为 <code class="docutils literal notranslate"><span class="pre">index.php/.</span></code> 或 <code class="docutils literal notranslate"><span class="pre">./aa/../index.php/.</span></code> 的文件</p>
 </div>
 <div class="section" id="user-ini">
-<h3><span class="section-number">4.8.3.7. </span>.user.ini<a class="headerlink" href="#user-ini" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.7. </span>.user.ini<a class="headerlink" href="#user-ini" title="Permalink to this headline">¶</a></h3>
 <p>在php执行的过程中，除了主 <code class="docutils literal notranslate"><span class="pre">php.ini</span></code> 之外，PHP 还会在每个目录下扫描 INI 文件，从被执行的 PHP 文件所在目录开始一直上升到 web 根目录（$_SERVER[‘DOCUMENT_ROOT’] 所指定的）。如果被执行的 PHP 文件在 web 根目录之外，则只扫描该目录。 <code class="docutils literal notranslate"><span class="pre">.user.ini</span></code> 中可以定义除了PHP_INI_SYSTEM以外的模式的选项，故可以使用 <code class="docutils literal notranslate"><span class="pre">.user.ini</span></code> 加上非php后缀的文件构造一个shell，比如 <code class="docutils literal notranslate"><span class="pre">auto_prepend_file=01.gif</span></code> 。</p>
 </div>
 <div class="section" id="waf">
-<h3><span class="section-number">4.8.3.8. </span>WAF绕过<a class="headerlink" href="#waf" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.8. </span>WAF绕过<a class="headerlink" href="#waf" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>大小上限</p></li>
 </ul>
@@ -355,14 +356,14 @@ http://www.secgeek.net/bookfresh-vulnerability/
 <p>另外，Waf和Web系统对 <code class="docutils literal notranslate"><span class="pre">boundary</span></code> 的处理不一致，可以使用错误的 <code class="docutils literal notranslate"><span class="pre">boundary</span></code> 来完成绕过。</p>
 </div>
 <div class="section" id="id11">
-<h3><span class="section-number">4.8.3.9. </span>竞争上传绕过<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.3.9. </span>竞争上传绕过<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p>有的服务器采用了先保存，再删除不合法文件的方式，在这种服务器中，可以反复上传一个会生成Web Shell的文件并尝试访问，多次之后即可获得Shell。</p>
 </div>
 </div>
 <div class="section" id="id12">
-<h2><span class="section-number">4.8.4. </span>攻击技巧<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.9.4. </span>攻击技巧<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="apachegetshell">
-<h3><span class="section-number">4.8.4.1. </span>Apache重写GetShell<a class="headerlink" href="#apachegetshell" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.4.1. </span>Apache重写GetShell<a class="headerlink" href="#apachegetshell" title="Permalink to this headline">¶</a></h3>
 <p>Apache可根据是否允许重定向考虑上传.htaccess</p>
 <p>内容为</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AddType</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">php</span> <span class="o">.</span><span class="n">png</span>
@@ -372,13 +373,13 @@ http://www.secgeek.net/bookfresh-vulnerability/
 <p>就可以用png或者其他后缀的文件做php脚本了</p>
 </div>
 <div class="section" id="id13">
-<h3><span class="section-number">4.8.4.2. </span>软链接任意读文件<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.9.4.2. </span>软链接任意读文件<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <p>上传的压缩包文件会被解压的文件时，可以考虑上传含符号链接的文件
 若服务器没有做好防护，可实现任意文件读取的效果</p>
 </div>
 </div>
 <div class="section" id="id14">
-<h2><span class="section-number">4.8.5. </span>防护技巧<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.9.5. </span>防护技巧<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>使用白名单限制上传文件的类型</p></li>
 <li><p>使用更严格的文件类型检查方式</p></li>
@@ -386,7 +387,7 @@ http://www.secgeek.net/bookfresh-vulnerability/
 </ul>
 </div>
 <div class="section" id="id15">
-<h2><span class="section-number">4.8.6. </span>参考链接<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.9.6. </span>参考链接<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.freebuf.com/articles/web/188464.html">构造优质上传漏洞Fuzz字典</a></p></li>
 </ul>
@@ -401,10 +402,10 @@ http://www.secgeek.net/bookfresh-vulnerability/
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="fileinclude.html" class="btn btn-neutral float-right" title="4.9. 文件包含" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="fileinclude.html" class="btn btn-neutral float-right" title="4.10. 文件包含" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="fileread.html" class="btn btn-neutral float-left" title="4.7. 文件读取" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="fileread.html" class="btn btn-neutral float-left" title="4.8. 文件读取" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

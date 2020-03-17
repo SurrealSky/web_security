@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.13. 逻辑漏洞 / 业务漏洞 &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.14. 逻辑漏洞 / 业务漏洞 &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.14. 配置安全" href="config.html" />
-    <link rel="prev" title="4.12. Xpath注入" href="xpath.html" /> 
+    <link rel="next" title="4.15. 配置安全" href="config.html" />
+    <link rel="prev" title="4.13. Xpath注入" href="xpath.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,49 +90,50 @@
 <li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.5. 命令注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.13. 逻辑漏洞 / 业务漏洞</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">4.13.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">4.13.2. 安装逻辑</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">4.13.3. 交易</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id5">4.13.3.1. 购买</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">4.13.3.2. 业务风控</a></li>
+<li class="toctree-l2"><a class="reference internal" href="owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.3. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.4. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmdinjection.html">4.6. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.9. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.10. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.11. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.13. Xpath注入</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.14. 逻辑漏洞 / 业务漏洞</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.14.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.14.2. 安装逻辑</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.14.3. 交易</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">4.14.3.1. 购买</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">4.14.3.2. 业务风控</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">4.13.4. 账户</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id8">4.13.4.1. 注册</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">4.13.4.2. 邮箱用户名</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id10">4.13.4.3. 手机号用户名</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id11">4.13.4.4. 登录</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id12">4.13.4.5. 找回密码</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id13">4.13.4.6. 修改密码</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id14">4.13.4.7. 申诉</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4.14.4. 账户</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">4.14.4.1. 注册</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">4.14.4.2. 邮箱用户名</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">4.14.4.3. 手机号用户名</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">4.14.4.4. 登录</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">4.14.4.5. 找回密码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">4.14.4.6. 修改密码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">4.14.4.7. 申诉</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#fa">4.13.5. 2FA</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id15">4.13.6. 验证码</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#session">4.13.7. Session</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id16">4.13.8. 越权</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id17">4.13.9. 随机数安全</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id18">4.13.10. 其他</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id19">4.13.11. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fa">4.14.5. 2FA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">4.14.6. 验证码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#session">4.14.7. Session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">4.14.8. 越权</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">4.14.9. 随机数安全</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">4.14.10. 其他</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">4.14.11. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.16. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
@@ -189,7 +190,7 @@
         
           <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-      <li><span class="section-number">4.13. </span>逻辑漏洞 / 业务漏洞</li>
+      <li><span class="section-number">4.14. </span>逻辑漏洞 / 业务漏洞</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -209,14 +210,14 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><span class="section-number">4.13. </span>逻辑漏洞 / 业务漏洞<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.14. </span>逻辑漏洞 / 业务漏洞<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id2">
-<h2><span class="section-number">4.13.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>逻辑漏洞是指由于程序逻辑不严导致一些逻辑分支处理错误造成的漏洞。</p>
 <p>在实际开发中，因为开发者水平不一没有安全意识，而且业务发展迅速内部测试没有及时到位，所以常常会出现类似的漏洞。</p>
 </div>
 <div class="section" id="id3">
-<h2><span class="section-number">4.13.2. </span>安装逻辑<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.2. </span>安装逻辑<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>查看能否绕过判定重新安装</p></li>
 <li><p>查看能否利用安装文件获取信息</p></li>
@@ -224,9 +225,9 @@
 </ul>
 </div>
 <div class="section" id="id4">
-<h2><span class="section-number">4.13.3. </span>交易<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.3. </span>交易<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id5">
-<h3><span class="section-number">4.13.3.1. </span>购买<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.3.1. </span>购买<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>修改支付的价格</p></li>
 <li><p>修改支付的状态</p></li>
@@ -237,7 +238,7 @@
 </ul>
 </div>
 <div class="section" id="id6">
-<h3><span class="section-number">4.13.3.2. </span>业务风控<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.3.2. </span>业务风控<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>刷优惠券</p></li>
 <li><p>套现</p></li>
@@ -245,9 +246,9 @@
 </div>
 </div>
 <div class="section" id="id7">
-<h2><span class="section-number">4.13.4. </span>账户<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.4. </span>账户<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id8">
-<h3><span class="section-number">4.13.4.1. </span>注册<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.4.1. </span>注册<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>覆盖注册</p></li>
 <li><p>尝试重复用户名</p></li>
@@ -255,21 +256,21 @@
 </ul>
 </div>
 <div class="section" id="id9">
-<h3><span class="section-number">4.13.4.2. </span>邮箱用户名<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.4.2. </span>邮箱用户名<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>前后空格</p></li>
 <li><p>大小写变换</p></li>
 </ul>
 </div>
 <div class="section" id="id10">
-<h3><span class="section-number">4.13.4.3. </span>手机号用户名<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.4.3. </span>手机号用户名<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>前后空格</p></li>
 <li><p>+86</p></li>
 </ul>
 </div>
 <div class="section" id="id11">
-<h3><span class="section-number">4.13.4.4. </span>登录<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.4.4. </span>登录<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>撞库</p></li>
 <li><p>账号劫持</p></li>
@@ -277,7 +278,7 @@
 </ul>
 </div>
 <div class="section" id="id12">
-<h3><span class="section-number">4.13.4.5. </span>找回密码<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.4.5. </span>找回密码<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>重置任意用户密码</p></li>
 <li><p>密码重置后新密码在返回包中</p></li>
@@ -286,14 +287,14 @@
 </ul>
 </div>
 <div class="section" id="id13">
-<h3><span class="section-number">4.13.4.6. </span>修改密码<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.4.6. </span>修改密码<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>越权修改密码</p></li>
 <li><p>修改密码没有旧密码验证</p></li>
 </ul>
 </div>
 <div class="section" id="id14">
-<h3><span class="section-number">4.13.4.7. </span>申诉<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.14.4.7. </span>申诉<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>身份伪造</p></li>
 <li><p>逻辑绕过</p></li>
@@ -301,7 +302,7 @@
 </div>
 </div>
 <div class="section" id="fa">
-<h2><span class="section-number">4.13.5. </span>2FA<a class="headerlink" href="#fa" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.5. </span>2FA<a class="headerlink" href="#fa" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>重置密码后自动登录没有2FA</p></li>
 <li><p>OAuth登录没有启用2FA</p></li>
@@ -313,7 +314,7 @@
 </ul>
 </div>
 <div class="section" id="id15">
-<h2><span class="section-number">4.13.6. </span>验证码<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.6. </span>验证码<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>验证码可重用</p></li>
 <li><p>验证码可预测</p></li>
@@ -333,7 +334,7 @@
 </ul>
 </div>
 <div class="section" id="session">
-<h2><span class="section-number">4.13.7. </span>Session<a class="headerlink" href="#session" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.7. </span>Session<a class="headerlink" href="#session" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Session机制</p></li>
 <li><p>Session猜测 / 爆破</p></li>
@@ -343,7 +344,7 @@
 </ul>
 </div>
 <div class="section" id="id16">
-<h2><span class="section-number">4.13.8. </span>越权<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.8. </span>越权<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>水平越权</dt><dd><ul>
@@ -371,14 +372,14 @@
 </ul>
 </div>
 <div class="section" id="id17">
-<h2><span class="section-number">4.13.9. </span>随机数安全<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.9. </span>随机数安全<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>使用不安全的随机数发生器</p></li>
 <li><p>使用时间等易猜解的因素作为随机数种子</p></li>
 </ul>
 </div>
 <div class="section" id="id18">
-<h2><span class="section-number">4.13.10. </span>其他<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.10. </span>其他<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>用户/订单/优惠券等ID生成有规律，可枚举</p></li>
 <li><p>接口无权限、次数限制</p></li>
@@ -388,7 +389,7 @@
 </ul>
 </div>
 <div class="section" id="id19">
-<h2><span class="section-number">4.13.11. </span>参考链接<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.14.11. </span>参考链接<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="http://blog.csdn.net/mylutte/article/details/50819146#10006-weixin-1-52626-6b3bffd01fdde4900130bc5a2751b6d1">水平越权漏洞及其解决方案</a></p></li>
 <li><p><a class="reference external" href="https://xz.aliyun.com/t/6029">细说验证码安全 测试思路大梳理</a></p></li>
@@ -404,10 +405,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="config.html" class="btn btn-neutral float-right" title="4.14. 配置安全" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="config.html" class="btn btn-neutral float-right" title="4.15. 配置安全" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="xpath.html" class="btn btn-neutral float-left" title="4.12. Xpath注入" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="xpath.html" class="btn btn-neutral float-left" title="4.13. Xpath注入" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

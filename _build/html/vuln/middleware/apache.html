@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.15.2. Apache &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.16.2. Apache &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4.15.3. Nginx" href="nginx.html" />
-    <link rel="prev" title="4.15.1. IIS" href="iis.html" /> 
+    <link rel="next" title="4.16.3. Nginx" href="nginx.html" />
+    <link rel="prev" title="4.16.1. IIS" href="iis.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,36 +90,37 @@
 <li class="toctree-l1"><a class="reference internal" href="../../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../xss/index.html">4.2. XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../csrf.html">4.3. CSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cmdinjection.html">4.5. 命令注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../fileupload.html">4.8. 文件上传</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../fileinclude.html">4.9. 文件包含</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../xxe.html">4.10. XXE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../xpath.html">4.12. Xpath注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.15. 中间件</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="iis.html">4.15.1. IIS</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">4.15.2. Apache</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id1">4.15.2.1. 后缀解析</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#htaccess">4.15.2.2. .htaccess</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id2">4.15.2.3. 目录遍历</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cve-2017-15715">4.15.2.4. CVE-2017-15715</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#lighttpd">4.15.2.5. lighttpd</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">4.15.2.6. 参考链接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xss/index.html">4.3. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../csrf.html">4.4. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmdinjection.html">4.6. 命令注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileupload.html">4.9. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fileinclude.html">4.10. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xxe.html">4.11. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../xpath.html">4.13. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logic.html">4.14. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.16. 中间件</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="iis.html">4.16.1. IIS</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.16.2. Apache</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.16.2.1. 后缀解析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#htaccess">4.16.2.2. .htaccess</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.16.2.3. 目录遍历</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cve-2017-15715">4.16.2.4. CVE-2017-15715</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lighttpd">4.16.2.5. lighttpd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.16.2.6. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="nginx.html">4.15.3. Nginx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nginx.html">4.16.3. Nginx</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../language/index.html">5. 语言与框架</a></li>
@@ -176,9 +177,9 @@
         
           <li><a href="../index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-          <li><a href="index.html"><span class="section-number">4.15. </span>中间件</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">4.16. </span>中间件</a> &raquo;</li>
         
-      <li><span class="section-number">4.15.2. </span>Apache</li>
+      <li><span class="section-number">4.16.2. </span>Apache</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -198,13 +199,13 @@
            <div itemprop="articleBody">
             
   <div class="section" id="apache">
-<h1><span class="section-number">4.15.2. </span>Apache<a class="headerlink" href="#apache" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.16.2. </span>Apache<a class="headerlink" href="#apache" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2><span class="section-number">4.15.2.1. </span>后缀解析<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.16.2.1. </span>后缀解析<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">test.php.x1.x2.x3</span></code> （ x1,x2,x3 为没有在 mime.types 文件中定义的文件类型）。Apache 将从右往左开始判断后缀， 若x3为非可识别后缀，则判断x2，直到找到可识别后缀为止，然后对可识别后缀进行解析</p>
 </div>
 <div class="section" id="htaccess">
-<h2><span class="section-number">4.15.2.2. </span>.htaccess<a class="headerlink" href="#htaccess" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.16.2.2. </span>.htaccess<a class="headerlink" href="#htaccess" title="Permalink to this headline">¶</a></h2>
 <p>当AllowOverride被启用时，上传启用解析规则的.htaccess</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AddType</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">php</span> <span class="o">.</span><span class="n">jpg</span>
 </pre></div>
@@ -230,19 +231,19 @@
 </div>
 </div>
 <div class="section" id="id2">
-<h2><span class="section-number">4.15.2.3. </span>目录遍历<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.16.2.3. </span>目录遍历<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>配置 <code class="docutils literal notranslate"><span class="pre">Options</span> <span class="pre">+Indexes</span></code> 时Apache存在目录遍历漏洞。</p>
 </div>
 <div class="section" id="cve-2017-15715">
-<h2><span class="section-number">4.15.2.4. </span>CVE-2017-15715<a class="headerlink" href="#cve-2017-15715" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.16.2.4. </span>CVE-2017-15715<a class="headerlink" href="#cve-2017-15715" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">%0A</span></code> 绕过上传黑名单。</p>
 </div>
 <div class="section" id="lighttpd">
-<h2><span class="section-number">4.15.2.5. </span>lighttpd<a class="headerlink" href="#lighttpd" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.16.2.5. </span>lighttpd<a class="headerlink" href="#lighttpd" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">xx.jpg/xx.php</span></code></p>
 </div>
 <div class="section" id="id3">
-<h2><span class="section-number">4.15.2.6. </span>参考链接<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.16.2.6. </span>参考链接<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.leavesongs.com/PENETRATION/apache-cve-2017-15715-vulnerability.html">Apache 上传绕过</a></p></li>
 </ul>
@@ -257,10 +258,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="nginx.html" class="btn btn-neutral float-right" title="4.15.3. Nginx" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="nginx.html" class="btn btn-neutral float-right" title="4.16.3. Nginx" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="iis.html" class="btn btn-neutral float-left" title="4.15.1. IIS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="iis.html" class="btn btn-neutral float-left" title="4.16.1. IIS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

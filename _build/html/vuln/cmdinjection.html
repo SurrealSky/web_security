@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4.5. 命令注入 &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>4.6. 命令注入 &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.6. 目录穿越" href="pathtraversal.html" />
-    <link rel="prev" title="4.4. SSRF" href="ssrf.html" /> 
+    <link rel="next" title="4.7. 目录穿越" href="pathtraversal.html" />
+    <link rel="prev" title="4.5. SSRF" href="ssrf.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,46 +90,47 @@
 <li class="toctree-l1"><a class="reference internal" href="../network/index.html">2. 计算机网络与协议</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../info/index.html">3. 信息收集</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 常见漏洞攻防</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.1. SQL注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.2. XSS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.3. CSRF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.4. SSRF</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. 命令注入</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">4.5.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">4.5.2. 常见危险函数</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#php">4.5.2.1. PHP</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#python">4.5.2.2. Python</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#java">4.5.2.3. Java</a></li>
+<li class="toctree-l2"><a class="reference internal" href="owasp.html">4.1. 解读2017OWASPTop10漏洞体系</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/index.html">4.2. SQL注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xss/index.html">4.3. XSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="csrf.html">4.4. CSRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssrf.html">4.5. SSRF</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. 命令注入</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.6.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.6.2. 常见危险函数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#php">4.6.2.1. PHP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python">4.6.2.2. Python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#java">4.6.2.3. Java</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">4.5.3. 常见注入方式</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">4.5.4. 无回显技巧</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">4.5.5. 常见绕过方式</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id7">4.5.5.1. 空格绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id8">4.5.5.2. 黑名单绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">4.5.5.3. 长度限制绕过</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">4.6.3. 常见注入方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.6.4. 无回显技巧</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4.6.5. 常见绕过方式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">4.6.5.1. 空格绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">4.6.5.2. 黑名单绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">4.6.5.3. 长度限制绕过</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">4.5.6. 常用符号</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id11">4.5.6.1. 命令分隔符</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id12">4.5.6.2. 通配符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">4.6.6. 常用符号</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id11">4.6.6.1. 命令分隔符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">4.6.6.2. 通配符</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">4.5.7. 防御</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">4.6.7. 防御</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.6. 目录穿越</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.7. 文件读取</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.8. 文件上传</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.9. 文件包含</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.10. XXE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.11. 模版注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.12. Xpath注入</a></li>
-<li class="toctree-l2"><a class="reference internal" href="logic.html">4.13. 逻辑漏洞 / 业务漏洞</a></li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">4.14. 配置安全</a></li>
-<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.15. 中间件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.16. Web Cache欺骗攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.17. HTTP 请求走私</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pathtraversal.html">4.7. 目录穿越</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileread.html">4.8. 文件读取</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileupload.html">4.9. 文件上传</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fileinclude.html">4.10. 文件包含</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xxe.html">4.11. XXE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssti.html">4.12. 模版注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xpath.html">4.13. Xpath注入</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logic.html">4.14. 逻辑漏洞 / 业务漏洞</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">4.15. 配置安全</a></li>
+<li class="toctree-l2"><a class="reference internal" href="middleware/index.html">4.16. 中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webcache.html">4.17. Web Cache欺骗攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="httpSmuggling.html">4.18. HTTP 请求走私</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../language/index.html">5. 语言与框架</a></li>
@@ -186,7 +187,7 @@
         
           <li><a href="index.html"><span class="section-number">4. </span>常见漏洞攻防</a> &raquo;</li>
         
-      <li><span class="section-number">4.5. </span>命令注入</li>
+      <li><span class="section-number">4.6. </span>命令注入</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -206,16 +207,16 @@
            <div itemprop="articleBody">
             
   <div class="section" id="id1">
-<h1><span class="section-number">4.5. </span>命令注入<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4.6. </span>命令注入<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id2">
-<h2><span class="section-number">4.5.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>命令注入通常因为指Web应用在服务器上拼接系统命令而造成的漏洞。</p>
 <p>该类漏洞通常出现在调用外部程序完成一些功能的情景下。比如一些Web管理界面的配置主机名/IP/掩码/网关、查看系统信息以及关闭重启等功能，或者一些站点提供如ping、nslookup、提供发送邮件、转换图片等功能都可能出现该类漏洞。</p>
 </div>
 <div class="section" id="id3">
-<h2><span class="section-number">4.5.2. </span>常见危险函数<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6.2. </span>常见危险函数<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="php">
-<h3><span class="section-number">4.5.2.1. </span>PHP<a class="headerlink" href="#php" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.6.2.1. </span>PHP<a class="headerlink" href="#php" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>system</p></li>
 <li><p>exec</p></li>
@@ -226,7 +227,7 @@
 </ul>
 </div>
 <div class="section" id="python">
-<h3><span class="section-number">4.5.2.2. </span>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.6.2.2. </span>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>system</p></li>
 <li><p>popen</p></li>
@@ -235,14 +236,14 @@
 </ul>
 </div>
 <div class="section" id="java">
-<h3><span class="section-number">4.5.2.3. </span>Java<a class="headerlink" href="#java" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.6.2.3. </span>Java<a class="headerlink" href="#java" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>java.lang.Runtime.getRuntime().exec(command)</p></li>
 </ul>
 </div>
 </div>
 <div class="section" id="id4">
-<h2><span class="section-number">4.5.3. </span>常见注入方式<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6.3. </span>常见注入方式<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>分号分割</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">||</span></code> <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> 分割</p></li>
@@ -253,7 +254,7 @@
 </ul>
 </div>
 <div class="section" id="id5">
-<h2><span class="section-number">4.5.4. </span>无回显技巧<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6.4. </span>无回显技巧<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>bash反弹shell</p></li>
 <li><p>DNS带外数据</p></li>
@@ -269,9 +270,9 @@
 </ul>
 </div>
 <div class="section" id="id6">
-<h2><span class="section-number">4.5.5. </span>常见绕过方式<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6.5. </span>常见绕过方式<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id7">
-<h3><span class="section-number">4.5.5.1. </span>空格绕过<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.6.5.1. </span>空格绕过<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code> 符号 <code class="docutils literal notranslate"><span class="pre">cat&lt;123</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">\t</span></code> / <code class="docutils literal notranslate"><span class="pre">%09</span></code></p></li>
@@ -279,7 +280,7 @@
 </ul>
 </div>
 <div class="section" id="id8">
-<h3><span class="section-number">4.5.5.2. </span>黑名单绕过<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.6.5.2. </span>黑名单绕过<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">a=l;b=s;$a$b</span></code></p></li>
 <li><p>base64 <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">&quot;bHM=&quot;</span> <span class="pre">|</span> <span class="pre">base64</span> <span class="pre">-d</span></code></p></li>
@@ -289,7 +290,7 @@
 </ul>
 </div>
 <div class="section" id="id9">
-<h3><span class="section-number">4.5.5.3. </span>长度限制绕过<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.6.5.3. </span>长度限制绕过<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">wget</span>\
 <span class="o">&gt;</span><span class="n">foo</span><span class="o">.</span>\
 <span class="o">&gt;</span><span class="n">com</span>
@@ -305,9 +306,9 @@
 </div>
 </div>
 <div class="section" id="id10">
-<h2><span class="section-number">4.5.6. </span>常用符号<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6.6. </span>常用符号<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id11">
-<h3><span class="section-number">4.5.6.1. </span>命令分隔符<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.6.6.1. </span>命令分隔符<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">%0a</span></code> / <code class="docutils literal notranslate"><span class="pre">%0d</span></code> / <code class="docutils literal notranslate"><span class="pre">\n</span></code> / <code class="docutils literal notranslate"><span class="pre">\r</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">;</span></code></p></li>
@@ -315,7 +316,7 @@
 </ul>
 </div>
 <div class="section" id="id12">
-<h3><span class="section-number">4.5.6.2. </span>通配符<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">4.6.6.2. </span>通配符<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">*</span></code> 0到无穷个任意字符</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">?</span></code> 一个任意字符</p></li>
@@ -326,7 +327,7 @@
 </div>
 </div>
 <div class="section" id="id13">
-<h2><span class="section-number">4.5.7. </span>防御<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6.7. </span>防御<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>不使用时禁用相应函数</p></li>
 <li><p>尽量不要执行外部的应用程序或命令</p></li>
@@ -350,10 +351,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pathtraversal.html" class="btn btn-neutral float-right" title="4.6. 目录穿越" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pathtraversal.html" class="btn btn-neutral float-right" title="4.7. 目录穿越" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ssrf.html" class="btn btn-neutral float-left" title="4.4. SSRF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ssrf.html" class="btn btn-neutral float-left" title="4.5. SSRF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
