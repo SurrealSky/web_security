@@ -346,14 +346,14 @@
 <h3><span class="section-number">5.3.5.4.1. </span>Hook resolveClass<a class="headerlink" href="#hook-resolveclass" title="Permalink to this headline">¶</a></h3>
 <p>在使用 <code class="docutils literal notranslate"><span class="pre">readObject()</span></code> 反序列化时会调用 <code class="docutils literal notranslate"><span class="pre">resolveClass</span></code> 方法读取反序列化的类名，可以通过hook该方法来校验反序列化的类，一个Demo如下</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
-<span class="kd">protected</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">resolveClass</span><span class="p">(</span><span class="n">ObjectStreamClass</span> <span class="n">desc</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="p">,</span> <span class="n">ClassNotFoundException</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">desc</span><span class="p">.</span><span class="na">getName</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">SerialObject</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getName</span><span class="p">()))</span> <span class="p">{</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidClassException</span><span class="p">(</span>
-                <span class="s">&quot;Unauthorized deserialization attempt&quot;</span><span class="p">,</span>
-                <span class="n">desc</span><span class="p">.</span><span class="na">getName</span><span class="p">());</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kd">super</span><span class="p">.</span><span class="na">resolveClass</span><span class="p">(</span><span class="n">desc</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="kd">protected</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">resolveClass</span><span class="o">(</span><span class="n">ObjectStreamClass</span> <span class="n">desc</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ClassNotFoundException</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">desc</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">SerialObject</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">InvalidClassException</span><span class="o">(</span>
+                <span class="s">&quot;Unauthorized deserialization attempt&quot;</span><span class="o">,</span>
+                <span class="n">desc</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">resolveClass</span><span class="o">(</span><span class="n">desc</span><span class="o">);</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 <p>以上的Demo就只允许序列化 <code class="docutils literal notranslate"><span class="pre">SerialObject</span></code> ，通过这种方式，就可以设置允许序列化的白名单，来防止反序列化漏洞被利用。SerialKiller/Jackson/Weblogic等都使用了这种方式来防御。</p>
@@ -361,14 +361,14 @@
 <div class="section" id="validatingobjectinputstream">
 <h3><span class="section-number">5.3.5.4.2. </span>ValidatingObjectInputStream<a class="headerlink" href="#validatingobjectinputstream" title="Permalink to this headline">¶</a></h3>
 <p>Apache Commons IO Serialization包中的 <code class="docutils literal notranslate"><span class="pre">ValidatingObjectInputStream</span></code> 类提供了 <code class="docutils literal notranslate"><span class="pre">accept</span></code> 方法，可以通过该方法来实现反序列化类白/黑名单控制，一个demo如下</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kd">static</span> <span class="n">Object</span> <span class="nf">deserialize</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">buffer</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="p">,</span> <span class="n">ClassNotFoundException</span> <span class="p">,</span> <span class="n">ConfigurationException</span> <span class="p">{</span>
-    <span class="n">Object</span> <span class="n">obj</span><span class="p">;</span>
-    <span class="n">ByteArrayInputStream</span> <span class="n">bais</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
-    <span class="n">ValidatingObjectInputStream</span> <span class="n">ois</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ValidatingObjectInputStream</span><span class="p">(</span><span class="n">bais</span><span class="p">);</span>
-    <span class="n">ois</span><span class="p">.</span><span class="na">accept</span><span class="p">(</span><span class="n">SerialObject</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">ois</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span>
-    <span class="k">return</span> <span class="n">obj</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kd">static</span> <span class="n">Object</span> <span class="nf">deserialize</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">buffer</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ClassNotFoundException</span> <span class="o">,</span> <span class="n">ConfigurationException</span> <span class="o">{</span>
+    <span class="n">Object</span> <span class="n">obj</span><span class="o">;</span>
+    <span class="n">ByteArrayInputStream</span> <span class="n">bais</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
+    <span class="n">ValidatingObjectInputStream</span> <span class="n">ois</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ValidatingObjectInputStream</span><span class="o">(</span><span class="n">bais</span><span class="o">);</span>
+    <span class="n">ois</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">SerialObject</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">ois</span><span class="o">.</span><span class="na">readObject</span><span class="o">();</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">;</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 </div>
