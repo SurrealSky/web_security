@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>11.3. Unicode &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>11.4. Unicode &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="11.4. 拒绝服务攻击" href="dos.html" />
-    <link rel="prev" title="11.2. WAF" href="waf.html" /> 
+    <link rel="next" title="11.5. 拒绝服务攻击" href="dos.html" />
+    <link rel="prev" title="11.3. WAF" href="waf.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -97,39 +97,40 @@
 <li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">11. 其他</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="aduit.html">11.1. 代码审计</a></li>
-<li class="toctree-l2"><a class="reference internal" href="waf.html">11.2. WAF</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">11.3. Unicode</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">11.3.1. 等价性问题</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">11.3.1.1. 简介</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">11.3.1.2. 标准等价</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">11.3.1.3. 兼容等价</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">11.3.1.4. 正规化</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">11.3.1.5. 正规形式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keywords.html">11.1. Web 安全术语</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aduit.html">11.2. 代码审计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="waf.html">11.3. WAF</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">11.4. Unicode</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">11.4.1. 等价性问题</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">11.4.1.1. 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">11.4.1.2. 标准等价</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">11.4.1.3. 兼容等价</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">11.4.1.4. 正规化</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">11.4.1.5. 正规形式</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">11.3.2. 安全问题</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#visual-spoofing">11.3.2.1. Visual Spoofing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#best-fit">11.3.2.2. Best Fit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#syntax-spoofing">11.3.2.3. Syntax Spoofing</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#punycode-spoofs">11.3.2.4. Punycode Spoofs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#buffer-overflows">11.3.2.5. Buffer Overflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">11.4.2. 安全问题</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#visual-spoofing">11.4.2.1. Visual Spoofing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#best-fit">11.4.2.2. Best Fit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#syntax-spoofing">11.4.2.3. Syntax Spoofing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#punycode-spoofs">11.4.2.4. Punycode Spoofs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#buffer-overflows">11.4.2.5. Buffer Overflows</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">11.3.3. 常见载荷</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#url">11.3.3.1. URL</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sql">11.3.3.2. SQL注入</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#xss">11.3.3.3. XSS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id9">11.3.3.4. 命令注入</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id10">11.3.3.5. 模板注入</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">11.4.3. 常见载荷</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#url">11.4.3.1. URL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sql">11.4.3.2. SQL注入</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xss">11.4.3.3. XSS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">11.4.3.4. 命令注入</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">11.4.3.5. 模板注入</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">11.3.4. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">11.4.4. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dos.html">11.4. 拒绝服务攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="docker.html">11.5. Docker</a></li>
-<li class="toctree-l2"><a class="reference internal" href="apt.html">11.6. APT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos.html">11.5. 拒绝服务攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">11.6. Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apt.html">11.7. APT</a></li>
 </ul>
 </li>
 </ul>
@@ -179,7 +180,7 @@
         
           <li><a href="index.html"><span class="section-number">11. </span>其他</a> &raquo;</li>
         
-      <li><span class="section-number">11.3. </span>Unicode</li>
+      <li><span class="section-number">11.4. </span>Unicode</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -199,23 +200,23 @@
            <div itemprop="articleBody">
             
   <div class="section" id="unicode">
-<h1><span class="section-number">11.3. </span>Unicode<a class="headerlink" href="#unicode" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">11.4. </span>Unicode<a class="headerlink" href="#unicode" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2><span class="section-number">11.3.1. </span>等价性问题<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.4.1. </span>等价性问题<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id2">
-<h3><span class="section-number">11.3.1.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.1.1. </span>简介<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Unicode（统一码）包含了许多特殊字符，为了使得许多现存的标准能够兼容，提出了Unicode等价性（Unicode equivalence）。在字符中，有些在功能上会和其它字符或字符序列等价。因此，Unicode将一些码位序列定义成相等的。</p>
 <p>Unicode提供了两种等价概念：标准等价和兼容等价。前者是后者的一个子集。例如，字符n后接着组合字符 <cite>~</cite> 会（标准和兼容）等价于Unicode字符ñ。而合字ﬀ则只有兼容等价于两个f字符。</p>
 <p>Unicode正规化是文字正规化的一种形式，是指将彼此等价的序列转成同一列序。此序列在Unicode标准中称作正规形式。</p>
 <p>对于每种等价概念，Unicode又定义两种形式，一种是完全合成的，一种是完全分解的。因此，最后会有四种形式，其缩写分别为：NFC、NFD、NFKC、NFKD。对于Unicode的文字处理程序而言，正规化是很重要的。因为它影响了比较、搜索和排序的意义。</p>
 </div>
 <div class="section" id="id3">
-<h3><span class="section-number">11.3.1.2. </span>标准等价<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.1.2. </span>标准等价<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>统一码中标准等价的基础概念为字符的组成和分解的交互使用。合成指的是将简单的字符合并成较少的预组字符的过程，如字符n和组合字符 <cite>~</cite> 可以组成统一码ñ。分解则是反向过程，即将预组字符变回部件。</p>
 <p>标准等价是指保持视觉上和功能上的等价。例如，含附加符号字母被视为和分解后的字母及其附加符号是标准等价。换句话说，预组字符‘ü’和由‘u’及 ‘¨’所组成的序列是标准等价。相似地，统一码统合了一些希腊附加符号和外观与附加符号类似的标点符号。</p>
 </div>
 <div class="section" id="id4">
-<h3><span class="section-number">11.3.1.3. </span>兼容等价<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.1.3. </span>兼容等价<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>兼容等价的范围较标准等价来得广。如果序列是标准等价的话就会是兼容等价，反之则未必对。兼容等价更关注在于纯文字的等价，并把一些语义上的不同形式归结在一起。</p>
 <p>例如，上标数字和其所使用的数字是兼容等价，但非标准等价。其理由为下标和上标形式虽然在某些时侯属于不同意义，但若应用程序将他们视为一样也是合理的（虽然视觉上可区分）。如此，在统一码富文件中，上标和下标就可以以比较不累赘地方式出现（见下一节）。</p>
 <p>全角和半角的片假名也是一种兼容等价但不是标准等价。如同合字和其部件序列。其只有视觉上但没有语义上的区别。换句话说，作者通常没有特别宣称使用合字是一种意思，而不使用是另一种意思。相对地，这尽限于印刷上的选择。</p>
@@ -223,12 +224,12 @@
 <p>统一码提供了一个标准的正规化算法，可将所有相同的序列产生一个唯一的序列。 其等价准绳可以为标准的（NF）或兼容的（NFK）。 既然可以任意选择等价类中的元素，对每一个等价标准有多个标准形式也是有可能的。 统一码为每一种等价准绳分别提供两种正规形式：合成用的NFC和NFKC以及分解用的NFD和NFKD。 而不论是组合的或分解的形式，都会使用标准顺序，以此限制正规形式只有唯一形式。</p>
 </div>
 <div class="section" id="id5">
-<h3><span class="section-number">11.3.1.4. </span>正规化<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.1.4. </span>正规化<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>为了比较或搜索统一码字符串，软件可以使用合成或分解形式其中之一。 只要被比较或搜索的字符串使用的形式是相同的，哪种选择都没关系。 另一方面，等价概念的选择则会影响到搜索结果。 譬如，有些合字如ﬃ（U+FB03）、罗马数字如Ⅸ（U+2168），甚至是上标数字如⁵（U+2075）有其个别统一码码位。 标准正规形式并不会影响这些结果。 但兼容正规形式会分解ﬃ成f、f、i。所以搜索U+0066（f）时，在NFKC中会成功，但在NFC则会失败。 同样地有在预组罗马数字Ⅸ 中搜索拉丁字母I（U+0049）。类似地，“⁵”会转成“5”。</p>
 <p>对于浏览器，将上标转换成到基下划线未必是好的，因为上标的信息会因而消失。为了允许这种不同，统一码字符数据库句含了兼容格式标签，其提供了兼容转换的细节。在合字的情况下，这个标签只是 <code class="docutils literal notranslate"><span class="pre">&lt;compat&gt;</span></code> ，而在上标的情况下则为 <code class="docutils literal notranslate"><span class="pre">&lt;super&gt;</span></code> 。丰富文件格式如超文本置标语言则会使用兼容标签。例如，HTML使用自定义标签来将“5”放到上标位置。</p>
 </div>
 <div class="section" id="id6">
-<h3><span class="section-number">11.3.1.5. </span>正规形式<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.1.5. </span>正规形式<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>NFD Normalization Form Canonical Decomposition 以标准等价方式来分解</p></li>
 <li><p>NFC Normalization Form Canonical Composition 以标准等价方式来分解，然后以标准等价重组之。若是singleton的话，重组结果有可能和分解前不同。</p></li>
@@ -238,21 +239,21 @@
 </div>
 </div>
 <div class="section" id="id7">
-<h2><span class="section-number">11.3.2. </span>安全问题<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.4.2. </span>安全问题<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="visual-spoofing">
-<h3><span class="section-number">11.3.2.1. </span>Visual Spoofing<a class="headerlink" href="#visual-spoofing" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.2.1. </span>Visual Spoofing<a class="headerlink" href="#visual-spoofing" title="Permalink to this headline">¶</a></h3>
 <p>例如bаidu.com(此处的a为u0430)和baidu.com(此处的a为x61)视觉上相同，但是实际上指向两个不同的域名。</p>
 <p>bａidu.com(此处的a为uff41)和baidu.com(此处的a为x61)有一定的不同，但是指向两个相同的域名。</p>
 <p>这种现象可以引起一些Spoofing或者WAF Bypass的问题。</p>
 </div>
 <div class="section" id="best-fit">
-<h3><span class="section-number">11.3.2.2. </span>Best Fit<a class="headerlink" href="#best-fit" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.2.2. </span>Best Fit<a class="headerlink" href="#best-fit" title="Permalink to this headline">¶</a></h3>
 <p>如果两个字符前后编码不同，之前的编码在之后的编码没有对应，程序会尝试找最佳字符进行自动转换。</p>
 <p>当宽字符变成了单字节字符，字符编码会有一定的变化。</p>
 <p>这种现象可能引起一些WAF Bypass。</p>
 </div>
 <div class="section" id="syntax-spoofing">
-<h3><span class="section-number">11.3.2.3. </span>Syntax Spoofing<a class="headerlink" href="#syntax-spoofing" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.2.3. </span>Syntax Spoofing<a class="headerlink" href="#syntax-spoofing" title="Permalink to this headline">¶</a></h3>
 <p>以下四个Url在语法上看来是没问题的域名，但是用来做分割的字符并不是真正的分割字符，而是U+2044( ⁄ )，可以导致一些UI欺骗的问题。</p>
 <ul class="simple">
 <li><p><a class="reference external" href="http://macchiato.com/x.bad.com">http://macchiato.com/x.bad.com</a>  macchiato.com/x     bad.com</p></li>
@@ -262,7 +263,7 @@
 </ul>
 </div>
 <div class="section" id="punycode-spoofs">
-<h3><span class="section-number">11.3.2.4. </span>Punycode Spoofs<a class="headerlink" href="#punycode-spoofs" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.2.4. </span>Punycode Spoofs<a class="headerlink" href="#punycode-spoofs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="http:/">http:/</a>/䕮䕵䕶䕱.com        <a class="reference external" href="http://xn--google.com">http://xn–google.com</a></p></li>
 <li><p><a class="reference external" href="http:/">http:/</a>/䁾.com              <a class="reference external" href="http://xn--cnn.com">http://xn–cnn.com</a></p></li>
@@ -271,14 +272,14 @@
 <p>有些浏览器会直接显示puncode，但是也可以借助这种机制实现UI Spooof。</p>
 </div>
 <div class="section" id="buffer-overflows">
-<h3><span class="section-number">11.3.2.5. </span>Buffer Overflows<a class="headerlink" href="#buffer-overflows" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.2.5. </span>Buffer Overflows<a class="headerlink" href="#buffer-overflows" title="Permalink to this headline">¶</a></h3>
 <p>在编码转换的时候，有的字符会变成多个字符，如Fluß → FLUSS → fluss这样可能导致BOF。</p>
 </div>
 </div>
 <div class="section" id="id8">
-<h2><span class="section-number">11.3.3. </span>常见载荷<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.4.3. </span>常见载荷<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="url">
-<h3><span class="section-number">11.3.3.1. </span>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.3.1. </span>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">‥</span></code> (U+2025)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">︰</span></code> (U+FE30)</p></li>
@@ -291,7 +292,7 @@
 </ul>
 </div>
 <div class="section" id="sql">
-<h3><span class="section-number">11.3.3.2. </span>SQL注入<a class="headerlink" href="#sql" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.3.2. </span>SQL注入<a class="headerlink" href="#sql" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">＇</span></code> (U+FF07)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">＂</span></code> (U+FF02)</p></li>
@@ -299,21 +300,21 @@
 </ul>
 </div>
 <div class="section" id="xss">
-<h3><span class="section-number">11.3.3.3. </span>XSS<a class="headerlink" href="#xss" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.3.3. </span>XSS<a class="headerlink" href="#xss" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">＜</span></code> (U+FF1C)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">＂</span></code> (U+FF02)</p></li>
 </ul>
 </div>
 <div class="section" id="id9">
-<h3><span class="section-number">11.3.3.4. </span>命令注入<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.3.4. </span>命令注入<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">＆</span></code> (U+FF06)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">｜</span></code> (U+FF5C)</p></li>
 </ul>
 </div>
 <div class="section" id="id10">
-<h3><span class="section-number">11.3.3.5. </span>模板注入<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.4.3.5. </span>模板注入<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">﹛</span></code> (U+FE5B)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">［</span></code> (U+FF3B)</p></li>
@@ -321,7 +322,7 @@
 </div>
 </div>
 <div class="section" id="id11">
-<h2><span class="section-number">11.3.4. </span>参考链接<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.4.4. </span>参考链接<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Unicode_equivalence">Unicode equivalence</a></p></li>
 <li><p><a class="reference external" href="http://unicode.org/reports/tr15/">Unicode Normalization Forms</a></p></li>
@@ -342,10 +343,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dos.html" class="btn btn-neutral float-right" title="11.4. 拒绝服务攻击" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dos.html" class="btn btn-neutral float-right" title="11.5. 拒绝服务攻击" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="waf.html" class="btn btn-neutral float-left" title="11.2. WAF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="waf.html" class="btn btn-neutral float-left" title="11.3. WAF" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

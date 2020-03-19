@@ -23,3 +23,4 @@
    middleware/index
    webcache
    httpSmuggling
+   captcha

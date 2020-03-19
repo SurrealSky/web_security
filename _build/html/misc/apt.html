@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>11.6. APT &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>11.7. APT &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="11.5. Docker" href="docker.html" /> 
+    <link rel="prev" title="11.6. Docker" href="docker.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -96,26 +96,27 @@
 <li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">11. 其他</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="aduit.html">11.1. 代码审计</a></li>
-<li class="toctree-l2"><a class="reference internal" href="waf.html">11.2. WAF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="unicode.html">11.3. Unicode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dos.html">11.4. 拒绝服务攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="docker.html">11.5. Docker</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">11.6. APT</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">11.6.1. 简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#advanced">11.6.2. 高级性（Advanced）</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#persistent">11.6.3. 持续性（Persistent）</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">11.6.3.1. 侦查阶段</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">11.6.3.2. 初次入侵阶段</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">11.6.3.3. 权限提升阶段</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">11.6.3.4. 保持访问阶段</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">11.6.3.5. 横向扩展阶段</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id7">11.6.3.6. 攻击收益阶段</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keywords.html">11.1. Web 安全术语</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aduit.html">11.2. 代码审计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="waf.html">11.3. WAF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="unicode.html">11.4. Unicode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos.html">11.5. 拒绝服务攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">11.6. Docker</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">11.7. APT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">11.7.1. 简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#advanced">11.7.2. 高级性（Advanced）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#persistent">11.7.3. 持续性（Persistent）</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">11.7.3.1. 侦查阶段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">11.7.3.2. 初次入侵阶段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">11.7.3.3. 权限提升阶段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">11.7.3.4. 保持访问阶段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">11.7.3.5. 横向扩展阶段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">11.7.3.6. 攻击收益阶段</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#threat">11.6.4. 威胁性（Threat）</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ioc">11.6.5. IoC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">11.6.6. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#threat">11.7.4. 威胁性（Threat）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ioc">11.7.5. IoC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">11.7.6. 参考链接</a></li>
 </ul>
 </li>
 </ul>
@@ -167,7 +168,7 @@
         
           <li><a href="index.html"><span class="section-number">11. </span>其他</a> &raquo;</li>
         
-      <li><span class="section-number">11.6. </span>APT</li>
+      <li><span class="section-number">11.7. </span>APT</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -187,9 +188,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="apt">
-<h1><span class="section-number">11.6. </span>APT<a class="headerlink" href="#apt" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">11.7. </span>APT<a class="headerlink" href="#apt" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2><span class="section-number">11.6.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.7.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>APT (Advanced Persistent Threat)，翻译为高级持续威胁。2006年，APT攻击的概念被正式提出，用来描述从20世纪90年代末到21世纪初在美国军事和政府网络中发现的隐蔽且持续的网络攻击。</p>
 <p>APT攻击多用于指利用互联网进行网络间谍活动，其目标大多是获取高价值的敏感情报或者控制目标系统，对目标系统有着非常严重的威胁。</p>
 <p>发起APT攻击的通常是一个组织，其团体是一个既有能力也有意向持续而有效地进行攻击的实体。个人或者小团体发起的攻击一般不会被称为APT，因为即使其团体有意图攻击特定目标，也很少拥有先进和持久的资源来完成相应的攻击行为。</p>
@@ -197,7 +198,7 @@
 <p>和传统的大面积扫描的攻击方式不同，因为APT攻击通常只面向单一特定的目标，且多数攻击会综合一系列手段来完成一次APT攻击，使其有着非常高的隐蔽性和复杂性，让对APT攻击的检测变得相当困难。顾名思义，APT的特征主要体现在下面这三个方面。</p>
 </div>
 <div class="section" id="advanced">
-<h2><span class="section-number">11.6.2. </span>高级性（Advanced）<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.7.2. </span>高级性（Advanced）<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h2>
 <p>APT攻击会结合当前所有可用的攻击手段和技术，使得攻击具有极高的隐蔽性和渗透性。</p>
 <p>网络钓鱼就是其中的一种攻击方式。攻击者通常会结合社会工程学等手段来伪造可信度非常高的电子邮件，冒充目标信任的公司或者组织来发送难以分辨真假的对目标诱惑度很高恶意电子邮件。通过这些邮件来诱使被受害者访问攻击者控制的网站或者下载恶意代码。</p>
 <p>APT攻击通常还会采用其他的方式来伪装自己的攻击行为，从而实现规避安全系统检测的目的。比如有的恶意代码会通过伪造合法签名来逃避杀毒软件检测。以震网病毒为例，其在攻击时就使用了白加黑的模式，利用合法的证书对其代码进行了签名，这种攻击方式会使得大部分恶意代码查杀引擎会直接认为恶意代码是合法的，而不进行任何的检测。</p>
@@ -206,40 +207,40 @@
 <p>另外一个能体现APT攻击高级性的特征是零日漏洞，目前国际上黑市一个零日漏洞的价格在数十万到数百万不等，每一个零日漏洞的稳定利用都需要大量的资源投入。而在APT攻击中，零日漏洞的利用非常广泛。以APT28为例，据统计，仅2015年一年当中APT28在攻击中就至少使用了六个零日漏洞。</p>
 </div>
 <div class="section" id="persistent">
-<h2><span class="section-number">11.6.3. </span>持续性（Persistent）<a class="headerlink" href="#persistent" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.7.3. </span>持续性（Persistent）<a class="headerlink" href="#persistent" title="Permalink to this headline">¶</a></h2>
 <p>和传统的基于短期利益的网络攻击有很大的不同。APT攻击的过程通常包括多个实施阶段。攻击者很很多情况下都是使用逐层渗透的方式来突破高级的防御系统，整个攻击过程一般持续时间会达到几个月甚至数年。一般来说，APT攻击可以分为以下几个阶段。</p>
 <div class="section" id="id2">
-<h3><span class="section-number">11.6.3.1. </span>侦查阶段<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.7.3.1. </span>侦查阶段<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>为了能够找到目标的脆弱点，攻击者通常会做大量的准备工作。在这个阶段攻击者多会使用基于大数据分析的隐私收集或者基于社会工程学的攻击来收集目标的信息，为了之后的攻击做出充分的准备。</p>
 </div>
 <div class="section" id="id3">
-<h3><span class="section-number">11.6.3.2. </span>初次入侵阶段<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.7.3.2. </span>初次入侵阶段<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>基于初次侦查的信息，攻击者通常能收集到目标所使用的软件、操作系统系统版本等信息。在获取这些信息后，攻击者可以挖掘软件对应版本的零日漏洞或者使用已知漏洞来对系统做出初期的入侵行为，获取对目标一定的控制权限。</p>
 </div>
 <div class="section" id="id4">
-<h3><span class="section-number">11.6.3.3. </span>权限提升阶段<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.7.3.3. </span>权限提升阶段<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>在复杂网络中，攻击者初次入侵所获得的权限通常是较低的权限，而为了进一步的攻击，攻击者需要获取更高的权限来完成其需要的攻击行为。在这个阶段，攻击者通常会使用权限提升漏洞或者爆破密码等行为来实现权限提升的目的，最后获得系统甚至域的管理员权限。</p>
 </div>
 <div class="section" id="id5">
-<h3><span class="section-number">11.6.3.4. </span>保持访问阶段<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.7.3.4. </span>保持访问阶段<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>在成功入侵目标计算机并且有一定的权限之后，攻击者一般会使用各种方式来保持对系统的访问权限。其中一个比较常用的方式是窃取合法用户的登录凭证。当获取了用户的访问凭证之后，可以使用远程控制工具（RAT，Remote Access Tools）来建立连接，并在连接建立之后，植入特定的后门来达到持续控制的效果。</p>
 </div>
 <div class="section" id="id6">
-<h3><span class="section-number">11.6.3.5. </span>横向扩展阶段<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.7.3.5. </span>横向扩展阶段<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>当攻击者掌握一定的目标之后，会以较慢且较隐蔽的方式逐渐在内网扩散。主要方式是先在内网进行一定的侦查。基于这些侦查，获得内网计算机的相关信息，并结合这些信息使用软件漏洞或者弱密码爆破等手段来进行横向的进一步渗透，获取更多的权限和信息。</p>
 </div>
 <div class="section" id="id7">
-<h3><span class="section-number">11.6.3.6. </span>攻击收益阶段<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.7.3.6. </span>攻击收益阶段<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>APT攻击的主要目的是窃取目标系统的信息或对其造成一定的破坏。在完成横向扩展控制一定的内网机器后。以收集信息为目标的攻击者会使用加密通道的方式把获取的信息逐渐回传并消除入侵痕迹。而以造成破坏为目标的攻击，则在这个阶段进行相应的攻破坏。</p>
 </div>
 </div>
 <div class="section" id="threat">
-<h2><span class="section-number">11.6.4. </span>威胁性（Threat）<a class="headerlink" href="#threat" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.7.4. </span>威胁性（Threat）<a class="headerlink" href="#threat" title="Permalink to this headline">¶</a></h2>
 <p>和传统攻击不同，APT攻击的攻击手段和方案大都是针对特定的攻击对象和目的来设计。相对其他攻击，攻击者有着非常明确的目标和目的，很少会使用自动化的攻击方式，而是精确的攻击。</p>
 <p>另外APT的目标多是政府机构、金融、能源等敏感企业、部门，一旦这些目标被成功攻击，其影响往往十分巨大。据目前已知的信息，在美国、俄罗斯等国的大选中，以及欧洲一些政治事件中，都有APT攻击出现。APT攻击已经成为国家之前斗争的一种重要手段。</p>
 </div>
 <div class="section" id="ioc">
-<h2><span class="section-number">11.6.5. </span>IoC<a class="headerlink" href="#ioc" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.7.5. </span>IoC<a class="headerlink" href="#ioc" title="Permalink to this headline">¶</a></h2>
 <p>IoC (Indicators of Compromise) 在取证领域被定义为计算机安全性被破坏的证据。</p>
 <p>常见的 IoC 有以下几种：</p>
 <ul class="simple">
@@ -253,7 +254,7 @@
 </ul>
 </div>
 <div class="section" id="id8">
-<h2><span class="section-number">11.6.6. </span>参考链接<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.7.6. </span>参考链接<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://projectsharp.org/2020/02/23/APT分析及TTPs提取">APT 分析及 TTPs 提取</a></p></li>
 </ul>
@@ -269,7 +270,7 @@
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="docker.html" class="btn btn-neutral float-left" title="11.5. Docker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="docker.html" class="btn btn-neutral float-left" title="11.6. Docker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

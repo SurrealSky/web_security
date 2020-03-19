@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>11.2. WAF &mdash; Web安全学习笔记 1.0 documentation</title>
+  <title>11.3. WAF &mdash; Web安全学习笔记 1.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="11.3. Unicode" href="unicode.html" />
-    <link rel="prev" title="11.1. 代码审计" href="aduit.html" /> 
+    <link rel="next" title="11.4. Unicode" href="unicode.html" />
+    <link rel="prev" title="11.2. 代码审计" href="aduit.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -97,31 +97,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../tools/index.html">9. 工具与资源</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../manual/index.html">10. 手册速查</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">11. 其他</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="aduit.html">11.1. 代码审计</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">11.2. WAF</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">11.2.1. 简介</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">11.2.1.1. 概念</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">11.2.1.2. 常见功能</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">11.2.1.3. 布置位置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keywords.html">11.1. Web 安全术语</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aduit.html">11.2. 代码审计</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">11.3. WAF</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">11.3.1. 简介</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">11.3.1.1. 概念</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">11.3.1.2. 常见功能</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">11.3.1.3. 布置位置</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">11.2.2. 防护方式</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">11.2.3. 扫描器防御</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">11.2.4. WAF指纹</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">11.2.5. 绕过方式</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id9">11.2.5.1. 基于架构的绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id10">11.2.5.2. 基于资源的绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id11">11.2.5.3. 基于解析的绕过</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id12">11.2.5.4. 基于规则的绕过</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">11.3.2. 防护方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">11.3.3. 扫描器防御</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">11.3.4. WAF指纹</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">11.3.5. 绕过方式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id9">11.3.5.1. 基于架构的绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">11.3.5.2. 基于资源的绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">11.3.5.3. 基于解析的绕过</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">11.3.5.4. 基于规则的绕过</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">11.2.6. 参考链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">11.3.6. 参考链接</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="unicode.html">11.3. Unicode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dos.html">11.4. 拒绝服务攻击</a></li>
-<li class="toctree-l2"><a class="reference internal" href="docker.html">11.5. Docker</a></li>
-<li class="toctree-l2"><a class="reference internal" href="apt.html">11.6. APT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="unicode.html">11.4. Unicode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dos.html">11.5. 拒绝服务攻击</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">11.6. Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="apt.html">11.7. APT</a></li>
 </ul>
 </li>
 </ul>
@@ -171,7 +172,7 @@
         
           <li><a href="index.html"><span class="section-number">11. </span>其他</a> &raquo;</li>
         
-      <li><span class="section-number">11.2. </span>WAF</li>
+      <li><span class="section-number">11.3. </span>WAF</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -191,16 +192,16 @@
            <div itemprop="articleBody">
             
   <div class="section" id="waf">
-<h1><span class="section-number">11.2. </span>WAF<a class="headerlink" href="#waf" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">11.3. </span>WAF<a class="headerlink" href="#waf" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2><span class="section-number">11.2.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.3.1. </span>简介<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id2">
-<h3><span class="section-number">11.2.1.1. </span>概念<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.3.1.1. </span>概念<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>WAF（Web Application Firewall，Web应用防火墙）是通过执行一系列针对HTTP/HTTPS的安全策略来专门为Web应用提供加固的产品。</p>
 <p>在市场上，有各种价格各种功能和选项的WAF。在一定程度上，WAF能为Web应用提供安全性，但是不能保证完全的安全。</p>
 </div>
 <div class="section" id="id3">
-<h3><span class="section-number">11.2.1.2. </span>常见功能<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.3.1.2. </span>常见功能<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>检测异常协议，拒绝不符合HTTP标准的请求</p></li>
 <li><p>对状态管理进行会话保护</p></li>
@@ -228,12 +229,12 @@
 </ul>
 </div>
 <div class="section" id="id4">
-<h3><span class="section-number">11.2.1.3. </span>布置位置<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.3.1.3. </span>布置位置<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>按布置位置，WAF可以分为云WAF、主机防护软件和硬件防护。云WAF布置在云上，请求先经过云服务器而后流向主机。主机防护软件需要主机预先安装对应软件，如mod_security、ngx-lua-waf等，对主机进行防护。硬件防护指流量流向主机时，先经过设备的清洗和拦截。</p>
 </div>
 </div>
 <div class="section" id="id5">
-<h2><span class="section-number">11.2.2. </span>防护方式<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.3.2. </span>防护方式<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p>WAF常用的方法有关键字检测、正则表达式检测、语法分析、行为分析、声誉分析、机器学习等。</p>
 <p>基于正则的保护是最常见的保护方式。开发者用一些设定好的正则规则来检测载荷是否存在攻击性。基于正则的防护较为简单，因此存在一些缺点。例如只能应用于单次请求，而且正则很难应用到一些复杂的协议上。</p>
 <p>基于语法的分析相对正则来说更快而且更准确，这种分析会把载荷按照语法解析成的符号组，然后在符号组中寻找危险的关键字。这种方式对一些载荷的变式有较好的效果，但是同样的，对解析器要求较高。</p>
@@ -243,7 +244,7 @@
 <p>除了按具体的方法分，也可以根据白名单和黑名单的使用来分类。基于白名单的WAF适用于稳定的Web应用，而基于黑名单则适合处理已知问题。</p>
 </div>
 <div class="section" id="id6">
-<h2><span class="section-number">11.2.3. </span>扫描器防御<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.3.3. </span>扫描器防御<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>基于User-Agent识别</p></li>
 <li><p>基于攻击载荷识别</p></li>
@@ -251,7 +252,7 @@
 </ul>
 </div>
 <div class="section" id="id7">
-<h2><span class="section-number">11.2.4. </span>WAF指纹<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.3.4. </span>WAF指纹<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>额外的Cookie</p></li>
 <li><p>额外的Header</p></li>
@@ -261,22 +262,22 @@
 </ul>
 </div>
 <div class="section" id="id8">
-<h2><span class="section-number">11.2.5. </span>绕过方式<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.3.5. </span>绕过方式<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id9">
-<h3><span class="section-number">11.2.5.1. </span>基于架构的绕过<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.3.5.1. </span>基于架构的绕过<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>站点在WAF后，但是站点可直连</p></li>
 <li><p>站点在云服务器中，对同网段服务器无WAF</p></li>
 </ul>
 </div>
 <div class="section" id="id10">
-<h3><span class="section-number">11.2.5.2. </span>基于资源的绕过<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.3.5.2. </span>基于资源的绕过<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>使用消耗大的载荷，耗尽WAF的计算资源</p></li>
 </ul>
 </div>
 <div class="section" id="id11">
-<h3><span class="section-number">11.2.5.3. </span>基于解析的绕过<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.3.5.3. </span>基于解析的绕过<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>字符集解析不同</p></li>
 <li><p>协议覆盖不全</p></li>
@@ -294,7 +295,7 @@
 </ul>
 </div>
 <div class="section" id="id12">
-<h3><span class="section-number">11.2.5.4. </span>基于规则的绕过<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">11.3.5.4. </span>基于规则的绕过<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><dl class="simple">
 <dt>等价替换</dt><dd><ul>
@@ -373,7 +374,7 @@
 </div>
 </div>
 <div class="section" id="id13">
-<h2><span class="section-number">11.2.6. </span>参考链接<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">11.3.6. </span>参考链接<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.weibo.com/ttarticle/p/show?id=2309404007261092631700&amp;sudaref=www.google.com.hk&amp;display=0&amp;retcode=6102">WAF攻防研究之四个层次Bypass WAF</a></p></li>
 <li><p><a class="reference external" href="https://xz.aliyun.com/t/368">我的WafBypass之道 SQL注入篇</a></p></li>
@@ -390,10 +391,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="unicode.html" class="btn btn-neutral float-right" title="11.3. Unicode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="unicode.html" class="btn btn-neutral float-right" title="11.4. Unicode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="aduit.html" class="btn btn-neutral float-left" title="11.1. 代码审计" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="aduit.html" class="btn btn-neutral float-left" title="11.2. 代码审计" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
