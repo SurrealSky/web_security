@@ -216,139 +216,139 @@
 <p>一份代码样例如下（来自《Enterprise JavaBeans》）：</p>
 <div class="section" id="person">
 <h3><span class="section-number">5.3.6.3.1. </span>Person接口定义<a class="headerlink" href="#person" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Person</span> <span class="p">{</span>
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="p">;</span>
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Person</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="o">;</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="personserverperson">
 <h3><span class="section-number">5.3.6.3.2. </span>使用PersonServer实现Person<a class="headerlink" href="#personserverperson" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonServer</span> <span class="kd">implements</span> <span class="n">Person</span> <span class="p">{</span>
-    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
-    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
-    <span class="kd">public</span> <span class="nf">PersonServer</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">age</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">age</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">name</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonServer</span> <span class="kd">implements</span> <span class="n">Person</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">PersonServer</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">age</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="person-stubperson">
 <h3><span class="section-number">5.3.6.3.3. </span>使用Person_Stub实现Person<a class="headerlink" href="#person-stubperson" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">java.io.ObjectOutputStream</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">java.io.ObjectInputStream</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="p">;</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person_Stub</span> <span class="kd">implements</span> <span class="n">Person</span> <span class="p">{</span>
-    <span class="kd">private</span> <span class="n">Socket</span> <span class="n">socket</span><span class="p">;</span>
-    <span class="kd">public</span> <span class="nf">Person_Stub</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="p">{</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">java.io.ObjectOutputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.ObjectInputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person_Stub</span> <span class="kd">implements</span> <span class="n">Person</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">Socket</span> <span class="n">socket</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Person_Stub</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
         <span class="c1">// connect to skeleton</span>
-        <span class="n">socket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="p">(</span><span class="s">&quot;computer_name&quot;</span><span class="p">,</span> <span class="mi">9000</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="p">{</span>
+        <span class="n">socket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="s">&quot;computer_name&quot;</span><span class="o">,</span> <span class="mi">9000</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
         <span class="c1">// pass method name to skeleton</span>
         <span class="n">ObjectOutputStream</span> <span class="n">outStream</span> <span class="o">=</span>
-            <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="na">getOutputStream</span><span class="p">());</span>
-        <span class="n">outStream</span><span class="p">.</span><span class="na">writeObject</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">);</span>
-        <span class="n">outStream</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span>
+            <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="o">(</span><span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">());</span>
+        <span class="n">outStream</span><span class="o">.</span><span class="na">writeObject</span><span class="o">(</span><span class="s">&quot;age&quot;</span><span class="o">);</span>
+        <span class="n">outStream</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
         <span class="n">ObjectInputStream</span> <span class="n">inStream</span> <span class="o">=</span>
-            <span class="k">new</span> <span class="n">ObjectInputStream</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="na">getInputStream</span><span class="p">());</span>
-        <span class="k">return</span> <span class="n">inStream</span><span class="p">.</span><span class="na">readInt</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="p">{</span>
+            <span class="k">new</span> <span class="n">ObjectInputStream</span><span class="o">(</span><span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">inStream</span><span class="o">.</span><span class="na">readInt</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
         <span class="c1">// pass method name to skeleton</span>
         <span class="n">ObjectOutputStream</span> <span class="n">outStream</span> <span class="o">=</span>
-            <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="na">getOutputStream</span><span class="p">());</span>
-        <span class="n">outStream</span><span class="p">.</span><span class="na">writeObject</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">);</span>
-        <span class="n">outStream</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span>
+            <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="o">(</span><span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">());</span>
+        <span class="n">outStream</span><span class="o">.</span><span class="na">writeObject</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">);</span>
+        <span class="n">outStream</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
         <span class="n">ObjectInputStream</span> <span class="n">inStream</span> <span class="o">=</span>
-            <span class="k">new</span> <span class="n">ObjectInputStream</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="na">getInputStream</span><span class="p">());</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">inStream</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+            <span class="k">new</span> <span class="n">ObjectInputStream</span><span class="o">(</span><span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">());</span>
+        <span class="k">return</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span><span class="n">inStream</span><span class="o">.</span><span class="na">readObject</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="skeleton">
 <h3><span class="section-number">5.3.6.3.4. </span>Skeleton的实现<a class="headerlink" href="#skeleton" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">java.io.ObjectOutputStream</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">java.io.ObjectInputStream</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">java.net.ServerSocket</span><span class="p">;</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person_Skeleton</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="p">{</span>
-    <span class="kd">private</span> <span class="n">PersonServer</span> <span class="n">myServer</span><span class="p">;</span>
-    <span class="kd">public</span> <span class="nf">Person_Skeleton</span><span class="p">(</span><span class="n">PersonServer</span> <span class="n">server</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">java.io.ObjectOutputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.ObjectInputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.ServerSocket</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person_Skeleton</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">PersonServer</span> <span class="n">myServer</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">Person_Skeleton</span><span class="o">(</span><span class="n">PersonServer</span> <span class="n">server</span><span class="o">)</span> <span class="o">{</span>
         <span class="c1">// get reference of object server</span>
-        <span class="k">this</span><span class="p">.</span><span class="na">myServer</span> <span class="o">=</span> <span class="n">server</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">try</span> <span class="p">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">myServer</span> <span class="o">=</span> <span class="n">server</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
             <span class="c1">// new socket at port 9000</span>
-            <span class="n">ServerSocket</span> <span class="n">serverSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerSocket</span><span class="p">(</span><span class="mi">9000</span><span class="p">);</span>
+            <span class="n">ServerSocket</span> <span class="n">serverSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerSocket</span><span class="o">(</span><span class="mi">9000</span><span class="o">);</span>
             <span class="c1">// accept stub&#39;s request</span>
-            <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="n">serverSocket</span><span class="p">.</span><span class="na">accept</span><span class="p">();</span>
-            <span class="k">while</span> <span class="p">(</span><span class="n">socket</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="n">serverSocket</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">socket</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
                 <span class="c1">// get stub&#39;s request</span>
                 <span class="n">ObjectInputStream</span> <span class="n">inStream</span> <span class="o">=</span>
-                    <span class="k">new</span> <span class="n">ObjectInputStream</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="na">getInputStream</span><span class="p">());</span>
-                <span class="n">String</span> <span class="n">method</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">inStream</span><span class="p">.</span><span class="na">readObject</span><span class="p">();</span>
+                    <span class="k">new</span> <span class="n">ObjectInputStream</span><span class="o">(</span><span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">());</span>
+                <span class="n">String</span> <span class="n">method</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span><span class="n">inStream</span><span class="o">.</span><span class="na">readObject</span><span class="o">();</span>
                 <span class="c1">// check method name</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">method</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;age&quot;</span><span class="o">))</span> <span class="o">{</span>
                     <span class="c1">// execute object server&#39;s business method</span>
-                    <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">myServer</span><span class="p">.</span><span class="na">getAge</span><span class="p">();</span>
+                    <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">myServer</span><span class="o">.</span><span class="na">getAge</span><span class="o">();</span>
                     <span class="n">ObjectOutputStream</span> <span class="n">outStream</span> <span class="o">=</span>
-                        <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="na">getOutputStream</span><span class="p">());</span>
+                        <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="o">(</span><span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">());</span>
                     <span class="c1">// return result to stub</span>
-                    <span class="n">outStream</span><span class="p">.</span><span class="na">writeInt</span><span class="p">(</span><span class="n">age</span><span class="p">);</span>
-                    <span class="n">outStream</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span>
-                <span class="p">}</span>
-                <span class="k">if</span><span class="p">(</span><span class="n">method</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">outStream</span><span class="o">.</span><span class="na">writeInt</span><span class="o">(</span><span class="n">age</span><span class="o">);</span>
+                    <span class="n">outStream</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+                <span class="o">}</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">))</span> <span class="o">{</span>
                     <span class="c1">// execute object server&#39;s business method</span>
-                    <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">myServer</span><span class="p">.</span><span class="na">getName</span><span class="p">();</span>
+                    <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">myServer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
                     <span class="n">ObjectOutputStream</span> <span class="n">outStream</span> <span class="o">=</span>
-                        <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="na">getOutputStream</span><span class="p">());</span>
+                        <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="o">(</span><span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">());</span>
                     <span class="c1">// return result to stub</span>
-                    <span class="n">outStream</span><span class="p">.</span><span class="na">writeObject</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
-                    <span class="n">outStream</span><span class="p">.</span><span class="na">flush</span><span class="p">();</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">t</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-            <span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span> <span class="n">args</span> <span class="o">[]</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">outStream</span><span class="o">.</span><span class="na">writeObject</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+                    <span class="n">outStream</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">t</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span> <span class="o">[])</span> <span class="o">{</span>
         <span class="c1">// new object server</span>
-        <span class="n">PersonServer</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PersonServer</span><span class="p">(</span><span class="s">&quot;Richard&quot;</span><span class="p">,</span> <span class="mi">34</span><span class="p">);</span>
-        <span class="n">Person_Skeleton</span> <span class="n">skel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Person_Skeleton</span><span class="p">(</span><span class="n">person</span><span class="p">);</span>
-        <span class="n">skel</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+        <span class="n">PersonServer</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PersonServer</span><span class="o">(</span><span class="s">&quot;Richard&quot;</span><span class="o">,</span> <span class="mi">34</span><span class="o">);</span>
+        <span class="n">Person_Skeleton</span> <span class="n">skel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Person_Skeleton</span><span class="o">(</span><span class="n">person</span><span class="o">);</span>
+        <span class="n">skel</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="client">
 <h3><span class="section-number">5.3.6.3.5. </span>Client实现<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonClient</span> <span class="p">{</span>
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span> <span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">try</span> <span class="p">{</span>
-            <span class="n">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Person_Stub</span><span class="p">();</span>
-            <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="na">getAge</span><span class="p">();</span>
-            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="na">getName</span><span class="p">();</span>
-            <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; is &quot;</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span> <span class="s">&quot; years old&quot;</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">t</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonClient</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Person_Stub</span><span class="o">();</span>
+            <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">person</span><span class="o">.</span><span class="na">getAge</span><span class="o">();</span>
+            <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">person</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; is &quot;</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span> <span class="s">&quot; years old&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">t</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 </div>
