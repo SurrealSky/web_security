@@ -15,12 +15,11 @@
    fileread
    fileupload
    fileinclude
+   logic
    xxe
    ssti
    xpath
-   logic
    config
    middleware/index
-   webcache
-   httpSmuggling
    captcha
+   other/index

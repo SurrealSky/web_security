@@ -7,28 +7,24 @@
 
 该类漏洞通常出现在调用外部程序完成一些功能的情景下。比如一些Web管理界面的配置主机名/IP/掩码/网关、查看系统信息以及关闭重启等功能，或者一些站点提供如ping、nslookup、提供发送邮件、转换图片等功能都可能出现该类漏洞。
 
-常见危险函数
+分类
 ----------------------------------------
+- OS命令执行
 
-PHP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- system
-- exec
-- passthru
-- shell_exec
-- popen
-- proc_open
+::
 
-Python
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- system
-- popen
-- subprocess.call
-- spawn
+	常见的shell：Windows上的cmd；Unix/Linux上常见的Shell脚本解释器有bash、sh、csh、ksh；
 
-Java
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- java.lang.Runtime.getRuntime().exec(command)
+- Web命令执行
+
+::
+
+	PHP:system,exec,passthru,shell_exec,popen,proc_open
+	Python:system,popen,subprocess.call,spawn
+	Java:java.lang.Runtime.getRuntime().exec(command)
+
+- 数据库命令执行
+- 第三方软件命令执行
 
 常见注入方式
 ----------------------------------------
