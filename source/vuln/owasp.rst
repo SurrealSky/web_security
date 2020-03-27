@@ -8,15 +8,6 @@ OWASP Top10漏洞体系长期以来作为Web攻防白帽子既基础又核心的
 
 |owasp1|
 
-::
-
-	变化内容:
-	合并了2013-A4“不安全的直接对象引用”和2013-A7“功能级访问控制功能缺失”到2017-A5“无效的访问控制”。
-	增加了2017-A4：XML 外部处理器漏洞
-	增加了2017-A8：不安全的反序列化
-	增加了2017-A10：未受保护的API
-	去掉了2013-A10：未验证的重定向和转发
-
 A1-Injection（注入漏洞）
 ----------------------------------------
 
@@ -88,5 +79,5 @@ A10-InsufficientLogging& Monitoring（不足的记录和监控漏洞）
 
 |owasp5|
 
-.. |owasp1| image:: ../images/owasp1.jpg
+.. |owasp1| image:: ../images/owasp1.png
 .. |owasp5| image:: ../images/owasp5.jpg
