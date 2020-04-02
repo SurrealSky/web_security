@@ -1,12 +1,12 @@
 传输层原理及协议
 ========================================
 
-简介
+TCP简介
 ----------------------------------------
 TCP（Transmission Control Protocol，传输控制协议）是一种面向连接的、可靠的、基于字节流的传输层通信协议，由RFC 793定义。
 
 TCP状态
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 |statetransition|
 
 三次握手
@@ -32,17 +32,30 @@ TCP状态
 第四次挥手客户端收到 FIN 后，客户端进入 TIME_WAIT 状态，接着发送一个 ACK 给服务端，确认序号为收到序号+1，服务端进入 CLOSED 状态，完成四次挥手。
 
 拥塞控制
-----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 拥塞是指网络中报文数量过多，使得服务端来不及处理，以致引起这部分乃至整个网络性能下降的现象，严重时甚至会导致网络通信业务陷入停顿即出现死锁现象。
 
 TCP采用拥塞控制算法来减少或者避免拥塞现象的发生，TCP的拥塞算法有过多种实现，包括Tahoe、Reno、NewReno、Vegas、Hybla、BIC 、CUBIC、SACK、Westwood、PRR、BBR等。
 
-参考链接
+UDP协议
 ----------------------------------------
-- `RFC 793 TRANSMISSION CONTROL PROTOCOL <https://tools.ietf.org/html/rfc793>`_
-- `RFC 2001 TCP Slow Start, Congestion Avoidance, Fast Retransmit, and Fast Recovery Algorithms <https://tools.ietf.org/html/rfc2001>`_
-- `RFC 3390 Increasing TCP's Initial Window <https://tools.ietf.org/html/rfc3390>`_
-- `RFC 5681 TCP Congestion Control <https://tools.ietf.org/html/rfc5681>`_
-- `TCP congestion control wiki <https://en.wikipedia.org/wiki/TCP_congestion_control>`_
+UDP协议全称是用户数据报协议，在网络中它与TCP协议一样用于处理数据包，是一种无连接的协议。在OSI模型中，在第四层——传输层，处于IP协议的上一层。UDP有不提供数据包分组、组装和不能对数据包进行排序的缺点，也就是说，当报文发送之后，是无法得知其是否安全完整到达的。具有以下几个特点：
+
+- 面向无连接
+	 | 在发送端，应用层将数据传递给传输层的 UDP 协议，UDP 只会给数据增加一个 UDP 头标识下是 UDP 协议，然后就传递给网络层了。
+	 | 在接收端，网络层将数据传递给传输层，UDP 只去除 IP 报文头就传递给应用层，不会任何拼接操作。
+- 有单播，多播，广播的功能
+- UDP是面向报文的
+	| 发送方的UDP对应用程序交下来的报文，在添加首部后就向下交付IP层。UDP对应用层交下来的报文，既不合并，也不拆分，而是保留这些报文的边界。因此，应用程序必须选择合适大小的报文。
+- 不可靠性
+
+TCP/UDP主要区别
+----------------------------------------
+- TCP面向连接，UDP是无连接的。
+- TCP提供可靠的服务（无差错，不丢失，不重复，且按序到达），UDP尽最大努力交付，不保证可靠交付。
+- TCP面向字节流，数据即一连串无结构的字节流;UDP是面向报文，没有拥塞控制，因此网络出现拥塞不会使源主机的发送速率降低（对实时应用很有用，如IP电话，实时视频会议等）。
+- 每一条TCP连接只能是点到点的;UDP支持一对一，一对多，多对一和多对多的交互通信。
+- TCP首部开销20字节;UDP的首部开销小，只有8个字节。
+- TCP的逻辑通信信道是全双工的可靠信道，UDP则是不可靠信道。
 
 .. |statetransition| image:: ../images/tcp-state-transition-diagram.gif

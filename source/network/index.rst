@@ -11,7 +11,6 @@
    translatelayer
    applicationlayer
    dhcp
-   route
    domain
    http/index
    ssl
