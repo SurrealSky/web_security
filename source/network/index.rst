@@ -9,12 +9,7 @@
    datalinklayer
    networklayer
    translatelayer
-   applicationlayer
-   dhcp
-   domain
-   http/index
-   ssl
-   ipsec
+   applicationlayer/index
    fragment
    nat
    realip
