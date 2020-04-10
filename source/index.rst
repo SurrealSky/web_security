@@ -17,3 +17,4 @@
    tools/index
    manual/index
    misc/index
+   experience/index

@@ -16,6 +16,7 @@
 - `Fuxi <https://github.com/jeffzh3ng/Fuxi-Scanner>`_
 - `vooki <https://www.vegabird.com/vooki/>`_
 - `BadMod <https://github.com/MrSqar-Ye/BadMod>`_
+- `xray <https://github.com/chaitin/xray>`_
 
 WebAssembly
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -5,9 +5,25 @@ Whois
 ----------------------------------------
 `Whois <https://www.whois.com/>`_ 可以查询域名是否被注册，以及注册域名的详细信息的数据库，其中可能会存在一些有用的信息，例如域名所有人、域名注册商、邮箱等。
 
-搜索引擎搜索
+Google Hacking
 ----------------------------------------
-搜索引擎通常会记录域名信息，可以通过 ``site: domain`` 的语法来查询。
+ | google 机器人，自动爬行全世界所有网站（网页）的内容。
+ | Google Hacking 就是利用搜索引擎的语法，达到精准搜索信息的目的。
+ | 如果Google 用不了的，也可以考虑其他搜索引擎。
+
+- 探索网站目录结构
+	 ``parent directory site:testfire.net`` 
+	 ``index of site:testfire.net`` 
+- 搜索容易存在SQL 注入的页面
+	 ``site:testfire.net inurl:login`` 
+	 ``site:testfire.net intext:login`` 
+- 搜索指定的文件类型
+	 ``filetype:pdf site:testfire.net`` 
+- 搜索phpinfo()
+	 ``intext:PHP Version ext:php`` 
+	 ``intext:apache2handler`` 
+	 ``intext:allow_url_include`` 
+	 ``intext:php.ini`` 
 
 第三方查询
 ----------------------------------------
@@ -18,6 +34,8 @@ Whois
 - CrtSearch
 - threatminer
 - Censys
+- `钟馗之眼 <https://www.zoomeye.org/>`_
+- `shodan <https://www.shodan.io/>`_
 
 ASN信息关联
 ----------------------------------------
