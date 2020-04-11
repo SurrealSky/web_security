@@ -6,11 +6,12 @@
    :maxdepth: 2
    :caption: 内容索引:
 
-   basic/index
+   basic
+   websec/index
    network/index
-   info/index
-   vuln/index
    language/index
+   STCE-info/index
+   STCE-vuln/index
    intranet/index
    defense/index
    auth/index

@@ -1,11 +1,10 @@
-序章
+web安全与渗透测试
 ========================================
 
 .. toctree::
    :maxdepth: 2
    :caption: 内容索引:
 
-   basic
    history
    atkhistory
    attack
