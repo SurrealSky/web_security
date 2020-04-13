@@ -172,6 +172,8 @@ Web安全领域从狭义的角度来看，就是一门研究[网站安全]的技
 			缺点：需要深入研究相应的文件格式，并写出相应的文件格式脚本。该过程需要的时间较长。
 		
 		相关工具：Easyfuzzer。
+	- 其它
+		补丁比较。
 
 .. |STCS2| image:: images/STCS2.jpg
 .. |STCS| image:: images/STCS-Mind-Map.png
