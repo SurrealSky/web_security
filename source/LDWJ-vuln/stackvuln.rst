@@ -15,6 +15,8 @@
 
 函数调用过程
 ----------------------------------------
+	|stack|
+
 - 参数入栈
 	将参数从右向左依次压入系统栈中。
 - 返回地址入栈
@@ -72,37 +74,39 @@
 
 函数调用示例
 ----------------------------------------
- | 编译环境：Visual Studio 2015
- | 编译选项：无全程序优化，禁用安全检查 (/GS-)
- | 附件：`stacksample.rar <..//_static//stacksample.rar>`_
 
 示例代码
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
-		int BFunc(int i, int j)
-		{
-			int m = 1;
-			int n = 2;
-			m = i;
-			n = j;
-			return m;
-		}
-		int AFunc(int i, int j)
-		{
-		   int m = 3;
-		   int n = 4;
-		   m = i;
-		   n = j;
-		   return BFunc(m, n);
-		}
-		int _tmain(int argc, _TCHAR* argv[])
-		{
-			return AFunc(5, 6);
-		}
+	int BFunc(int i, int j)
+	{
+		int m = 1;
+		int n = 2;
+		m = i;
+		n = j;
+		return m;
+	}
+	int AFunc(int i, int j)
+	{
+	   int m = 3;
+	   int n = 4;
+	   m = i;
+	   n = j;
+	   return BFunc(m, n);
+	}
+	int _tmain(int argc, _TCHAR* argv[])
+	{
+		return AFunc(5, 6);
+	}
 
-
+编译环境:
+ | IDE：Visual Studio 2015
+ | 编译选项：
+ | 无全程序优化
+ | 禁用安全检查 (/GS-)
+ | 附件：`stacksample.rar <..//_static//stacksample.rar>`_
 
 运行堆栈
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -115,8 +119,71 @@
 栈溢出
 ----------------------------------------
 
+示例代码
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+	#include"stdafx.h"
+	#include<Windows.h>
+
+	#define PASSWORFD "1234567"
+
+	int verify_password(char *password)
+	{
+		int authenticated;
+		char buffer[44];
+		authenticated = strcmp(PASSWORFD, password);
+		strcpy(buffer, password);
+		return authenticated;
+	}
+
+	int main(int argc, char* argv[])
+	{
+		
+		if (argc > 1)
+		{
+			int valid_flag = 0;
+			char password[1024];
+			FILE *fp;
+			LoadLibrary("user32.dll");
+			if (!(fp = fopen(argv[1], "r")))
+			{
+				printf("password.txt open failed");
+				exit(0);
+			}
+			fscanf(fp, "%s", password);
+			valid_flag = verify_password(password);
+			if (valid_flag)
+				printf("incorrect password!\n");
+			else
+			{
+				printf("Congratulation!You have passed the verification!");
+			}
+			fclose(fp);
+		}
+		else
+			printf("main argu error!");
+		return 0;
+	}
+
+编译环境：
+ | IDE：Visual Studio 2015，release
+ | 编译选项：
+ | 字符集：使用多字节字符集
+ | c/c++->优化->优化：已禁用
+ | c/c++->优化->启用内部函数：否
+ | c/c++->优化->全程序优化：否
+ | c/c++->预处理器->预处理定义：_CRT_SECURE_NO_WARNINGS
+ | c/c++->代码生成->安全检查：禁用安全检查（/GS-）
+ | 附件：`stackvuln.zip <..//_static//stackvuln.zip>`_
+
+运行堆栈
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. |funcargu| image:: ../images/funcargu.png
 .. |ESP-EBP| image:: ../images/ESP-EBP.png
+.. |stack| image:: ../images/stack.png
 .. |stack1| image:: ../images/stack1.png
 .. |stack2| image:: ../images/stack2.png
 .. |stack3| image:: ../images/stack3.png
