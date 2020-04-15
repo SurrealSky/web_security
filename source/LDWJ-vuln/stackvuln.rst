@@ -180,6 +180,15 @@
 
 运行堆栈
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main函数：
+|stack4|
+运行到verify_password函数：
+|stack5|
+溢出发生前：
+|stack6|
+溢出发生后：
+|stack7|
+
 
 POC
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,3 +199,7 @@ POC
 .. |stack1| image:: ../images/stack1.png
 .. |stack2| image:: ../images/stack2.png
 .. |stack3| image:: ../images/stack3.png
+.. |stack4| image:: ../images/stack4.png
+.. |stack5| image:: ../images/stack5.png
+.. |stack6| image:: ../images/stack6.png
+.. |stack7| image:: ../images/stack7.png
