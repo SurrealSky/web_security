@@ -129,8 +129,38 @@ HeapSpray（堆喷）
 
 ::
 
-	#include"stdafx.h"
-	#include<Windows.h>
+	#include "stdafx.h"
+	#include<string>
+
+	class base
+	{
+		char m_buf[8];
+	public:
+		virtual int baseInit1()
+		{
+			printf("%s\n", "baseInit1");
+			return 0;
+		}
+		virtual int baseInit2()
+		{
+			printf("%s\n", "baseInit2");
+			return 0;
+		}
+	};
+
+	int main()
+	{
+		getchar();
+		unsigned int bufLen = 200 * 1024 * 1024;
+		base *baseObj = new base;
+		char buff[8] = { 0 };
+		char *spray = new char[bufLen];
+		memset(spray, 0x0c, sizeof(char)*bufLen);//此处存放shellcode
+		memset(spray + bufLen - 0x10, 0xcc, 0x10);
+		strcpy(buff, "12345678\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c");//覆盖base类的虚表指针
+		baseObj->baseInit1();
+		return 0;
+	}
 
 编译环境：
  | IDE：Visual Studio 2015，release
@@ -157,8 +187,36 @@ Use After Free（释放重引用）
 
 ::
 
-	#include"stdafx.h"
-	#include<Windows.h>
+	#include "stdafx.h"
+	#include<string>
+	#include<stdio.h>
+	#define size 32
+
+	int main()
+	{
+		char *buf1;
+		char *buf2;
+
+		buf1 = (char *)malloc(size);
+		printf("buf1：0x%p\n", buf1);
+		free(buf1);
+
+		// 分配 buf2 去“占坑”buf1 的内存位置
+		buf2 = (char *)malloc(size);
+		printf("buf2：0x%p\n\n", buf2);
+
+		// 对buf2进行内存清零
+		memset(buf2, 0, size);
+		printf("buf2：%d\n", *buf2);
+
+		// 重引用已释放的buf1指针，但却导致buf2值被篡改
+		printf("==== Use After Free ===\n");
+		strncpy(buf1, "hack", 5);
+		printf("buf2：%s\n\n", buf2);
+
+		free(buf2);
+		return 0;
+	}
 
 编译环境：
  | IDE：Visual Studio 2015，release
