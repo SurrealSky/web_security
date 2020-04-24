@@ -234,6 +234,10 @@ Use After Free（释放重引用）
 Double Free（双重释放）
 -----------------------------------------
 
+简介
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+double free是UAF的一种,相对其他类型漏洞比较少见。主要是由对同一个堆内存块进行二次释放导致的，利用好可以执行任意代码。
+
 .. |heap1| image:: ../images/heap1.png
 .. |heap2| image:: ../images/heap2.png
 .. |heap3| image:: ../images/heap3.png
