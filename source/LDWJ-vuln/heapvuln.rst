@@ -190,31 +190,47 @@ Use After Free（释放重引用）
 	#include "stdafx.h"
 	#include<string>
 	#include<stdio.h>
-	#define size 32
+
+	class attack
+	{
+	public:
+		unsigned int num;
+		char buffer[8];
+	public:
+		attack(unsigned int n) { num = n; };
+		virtual ~attack() {};
+	public:
+		virtual void printnum()
+		{
+			printf("num=%d\n", num);
+		}
+	};
 
 	int main()
 	{
-		char *buf1;
-		char *buf2;
+		_asm int 3;
+		
+		attack *p1;
+		char *p2;
 
-		buf1 = (char *)malloc(size);
-		printf("buf1：0x%p\n", buf1);
-		free(buf1);
+		p1 = new attack(1);
+		printf("p1：0x%p,size=%d\n", p1,sizeof(attack));
+		delete p1;
 
-		// 分配 buf2 去“占坑”buf1 的内存位置
-		buf2 = (char *)malloc(size);
-		printf("buf2：0x%p\n\n", buf2);
+		// 分配 p2 去“占坑”p1 的内存位置
+		p2 = (char*)malloc(sizeof(attack));
+		printf("p2：0x%p,size=%d\n", p2,sizeof(attack));
+		memset(p2, 0x0c, 4);
 
-		// 对buf2进行内存清零
-		memset(buf2, 0, size);
-		printf("buf2：%d\n", *buf2);
+		char *shellcode=new char[200 * 1024 * 1024];//堆喷
+		memset(shellcode, 0x0c, 200 * 1024 * 1024);
+		memset(shellcode + 200 * 1024 * 1024 - 0x10, 0xcc, 0x10);//shellcode
 
 		// 重引用已释放的buf1指针，但却导致buf2值被篡改
 		printf("==== Use After Free ===\n");
-		strncpy(buf1, "hack", 5);
-		printf("buf2：%s\n\n", buf2);
-
-		free(buf2);
+		p1->printnum();
+		free(p2);
+		delete[]shellcode;
 		return 0;
 	}
 
