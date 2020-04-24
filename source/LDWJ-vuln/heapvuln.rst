@@ -76,11 +76,10 @@
 -----------------------------------------
 调试堆不能使用OllyDbg,WinDbg等调试器加载程序，否则堆管理器会检测到当前进程处于调试状态，而使用调试堆管理策略。
 
-调试堆管理策略特点
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- 只用空表分配
-- 所有堆块被加上8字节的0xAB和8字节的0x00，防止程序溢出
-- 块首标志位不同
+ | **调试堆管理策略特点:** 
+ | ●只用空表分配
+ | ●所有堆块被加上8字节的0xAB和8字节的0x00，防止程序溢出
+ | ●块首标志位不同
 
 ::
 
@@ -109,150 +108,20 @@
  | c/c++->代码生成->安全检查：禁用安全检查（/GS-）
  | 链接器->高级->数据执行保护(DEP)-否
  | 链接器->高级->随机基址-否
- | 附件：`stackvuln.zip <..//_static//stackvuln.zip>`_
+ | 附件：`heapbase.zip <..//_static//heapbase.zip>`_
 
 运行堆栈
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-HeapSpray（堆喷）
+堆溢出
 -----------------------------------------
 
 简介
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- | Heap Spray是一种通过比较巧妙的方式控制堆上数据，继而把程序控制流导向ShellCode的古老艺术。
- | 在shellcode的前面加上大量的slidecode（滑板指令），组成一个注入代码段。然后向系统申请大量内存，并且反复用注入代码段来填充。这样就使得进程的地址空间被大量的注入代码所占据。然后结合其他的漏洞攻击技术控制程序流，使得程序执行到堆上，最终将导致shellcode的执行。
- | 传统slide code（滑板指令）一般是NOP指令，但是随着一些新的攻击技术的出现，逐渐开始使用更多的类NOP指令，譬如0x0C（0x0C0C代表的x86指令是OR AL 0x0C），0x0D等等，不管是NOP还是0C，他们的共同特点就是不会影响shellcode的执行。
- | Heap Spray只是一种辅助技术，需要结合其他的栈溢出或堆溢出等等各种溢出技术才能发挥作用。
 
 示例代码
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-	#include "stdafx.h"
-	#include<string>
-
-	class base
-	{
-		char m_buf[8];
-	public:
-		virtual int baseInit1()
-		{
-			printf("%s\n", "baseInit1");
-			return 0;
-		}
-		virtual int baseInit2()
-		{
-			printf("%s\n", "baseInit2");
-			return 0;
-		}
-	};
-
-	int main()
-	{
-		getchar();
-		unsigned int bufLen = 200 * 1024 * 1024;
-		base *baseObj = new base;
-		char buff[8] = { 0 };
-		char *spray = new char[bufLen];
-		memset(spray, 0x0c, sizeof(char)*bufLen);//此处存放shellcode
-		memset(spray + bufLen - 0x10, 0xcc, 0x10);
-		strcpy(buff, "12345678\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c");//覆盖base类的虚表指针
-		baseObj->baseInit1();
-		return 0;
-	}
-
-编译环境：
- | IDE：Visual Studio 2015，release
- | 编译选项：
- | 字符集：使用多字节字符集
- | c/c++->优化->优化：已禁用
- | c/c++->优化->启用内部函数：否
- | c/c++->优化->全程序优化：否
- | c/c++->预处理器->预处理定义：_CRT_SECURE_NO_WARNINGS（或禁用SDL）
- | c/c++->代码生成->安全检查：禁用安全检查（/GS-）
- | 链接器->高级->数据执行保护(DEP)-否
- | 链接器->高级->随机基址-否
- | 附件：`HeapSpray.zip <..//_static//HeapSpray.zip>`_
-
-Use After Free（释放重引用）
------------------------------------------
-
-简介
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-当申请的一个堆块在释放后，指向该堆块的指针没有清空（置NULL），就形成了一个悬挂指针（dangling pointer），而后再申请出堆块时会将刚刚释放出的堆块申请出来，并复写其内容，而悬挂指针此时仍然可以使用，使得出现了不可控的情况。攻击者一般利用该漏洞进行函数指针的控制，从而劫持程序执行流。
 
-示例代码
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-	#include "stdafx.h"
-	#include<string>
-	#include<stdio.h>
-
-	class attack
-	{
-	public:
-		unsigned int num;
-		char buffer[8];
-	public:
-		attack(unsigned int n) { num = n; };
-		virtual ~attack() {};
-	public:
-		virtual void printnum()
-		{
-			printf("num=%d\n", num);
-		}
-	};
-
-	int main()
-	{
-		_asm int 3;
-		
-		attack *p1;
-		char *p2;
-
-		p1 = new attack(1);
-		printf("p1：0x%p,size=%d\n", p1,sizeof(attack));
-		delete p1;
-
-		// 分配 p2 去“占坑”p1 的内存位置
-		p2 = (char*)malloc(sizeof(attack));
-		printf("p2：0x%p,size=%d\n", p2,sizeof(attack));
-		memset(p2, 0x0c, 4);
-
-		char *shellcode=new char[200 * 1024 * 1024];//堆喷
-		memset(shellcode, 0x0c, 200 * 1024 * 1024);
-		memset(shellcode + 200 * 1024 * 1024 - 0x10, 0xcc, 0x10);//shellcode
-
-		// 重引用已释放的buf1指针，但却导致buf2值被篡改
-		printf("==== Use After Free ===\n");
-		p1->printnum();
-		free(p2);
-		delete[]shellcode;
-		return 0;
-	}
-
-编译环境：
- | IDE：Visual Studio 2015，release
- | 编译选项：
- | 字符集：使用多字节字符集
- | c/c++->优化->优化：已禁用
- | c/c++->优化->启用内部函数：否
- | c/c++->优化->全程序优化：否
- | c/c++->预处理器->预处理定义：_CRT_SECURE_NO_WARNINGS（或禁用SDL）
- | c/c++->代码生成->安全检查：禁用安全检查（/GS-）
- | 链接器->高级->数据执行保护(DEP)-否
- | 链接器->高级->随机基址-否
- | 附件：`HeapUAF.zip <..//_static//HeapUAF.zip>`_
-
-Double Free（双重释放）
------------------------------------------
-
-简介
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-double free是UAF的一种,相对其他类型漏洞比较少见。主要是由对同一个堆内存块进行二次释放导致的，利用好可以执行任意代码。
 
 .. |heap1| image:: ../images/heap1.png
 .. |heap2| image:: ../images/heap2.png

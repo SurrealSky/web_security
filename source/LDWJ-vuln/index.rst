@@ -7,4 +7,8 @@
 
    stackvuln
    heapvuln
+   HeapSpray
+   UAF
+   DoubleFree
+   IntegerOverflow
    shellcode
