@@ -113,7 +113,7 @@
 
 运行堆栈
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- **运行环境** ：Microsoft Windows 7 旗舰版 6.1.7601 Service Pack 1 Build 7601
+ **运行环境** ：Microsoft Windows 7 旗舰版 6.1.7601 Service Pack 1 Build 7601 64位
 
 |stack1|
 
@@ -187,7 +187,7 @@
 
 运行堆栈
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- | **运行环境** ：Microsoft Windows 7 旗舰版 6.1.7601 Service Pack 1 Build 7601
+ | **运行环境** ：Microsoft Windows 7 旗舰版 6.1.7601 Service Pack 1 Build 7601 64位
  | **poc** :
 
 	::
