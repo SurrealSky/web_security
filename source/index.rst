@@ -17,6 +17,5 @@
    defense/index
    auth/index
    tools/index
-   manual/index
    misc/index
    experience/index

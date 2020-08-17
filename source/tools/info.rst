@@ -24,27 +24,6 @@
 - `htpwdScan <https://github.com/lijiejie/htpwdScan>`_
 - `patator <https://github.com/lanjelot/patator>`_
 
-Git信息泄漏
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `GitHack By lijiejie <https://github.com/lijiejie/GitHack>`_
-- `GitHack By BugScan <https://github.com/BugScanTeam/GitHack>`_
-- `GitTools <https://github.com/internetwache/GitTools>`_
-- `Zen <https://github.com/s0md3v/Zen>`_
-- `dig github history <https://github.com/dxa4481/truffleHog>`_
-- `gitrob Reconnaissance tool for GitHub organizations <https://github.com/michenriksen/gitrob>`_
-- `git secrets <https://github.com/awslabs/git-secrets>`_
-- `shhgit <https://github.com/eth0izzle/shhgit>`_ Find GitHub secrets in real time
-
-Github监控
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Github Monitor <https://github.com/VKSRC/Github-Monitor>`_
-- `Github Dorks <https://github.com/techgaun/github-dorks>`_
-- `GSIL <https://github.com/FeeiCN/GSIL>`_
-- `Hawkeye <https://github.com/0xbug/Hawkeye>`_
-- `gshark <https://github.com/neal1991/gshark>`_
-- `GitGot <https://github.com/BishopFox/GitGot>`_
-- `gitGraber <https://github.com/hisxo/gitGraber>`_
-
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `weakfilescan <https://github.com/ring04h/weakfilescan>`_
@@ -52,6 +31,7 @@ Github监控
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
 - `bfac <https://github.com/mazen160/bfac>`_
 - `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
+- nikto
 
 路径爬虫
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,12 +73,6 @@ DNS关联
 - `amass <https://github.com/caffix/amass>`_
 - `Certificate Search <https://crt.sh/>`_
 
-云服务
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Find aws s3 buckets <https://github.com/gwen001/s3-buckets-finder>`_
-- `CloudScraper <https://github.com/jordanpotti/CloudScraper>`_
-- `AWS Bucket Dump <https://github.com/jordanpotti/AWSBucketDump>`_
-
 数据查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Censys <https://censys.io>`_
@@ -119,16 +93,3 @@ Password
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Blasting dictionary <https://github.com/rootphantomer/Blasting_dictionary>`_
 - `pydictor <https://github.com/LandGrey/pydictor>`_
-
-CI信息泄露
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `secretz <https://github.com/lc/secretz>`_ minimizing the large attack surface of Travis CI
-
-其他
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `datasploit <https://github.com/DataSploit/datasploit>`_
-- `watchdog <https://github.com/flipkart-incubator/watchdog>`_
-- `archive <https://archive.org/web/>`_
-- `HTTPLeaks <https://github.com/cure53/HTTPLeaks>`_
-- `htrace <https://github.com/trimstray/htrace.sh>`_
-- `AWSBucketDump <https://github.com/jordanpotti/AWSBucketDump>`_
