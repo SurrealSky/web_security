@@ -73,7 +73,7 @@ DNS关联
 - `amass <https://github.com/caffix/amass>`_
 - `Certificate Search <https://crt.sh/>`_
 
-数据查询
+搜索引擎查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Censys <https://censys.io>`_
 - `Shodan <https://www.shodan.io/>`_
@@ -83,13 +83,15 @@ DNS关联
 - `Just Metadata <https://github.com/FortyNorthSecurity/Just-Metadata>`_
 - `publicwww - Find Web Pages via Snippet <https://publicwww.com/>`_
 
-Password
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Probable Wordlists <https://github.com/berzerk0/Probable-Wordlists>`_ Wordlists sorted by probability originally created for password generation and testing
-- `Common User Passwords Profiler <https://github.com/Mebus/cupp>`_
-- `chrome password grabber <https://github.com/x899/chrome_password_grabber>`_
-
 字典
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Blasting dictionary <https://github.com/rootphantomer/Blasting_dictionary>`_
 - `pydictor <https://github.com/LandGrey/pydictor>`_
+- `Probable Wordlists <https://github.com/berzerk0/Probable-Wordlists>`_ Wordlists sorted by probability originally created for password generation and testing
+- `Common User Passwords Profiler <https://github.com/Mebus/cupp>`_
+- `chrome password grabber <https://github.com/x899/chrome_password_grabber>`_
+
+Samba
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- enum4linux
+- smbclient
