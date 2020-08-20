@@ -10,6 +10,7 @@ WebShell管理工具
 - `Altman <https://github.com/keepwn/Altman>`_ the cross platform webshell tool in .NET
 - `Webshell Sniper <https://github.com/WangYihang/Webshell-Sniper>`_ Manage your website via terminal
 - `quasibot <https://github.com/Smaash/quasibot>`_ complex webshell manager, quasi-http botnet
+- webacoo
 
 WebShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
