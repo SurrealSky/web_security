@@ -32,6 +32,10 @@
 - `bfac <https://github.com/mazen160/bfac>`_
 - `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
 - nikto
+- auxiliary/scanner/http/dir_scanner
+- auxiliary/scanner/http/dir_listing
+- auxiliary/scanner/http/brute_dirs
+- `GOBUSTER <https://github.com/OJ/gobuster>`_
 
 路径爬虫
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
