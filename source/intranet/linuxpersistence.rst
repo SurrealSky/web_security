@@ -35,7 +35,16 @@
 - 其它
     - ``https://github.com/SecWiki/linux-kernel-exploits``
 
-后门
+持久化
 ----------------------------------------
+- 反弹shell
+- suid shell
+- icmp后门
+- sshd wrapper
+- sshd软链接后门
+- port knocking
+- pam后门
+- webshell
+- rootkit
 - strace 后门
     - ``alias ssh='strace -o /tmp/.ssh.log -e read,write,connect -s 2048 ssh'``
