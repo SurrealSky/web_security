@@ -14,6 +14,7 @@ WebShell管理工具
 
 WebShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `php-reverse-shell <http://pentestmonkey.net/tools/web-shells/php-reverse-shell>`_
 - `webshell <https://github.com/tennc/webshell>`_
 - `PHP backdoors <https://github.com/bartblaze/PHP-backdoors>`_
 - `php bash - semi-interactive web shell <https://github.com/Arrexel/phpbash>`_
