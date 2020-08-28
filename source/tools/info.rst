@@ -28,6 +28,12 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `weakfilescan <https://github.com/ring04h/weakfilescan>`_
 - `DirBrute <https://github.com/Xyntax/DirBrute>`_
+- `dirmap <https://github.com/H4ckForJob/dirmap.git>`_
+	 ``git clone https://github.com/H4ckForJob/dirmap.git``
+	 ``python3 -m pip install -r requirement.txt``
+- `cansina <https://github.com/deibit/cansina>`_
+- DirBuster
+- dirb
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
 - `bfac <https://github.com/mazen160/bfac>`_
 - `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
@@ -36,6 +42,7 @@
 - auxiliary/scanner/http/dir_listing
 - auxiliary/scanner/http/brute_dirs
 - `GOBUSTER <https://github.com/OJ/gobuster>`_
+- 御剑
 
 路径爬虫
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
