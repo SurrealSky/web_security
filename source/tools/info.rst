@@ -33,11 +33,16 @@
 - `weakfilescan <https://github.com/ring04h/weakfilescan>`_
 - `DirBrute <https://github.com/Xyntax/DirBrute>`_
 - `dirmap <https://github.com/H4ckForJob/dirmap.git>`_
-	 ``git clone https://github.com/H4ckForJob/dirmap.git``
-	 ``python3 -m pip install -r requirement.txt``
+	``git clone https://github.com/H4ckForJob/dirmap.git``
+	``python3 -m pip install -r requirement.txt``
 - `cansina <https://github.com/deibit/cansina>`_
 - DirBuster
 - dirb
+	使用字典穷举特定扩展名文件:
+	``dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
+- wfuzz
+	使用字典穷举特定扩展名文件：
+	``wfuzz -w /usr/share/wordlists/wfuzz/general/megabeast.txt --hc 404 http://172.16.100.102/FUZZ.sh``
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
 - `bfac <https://github.com/mazen160/bfac>`_
 - `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
@@ -105,6 +110,7 @@ DNS关联
 - `Probable Wordlists <https://github.com/berzerk0/Probable-Wordlists>`_ Wordlists sorted by probability originally created for password generation and testing
 - `Common User Passwords Profiler <https://github.com/Mebus/cupp>`_
 - `chrome password grabber <https://github.com/x899/chrome_password_grabber>`_
+- kali自带字典：/usr/share/wordlists/
 
 Samba
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
