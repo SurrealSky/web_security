@@ -4,13 +4,13 @@
 综合框架
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `metasploit <https://www.metasploit.com/>`_
+- AWVS
+- openvas
+- nessus
 - `w3af <http://w3af.org/>`_
 - `AutoSploit <https://github.com/NullArray/AutoSploit/>`_
-- `Nikto <https://cirt.net/nikto2>`_
 - `skipfish <https://my.oschina.net/u/995648/blog/114321>`_
 - `Arachni <http://www.arachni-scanner.com/>`_
-- `ZAP <http://www.freebuf.com/sectool/5427.html>`_
-- `BrupSuite <https://portswigger.net/burp/>`_
 - `Spiderfoot <https://github.com/smicallef/spiderfoot>`_
 - `AZScanner <https://github.com/az0ne/AZScanner>`_
 - `Fuxi <https://github.com/jeffzh3ng/Fuxi-Scanner>`_
