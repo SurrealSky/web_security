@@ -60,10 +60,18 @@
 指纹识别
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Wappalyzer <https://github.com/AliasIO/Wappalyzer>`_
-- `whatweb <https://github.com/urbanadventurer/whatweb>`_
 - `Wordpress Finger Print <https://github.com/iniqua/plecost>`_
 - `CMS指纹识别 <https://github.com/n4xh4ck5/CMSsc4n>`_
 - `JA3 <https://github.com/salesforce/ja3>`_ is a standard for creating SSL client fingerprints in an easy to produce and shareable way
+- `Joomla Vulnerability Scanner <https://github.com/rezasp/joomscan>`_
+- `Drupal enumeration & exploitation tool <https://github.com/immunIT/drupwn>`_
+- wpscan：wordpress CMS识别
+- `云悉指纹 <https://www.yunsee.cn/>`_
+- `whatweb <https://github.com/urbanadventurer/whatweb>`_
+- `Webfinger <https://github.com/se55i0n/Webfinger>`_
+- `CMSeek <https://github.com/Tuhinshubhra/CMSeeK>`_
+- `TPscan <https://github.com/Lucifer1993/TPscan>`_ 一键ThinkPHP漏洞检测
+- `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
 
 Waf指纹
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
