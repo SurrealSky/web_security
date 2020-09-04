@@ -17,6 +17,7 @@
 - `vooki <https://www.vegabird.com/vooki/>`_
 - `BadMod <https://github.com/MrSqar-Ye/BadMod>`_
 - `xray <https://github.com/chaitin/xray>`_
+- `x-scan <https://x-scan.apponic.com/>`_
 
 WebAssembly
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
