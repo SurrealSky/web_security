@@ -72,6 +72,10 @@
 - `Joomla Vulnerability Scanner <https://github.com/rezasp/joomscan>`_
 - `Drupal enumeration & exploitation tool <https://github.com/immunIT/drupwn>`_
 - wpscan：wordpress CMS识别
+	``插件漏洞:wpscan --url https://www.xxxxx.wiki/ --enumerate vp`` 
+	``主题漏洞:wpscan --url https://www.xxxxxx.wiki --enumerate vt`` 
+	``枚举用户:wpscan --url https://www.xxxxxxx.wiki/ --enumerate u`` 
+	``穷举密码:wpscan --url https://www.xxxxxxx.wiki/ --enumerate u --wordlist /root/wordlist.txt`` 
 - `云悉指纹 <https://www.yunsee.cn/>`_
 - `whatweb <https://github.com/urbanadventurer/whatweb>`_
 - `Webfinger <https://github.com/se55i0n/Webfinger>`_
@@ -130,3 +134,8 @@ Samba
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - enum4linux
 - smbclient
+	``查看共享文件夹：smbclient -L //192.168.1.110 -U Jerry`` 
+	``进入共享文件夹：smbclient //192.168.1.110/share -U Jerry`` 
+	``上传文件：smbclient //192.168.1.110/share -c 'cd /home/dulingwen/Downloads; put shaolin.jpg'`` 
+	``smb直接上传：put flower.jpg`` 
+	``smb下载文件：get flower.jpg`` 
