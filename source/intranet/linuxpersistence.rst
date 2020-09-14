@@ -1,6 +1,52 @@
 持久化 - Linux
 ========================================
 
+什么是权限
+----------------------------------------
+在Linux 系统中， ``ls -al`` 即可查看列出文件所属的权限。这里我用kali 系统来演示。
+
+::
+
+	……
+	drwxr-xr-x  2 kali kali    4096 Jan 27 12:52 Downloads
+	-rw-r--r--  1 root root     903 Jun 14 11:33 exp.html
+	-rw-r--r--  1 root root  153600 May  5 09:42 flag
+	lrwxrwxrwx  1 kali kali      28 May 14 08:28 flagg -> /proc/self/cwd/flag/flag.jpg
+	-rw-r--r--  1 kali kali     188 May 14 08:29 flagg.zip
+	-rw-r--r--  1 root root 1807342 Apr 20 06:52 get-pip.py
+	drwx------  3 kali kali    4096 Jun 18 21:35 .gnupg
+	-rw-r--r--  1 root root      56 Jun 16 23:29 hash.txt
+	-rw-r--r--  1 root root   12396 Jun 11 00:13 hydra.restore
+	-rw-------  1 kali kali    5202 Jun 18 21:35 .ICEauthority
+	-rw-r--r--  1 root root    2046 Jun 10 22:58 jim_pass.txt
+	……
+
+::
+
+	例如：
+	-rw-r--r--  1 root root      56 Jun 16 23:29 hash.txt
+
+- 第一位
+	| ``-`` :代表普通文件
+	| ``d`` :代表目录
+	| ``l`` :代表软链接
+	| ``b`` :代表块文件
+	| ``c`` :代表字符设备
+- 第二及后面几位,分别三个为一组
+	| ``rw-r--r--`` 代表文件所属的权限,r:文件可读。w:文件可修改。-:表示暂时没有其他权限。x:表示可执行
+	| ``rw-`` 表示文件所拥有者的权限
+	| ``r--`` 表示文件所在组的用户的权限
+	| ``r--`` 表示其他组的用户的权限。
+- 第二组数据 ``1`` 
+	| 如果文件类型为目录，表示目录下的字目录个数
+	| 如果文件类型是普通文件，这个数据就表示这个文件的硬链接个数
+- 第三组数据 ``root`` ,表示该文件所有者为root用户
+- 第四组数据 ``root`` ,表示该文件所在组为root组
+- 第五组数据 ``56`` ,表示文件的大小为多少字节。如果为一个目录，则为 ``4096`` 。
+- 第六组数据表示最后一次修改时间
+- 第七组数据表示文件名称
+
+
 权限提升
 ----------------------------------------
 - linux exploit suggester（kernel<3.4.4）

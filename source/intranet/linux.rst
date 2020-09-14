@@ -80,6 +80,32 @@
 - 开机启动项
     - ``/etc/rc.d/init.d/``
 
+有无明文存放用户密码
+----------------------------------------
+- grep -i user [filename]
+- grep -i pass [filename]
+- grep -C 5 "password" [filename]
+- find , -name "*.php" -print0 | xargs -0 grep -i -n "var $password"
+
+有无ssh 私钥
+----------------------------------------
+- cat ~/.ssh/authorized_keys
+- cat ~/.ssh/identity.pub
+- cat ~/.ssh/identity
+- cat ~/.ssh/id_rsa.pub
+- cat ~/.ssh/id_rsa
+- cat ~/.ssh/id_dsa.pub
+- cat ~/.ssh/id_dsa
+- cat /etc/ssh/ssh_config
+- cat /etc/ssh/sshd_config
+- cat /etc/ssh/ssh_host_dsa_key.pub
+- cat /etc/ssh/ssh_host_dsa_key
+- cat /etc/ssh/ssh_host_rsa_key.pub
+- cat /etc/ssh/ssh_host_rsa_key
+- cat /etc/ssh/ssh_host_key.pub
+- cat /etc/ssh/ssh_host_key
+
+
 网络、路由和通信
 ----------------------------------------
 - 列出网络接口信息 ``/sbin/ifconfig -a`` / ``ip addr show``

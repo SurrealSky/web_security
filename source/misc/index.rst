@@ -12,4 +12,3 @@
    dos
    docker
    apt
-   bolgs
