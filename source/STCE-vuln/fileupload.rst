@@ -86,6 +86,8 @@
 		2.nginx和php配置错误,访问/1.jpg/00000000000000.php,当php-fpm找不到00000000000000.php，
 		然后向前查找，把1.jpg当成php文件访问。
 
+	附件：`webshellimg.jpg <..//_static//webshellimg.jpg>`_
+
 	- 二次渲染
 
 	::

