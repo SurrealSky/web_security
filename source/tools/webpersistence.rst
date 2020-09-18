@@ -6,11 +6,11 @@ WebShell管理工具
 - `菜刀 <https://github.com/Chora10/Cknife>`_
 - `antSword <https://github.com/antoor/antSword>`_
 - `冰蝎 <https://github.com/rebeyond/Behinder>`_ 动态二进制加密网站管理客户端
-- `weevely3 <https://github.com/epinna/weevely3>`_ Weaponized web shell
+- `weevely3(仅适用于PHP) <https://github.com/epinna/weevely3>`_ Weaponized web shell
 - `Altman <https://github.com/keepwn/Altman>`_ the cross platform webshell tool in .NET
 - `Webshell Sniper <https://github.com/WangYihang/Webshell-Sniper>`_ Manage your website via terminal
 - `quasibot <https://github.com/Smaash/quasibot>`_ complex webshell manager, quasi-http botnet
-- webacoo
+- webacoo(仅适用于PHP)
 
 WebShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
