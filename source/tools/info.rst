@@ -29,9 +29,9 @@
 
 弱密码爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `hydra <https://github.com/vanhauser-thc/thc-hydra>`_
-- `medusa <https://github.com/jmk-foofus/medusa>`_
-- `htpwdScan <https://github.com/lijiejie/htpwdScan>`_
+- `hydra(九头蛇) <https://github.com/vanhauser-thc/thc-hydra>`_
+- `medusa(美杜莎) <https://github.com/jmk-foofus/medusa>`_
+- `htpwdScan（简单的HTTP暴力破解、撞库攻击脚本） <https://github.com/lijiejie/htpwdScan>`_
 - `patator <https://github.com/lanjelot/patator>`_
 
 路径及文件扫描
