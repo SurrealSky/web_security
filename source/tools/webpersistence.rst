@@ -20,6 +20,7 @@ WebShell
 - `php bash - semi-interactive web shell <https://github.com/Arrexel/phpbash>`_
 - `Python RSA Encrypted Shell <https://github.com/Eitenne/TopHat.git>`_
 - `b374k - PHP WebShell Custom Tool <https://github.com/b374k/b374k>`_
+- ``/usr/share/webshells/*`` 
 
 Web后门
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
