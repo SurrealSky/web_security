@@ -7,6 +7,7 @@
 - AWVS
 - openvas
 - nessus
+- `PenTesters Framework(ptf) <https://github.com/trustedsec/ptf>`_
 - `w3af <http://w3af.org/>`_
 - `AutoSploit <https://github.com/NullArray/AutoSploit/>`_
 - `skipfish <https://my.oschina.net/u/995648/blog/114321>`_
