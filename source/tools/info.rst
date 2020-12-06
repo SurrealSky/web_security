@@ -196,3 +196,7 @@ Samba
 	``上传文件：smbclient //192.168.1.110/share -c 'cd /home/dulingwen/Downloads; put shaolin.jpg'`` 
 	``smb直接上传：put flower.jpg`` 
 	``smb下载文件：get flower.jpg`` 
+	
+web破解
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `Brute_force <..//_static//Brute_force.py>`_
