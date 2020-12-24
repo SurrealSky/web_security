@@ -7,6 +7,7 @@ XSS
 
    classify
    harm
+   vuln
    security/index
    source
    sink

