@@ -95,11 +95,42 @@
 
 ::
 
-	#include"stdafx.h"
-	#include<Windows.h>
+	#include "stdafx.h"
+	#include <windows.h>
+
+	int main()
+	{
+		HLOCAL h1, h2, h3, h4, h5, h6;
+		HANDLE hp;
+		hp = HeapCreate(0, 0x1000, 0x10000);
+		getchar();
+		
+		h1 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+		memset(h1, 0x11, 8);
+		h2 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+		memset(h2, 0x22, 8);
+		h3 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+		memset(h3, 0x33, 8);
+		h4 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+		memset(h4, 0x44, 8);
+		h5 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+		memset(h5, 0x55, 8);
+		h6 = HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+		memset(h6, 0x66, 8);
+
+		//free block and prevent coaleses
+		HeapFree(hp, 0, h1); //free to freelist[2] 
+		HeapFree(hp, 0, h3); //free to freelist[2] 
+		HeapFree(hp, 0, h5); //free to freelist[4]
+
+		h1= HeapAlloc(hp, HEAP_ZERO_MEMORY, 8);
+
+
+		return 0;
+	}
 
 编译环境：
- | IDE：Visual Studio 2015，release
+ | IDE：Visual Studio 2019，release
  | 编译选项：
  | 字符集：使用多字节字符集
  | c/c++->优化->优化：已禁用
@@ -111,9 +142,22 @@
  | 链接器->高级->随机基址-否
  | 附件：`heapbase.zip <..//_static//heapbase.zip>`_
 
-运行堆栈
+运行堆栈-Win7-32
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- **运行环境** ：Microsoft Windows 7 旗舰版 6.1.7601 Service Pack 1 Build 7601 64位
+**运行环境** ：Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
+ 
+运行堆栈-Win7-64
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**运行环境** ：Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
+
+运行堆栈-Win10-32
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**运行环境** ：Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
+
+运行堆栈-Win10-64
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**运行环境** ：Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
+
 
 堆溢出
 -----------------------------------------
