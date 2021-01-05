@@ -144,8 +144,116 @@
 
 运行堆栈-Win7-32
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-**运行环境** ：Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
- 
+- 运行环境
+	Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
+- 设置_NT_SYMBOL_PATH环境变量
+- 运行程序，并使用windbg附加
+- .srcpath设置源代码路径
+- 设置断点
+	|heap6|
+	 | ``u main main+50``
+	 | ``bp 00401021``
+	 | ``g``
+- 查看堆栈
+
+	::
+	
+		0:000> .process
+		Implicit process is now 7ffd3000
+		0:000> dt ntdll!_PEB 7ffd3000
+		   +0x000 InheritedAddressSpace : 0 ''
+		   +0x001 ReadImageFileExecOptions : 0 ''
+		   +0x002 BeingDebugged    : 0x1 ''
+		   +0x003 BitField         : 0 ''
+		   +0x003 ImageUsesLargePages : 0y0
+		   +0x003 IsProtectedProcess : 0y0
+		   +0x003 IsLegacyProcess  : 0y0
+		   +0x003 IsImageDynamicallyRelocated : 0y0
+		   +0x003 SkipPatchingUser32Forwarders : 0y0
+		   +0x003 SpareBits        : 0y000
+		   +0x004 Mutant           : 0xffffffff Void
+		   +0x008 ImageBaseAddress : 0x00400000 Void
+		   +0x00c Ldr              : 0x777a7880 _PEB_LDR_DATA
+		   +0x010 ProcessParameters : 0x002b1160 _RTL_USER_PROCESS_PARAMETERS
+		   +0x014 SubSystemData    : (null) 
+		   +0x018 ProcessHeap      : 0x002b0000 Void
+		   +0x01c FastPebLock      : 0x777a7380 _RTL_CRITICAL_SECTION
+		   +0x020 AtlThunkSListPtr : (null) 
+		   +0x024 IFEOKey          : (null) 
+		   +0x028 CrossProcessFlags : 0
+		   +0x028 ProcessInJob     : 0y0
+		   +0x028 ProcessInitializing : 0y0
+		   +0x028 ProcessUsingVEH  : 0y0
+		   +0x028 ProcessUsingVCH  : 0y0
+		   +0x028 ProcessUsingFTH  : 0y0
+		   +0x028 ReservedBits0    : 0y000000000000000000000000000 (0)
+		   +0x02c KernelCallbackTable : (null) 
+		   +0x02c UserSharedInfoPtr : (null) 
+		   +0x030 SystemReserved   : [1] 0
+		   +0x034 AtlThunkSListPtr32 : 0
+		   +0x038 ApiSetMap        : 0x77910000 Void
+		   +0x03c TlsExpansionCounter : 0
+		   +0x040 TlsBitmap        : 0x777a7260 Void
+		   +0x044 TlsBitmapBits    : [2] 1
+		   +0x04c ReadOnlySharedMemoryBase : 0x7f6f0000 Void
+		   +0x050 HotpatchInformation : (null) 
+		   +0x054 ReadOnlyStaticServerData : 0x7f6f0590  -> (null) 
+		   +0x058 AnsiCodePageData : 0x7ffa0000 Void
+		   +0x05c OemCodePageData  : 0x7ffa0000 Void
+		   +0x060 UnicodeCaseTableData : 0x7ffd0024 Void
+		   +0x064 NumberOfProcessors : 1
+		   +0x068 NtGlobalFlag     : 0
+		   +0x070 CriticalSectionTimeout : _LARGE_INTEGER 0xffffe86d`079b8000
+		   +0x078 HeapSegmentReserve : 0x100000
+		   +0x07c HeapSegmentCommit : 0x2000
+		   +0x080 HeapDeCommitTotalFreeThreshold : 0x10000
+		   +0x084 HeapDeCommitFreeBlockThreshold : 0x1000
+		   +0x088 NumberOfHeaps    : 4
+		   +0x08c MaximumNumberOfHeaps : 0x10
+		   +0x090 ProcessHeaps     : 0x777a7500  -> 0x002b0000 Void
+		   +0x094 GdiSharedHandleTable : (null) 
+		   +0x098 ProcessStarterHelper : (null) 
+		   +0x09c GdiDCAttributeList : 0
+		   +0x0a0 LoaderLock       : 0x777a7340 _RTL_CRITICAL_SECTION
+		   +0x0a4 OSMajorVersion   : 6
+		   +0x0a8 OSMinorVersion   : 1
+		   +0x0ac OSBuildNumber    : 0x1db1
+		   +0x0ae OSCSDVersion     : 0x100
+		   +0x0b0 OSPlatformId     : 2
+		   +0x0b4 ImageSubsystem   : 3
+		   +0x0b8 ImageSubsystemMajorVersion : 6
+		   +0x0bc ImageSubsystemMinorVersion : 0
+		   +0x0c0 ActiveProcessAffinityMask : 1
+		   +0x0c4 GdiHandleBuffer  : [34] 0
+		   +0x14c PostProcessInitRoutine : (null) 
+		   +0x150 TlsExpansionBitmap : 0x777a7268 Void
+		   +0x154 TlsExpansionBitmapBits : [32] 1
+		   +0x1d4 SessionId        : 1
+		   +0x1d8 AppCompatFlags   : _ULARGE_INTEGER 0x0
+		   +0x1e0 AppCompatFlagsUser : _ULARGE_INTEGER 0x0
+		   +0x1e8 pShimData        : (null) 
+		   +0x1ec AppCompatInfo    : (null) 
+		   +0x1f0 CSDVersion       : _UNICODE_STRING "Service Pack 1"
+		   +0x1f8 ActivationContextData : 0x00140000 _ACTIVATION_CONTEXT_DATA
+		   +0x1fc ProcessAssemblyStorageMap : (null) 
+		   +0x200 SystemDefaultActivationContextData : 0x00130000 _ACTIVATION_CONTEXT_DATA
+		   +0x204 SystemAssemblyStorageMap : (null) 
+		   +0x208 MinimumStackCommit : 0
+		   +0x20c FlsCallback      : 0x002c0b30 _FLS_CALLBACK_INFO
+		   +0x210 FlsListHead      : _LIST_ENTRY [ 0x2c0920 - 0x2c0920 ]
+		   +0x218 FlsBitmap        : 0x777a7270 Void
+		   +0x21c FlsBitmapBits    : [4] 0x1f
+		   +0x22c FlsHighIndex     : 4
+		   +0x230 WerRegistrationData : (null) 
+		   +0x234 WerShipAssertPtr : (null) 
+		   +0x238 pContextData     : 0x00150000 Void
+		   +0x23c pImageHeaderHash : (null) 
+		   +0x240 TracingFlags     : 0
+		   +0x240 HeapTracingEnabled : 0y0
+		   +0x240 CritSecTracingEnabled : 0y0
+		   +0x240 SpareTracingBits : 0y000000000000000000000000000000 (0)
+
+
 运行堆栈-Win7-64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **运行环境** ：Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
@@ -174,3 +282,4 @@
 .. |heap3| image:: ../images/heap3.png
 .. |heap4| image:: ../images/heap4.png
 .. |heap5| image:: ../images/heap5.png
+.. |heap6| image:: ../images/heap6.png
