@@ -87,7 +87,7 @@
 	为了避免程序检测调试器而使用调试堆管理策略，可以在创建堆之后加入人工断点：
 	_asm int 3，然后让程序单独执行，然后用调试器附加进程，就可以看到真实的堆。
 
-win7后堆结构
+win7堆结构
 -----------------------------------------
 
 ::
@@ -119,15 +119,19 @@ win7后堆结构
 			UINT   Flags;
 			UINT   ForceFlags;
 			//...省略若干字段
-			LIST_ENTRY SegmentList;  //通过此字段找到各heap_segment,从0号段开始，
-									   自然首先同HEAP最开始处那个HEAP_SEGMENT的SegmentListEntry链接
+			LIST_ENTRY SegmentList;	//通过此字段找到各heap_segment,从0号段开始，自然首先同HEAP最
+						开始处那个HEAP_SEGMENT的SegmentListEntry链接
 			//...省略若干字段
 			HEAP_TUNING_PARAMETERS TuningParameters;
 		}*PHEAP, HEAP;
-		注：最大区别是HEAP结构记录HEAP_SEGMENT的方式采用了链表，这样不再受数组大小的约束，同时将
-			HEAP_SEGMENT字段包含进HEAP，这样各堆段的起始便统一为HEAP_SEGMENT，不再有xp下0号段与其他段那种区别，可以统一进行管理了。
 
-	
+
+- 区别
+	HEAP结构记录HEAP_SEGMENT的方式采用了链表，这样不再受数组大小的约束，同时将HEAP_SEGMENT字段包含进HEAP，这样各堆段的起始便统一为HEAP_SEGMENT，不再有xp下0号段与其他段那种区别，可以统一进行管理了。
+- 特点：
+	在PEB中保存这进程的堆地址和数量。
+	每个HEAP_SEGMENT都有多个堆块，每个堆块包含块首和块身，块身为我们申请得到的地址。
+
 识别堆表
 -----------------------------------------
 
@@ -183,10 +187,10 @@ win7后堆结构
  | 链接器->高级->随机基址-否
  | 附件：`heapbase.zip <..//_static//heapbase.zip>`_
 
-运行堆栈-Win7-32-exe32
+Win7-32-exe32
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 运行环境
-	Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
+	Microsoft Windows 7 旗舰版 6.1.7601 Service Pack 1 Build 7601
 - 设置_NT_SYMBOL_PATH环境变量
 - 运行程序，并使用windbg附加
 - .srcpath设置源代码路径
@@ -293,9 +297,580 @@ win7后堆结构
 		   +0x240 HeapTracingEnabled : 0y0
 		   +0x240 CritSecTracingEnabled : 0y0
 		   +0x240 SpareTracingBits : 0y000000000000000000000000000000 (0)
+		0:000> !heap -l
+		Searching the memory for potential unreachable busy blocks.
+		Heap 002b0000
+		Heap 00010000
+		Heap 00020000
+		Heap 00560000
+		Scanning VM ...
+		Scanning references from 234 busy blocks (0 MBytes) ...
+		Entry     User      Heap      Segment       Size  PrevSize  Unused    Flags
+		-----------------------------------------------------------------------------
+		002c4108  002c4110  002b0000  002b0000        88       808         8  busy 
+		1 potential unreachable blocks were detected.
+		0:000> dt _HEAP 00560000
+		ntdll!_HEAP
+		   +0x000 Entry            : _HEAP_ENTRY
+		   +0x008 SegmentSignature : 0xffeeffee
+		   +0x00c SegmentFlags     : 0
+		   +0x010 SegmentListEntry : _LIST_ENTRY [ 0x5600a8 - 0x5600a8 ]
+		   +0x018 Heap             : 0x00560000 _HEAP
+		   +0x01c BaseAddress      : 0x00560000 Void
+		   +0x020 NumberOfPages    : 0x10
+		   +0x024 FirstEntry       : 0x00560588 _HEAP_ENTRY
+		   +0x028 LastValidEntry   : 0x00570000 _HEAP_ENTRY
+		   +0x02c NumberOfUnCommittedPages : 0xf
+		   +0x030 NumberOfUnCommittedRanges : 1
+		   +0x034 SegmentAllocatorBackTraceIndex : 0
+		   +0x036 Reserved         : 0
+		   +0x038 UCRSegmentList   : _LIST_ENTRY [ 0x560ff0 - 0x560ff0 ]
+		   +0x040 Flags            : 0x1000
+		   +0x044 ForceFlags       : 0
+		   +0x048 CompatibilityFlags : 0
+		   +0x04c EncodeFlagMask   : 0x100000
+		   +0x050 Encoding         : _HEAP_ENTRY
+		   +0x058 PointerKey       : 0xf99011e
+		   +0x05c Interceptor      : 0
+		   +0x060 VirtualMemoryThreshold : 0xfe00
+		   +0x064 Signature        : 0xeeffeeff
+		   +0x068 SegmentReserve   : 0x100000
+		   +0x06c SegmentCommit    : 0x2000
+		   +0x070 DeCommitFreeBlockThreshold : 0x200
+		   +0x074 DeCommitTotalFreeThreshold : 0x2000
+		   +0x078 TotalFreeSize    : 0x14b
+		   +0x07c MaximumAllocationSize : 0x7ffdefff
+		   +0x080 ProcessHeapsListIndex : 4
+		   +0x082 HeaderValidateLength : 0x138
+		   +0x084 HeaderValidateCopy : (null) 
+		   +0x088 NextAvailableTagIndex : 0
+		   +0x08a MaximumTagIndex  : 0
+		   +0x08c TagEntries       : (null) 
+		   +0x090 UCRList          : _LIST_ENTRY [ 0x560fe8 - 0x560fe8 ]
+		   +0x098 AlignRound       : 0xf
+		   +0x09c AlignMask        : 0xfffffff8
+		   +0x0a0 VirtualAllocdBlocks : _LIST_ENTRY [ 0x5600a0 - 0x5600a0 ]
+		   +0x0a8 SegmentList      : _LIST_ENTRY [ 0x560010 - 0x560010 ]
+		   +0x0b0 AllocatorBackTraceIndex : 0
+		   +0x0b4 NonDedicatedListLength : 0
+		   +0x0b8 BlocksIndex      : 0x00560150 Void
+		   +0x0bc UCRIndex         : (null) 
+		   +0x0c0 PseudoTagEntries : (null) 
+		   +0x0c4 FreeLists        : _LIST_ENTRY [ 0x560590 - 0x560590 ]
+		   +0x0cc LockVariable     : 0x00560138 _HEAP_LOCK
+		   +0x0d0 CommitRoutine    : 0x0f99011e     long  +f99011e
+		   +0x0d4 FrontEndHeap     : (null) 
+		   +0x0d8 FrontHeapLockCount : 0
+		   +0x0da FrontEndHeapType : 0 ''
+		   +0x0dc Counters         : _HEAP_COUNTERS
+		   +0x130 TuningParameters : _HEAP_TUNING_PARAMETERS
+		0:000> !heap -a 00560000
+		Index   Address  Name      Debugging options enabled
+		  4:   00560000 
+			Segment at 00560000 to 00570000 (00001000 bytes committed)
+			Flags:                00001000
+			ForceFlags:           00000000
+			Granularity:          8 bytes
+			Segment Reserve:      00100000
+			Segment Commit:       00002000
+			DeCommit Block Thres: 00000200
+			DeCommit Total Thres: 00002000
+			Total Free Size:      0000014b
+			Max. Allocation Size: 7ffdefff
+			Lock Variable at:     00560138
+			Next TagIndex:        0000
+			Maximum TagIndex:     0000
+			Tag Entries:          00000000
+			PsuedoTag Entries:    00000000
+			Virtual Alloc List:   005600a0
+			Uncommitted ranges:   00560090
+					00561000: 0000f000  (61440 bytes)
+			FreeList[ 00 ] at 005600c4: 00560590 . 00560590  
+				00560588: 00588 . 00a58 [100] - free
+
+			Segment00 at 00560000:
+				Flags:           00000000
+				Base:            00560000
+				First Entry:     00560588
+				Last Entry:      00570000
+				Total Pages:     00000010
+				Total UnCommit:  0000000f
+				Largest UnCommit:00000000
+				UnCommitted Ranges: (1)
+
+			Heap entries for Segment00 in Heap 00560000
+				00560000: 00000 . 00588 [101] - busy (587)
+				00560588: 00588 . 00a58 [100]
+				00560fe0: 00a58 . 00020 [111] - busy (1d)
+				00561000:      0000f000      - uncommitted bytes.
+		0:000> p
+		eax=00560590 ebx=7ffd3000 ecx=77725dd3 edx=00000000 esi=002c4198 edi=002c3438
+		eip=00401032 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl zr na pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+		HeapBase!main+0x32:
+		00401032 6a08            push    8
+		0:000> !heap -a 00560000
+		Index   Address  Name      Debugging options enabled
+		  4:   00560000 
+			Segment at 00560000 to 00570000 (00001000 bytes committed)
+			Flags:                00001000
+			ForceFlags:           00000000
+			Granularity:          8 bytes
+			Segment Reserve:      00100000
+			Segment Commit:       00002000
+			DeCommit Block Thres: 00000200
+			DeCommit Total Thres: 00002000
+			Total Free Size:      00000149
+			Max. Allocation Size: 7ffdefff
+			Lock Variable at:     00560138
+			Next TagIndex:        0000
+			Maximum TagIndex:     0000
+			Tag Entries:          00000000
+			PsuedoTag Entries:    00000000
+			Virtual Alloc List:   005600a0
+			Uncommitted ranges:   00560090
+					00561000: 0000f000  (61440 bytes)
+			FreeList[ 00 ] at 005600c4: 005605a0 . 005605a0  
+				00560598: 00010 . 00a48 [100] - free
+
+			Segment00 at 00560000:
+				Flags:           00000000
+				Base:            00560000
+				First Entry:     00560588
+				Last Entry:      00570000
+				Total Pages:     00000010
+				Total UnCommit:  0000000f
+				Largest UnCommit:00000000
+				UnCommitted Ranges: (1)
+
+			Heap entries for Segment00 in Heap 00560000
+				00560000: 00000 . 00588 [101] - busy (587)
+				00560588: 00588 . 00010 [101] - busy (8)
+				00560598: 00010 . 00a48 [100]
+				00560fe0: 00a48 . 00020 [111] - busy (1d)
+				00561000:      0000f000      - uncommitted bytes.
+		0:000> dv h1
+			h1 = 0x00560590
+		此时分配的h1内存地址为0x00560590，0x00560590-0x8(sizeof(_HEAP_ENTRY))为0x00560588，
+		即00560588: 00588 . 00010 [101] - busy (8)
+		第一项为地址，第二项00588为上一项的堆块大小，00010为本堆块的大小，[101]为是这个内存的标志位，
+		最右边的1表示内存块被占用，然后busy (8)表示这块内存被占用，申请的内存为0x8，加上块首的大小为
+		0x8，一共是0x10.
+		0:000> dd 00560588
+		00560588  381043a3 080040c9 00000000 00000000
+		00560598  731142e8 0000407a 005600c4 005600c4
+		005605a8  00000000 00000000 00000000 00000000
+		005605b8  00000000 00000000 00000000 00000000
+		005605c8  00000000 00000000 00000000 00000000
+		005605d8  00000000 00000000 00000000 00000000
+		005605e8  00000000 00000000 00000000 00000000
+		005605f8  00000000 00000000 00000000 00000000
+		0:000> dt _HEAP_ENTRY 00560588
+		ntdll!_HEAP_ENTRY
+		   +0x000 Size             : 0x43a3
+		   +0x002 Flags            : 0x10 ''
+		   +0x003 SmallTagIndex    : 0x38 '8'
+		   +0x000 SubSegmentCode   : 0x381043a3 Void
+		   +0x004 PreviousSize     : 0x40c9
+		   +0x006 SegmentOffset    : 0 ''
+		   +0x006 LFHFlags         : 0 ''
+		   +0x007 UnusedBytes      : 0x8 ''
+		   +0x000 FunctionIndex    : 0x43a3
+		   +0x002 ContextValue     : 0x3810
+		   +0x000 InterceptorValue : 0x381043a3
+		   +0x004 UnusedBytesLength : 0x40c9
+		   +0x006 EntryOffset      : 0 ''
+		   +0x007 ExtendedBlockSignature : 0x8 ''
+		   +0x000 Code1            : 0x381043a3
+		   +0x004 Code2            : 0x40c9
+		   +0x006 Code3            : 0 ''
+		   +0x007 Code4            : 0x8 ''
+		   +0x000 AgregateCode     : 0x80040c9`381043a3
+		注：相对于XP，Vista之后增加了对堆块的头结构(HEAP_ENTRY)的编码。编码的目的是引入随机性，增加堆
+		的安全性，防止黑客轻易就可以预测堆的数据结构内容而实施攻击。在_HEAP结构中新增了如下两个字段：
+		其中的EncodeFlagMask用来指示是否启用编码功能，Encoding字段是用来编码的，编码的方法就是用这个
+		Encoding结构与每个堆块的头结构做亦或(XOR)。
+		0:000> dd 00560000 +0x050
+		00560050  3b1143a1 00004078 0f99011e 00000000
+		00560060  0000fe00 eeffeeff 00100000 00002000
+		00560070  00000200 00002000 00000149 7ffdefff
+		00560080  01380004 00000000 00000000 00000000
+		00560090  00560fe8 00560fe8 0000000f fffffff8
+		005600a0  005600a0 005600a0 00560010 00560010
+		005600b0  00000000 00000000 00560150 00000000
+		005600c0  00000000 005605a0 005605a0 00560138
+		0:000> dd 00560588
+		00560588  381043a3 080040c9 00000000 00000000
+		00560598  731142e8 0000407a 005600c4 005600c4
+		005605a8  00000000 00000000 00000000 00000000
+		005605b8  00000000 00000000 00000000 00000000
+		005605c8  00000000 00000000 00000000 00000000
+		005605d8  00000000 00000000 00000000 00000000
+		005605e8  00000000 00000000 00000000 00000000
+		005605f8  00000000 00000000 00000000 00000000
+		0:000> ?3b1143a1^381043a3
+		Evaluate expression: 50397186 = 03010002
+		0:000> ?00004078^080040c9
+		Evaluate expression: 134217905 = 080000b1
+		低地址的word是Size字段，所以Size字段是0x2，因为是以0x8为内存粒度的，所以字节大小为
+		0:000> ?0x2*8
+		Evaluate expression: 16 = 00000010
+		0:000> p
+		eax=00560590 ebx=7ffd3000 ecx=00000000 edx=002c3438 esi=002c4198 edi=002c3438
+		eip=00401042 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl nz ac pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
+		HeapBase!main+0x42:
+		00401042 6a08            push    8
+		0:000> !heap -a 00560000
+		Index   Address  Name      Debugging options enabled
+		  4:   00560000 
+			Segment at 00560000 to 00570000 (00001000 bytes committed)
+			Flags:                00001000
+			ForceFlags:           00000000
+			Granularity:          8 bytes
+			Segment Reserve:      00100000
+			Segment Commit:       00002000
+			DeCommit Block Thres: 00000200
+			DeCommit Total Thres: 00002000
+			Total Free Size:      00000149
+			Max. Allocation Size: 7ffdefff
+			Lock Variable at:     00560138
+			Next TagIndex:        0000
+			Maximum TagIndex:     0000
+			Tag Entries:          00000000
+			PsuedoTag Entries:    00000000
+			Virtual Alloc List:   005600a0
+			Uncommitted ranges:   00560090
+					00561000: 0000f000  (61440 bytes)
+			FreeList[ 00 ] at 005600c4: 005605a0 . 005605a0  
+				00560598: 00010 . 00a48 [100] - free
+
+			Segment00 at 00560000:
+				Flags:           00000000
+				Base:            00560000
+				First Entry:     00560588
+				Last Entry:      00570000
+				Total Pages:     00000010
+				Total UnCommit:  0000000f
+				Largest UnCommit:00000000
+				UnCommitted Ranges: (1)
+
+			Heap entries for Segment00 in Heap 00560000
+				00560000: 00000 . 00588 [101] - busy (587)
+				00560588: 00588 . 00010 [101] - busy (8)
+				00560598: 00010 . 00a48 [100]
+				00560fe0: 00a48 . 00020 [111] - busy (1d)
+				00561000:      0000f000      - uncommitted bytes.
+
+		0:000> db 00560588
+		00560588  a3 43 10 38 c9 40 00 08-11 11 11 11 11 11 11 11  .C.8.@..........
+		00560598  e8 42 11 73 7a 40 00 00-c4 00 56 00 c4 00 56 00  .B.sz@....V...V.
+		005605a8  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+		005605b8  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+		005605c8  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+		005605d8  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+		005605e8  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+		005605f8  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+		
+		此时空表指针：
+		+0x0c4 FreeLists        : _LIST_ENTRY [ 0x5605a0 - 0x5605a0 ]
+		0:000> p
+		eax=005605a0 ebx=7ffd3000 ecx=77725dd3 edx=00000000 esi=002c4198 edi=002c3438
+		eip=00401053 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl zr na pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+		HeapBase!main+0x53:
+		00401053 6a08            push    8
+		0:000> !heap -a 00560000
+		Index   Address  Name      Debugging options enabled
+		  4:   00560000 
+			Segment at 00560000 to 00570000 (00001000 bytes committed)
+			Flags:                00001000
+			ForceFlags:           00000000
+			Granularity:          8 bytes
+			Segment Reserve:      00100000
+			Segment Commit:       00002000
+			DeCommit Block Thres: 00000200
+			DeCommit Total Thres: 00002000
+			Total Free Size:      00000147
+			Max. Allocation Size: 7ffdefff
+			Lock Variable at:     00560138
+			Next TagIndex:        0000
+			Maximum TagIndex:     0000
+			Tag Entries:          00000000
+			PsuedoTag Entries:    00000000
+			Virtual Alloc List:   005600a0
+			Uncommitted ranges:   00560090
+					00561000: 0000f000  (61440 bytes)
+			FreeList[ 00 ] at 005600c4: 005605b0 . 005605b0  
+				005605a8: 00010 . 00a38 [100] - free
+
+			Segment00 at 00560000:
+				Flags:           00000000
+				Base:            00560000
+				First Entry:     00560588
+				Last Entry:      00570000
+				Total Pages:     00000010
+				Total UnCommit:  0000000f
+				Largest UnCommit:00000000
+				UnCommitted Ranges: (1)
+
+			Heap entries for Segment00 in Heap 00560000
+				00560000: 00000 . 00588 [101] - busy (587)
+				00560588: 00588 . 00010 [101] - busy (8)
+				00560598: 00010 . 00010 [101] - busy (8)
+				005605a8: 00010 . 00a38 [100]
+				00560fe0: 00a38 . 00020 [111] - busy (1d)
+				00561000:      0000f000      - uncommitted bytes.
+		此时空表指针：
+		0x0c4 FreeLists        : _LIST_ENTRY [ 0x5605b0 - 0x5605b0 ]
+		0:000> p
+		eax=005605a0 ebx=7ffd3000 ecx=00000000 edx=002c3438 esi=002c4198 edi=002c3438
+		eip=00401063 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl nz ac pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
+		HeapBase!main+0x63:
+		00401063 6a08            push    8
+		0:000> p
+		eax=005605b0 ebx=7ffd3000 ecx=77725dd3 edx=00000000 esi=002c4198 edi=002c3438
+		eip=00401074 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl zr na pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+		HeapBase!main+0x74:
+		00401074 6a08            push    8
+		0:000> p
+		eax=005605b0 ebx=7ffd3000 ecx=00000000 edx=002c3438 esi=002c4198 edi=002c3438
+		eip=00401084 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl nz ac pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
+		HeapBase!main+0x84:
+		00401084 6a08            push    8
+		0:000> p
+		eax=005605c0 ebx=7ffd3000 ecx=77725dd3 edx=00000000 esi=002c4198 edi=002c3438
+		eip=00401095 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl zr na pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+		HeapBase!main+0x95:
+		00401095 6a08            push    8
+		0:000> p
+		eax=005605c0 ebx=7ffd3000 ecx=00000000 edx=002c3438 esi=002c4198 edi=002c3438
+		eip=004010a5 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl nz ac pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
+		HeapBase!main+0xa5:
+		004010a5 6a08            push    8
+		0:000> p
+		eax=005605d0 ebx=7ffd3000 ecx=77725dd3 edx=00000000 esi=002c4198 edi=002c3438
+		eip=004010b6 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl zr na pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+		HeapBase!main+0xb6:
+		004010b6 6a08            push    8
+		0:000> p
+		eax=005605d0 ebx=7ffd3000 ecx=00000000 edx=002c3438 esi=002c4198 edi=002c3438
+		eip=004010c6 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl nz ac pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
+		HeapBase!main+0xc6:
+		004010c6 6a08            push    8
+		0:000> p
+		eax=005605e0 ebx=7ffd3000 ecx=77725dd3 edx=00000000 esi=002c4198 edi=002c3438
+		eip=004010d7 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl zr na pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+		HeapBase!main+0xd7:
+		004010d7 6a08            push    8
+		0:000> p
+		eax=005605e0 ebx=7ffd3000 ecx=00000000 edx=002c3438 esi=002c4198 edi=002c3438
+		eip=004010e7 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl nz ac pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
+		HeapBase!main+0xe7:
+		004010e7 8b45f8          mov     eax,dword ptr [ebp-8] ss:0023:0012ff38=00560590
+		执行到开始释放内存。
+		0:000> !heap -a 00560000
+		Index   Address  Name      Debugging options enabled
+		  4:   00560000 
+			Segment at 00560000 to 00570000 (00001000 bytes committed)
+			Flags:                00001000
+			ForceFlags:           00000000
+			Granularity:          8 bytes
+			Segment Reserve:      00100000
+			Segment Commit:       00002000
+			DeCommit Block Thres: 00000200
+			DeCommit Total Thres: 00002000
+			Total Free Size:      0000013f
+			Max. Allocation Size: 7ffdefff
+			Lock Variable at:     00560138
+			Next TagIndex:        0000
+			Maximum TagIndex:     0000
+			Tag Entries:          00000000
+			PsuedoTag Entries:    00000000
+			Virtual Alloc List:   005600a0
+			Uncommitted ranges:   00560090
+					00561000: 0000f000  (61440 bytes)
+			FreeList[ 00 ] at 005600c4: 005605f0 . 005605f0  
+				005605e8: 00010 . 009f8 [100] - free
+
+			Segment00 at 00560000:
+				Flags:           00000000
+				Base:            00560000
+				First Entry:     00560588
+				Last Entry:      00570000
+				Total Pages:     00000010
+				Total UnCommit:  0000000f
+				Largest UnCommit:00000000
+				UnCommitted Ranges: (1)
+
+			Heap entries for Segment00 in Heap 00560000
+				00560000: 00000 . 00588 [101] - busy (587)
+				00560588: 00588 . 00010 [101] - busy (8)
+				00560598: 00010 . 00010 [101] - busy (8)
+				005605a8: 00010 . 00010 [101] - busy (8)
+				005605b8: 00010 . 00010 [101] - busy (8)
+				005605c8: 00010 . 00010 [101] - busy (8)
+				005605d8: 00010 . 00010 [101] - busy (8)
+				005605e8: 00010 . 009f8 [100]
+				00560fe0: 009f8 . 00020 [111] - busy (1d)
+				00561000:      0000f000      - uncommitted bytes.
+		0:000> dd 00560588
+		00560588  381043a3 080040c9 11111111 11111111
+		00560598  381043a3 0800407a 22222222 22222222
+		005605a8  381043a3 0800407a 33333333 33333333
+		005605b8  381043a3 0800407a 44444444 44444444
+		005605c8  381043a3 0800407a 55555555 55555555
+		005605d8  381043a3 0800407a 66666666 66666666
+		005605e8  0511429e 0000407a 005600c4 005600c4
+		005605f8  00000000 00000000 00000000 00000000
+		此时空表指针：
+		+0x0c4 FreeLists        : _LIST_ENTRY [ 0x5605f0 - 0x5605f0 ]
+		0:000> p
+		eax=00000001 ebx=7ffd3000 ecx=77726570 edx=00560174 esi=002c4198 edi=002c3438
+		eip=004010f7 esp=0012ff24 ebp=0012ff40 iopl=0         nv up ei pl zr na pe nc
+		cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+		HeapBase!main+0xf7:
+		004010f7 8b55f4          mov     edx,dword ptr [ebp-0Ch] ss:0023:0012ff34=005605b0
+		0:000> !heap -a 00560000
+		Index   Address  Name      Debugging options enabled
+		  4:   00560000 
+			Segment at 00560000 to 00570000 (00001000 bytes committed)
+			Flags:                00001000
+			ForceFlags:           00000000
+			Granularity:          8 bytes
+			Segment Reserve:      00100000
+			Segment Commit:       00002000
+			DeCommit Block Thres: 00000200
+			DeCommit Total Thres: 00002000
+			Total Free Size:      00000141
+			Max. Allocation Size: 7ffdefff
+			Lock Variable at:     00560138
+			Next TagIndex:        0000
+			Maximum TagIndex:     0000
+			Tag Entries:          00000000
+			PsuedoTag Entries:    00000000
+			Virtual Alloc List:   005600a0
+			Uncommitted ranges:   00560090
+					00561000: 0000f000  (61440 bytes)
+			FreeList[ 00 ] at 005600c4: 005605f0 . 00560590  
+				00560588: 00588 . 00010 [100] - free
+				005605e8: 00010 . 009f8 [100] - free
+
+			Segment00 at 00560000:
+				Flags:           00000000
+				Base:            00560000
+				First Entry:     00560588
+				Last Entry:      00570000
+				Total Pages:     00000010
+				Total UnCommit:  0000000f
+				Largest UnCommit:00000000
+				UnCommitted Ranges: (1)
+
+			Heap entries for Segment00 in Heap 00560000
+				00560000: 00000 . 00588 [101] - busy (587)
+				00560588: 00588 . 00010 [100]
+				00560598: 00010 . 00010 [101] - busy (8)
+				005605a8: 00010 . 00010 [101] - busy (8)
+				005605b8: 00010 . 00010 [101] - busy (8)
+				005605c8: 00010 . 00010 [101] - busy (8)
+				005605d8: 00010 . 00010 [101] - busy (8)
+				005605e8: 00010 . 009f8 [100]
+				00560fe0: 009f8 . 00020 [111] - busy (1d)
+				00561000:      0000f000      - uncommitted bytes.
+		此时空表指针：
+		+0x0c4 FreeLists        : _LIST_ENTRY [ 0x560590 - 0x5605f0 ]
+		0:000> dd 00560588
+		00560588  391143a3 000040c9 005605f0 005600c4
+		00560598  381043a3 0800407a 22222222 22222222
+		005605a8  381043a3 0800407a 33333333 33333333
+		005605b8  381043a3 0800407a 44444444 44444444
+		005605c8  381043a3 0800407a 55555555 55555555
+		005605d8  381043a3 0800407a 66666666 66666666
+		005605e8  0511429e 0000407a 005600c4 00560590
+		005605f8  00000000 00000000 00000000 00000000
+		三次释放完毕后：
+		0:000> dd 00560588
+		00560588  391143a3 000040c9 005605f0 005605b0
+		00560598  381043a3 0800407a 22222222 22222222
+		005605a8  391143a3 0000407a 00560590 005605d0
+		005605b8  381043a3 0800407a 44444444 44444444
+		005605c8  391143a3 0000407a 005605b0 005600c4
+		005605d8  381043a3 0800407a 66666666 66666666
+		005605e8  0511429e 0000407a 005600c4 00560590
+		005605f8  00000000 00000000 00000000 00000000
+		此时被释放区域形成了一个双向链表，内存分配粒度为0x8，内存区域最少
+		可容纳链表的前后向指针。
+		再次分配:
+		0:000> dv h1
+			h1 = 0x005605d0
+		0:000> !heap -a 00560000
+		Index   Address  Name      Debugging options enabled
+		  4:   00560000 
+			Segment at 00560000 to 00570000 (00001000 bytes committed)
+			Flags:                00001000
+			ForceFlags:           00000000
+			Granularity:          8 bytes
+			Segment Reserve:      00100000
+			Segment Commit:       00002000
+			DeCommit Block Thres: 00000200
+			DeCommit Total Thres: 00002000
+			Total Free Size:      00000143
+			Max. Allocation Size: 7ffdefff
+			Lock Variable at:     00560138
+			Next TagIndex:        0000
+			Maximum TagIndex:     0000
+			Tag Entries:          00000000
+			PsuedoTag Entries:    00000000
+			Virtual Alloc List:   005600a0
+			Uncommitted ranges:   00560090
+					00561000: 0000f000  (61440 bytes)
+			FreeList[ 00 ] at 005600c4: 005605f0 . 005605b0  
+				005605a8: 00010 . 00010 [100] - free
+				00560588: 00588 . 00010 [100] - free
+				005605e8: 00010 . 009f8 [100] - free
+
+			Segment00 at 00560000:
+				Flags:           00000000
+				Base:            00560000
+				First Entry:     00560588
+				Last Entry:      00570000
+				Total Pages:     00000010
+				Total UnCommit:  0000000f
+				Largest UnCommit:00000000
+				UnCommitted Ranges: (1)
+
+			Heap entries for Segment00 in Heap 00560000
+				00560000: 00000 . 00588 [101] - busy (587)
+				00560588: 00588 . 00010 [100]
+				00560598: 00010 . 00010 [101] - busy (8)
+				005605a8: 00010 . 00010 [100]
+				005605b8: 00010 . 00010 [101] - busy (8)
+				005605c8: 00010 . 00010 [101] - busy (8)
+				005605d8: 00010 . 00010 [101] - busy (8)
+				005605e8: 00010 . 009f8 [100]
+				00560fe0: 009f8 . 00020 [111] - busy (1d)
+				00561000:      0000f000      - uncommitted bytes.
+		0:000> dd 00560588
+		00560588  391143a3 000040c9 005605f0 005605b0
+		00560598  381043a3 0800407a 22222222 22222222
+		005605a8  391143a3 0000407a 00560590 005600c4
+		005605b8  381043a3 0800407a 44444444 44444444
+		005605c8  381043a3 0800407a 00000000 00000000
+		005605d8  381043a3 0800407a 66666666 66666666
+		005605e8  0511429e 0000407a 005600c4 00560590
+		005605f8  00000000 00000000 00000000 00000000
 
 
-运行堆栈-Win7-64-exe32
+Win7-64-exe32
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 运行环境
 	Microsoft Windows 7 旗舰版 6.1.7601 Service Pack 1 Build 7601
@@ -309,7 +884,7 @@ win7后堆结构
 	 | ``g``
 - 查看堆栈
 
-运行堆栈-Win7-64-exe64
+Win7-64-exe64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 运行环境
 	Microsoft Windows 7 旗舰版 6.1.7601 Service Pack 1 Build 7601
@@ -456,10 +1031,10 @@ win7后堆结构
 		   +0x0c0 DeCommitTotalFreeThreshold : 0x1000
 		   +0x0c8 TotalFreeSize    : 0x154
 		   +0x0d0 MaximumAllocationSize : 0x7ff`fffdefff
-		   +0x0d8 ProcessHeapsListIndex : 4
+		   +0x0d8 ProcessHeapsListIndex : 4		//本堆在进程堆列表中的索引
 		   +0x0da HeaderValidateLength : 0x208
 		   +0x0e0 HeaderValidateCopy : (null) 
-		   +0x0e8 NextAvailableTagIndex : 0
+		   +0x0e8 NextAvailableTagIndex : 0		//下一个可用的堆块标记索引
 		   +0x0ea MaximumTagIndex  : 0
 		   +0x0f0 TagEntries       : (null) 
 		   +0x0f8 UCRList          : _LIST_ENTRY [ 0x00000000`004a1fd0 - 0x4a1fd0 ]
@@ -583,14 +1158,11 @@ win7后堆结构
 		https://blog.csdn.net/weixin_30826761/article/details/95745639
 
 
-
-
-
-运行堆栈-Win10-64-exe32
+Win10-64-exe32
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **运行环境** ：Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
 
-运行堆栈-Win10-64-exe64
+Win10-64-exe64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **运行环境** ：Microsoft Windows 10 教育版 10.0.17134 暂缺 Build 17134 64位
 
