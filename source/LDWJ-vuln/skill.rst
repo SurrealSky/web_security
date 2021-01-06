@@ -4,7 +4,12 @@
 
 协议漏洞挖掘
 ----------------------------------------
-- `SPIKE https://resources.infosecinstitute.com/topic/intro-to-fuzzing/`_
+- `SPIKE <https://resources.infosecinstitute.com/topic/intro-to-fuzzing/>`_
+- `Fuzzowski <https://github.com/nccgroup/fuzzowski>`_
+- `backfuzz <https://github.com/localh0t/backfuzz>`_
+- GANFuzz
+- `boofuzz <https://boofuzz.readthedocs.io/en/stable/>`_
+- BFuzz
 
 文件型漏洞挖掘
 ----------------------------------------
