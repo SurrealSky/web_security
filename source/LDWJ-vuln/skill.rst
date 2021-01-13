@@ -23,6 +23,10 @@ Smart Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Peach
 - Fuzzgrind
+- afl-fuzz
+- Winafl
+- `FileFuzz <https://bbs.pediy.com/thread-125263.htm>`_
+- MiniFuzz
 
 FTP漏洞挖掘
 ----------------------------------------
