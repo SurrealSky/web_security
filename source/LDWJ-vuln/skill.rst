@@ -18,6 +18,7 @@ FileFuzz可以分为Blind Fuzz和Smart Fuzz。Blind Fuzz即通常所说的“盲
 Blind Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Filefuzz
+- `EasyFuzzer <https://bbs.pediy.com/thread-193340.htm>`_
 
 Smart Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
