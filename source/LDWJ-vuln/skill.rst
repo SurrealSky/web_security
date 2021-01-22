@@ -22,7 +22,7 @@ Blind Fuzz
 
 Smart Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- Peach
+- `Peach Fuzzer <https://sourceforge.net/projects/peachfuzz/>`_
 - Fuzzgrind
 - afl-fuzz
 - Winafl
