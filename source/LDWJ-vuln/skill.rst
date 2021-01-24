@@ -1,6 +1,6 @@
 漏洞挖掘技术
 ========================================
-针对二进制级别的软件，工业界目前普遍采用的是进行 Fuzz 测试。Fuzz 的测试用例往往是带有攻击性的畸形数据，用以触发各种类型的漏洞。
+针对二进制级别的软件，工业界目前普遍采用的是进行 Fuzz 测试(乱拳打死老师傅)。Fuzz 的测试用例往往是带有攻击性的畸形数据，用以触发各种类型的漏洞。
 
 协议漏洞挖掘
 ----------------------------------------
@@ -17,15 +17,44 @@ FileFuzz可以分为Blind Fuzz和Smart Fuzz。Blind Fuzz即通常所说的“盲
 
 Blind Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+一个形象的Blind Fuzzer例子就比如下面让一个猴子去测试应用程序。通过让它胡乱点击电脑的键盘或者移动鼠标，产生不在预期内的输入，从而发现目标程序的bug。（Android应用测试中的Monkey测试也是类似的，它通过胡乱点击Android手机上所有可见的控件，进行压力测试，当Android应用出现闪退或者不能响应的问题时，bug也就发现了）。
+
 - Filefuzz
 - `EasyFuzzer <https://bbs.pediy.com/thread-193340.htm>`_
 
-Smart Fuzz
+Mutation-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+基于变种的Fuzzer（mutation-based fuzzer）不再是胡乱的产生输入，而是在已知合法的输入的基础上，对该输入进行随机变种或者依据某种经验性的变种，从而产生不可预期的测试输入。
+
+- Taof
+- GPF
+- ProxyFuzz
 - `Peach Fuzzer <https://sourceforge.net/projects/peachfuzz/>`_
+
+Generation-based Fuzz
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+可以发现，基于变种的Fuzzer对于合法的输入集合有较强的依赖性。为了能够测试尽可能多的输入类型，必须要有足够丰富类型的合法输入，以及花样够多的变种方式。。如果测试人员对目标程序或者协议已经有了较为充分的了解，那么也有可能制造出更为高效的Fuzzer工具。即，测试的目的性更强，输入的类型有意识的多样化，将有可能更快速的挖掘到漏洞。这类方法的名称叫做基于模板的Fuzzer（Generation-based）。
+
+- SPIKE
+- Sulley
+- Mu‐4000
+- Codenomicon
+
+Evolutionary-based Fuzz
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+程序的覆盖率是一个此类方法的核心。
+	- 路径覆盖率（可以有类似的利用BL算法的路径标记和压缩算法。）
+	- 分支覆盖率
+	- 代码行覆盖率
+	
+- 基于追踪路径覆盖率的方法
+- 基于分支覆盖率的方法
+	- `afl-fuzz <https://lcamtuf.coredump.cx/afl/>`_
+	- `Winafl <https://github.com/googleprojectzero/winafl>`_
+
+其它
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Fuzzgrind
-- afl-fuzz
-- Winafl
 - `FileFuzz <https://bbs.pediy.com/thread-125263.htm>`_
 - MiniFuzz
 
