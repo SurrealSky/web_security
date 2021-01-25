@@ -57,6 +57,8 @@ Evolutionary-based Fuzz
 - Fuzzgrind
 - `FileFuzz <https://bbs.pediy.com/thread-125263.htm>`_
 - MiniFuzz
+- `pngcheck <http://www.libpng.org/pub/png/apps/pngcheck.html>`_
+- `pdfcheck <https://www.datalogics.com/products/pdf-tools/pdf-checker/>`_
 
 FTP漏洞挖掘
 ----------------------------------------
