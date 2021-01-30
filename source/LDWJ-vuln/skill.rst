@@ -24,7 +24,7 @@ Blind Fuzz
 
 Mutation-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-基于变种的Fuzzer（mutation-based fuzzer）不再是胡乱的产生输入，而是在已知合法的输入的基础上，对该输入进行随机变种或者依据某种经验性的变种，从而产生不可预期的测试输入。
+基于变异的Fuzzer（mutation-based fuzzer）不再是胡乱的产生输入，而是在已知合法的输入的基础上，对该输入进行随机变种或者依据某种经验性的变种，从而产生不可预期的测试输入。
 
 - Taof
 - GPF
@@ -33,8 +33,10 @@ Mutation-based Fuzz
 
 Generation-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-可以发现，基于变种的Fuzzer对于合法的输入集合有较强的依赖性。为了能够测试尽可能多的输入类型，必须要有足够丰富类型的合法输入，以及花样够多的变种方式。。如果测试人员对目标程序或者协议已经有了较为充分的了解，那么也有可能制造出更为高效的Fuzzer工具。即，测试的目的性更强，输入的类型有意识的多样化，将有可能更快速的挖掘到漏洞。这类方法的名称叫做基于模板的Fuzzer（Generation-based）。
+基于变异的Fuzzer对于合法的输入集合有较强的依赖性。为了能够测试尽可能多的输入类型，必须要有足够丰富类型的合法输入，以及花样够多的变种方式。。如果测试人员对目标程序或者协议已经有了较为充分的了解，那么也有可能制造出更为高效的Fuzzer工具。即，测试的目的性更强，输入的类型有意识的多样化，将有可能更快速的挖掘到漏洞。这类方法的名称叫做基于模板的Fuzzer（Generation-based）。
 
+- `boofuzz <https://boofuzz.readthedocs.io/en/stable/>`_
+- `Peach Fuzzer <https://sourceforge.net/projects/peachfuzz/>`_
 - SPIKE
 - Sulley
 - Mu‐4000
