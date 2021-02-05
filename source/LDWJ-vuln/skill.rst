@@ -33,7 +33,7 @@ Mutation-based Fuzz
 
 Generation-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-基于变异的Fuzzer对于合法的输入集合有较强的依赖性。为了能够测试尽可能多的输入类型，必须要有足够丰富类型的合法输入，以及花样够多的变种方式。。如果测试人员对目标程序或者协议已经有了较为充分的了解，那么也有可能制造出更为高效的Fuzzer工具。即，测试的目的性更强，输入的类型有意识的多样化，将有可能更快速的挖掘到漏洞。这类方法的名称叫做基于模板的Fuzzer（Generation-based）。
+基于变异的Fuzzer对于合法的输入集合有较强的依赖性。为了能够测试尽可能多的输入类型，必须要有足够丰富类型的合法输入，以及花样够多的变种方式。。如果测试人员对目标程序或者协议已经有了较为充分的了解，那么也有可能制造出更为高效的Fuzzer工具（通过对目标协议或文件格式进行建模）。即，测试的目的性更强，输入的类型有意识的多样化，将有可能更快速的挖掘到漏洞。这类方法的名称叫做基于模板的Fuzzer（Generation-based）。
 
 - `boofuzz <https://boofuzz.readthedocs.io/en/stable/>`_
 - `Peach Fuzzer <https://sourceforge.net/projects/peachfuzz/>`_
@@ -44,15 +44,13 @@ Generation-based Fuzz
 
 Evolutionary-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-程序的覆盖率是一个此类方法的核心。
-	- 路径覆盖率（可以有类似的利用BL算法的路径标记和压缩算法。）
-	- 分支覆盖率
-	- 代码行覆盖率
-	
-- 基于追踪路径覆盖率的方法
-- 基于分支覆盖率的方法
+基于程序代码的覆盖率是一个此类方法的核心，主要有路径覆盖率（可以有类似的利用BL算法的路径标记和压缩算法），分支覆盖率，代码行覆盖率。
+
+- 相关工具
 	- `afl-fuzz <https://lcamtuf.coredump.cx/afl/>`_
 	- `Winafl <https://github.com/googleprojectzero/winafl>`_
+	- `libFuzzer <https://github.com/Dor1s/libfuzzer-workshop>`_
+		libFuzzer 和要被测试的库链接在一起，通过一个模糊测试入口点（目标函数），把测试用例喂给要被测试的库。fuzzer会跟踪哪些代码区域已经测试过，然后在输入数据的语料库上进行变异，来使代码覆盖率最大化。代码覆盖率的信息由 LLVM 的SanitizerCoverage 插桩提供。
 
 其它
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
