@@ -35,9 +35,12 @@ Generation-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 基于变异的Fuzzer对于合法的输入集合有较强的依赖性。为了能够测试尽可能多的输入类型，必须要有足够丰富类型的合法输入，以及花样够多的变种方式。。如果测试人员对目标程序或者协议已经有了较为充分的了解，那么也有可能制造出更为高效的Fuzzer工具（通过对目标协议或文件格式进行建模）。即，测试的目的性更强，输入的类型有意识的多样化，将有可能更快速的挖掘到漏洞。这类方法的名称叫做基于模板的Fuzzer（Generation-based）。
 
-- `boofuzz <https://boofuzz.readthedocs.io/en/stable/>`_
-- `Peach Fuzzer <https://sourceforge.net/projects/peachfuzz/>`_
-- SPIKE
+- `boofuzz(python) <https://boofuzz.readthedocs.io/en/stable/>`_
+	 **网络协议** fuzz工具。
+- `Peach Fuzzer(linux/windows) <https://sourceforge.net/projects/peachfuzz/>`_
+	Peach支持对 **文件格式、ActiveX、网络协议** 进行Fuzz测试，Peach Fuzz的关键是编写Peach Pit配置文件。
+- SPIKE（linux）
+	 **网络协议** fuzz工具。
 - Sulley
 - Mu‐4000
 - Codenomicon
@@ -47,10 +50,34 @@ Evolutionary-based Fuzz
 基于程序代码的覆盖率是一个此类方法的核心，主要有路径覆盖率（可以有类似的利用BL算法的路径标记和压缩算法），分支覆盖率，代码行覆盖率。
 
 - 相关工具
-	- `afl-fuzz <https://lcamtuf.coredump.cx/afl/>`_
-	- `Winafl <https://github.com/googleprojectzero/winafl>`_
-	- `libFuzzer <https://github.com/Dor1s/libfuzzer-workshop>`_
-		libFuzzer 和要被测试的库链接在一起，通过一个模糊测试入口点（目标函数），把测试用例喂给要被测试的库。fuzzer会跟踪哪些代码区域已经测试过，然后在输入数据的语料库上进行变异，来使代码覆盖率最大化。代码覆盖率的信息由 LLVM 的SanitizerCoverage 插桩提供。
+	- `afl-fuzz（linux） <https://lcamtuf.coredump.cx/afl/>`_
+		AFL全称是American Fuzzy Lop，由Google安全工程师Michał Zalewski开发的一款开源fuzzing测试工具，原理是在相关代码处插桩，因此AFL主要用于对 **开源软件** 进行测试。当然配合QEMU等工具，也可对 **闭源二进制代码** 进行fuzzing，但执行效率会受到影响。
+		::
+				
+			有源码：
+			afl-gcc -g -o afl_test afl_test.c
+			afl-g++ -g -o afl_test afl_test.cpp
+			afl-fuzz -i fuzz_in -o fuzz_out ./afl_test
+			需要根据提示设置一波core_pattern
+			sudo su
+			echo core >/proc/sys/kernel/core_pattern
+			
+			无源码：
+			afl使用了qemu模式进行测试，只要在之前的命令的基础上加上-Q的参数即可。
+			先进行安装,在afl的根目录打开终端执行以下命令
+			cd qemu_mode
+			./build_qemu_support.sh
+			cd ..
+			make install
+
+			gcc -g -o afl_test2 afl_test.c
+			afl-fuzz -i fuzz_in -o fuzz_out -Q ./afl_test2
+
+		
+	- `Winafl（windows） <https://github.com/googleprojectzero/winafl>`_
+		基于二进制插桩工具DynamoRIO。
+	- `libFuzzer(linux) <https://github.com/Dor1s/libfuzzer-workshop>`_
+		libFuzzer 和要被测试的库链接在一起，通过一个模糊测试入口点（目标函数），把测试用例喂给要被测试的 **库函数（开源或闭源）** 。fuzzer会跟踪哪些代码区域已经测试过，然后在输入数据的语料库上进行变异，来使代码覆盖率最大化。代码覆盖率的信息由 LLVM 的SanitizerCoverage 插桩提供。
 		``clang++ -g -std=c++11 -fsanitize=address,fuzzer first_fuzzer.cc ./libFuzzer/libFuzzer.a -o first_fuzzer``
 
 其它
