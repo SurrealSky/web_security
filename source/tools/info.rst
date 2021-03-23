@@ -149,6 +149,18 @@ Waf指纹
 端口扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `nmap <https://github.com/nmap/nmap>`_
+	``服务版本:nmap -sV 192.168.0.101`` 
+	``操作系统版本:nmap -O 192.168.0.101`` 
+	``探测防火墙:nmap -sF -T4 192.168.0.101`` 
+	``弱口令扫描:nmap --script=auth 192.168.0.101`` 
+	``暴力破解(数据库,SMB,SNMP):nmap --script=brute 192.168.0.101`` 
+	``检查常见漏洞:nmap --script=vuln 192.168.0.101`` 
+	``默认脚本扫描:nmap --script=default 192.168.0.101 或者 nmap -sC 192.168.0.101`` 
+	``局域网服务探测：nmap -n -p445 --script=broadcast 192.168.137.4`` 
+	``smb破解:nmap --script=smb-brute.nse 192.168.137.4`` 
+	``smb字典破解:nmap --script=smb-brute.nse --script-args=userdb=/var/passwd,passdb=/var/passwd 192.168.137.4`` 
+	``smb漏洞：nmap --script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
+	``查看共享目录:nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4`` 
 - `zmap <https://github.com/zmap/zmap>`_
 - `masscan <https://github.com/robertdavidgraham/masscan>`_
 - `ShodanHat <https://github.com/HatBashBR/ShodanHat>`_
