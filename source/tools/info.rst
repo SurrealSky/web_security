@@ -4,6 +4,8 @@
 漏洞查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - searchsploit
+	| ``更新：searchsploit -u`` 
+	| ``下载：searchsploit -m php/webapps/7185.php`` 
 
 存活主机扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,6 +17,8 @@
 	| 心脏出血漏洞:``masscan -p443 28.41.0.0/16 --banners --heartbleed``
 	| ``masscan 192.168.1.1/24 --ports 445`` 
 	| nmap -sP 28.41.0.0/16
+- nmap
+	| ``nmap -sP 192.168.0.1/24`` 
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,7 +43,7 @@
 	 | ``smb破解：hydra -l Administrator -P pass.txt smb://192.168.47`` 
 	 | ``3389破解：hydra -l Administrator -P pass.txt rdp://192.168.47.124 -t 1 -V`` 
 	 | ``ssh破解：hydra -l msfadmin -P pass.txt ssh://192.168.47.133 -vV`` 
-	 | ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 2121 -e nsr -t 1 -vV`` 
+	 | ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 21 -e nsr -t 1 -vV`` 
 	 | ``HTTP服务器身份验证破解：hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
 	 | ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form \"/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed\" -V``
 
@@ -148,6 +152,11 @@ Waf指纹
 端口扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `nmap <https://github.com/nmap/nmap>`_
+	``范围扫描：nmap 192.168.0.100-110`` 
+	``网段扫描：nmap 192.168.0.1/24`` 
+	``文件列表：nmap -iL /root/target.txt`` 
+	``指定端口：nmap 192.168.0.101 -p 80,8080,3306,3389`` 
+	``路由追踪：nmap --traceroute 192.168.0.101`` 
 	``服务版本:nmap -sV 192.168.0.101`` 
 	``操作系统版本:nmap -O 192.168.0.101`` 
 	``探测防火墙:nmap -sF -T4 192.168.0.101`` 
