@@ -13,6 +13,8 @@ SSRF可以对外网、服务器所在内网、本地进行端口扫描，攻击�
 
 利用方式
 ----------------------------------------
+	|ssrf1|
+	
 SSRF利用存在多种形式以及不同的场景，针对不同场景可以使用不同的绕过方式。
 
 以curl为例, 可以使用dict protocol操作Redis、file协议读文件、gopher协议反弹Shell等功能，常见的Payload如下：
@@ -159,3 +161,6 @@ DNS Rebinding
 - `谈一谈如何在Python开发中拒绝SSRF漏洞 <https://www.leavesongs.com/PYTHON/defend-ssrf-vulnerable-in-python.html>`_
 - `SSRF Tips <http://blog.safebuff.com/2016/07/03/SSRF-Tips/>`_
 - `SSRF in PHP <https://joychou.org/web/phpssrf.html>`_
+
+
+.. |ssrf1| image:: ../images/ssrf1.jpg
