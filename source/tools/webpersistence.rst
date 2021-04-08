@@ -4,13 +4,22 @@ Web持久化
 WebShell管理工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `菜刀 <https://github.com/Chora10/Cknife>`_
+	支持asp，jsp，php，不支持HTTPS。
+- ‘Cknife <https://github.com/Chora10/Cknife>`_
+	支持asp，jsp，php，支持HTTPS。
 - `antSword <https://github.com/antoor/antSword>`_
-- `冰蝎 <https://github.com/rebeyond/Behinder>`_ 动态二进制加密网站管理客户端
-- `weevely3(仅适用于PHP) <https://github.com/epinna/weevely3>`_ Weaponized web shell
-- `Altman <https://github.com/keepwn/Altman>`_ the cross platform webshell tool in .NET
-- `Webshell Sniper <https://github.com/WangYihang/Webshell-Sniper>`_ Manage your website via terminal
+	支持asp，jsp，php。
+- `冰蝎 <https://github.com/rebeyond/Behinder>`_
+	动态二进制加密网站管理客户端，支持java,.net,php，HTTPS。
+- `Altman <https://github.com/keepwn/Altman>`_ 
+	支持asp，jsp，php。
+- `Webshell Sniper <https://github.com/WangYihang/Webshell-Sniper>`_ 
+	仅支持在类Unix系统上运行。
 - `quasibot <https://github.com/Smaash/quasibot>`_ complex webshell manager, quasi-http botnet
-- webacoo(仅适用于PHP)
+- webacoo
+	仅支持PHP。
+- `weevely3 <https://github.com/epinna/weevely3>`_ Weaponized web shell
+	仅支持PHP。
 
 WebShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
