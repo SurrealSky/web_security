@@ -8,3 +8,4 @@
    iis
    apache
    nginx
+   other

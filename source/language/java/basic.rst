@@ -22,3 +22,11 @@ OGNL
 OGNL（Object-Graph Navigation Language，对象导航语言）是一种功能强大的表达式语言，通过简单一致的表达式语法，提供了存取对象的任意属性、调用对象的方法、遍历整个对象的结构图、实现字段类型转化等功能。
 
 Struts2中使用了OGNL，提供了一个ValueStack类。ValueStack分为root和context两部分。root中是当前的action对象，context中是ActionContext里面所有的内容。
+
+识别
+----------------------------------------
+ | .JSP:用于标准的JSP文件
+ | .do或者.action，用于MVC框架。
+ | .json 用于提供Json数据的Restful接口。
+ | Servlet可以不用后缀。
+ | .html：用于伪静态，或者真静态。 
