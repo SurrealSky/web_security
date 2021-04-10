@@ -30,7 +30,24 @@ linux
 - NX
 	| 防护：类似windows下的DEP。
 	| 对抗：linux下shellcode的功能是通过execute执行/bin/sh，那么系统函数库（Linux称为glibc）有个system函数，它就是通过/bin/sh命令去执行一个用户执行命令或者脚本，我们完全可以利用system来实现Shellcode的功能。EIP一旦改写成system函数地址后，那执行system函数时，它需要获取参数。而根据Linux X86 32位函数调用约定，参数是压到栈上的。噢，栈空间完全由我们控制了，所以控制system的函数不是一件难事情。这种攻击方法称之为ret2libc，即return-to-libc，返回到系统库函数执行 的攻击方法。
+	
+	|rop1|
+	::
+	
+		工作原理如下：
+		①当程序运行到 gadget_addr 时（rsp 指向 gadget_addr），接下来会跳转到小片段里执行命令，
+			同时 rsp+8(rsp 指向 bin_sh_addr)
+		②然后执行 pop rdi, 将 bin_sh_addr 弹入 rdi 寄存器中，同时 rsp + 8(rsp 指向 system_ad
+			dr)
+		③执行 return 指令，因为这时 rsp 是指向 system_addr 的，这时就会调用 system 函数，而参
+			数是通过 rdi 传递的，也就是会将 /bin/sh 传入，从而实现调用 system('/bin/sh')
+		gadget_addr工具ROPgadget：https://github.com/JonathanSalwan/ROPgadget.git
 - PIE
 	类似与windows下的ASLR。
 - RELRO
 	RELRO设置符号重定向表格为只读或在程序启动时就解析并绑定所有动态符号，从而减少对GOT（Global Offset Table）攻击。
+- SELinux
+	安全增强型 Linux（Security-Enhanced Linux）简称 SELinux，它是一个 Linux 内核模块，也是 Linux 的一个安全子系统。SELinux 主要由美国国家安全局开发。2.6 及以上版本的 Linux 内核都已经集成了 SELinux 模块。
+	SELinux 主要作用就是最大限度地减小系统中服务进程可访问的资源（最小权限原则）。
+	
+.. |rop1| image:: ../images/rop1.png
