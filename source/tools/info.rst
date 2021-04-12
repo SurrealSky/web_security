@@ -206,6 +206,12 @@ DNS关联
 - `Common User Passwords Profiler <https://github.com/Mebus/cupp>`_
 - `chrome password grabber <https://github.com/x899/chrome_password_grabber>`_
 - kali自带字典：/usr/share/wordlists/
+- cewl字典生成工具
+	+ 根据url爬取并生成字典：cewl http://www.ignitetechnologies.in/ -w dict.txt
+	+ 生成长度最小限制的字典：cewl http://www.ignitetechnologies.in/ -m 9
+	+ 爬取email地址：cewl http://www.ignitetechnologies.in/ -n -e
+	+ 生成包含数字和字符的字典：cewl http://testphp.vulnweb.com/ --with-numbers
+	+ 设置代理：cewl --proxy_host 192.168.1.103 --proxy_port 3128 -w dict.txt http://192.168.1.103/wordpress/
 
 Samba
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
