@@ -96,13 +96,9 @@
 
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `weakfilescan <https://github.com/ring04h/weakfilescan>`_
-- `DirBrute <https://github.com/Xyntax/DirBrute>`_
 - `dirmap <https://github.com/H4ckForJob/dirmap.git>`_
 	``git clone https://github.com/H4ckForJob/dirmap.git``
 	``python3 -m pip install -r requirement.txt``
-- `cansina <https://github.com/deibit/cansina>`_
-- DirBuster
 - dirb
 	使用字典穷举特定扩展名文件:
 	``dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
@@ -110,13 +106,23 @@
 	使用字典穷举特定扩展名文件：
 	``wfuzz -w /usr/share/wordlists/wfuzz/general/megabeast.txt --hc 404 http://172.16.100.102/FUZZ.sh``
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
+- nikto
+	+ 常规扫描：nikto -host/-h http://www.example.com
+	+ 指定端口(https)：nikto -h http://www.example.com -p 443 -ssl
+	+ 指定目录：nikto -host/-h http://www.example.com -c /dvma
+	+ 绕过IDS检测：nikto -host/-h http://www.example.com -evasion
+	+ Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - |nikto -host - 
+	+ 使用代理：nikto -h URL -useproxy http://127.0.0.1:1080
+- `GOBUSTER <https://github.com/OJ/gobuster>`_
 - `bfac <https://github.com/mazen160/bfac>`_
 - `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
-- nikto
+- `cansina <https://github.com/deibit/cansina>`_
+- `weakfilescan <https://github.com/ring04h/weakfilescan>`_
+- `DirBrute <https://github.com/Xyntax/DirBrute>`_
 - auxiliary/scanner/http/dir_scanner
 - auxiliary/scanner/http/dir_listing
 - auxiliary/scanner/http/brute_dirs
-- `GOBUSTER <https://github.com/OJ/gobuster>`_
+- DirBuster
 - 御剑
 
 路径爬虫
