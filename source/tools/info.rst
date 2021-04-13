@@ -101,6 +101,8 @@
 	+ ``python3 -m pip install -r requirement.txt``
 - dirb
 	+ ``穷举特定扩展名文件：dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
+	+ ``使用代理：dirb http://192.168.1.116  -p 46.17.45.194:5210`` 
+	+ ``添加UA和cookie：dirb http://192.168.1.116 -a "***" -c "***"`` 
 - wfuzz
 	+ ``字典路径：/usr/share/wfuzz/wordlist`` 
 	+ ``爆破文件：wfuzz -w /usr/share/wordlists/wfuzz/general/megabeast.txt --hc 404 http://172.16.100.102/FUZZ.sh`` 
@@ -117,6 +119,38 @@
 	+ ``使用代理：wfuzz -w wordlist -p 127.0.0.1:1087:SOCKS5 URL/FUZZ`` 
 	+ ``--hc/hl/hw/hh N[,N]+：隐藏指定的代码/行/字/字符的responsnes。`` 
 	+ ``--hs regex：在响应中隐藏具有指定正则表达式的响应。`` 
+	+ ``zip并列迭代：wfuzz -z range,0-9 -w dict.txt -m zip http://127.0.0.1/ip.php?FUZZ=FUZ2Z`` 
+		::
+		
+			设置了两个字典。两个占位符，一个是range模块生成的0、1、2、3、4、5、6、7、8、
+			9,10个数字，一个是外部字典dict.txt的9行字典，使用zip迭代器组合这两个字典发送。
+			zip迭代器的功能：字典数相同、一一对应进行组合，如果字典数不一致则多余的抛弃
+			掉不请求，如上命令结果就是数字9被抛弃了因为没有字典和它组合。
+	+ ``chain组合迭代：wfuzz -z range,0-9 -w dict.txt -m chain http://127.0.0.1/ip.php?FUZZ`` 
+		::
+		
+			设置了两个字典，一个占位符FUZZ，使用chain迭代器组合这两个字典发送。
+			这个迭代器是将所有字典全部整合（不做组合）放在一起然后传入占位符FUZZ中。
+			顺序19种。
+	+ ``product交叉迭代：wfuzz -z range,0-2 -w dict.txt -m product http://127.0.0.1/ip.php?FUZZ=FUZ2Z`` 
+		::
+		
+			设置了两个字典，两个占位符，一个是range模块生成的0、1、2这3个数字，一个是外部字典
+			dict.txt的3行字典，使用product迭代器组合这两个字典发送，9种组合。
+	+ ``使用Encoders：wfuzz -z file --zP fn=wordlist,encoder=md5 URL/FUZZ`` 
+		::
+		
+			简写命令：wfuzz -z file,wordlist,md5 URL/FUZZ
+	+ ``组合Encoder：wfuzz -z file,dict.txt,md5-base64 http://127.0.0.1/ip.php\?FUZZ`` 
+		::
+		
+			多个转换，使用一个-号分隔的列表.
+			相当于组合，分别进行MD5模糊，和base64模糊测试。
+	+ ``多次Encoder：wfuzz -z file,dict.txt,base64@md5 http://127.0.0.1/ip.php\?FUZZ`` 
+		::
+		
+			多次转换，使用一个@号分隔的列表.
+			按照从右往左顺序对字典数据进行多次转换。
 	+ 注：FUZZ位置即为需要模糊测试。
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
 - nikto
