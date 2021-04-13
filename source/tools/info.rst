@@ -111,7 +111,7 @@
 	+ 指定端口(https)：nikto -h http://www.example.com -p 443 -ssl
 	+ 指定目录：nikto -host/-h http://www.example.com -c /dvma
 	+ 绕过IDS检测：nikto -host/-h http://www.example.com -evasion
-	+ Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - |nikto -host - 
+	+ Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host - 
 	+ 使用代理：nikto -h URL -useproxy http://127.0.0.1:1080
 - `GOBUSTER <https://github.com/OJ/gobuster>`_
 - `bfac <https://github.com/mazen160/bfac>`_
