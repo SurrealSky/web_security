@@ -97,22 +97,35 @@
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `dirmap <https://github.com/H4ckForJob/dirmap.git>`_
-	``git clone https://github.com/H4ckForJob/dirmap.git``
-	``python3 -m pip install -r requirement.txt``
+	+ ``git clone https://github.com/H4ckForJob/dirmap.git``
+	+ ``python3 -m pip install -r requirement.txt``
 - dirb
-	使用字典穷举特定扩展名文件:
-	``dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
+	+ ``穷举特定扩展名文件：dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
 - wfuzz
-	使用字典穷举特定扩展名文件：
-	``wfuzz -w /usr/share/wordlists/wfuzz/general/megabeast.txt --hc 404 http://172.16.100.102/FUZZ.sh``
+	+ ``字典路径：/usr/share/wfuzz/wordlist`` 
+	+ ``爆破文件：wfuzz -w /usr/share/wordlists/wfuzz/general/megabeast.txt --hc 404 http://172.16.100.102/FUZZ.sh`` 
+	+ ``爆破目录：wfuzz -w wordlist http://192.168.91.137/FUZZ`` 
+	+ ``枚举参数值：wfuzz -z range,000-999 http://127.0.0.1/getuser.php?uid=FUZZ`` 
+	+ ``爆破HTTP表单：wfuzz -w userList -w pwdList -d "username=FUZZ&password=FUZ2Z" http://127.0.0.1/login.php`` 
+	+ ``携带cookie：wfuzz -z range,000-999 -b session=session -b cookie=cookie http://127.0.0.1/getuser.php?uid=FUZZ`` 
+	+ ``指定HTTP头：wfuzz -z range,0000-9999 -H "X-Forwarded-For: FUZZ" http://127.0.0.1/get.php?userid=666`` 
+	+ ``HTTP请求方法：wfuzz -z list,"GET-POST-HEAD-PUT" -X FUZZ http://127.0.0.1/`` 
+		::
+		
+			-z list可以自定义一个字典列表（在命令中体现），以-分割；
+			-X参数是指定HTTP请求方法类型，因为这里要测试HTTP请求方法，后面的值为FUZZ占位符。
+	+ ``使用代理：wfuzz -w wordlist -p 127.0.0.1:1087:SOCKS5 URL/FUZZ`` 
+	+ ``--hc/hl/hw/hh N[,N]+：隐藏指定的代码/行/字/字符的responsnes。`` 
+	+ ``--hs regex：在响应中隐藏具有指定正则表达式的响应。`` 
+	+ 注：FUZZ位置即为需要模糊测试。
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
 - nikto
-	+ 常规扫描：nikto -host/-h http://www.example.com
-	+ 指定端口(https)：nikto -h http://www.example.com -p 443 -ssl
-	+ 指定目录：nikto -host/-h http://www.example.com -c /dvma
-	+ 绕过IDS检测：nikto -host/-h http://www.example.com -evasion
-	+ Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host - 
-	+ 使用代理：nikto -h URL -useproxy http://127.0.0.1:1080
+	+ ``常规扫描：nikto -host/-h http://www.example.com`` 
+	+ ``指定端口(https)：nikto -h http://www.example.com -p 443 -ssl`` 
+	+ ``指定目录：nikto -host/-h http://www.example.com -c /dvma`` 
+	+ ``绕过IDS检测：nikto -host/-h http://www.example.com -evasion`` 
+	+ ``Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host -`` 
+	+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080`` 
 - `GOBUSTER <https://github.com/OJ/gobuster>`_
 - `bfac <https://github.com/mazen160/bfac>`_
 - `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
