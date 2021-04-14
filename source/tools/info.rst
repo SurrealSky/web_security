@@ -4,21 +4,31 @@
 漏洞查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - searchsploit
-	| ``更新：searchsploit -u`` 
-	| ``下载：searchsploit -m php/webapps/7185.php`` 
+	+ ``更新：searchsploit -u`` 
+	+ ``下载：searchsploit -m php/webapps/7185.php`` 
 
 存活主机扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - fping
-	 | ``fping -a -g 14.215.177.1 14.215.177.100``
-	 | ``fping -a -g 14.215.177.0/24``
+	+ ``fping -a -g 14.215.177.1 14.215.177.100``
+	+ ``fping -a -g 14.215.177.0/24``
 - masscan
-	| ``masscan --ping 28.41.0.0/16 --rate 1000000``
-	| 心脏出血漏洞:``masscan -p443 28.41.0.0/16 --banners --heartbleed``
-	| ``masscan 192.168.1.1/24 --ports 445`` 
-	| nmap -sP 28.41.0.0/16
+	+ ``masscan --ping 28.41.0.0/16 --rate 1000000``
+	+ ``心脏出血漏洞：masscan -p443 28.41.0.0/16 --banners --heartbleed``
+	+ ``masscan 192.168.1.1/24 --ports 445`` 
+	+ ``nmap -sP 28.41.0.0/16``
 - nmap
-	| ``nmap -sP 192.168.0.1/24`` 
+	+ ``nmap -sP 192.168.0.1/24`` 
+
+IP信息
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- dig
+	+ ``查询A记录：dig baidu.com A +noall +answer``
+	+ ``查询MX记录：dig baidu.com MX +noall +answer``
+	+ ``查询权威DNS：dig baidu.com NS +noall +answer``
+	+ ``查询所有记录：dig baidu.com ANY +noall +answer``
+	+ ``快速回答：+short``
+	+ ``IP反查：dig -x 192.168.17.28 +short``
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
