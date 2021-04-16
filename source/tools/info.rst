@@ -204,6 +204,7 @@ IP信息
 - `Webfinger <https://github.com/se55i0n/Webfinger>`_
 - `CMSeek <https://github.com/Tuhinshubhra/CMSeeK>`_
 - `TPscan <https://github.com/Lucifer1993/TPscan>`_ 一键ThinkPHP漏洞检测
+- `TPscan.jar <https://github.com/tangxiaofeng7/TPScan>`_ ThinkPHP漏洞扫描
 - `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
 
 Waf指纹

