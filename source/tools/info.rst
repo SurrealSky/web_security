@@ -29,6 +29,30 @@ IP信息
 	+ ``查询所有记录：dig baidu.com ANY +noall +answer``
 	+ ``快速回答：+short``
 	+ ``IP反查：dig -x 192.168.17.28 +short``
+	+ ``指定域名服务器：dig baidu.com ANY @8.8.8.8``
+	+ ``解析过程：dig www.ustc.edu.cn +trace``
+- nslookup
+	+ ``查询A记录：nslookup -q=A baidu.com``
+	+ ``指定域名服务器：nslookup baidu.com -type=any 8.8.8.8``
+- IP无法访问页面
+	+ 服务器开启虚拟主机
+		``如：www.ustc.edu.cn->218.22.21.21,页面显示400 Unknown Virtual Host``
+	+ 反向代理服务器
+		``如：nginx``
+
+CDN判别
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 在线多地超级ping
+	+ 多地ping得到不同的IP地址，基本判断为开启了CDN。
+- dig/nslookup
+	+ 多个IP则可能开启了CDN。
+- 查找动态内容
+	+ 有的cdn只缓存静态内容
+	+ 注册登陆之类的服务器IP
+- 二级域名
+	+ 搜索二级域名IP
+- `securitytrails <https://securitytrails.com>`_
+- `Censys <https://censys.io/ipv4?q=github.com>`_
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -212,6 +236,11 @@ Waf指纹
 - `identywaf <https://github.com/enablesecurity/identywaf>`_
 - `wafw00f <https://github.com/enablesecurity/wafw00f>`_
 - `WhatWaf <https://github.com/Ekultek/WhatWaf>`_
+- nmap脚本
+	+ ``--script=http-waf-detect``
+	+ ``--script=http-waf-fingerprint``
+- sqlmap
+	+ ``sqlmap -u “www.xxx.com/xxx?id=1” --identify-waf``
 
 端口扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
