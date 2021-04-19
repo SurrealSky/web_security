@@ -46,13 +46,15 @@ CDN判别
 	+ 多地ping得到不同的IP地址，基本判断为开启了CDN。
 - dig/nslookup
 	+ 多个IP则可能开启了CDN。
+- DNS历史记录查询
+	+ ``https://www.dnsdb.io/zh-cn/`` 
+	+ ``https://viewdns.info/`` 
 - 查找动态内容
 	+ 有的cdn只缓存静态内容
 	+ 注册登陆之类的服务器IP
 - 二级域名
 	+ 搜索二级域名IP
 - `securitytrails <https://securitytrails.com>`_
-- `Censys <https://censys.io/ipv4?q=github.com>`_ 
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -283,7 +285,6 @@ DNS关联
 
 搜索引擎查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Censys <https://censys.io>`_
 - `Shodan <https://www.shodan.io/>`_
 - `Zoomeye <https://www.zoomeye.org/>`_
 - `fofa <https://fofa.so/>`_
