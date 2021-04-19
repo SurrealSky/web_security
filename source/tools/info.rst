@@ -52,7 +52,7 @@ CDN判别
 - 二级域名
 	+ 搜索二级域名IP
 - `securitytrails <https://securitytrails.com>`_
-- `Censys <https://censys.io/ipv4?q=github.com>`_
+- `Censys <https://censys.io/ipv4?q=github.com>`_ 
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -305,6 +305,27 @@ DNS关联
 	+ 爬取email地址：cewl http://www.ignitetechnologies.in/ -n -e
 	+ 生成包含数字和字符的字典：cewl http://testphp.vulnweb.com/ --with-numbers
 	+ 设置代理：cewl --proxy_host 192.168.1.103 --proxy_port 3128 -w dict.txt http://192.168.1.103/wordpress/
+- crunch字典生成工具
+	+ ``crunch <min-len> <max-len> [<charset string>] [options]``
+		::
+		
+			min-len crunch要开始的最小长度字符串。即使不使用参数的值，也需要此选项
+			max-len crunch要开始的最大长度字符串。即使不使用参数的值，也需要此选项
+			charset string 在命令行使用crunch你可能必须指定字符集设置，否则将使用缺省的字符集设置。
+			-c 数字 指定写入输出文件的行数，也即包含密码的个数
+			-o wordlist.txt，指定输出文件的名称
+			-p 字符串 或者-p 单词1 单词2 ...以排列组合的方式来生成字典。
+			-q filename.txt，读取filename.txt
+	+ 生成最小1位，最大8位，由26个小写字母为元素的所有组合 ``crunch 1 8``
+	+ 生成最小为1,最大为6，由字符串组成所有字符组合 ``crunch 1 6 abcdefg``
+	+ 指定字符串加特殊字符的组合 ``crunch 1 6 abcdefg\``
+	+ 生成pass01-pass99所有数字组合 ``crunch 6 6 -t pass%%  >>newpwd.txt`` 
+	+ 生成六位小写字母密码，其中前四位为pass ``crunch 6 6 -t pass@@  >>newpwd.txt`` 
+	+ 生成六位密码，其中前四位为pass，后二位为大写 ``crunch 6 6 -t pass,,  >>newpwd.txt`` 
+	+ 生成六位密码，其中前四位为pass，后二位为特殊字符 ``crunch 6 6 -t pass^^  >>newpwd.txt`` 
+	+ 制作8为数字字典 ``crunch 8 8 charset.lst numeric -o num8.dic`` 
+	+ 制作6为数字字典 ``crunch 6 6  0123456789 –o num6.dic`` 
+	+ 制作139开头的手机密码字典 ``crunch 11 11  +0123456789 -t 139%%%%%%%% -o num13.dic`` 
 
 Samba
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
