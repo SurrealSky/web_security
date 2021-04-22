@@ -70,6 +70,28 @@
     - 常用的提权文件：Nmap，Vim，find，Bash，More，Less，Nano，cp
 - 利用可用的root权限
     - ``sudo -l``
+	::
+	
+		[root@localhost ~]# su - tom    ##切换用户
+		[tom@localhost ~]$ sudo -l    ##查看此用户拥有的特殊权限
+		We trust you have received the usual lecture from the local System
+		Administrator. It usually boils down to these three things:
+			#1) Respect the privacy of others.
+			#2) Think before you type.
+			#3) With great power comes great responsibility.
+		[sudo] password for tom:     ##这里需要验证密码，以保证是用户本人执行操作
+		Matching Defaults entries for tom on this host:
+			requiretty, !visiblepw, always_set_home, env_reset, env_keep="COLORS DISPLAY HOSTNAME HISTSIZE
+			INPUTRC KDEDIR LS_COLORS", env_keep+="MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE",
+			env_keep+="LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES", env_keep+="LC_MONETARY
+			LC_NAME LC_NUMERIC LC_PAPER LC_TELEPHONE", env_keep+="LC_TIME LC_ALL LANGUAGE LINGUAS
+			_XKB_CHARSET XAUTHORITY", secure_path=/sbin\:/bin\:/usr/sbin\:/usr/bin
+		User tom may run the following commands on this host:
+			(root) /usr/sbin/useradd    ##可以以root身份，使用useradd命令
+			
+		[tom@localhost ~]$ sudo /usr/sbin/useradd test1    ##添加用户test1
+		[tom@localhost ~]$ tail -1 /etc/passwd
+		test1:x:501:501::/home/test1:/bin/bash        ##添加成功
 - crontab计划任务
 - docker提权
     - docker images命令查看已经存在的镜像
