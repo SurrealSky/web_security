@@ -10,6 +10,6 @@
    fuzz
    exploit
    webpersistence
+   misc
    defense
    operation
-   misc

