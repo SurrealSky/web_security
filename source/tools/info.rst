@@ -156,6 +156,9 @@ CDN判别
 			-X参数是指定HTTP请求方法类型，因为这里要测试HTTP请求方法，后面的值为FUZZ占位符。
 	+ ``使用代理：wfuzz -w wordlist -p 127.0.0.1:1087:SOCKS5 URL/FUZZ`` 
 	+ ``--hc/hl/hw/hh N[,N]+：隐藏指定的代码/行/字/字符的responsnes。`` 
+		::
+		
+			wfuzz -w megabeast.txt --hc=404 http://192.168.91.133/FUZZ
 	+ ``--hs regex：在响应中隐藏具有指定正则表达式的响应。`` 
 	+ ``zip并列迭代：wfuzz -z range,0-9 -w dict.txt -m zip http://127.0.0.1/ip.php?FUZZ=FUZ2Z`` 
 		::
