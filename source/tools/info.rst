@@ -141,6 +141,7 @@ CDN判别
 	+ ``穷举特定扩展名文件：dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
 	+ ``使用代理：dirb http://192.168.1.116  -p 46.17.45.194:5210`` 
 	+ ``添加UA和cookie：dirb http://192.168.1.116 -a "***" -c "***"`` 
+	+ ``扫描目录：dirb http://192.168.91.133 common.txt -N 404`` 
 - wfuzz
 	+ ``字典路径：/usr/share/wfuzz/wordlist`` 
 	+ ``爆破文件：wfuzz -w /usr/share/wordlists/wfuzz/general/megabeast.txt --hc 404 http://172.16.100.102/FUZZ.sh`` 
