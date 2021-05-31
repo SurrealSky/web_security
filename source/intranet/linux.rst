@@ -20,6 +20,40 @@
 用户和组
 ----------------------------------------
 - 列出系统所有用户 ``cat /etc/passwd``
+	::
+	
+		root:x:0:0::/root:/bin/bash
+		bin:x:1:1::/:/usr/bin/nologin
+		daemon:x:2:2::/:/usr/bin/nologin
+		mail:x:8:12::/var/spool/mail:/usr/bin/nologin
+		ftp:x:14:11::/srv/ftp:/usr/bin/nologin
+		http:x:33:33::/srv/http:/usr/bin/nologin
+		nobody:x:65534:65534:Nobody:/:/usr/bin/nologin
+		dbus:x:81:81:System Message Bus:/:/usr/bin/nologin
+		systemd-journal-remote:x:981:981:systemd Journal Remote:/:/usr/bin/nologin
+		systemd-network:x:980:980:systemd Network Management:/:/usr/bin/nologin
+		systemd-oom:x:979:979:systemd Userspace OOM Killer:/:/usr/bin/nologin
+		systemd-resolve:x:978:978:systemd Resolver:/:/usr/bin/nologin
+		systemd-timesync:x:977:977:systemd Time Synchronization:/:/usr/bin/nologin
+		systemd-coredump:x:976:976:systemd Core Dumper:/:/usr/bin/nologin
+		uuidd:x:68:68::/:/usr/bin/nologin
+		dhcpcd:x:975:975:dhcpcd privilege separation:/:/usr/bin/nologin
+		py:x:1000:1000::/home/py:/bin/bash
+		git:x:974:974:git daemon user:/:/usr/bin/git-shell
+		redis:x:973:973:Redis in-memory data structure store:/var/lib/redis:/usr/bin/nologin
+		
+		注册名：口令：用户标识号：组标识号：用户名：用户主目录：命令解释程序
+		(1)注册名(login_name)：该字段被限制在8个字符(字母或数字)的长度之内,字母大小写是敏感的。
+		(2)口令(passwd)：系统用口令来验证用户的合法性。
+		现在的Unix/Linux系统中，口令不再直接保存在passwd文件中，通常将passwd文件中的口令字段使
+		用一个“x”来代替，将/etc /shadow作为真正的口令文件，用于保存包括个人口令在内的数据。
+		如果passwd字段中的第一个字符是“*”的话，表示系统不允许持有该账号的用户登录。 
+		(3)用户标识号(UID)：UID是一个数值，是Linux系统中惟一的用户标识，用于区别不同的用户。 
+		(4)组标识号(GID)：这是当前用户的缺省工作组标识。
+		(5)用户名(user_name)：包含有关用户的一些信息。
+		(6)用户主目录(home_directory)：该字段定义了个人用户的主目录。
+		(7)命令解释程序(Shell)：通常是一个Shell程序的全路径名，如/bin/bash。 
+
 - 列出系统所有组 ``cat /etc/group``
 - 列出所有用户hash（root）``cat /etc/shadow``
 - 用户
