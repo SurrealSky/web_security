@@ -139,131 +139,132 @@ CDN判别
 	+ ``python3 -m pip install -r requirement.txt``
 	+ ``扫描单个目标：python3 dirmap.py -i https://site.com -lcf`` 
 	+ ``扫描多个目标：python3 dirmap.py -iF urls.txt -lcf`` 
+
 	::
 	
-		#递归扫描处理配置
-		[RecursiveScan]
-		#是否开启递归扫描:关闭:0;开启:1
-		conf.recursive_scan = 0
-		#遇到这些状态码，开启递归扫描。默认配置[301,403]
-		conf.recursive_status_code = [301,403]
-		#设置排除扫描的目录。默认配置空。其他配置：e.g:['/test1','/test2']
-		#conf.exclude_subdirs = ['/test1','/test2']
-		conf.exclude_subdirs = ""
-		 
-		#扫描模式处理配置(4个模式，1次只能选择1个)
-		[ScanModeHandler]
-		#字典模式:关闭:0;单字典:1;多字典:2
-		conf.dict_mode = 1
-		#单字典模式的路径
-		conf.dict_mode_load_single_dict = "dict_mode_dict.txt"
-		#多字典模式的路径，默认配置dictmult
-		conf.dict_mode_load_mult_dict = "dictmult"
-		#爆破模式:关闭:0;开启:1
-		conf.blast_mode = 0
-		#生成字典最小长度。默认配置3
-		conf.blast_mode_min = 3
-		#生成字典最大长度。默认配置3
-		conf.blast_mode_max = 3
-		#默认字符集:a-z。暂未使用。
-		conf.blast_mode_az = "abcdefghijklmnopqrstuvwxyz"
-		#默认字符集:0-9。暂未使用。
-		conf.blast_mode_num = "0123456789"
-		#自定义字符集。默认配置"abc"。使用abc构造字典
-		conf.blast_mode_custom_charset = "abc"
-		#自定义继续字符集。默认配置空。
-		conf.blast_mode_resume_charset = ""
-		#爬虫模式:关闭:0;开启:1
-		conf.crawl_mode = 0
-		#解析robots.txt文件。暂未实现。
-		conf.crawl_mode_parse_robots = 0
-		#解析html页面的xpath表达式
-		conf.crawl_mode_parse_html = "//*/@href | //*/@src | //form/@action"
-		#是否进行动态爬虫字典生成:关闭:0;开启:1
-		conf.crawl_mode_dynamic_fuzz = 0
-		#Fuzz模式:关闭:0;单字典:1;多字典:2
-		conf.fuzz_mode = 0
-		#单字典模式的路径。
-		conf.fuzz_mode_load_single_dict = "fuzz_mode_dir.txt"
-		#多字典模式的路径。默认配置:fuzzmult
-		conf.fuzz_mode_load_mult_dict = "fuzzmult"
-		#设置fuzz标签。默认配置{dir}。使用{dir}标签当成字典插入点，将http://target.com/{dir}.php替换成http://target.com/字典中的每一行.php。其他配置：e.g:{dir};{ext}
-		#conf.fuzz_mode_label = "{ext}"
-		conf.fuzz_mode_label = "{dir}"
-		 
-		#处理payload配置。暂未实现。
-		[PayloadHandler]
-		 
-		#处理请求配置
-		[RequestHandler]
-		#自定义请求头。默认配置空。其他配置：e.g:test1=test1,test2=test2
-		#conf.request_headers = "test1=test1,test2=test2"
-		conf.request_headers = ""
-		#自定义请求User-Agent。默认配置chrome的ua。
-		conf.request_header_ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"
-		#自定义请求cookie。默认配置空，不设置cookie。其他配置e.g:cookie1=cookie1; cookie2=cookie2;
-		#conf.request_header_cookie = "cookie1=cookie1; cookie2=cookie2"
-		conf.request_header_cookie = ""
-		#自定义401认证。暂未实现。因为自定义请求头功能可满足该需求(懒XD)
-		conf.request_header_401_auth = ""
-		#自定义请求方法。默认配置get方法。其他配置：e.g:get;head
-		#conf.request_method = "head"
-		conf.request_method = "get"
-		#自定义每个请求超时时间。默认配置3秒。
-		conf.request_timeout = 3
-		#随机延迟(0-x)秒发送请求。参数必须是整数。默认配置0秒，无延迟。
-		conf.request_delay = 0
-		#自定义单个目标，请求协程线程数。默认配置30线程
-		conf.request_limit = 30
-		#自定义最大重试次数。暂未实现。
-		conf.request_max_retries = 1
-		#设置持久连接。是否使用session()。暂未实现。
-		conf.request_persistent_connect = 0
-		#302重定向。默认False，不重定向。其他配置：e.g:True;False
-		conf.redirection_302 = False
-		#payload后添加后缀。默认空，扫描时，不添加后缀。其他配置：e.g:txt;php;asp;jsp
-		#conf.file_extension = "txt"
-		conf.file_extension = ""
-		 
-		#处理响应配置
-		[ResponseHandler]
-		#设置要记录的响应状态。默认配置[200]，记录200状态码。其他配置：e.g:[200,403,301]
-		#conf.response_status_code = [200,403,301]
-		conf.response_status_code = [200]
-		#是否记录content-type响应头。默认配置1记录
-		#conf.response_header_content_type = 0
-		conf.response_header_content_type = 1
-		#是否记录页面大小。默认配置1记录
-		#conf.response_size = 0
-		conf.response_size = 1
-		#是否自动检测404页面。默认配置True，开启自动检测404.其他配置参考e.g:True;False
-		#conf.auto_check_404_page = False
-		conf.auto_check_404_page = True
-		#自定义匹配503页面正则。暂未实现。感觉用不着，可能要废弃。
-		#conf.custom_503_page = "page 503"
-		conf.custom_503_page = ""
-		#自定义正则表达式，匹配页面内容
-		#conf.custom_response_page = "([0-9]){3}([a-z]){3}test"
-		conf.custom_response_page = ""
-		#跳过显示页面大小为x的页面，若不设置，请配置成"None"，默认配置“None”。其他大小配置参考e.g:None;0b;1k;1m
-		#conf.skip_size = "0b"
-		conf.skip_size = "None"
-		 
-		#代理选项
-		[ProxyHandler]
-		#代理配置。默认设置“None”，不开启代理。其他配置e.g:{"http":"http://127.0.0.1:8080","https":"https://127.0.0.1:8080"}
-		#conf.proxy_server = {"http":"http://127.0.0.1:8080","https":"https://127.0.0.1:8080"}
-		conf.proxy_server = None
-		 
-		#Debug选项
-		[DebugMode]
-		#打印payloads并退出
-		conf.debug = 0
-		 
-		#update选项
-		[CheckUpdate]
-		#github获取更新。暂未实现。
-		conf.update = 0
+			#递归扫描处理配置
+			[RecursiveScan]
+			#是否开启递归扫描:关闭:0;开启:1
+			conf.recursive_scan = 0
+			#遇到这些状态码，开启递归扫描。默认配置[301,403]
+			conf.recursive_status_code = [301,403]
+			#设置排除扫描的目录。默认配置空。其他配置：e.g:['/test1','/test2']
+			#conf.exclude_subdirs = ['/test1','/test2']
+			conf.exclude_subdirs = ""
+			 
+			#扫描模式处理配置(4个模式，1次只能选择1个)
+			[ScanModeHandler]
+			#字典模式:关闭:0;单字典:1;多字典:2
+			conf.dict_mode = 1
+			#单字典模式的路径
+			conf.dict_mode_load_single_dict = "dict_mode_dict.txt"
+			#多字典模式的路径，默认配置dictmult
+			conf.dict_mode_load_mult_dict = "dictmult"
+			#爆破模式:关闭:0;开启:1
+			conf.blast_mode = 0
+			#生成字典最小长度。默认配置3
+			conf.blast_mode_min = 3
+			#生成字典最大长度。默认配置3
+			conf.blast_mode_max = 3
+			#默认字符集:a-z。暂未使用。
+			conf.blast_mode_az = "abcdefghijklmnopqrstuvwxyz"
+			#默认字符集:0-9。暂未使用。
+			conf.blast_mode_num = "0123456789"
+			#自定义字符集。默认配置"abc"。使用abc构造字典
+			conf.blast_mode_custom_charset = "abc"
+			#自定义继续字符集。默认配置空。
+			conf.blast_mode_resume_charset = ""
+			#爬虫模式:关闭:0;开启:1
+			conf.crawl_mode = 0
+			#解析robots.txt文件。暂未实现。
+			conf.crawl_mode_parse_robots = 0
+			#解析html页面的xpath表达式
+			conf.crawl_mode_parse_html = "//*/@href | //*/@src | //form/@action"
+			#是否进行动态爬虫字典生成:关闭:0;开启:1
+			conf.crawl_mode_dynamic_fuzz = 0
+			#Fuzz模式:关闭:0;单字典:1;多字典:2
+			conf.fuzz_mode = 0
+			#单字典模式的路径。
+			conf.fuzz_mode_load_single_dict = "fuzz_mode_dir.txt"
+			#多字典模式的路径。默认配置:fuzzmult
+			conf.fuzz_mode_load_mult_dict = "fuzzmult"
+			#设置fuzz标签。默认配置{dir}。使用{dir}标签当成字典插入点，将http://target.com/{dir}.php替换成http://target.com/字典中的每一行.php。其他配置：e.g:{dir};{ext}
+			#conf.fuzz_mode_label = "{ext}"
+			conf.fuzz_mode_label = "{dir}"
+			 
+			#处理payload配置。暂未实现。
+			[PayloadHandler]
+			 
+			#处理请求配置
+			[RequestHandler]
+			#自定义请求头。默认配置空。其他配置：e.g:test1=test1,test2=test2
+			#conf.request_headers = "test1=test1,test2=test2"
+			conf.request_headers = ""
+			#自定义请求User-Agent。默认配置chrome的ua。
+			conf.request_header_ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"
+			#自定义请求cookie。默认配置空，不设置cookie。其他配置e.g:cookie1=cookie1; cookie2=cookie2;
+			#conf.request_header_cookie = "cookie1=cookie1; cookie2=cookie2"
+			conf.request_header_cookie = ""
+			#自定义401认证。暂未实现。因为自定义请求头功能可满足该需求(懒XD)
+			conf.request_header_401_auth = ""
+			#自定义请求方法。默认配置get方法。其他配置：e.g:get;head
+			#conf.request_method = "head"
+			conf.request_method = "get"
+			#自定义每个请求超时时间。默认配置3秒。
+			conf.request_timeout = 3
+			#随机延迟(0-x)秒发送请求。参数必须是整数。默认配置0秒，无延迟。
+			conf.request_delay = 0
+			#自定义单个目标，请求协程线程数。默认配置30线程
+			conf.request_limit = 30
+			#自定义最大重试次数。暂未实现。
+			conf.request_max_retries = 1
+			#设置持久连接。是否使用session()。暂未实现。
+			conf.request_persistent_connect = 0
+			#302重定向。默认False，不重定向。其他配置：e.g:True;False
+			conf.redirection_302 = False
+			#payload后添加后缀。默认空，扫描时，不添加后缀。其他配置：e.g:txt;php;asp;jsp
+			#conf.file_extension = "txt"
+			conf.file_extension = ""
+			 
+			#处理响应配置
+			[ResponseHandler]
+			#设置要记录的响应状态。默认配置[200]，记录200状态码。其他配置：e.g:[200,403,301]
+			#conf.response_status_code = [200,403,301]
+			conf.response_status_code = [200]
+			#是否记录content-type响应头。默认配置1记录
+			#conf.response_header_content_type = 0
+			conf.response_header_content_type = 1
+			#是否记录页面大小。默认配置1记录
+			#conf.response_size = 0
+			conf.response_size = 1
+			#是否自动检测404页面。默认配置True，开启自动检测404.其他配置参考e.g:True;False
+			#conf.auto_check_404_page = False
+			conf.auto_check_404_page = True
+			#自定义匹配503页面正则。暂未实现。感觉用不着，可能要废弃。
+			#conf.custom_503_page = "page 503"
+			conf.custom_503_page = ""
+			#自定义正则表达式，匹配页面内容
+			#conf.custom_response_page = "([0-9]){3}([a-z]){3}test"
+			conf.custom_response_page = ""
+			#跳过显示页面大小为x的页面，若不设置，请配置成"None"，默认配置“None”。其他大小配置参考e.g:None;0b;1k;1m
+			#conf.skip_size = "0b"
+			conf.skip_size = "None"
+			 
+			#代理选项
+			[ProxyHandler]
+			#代理配置。默认设置“None”，不开启代理。其他配置e.g:{"http":"http://127.0.0.1:8080","https":"https://127.0.0.1:8080"}
+			#conf.proxy_server = {"http":"http://127.0.0.1:8080","https":"https://127.0.0.1:8080"}
+			conf.proxy_server = None
+			 
+			#Debug选项
+			[DebugMode]
+			#打印payloads并退出
+			conf.debug = 0
+			 
+			#update选项
+			[CheckUpdate]
+			#github获取更新。暂未实现。
+			conf.update = 0
 
 - dirb
 	+ ``穷举特定扩展名文件：dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
@@ -323,6 +324,12 @@ CDN判别
 			按照从右往左顺序对字典数据进行多次转换。
 	+ 注：FUZZ位置即为需要模糊测试。
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
+	+ -u 指定网址
+	+ -e 指定网站语言
+	+ -w 指定字典
+	+ -r 递归目录（跑出目录后，继续跑目录下面的目录）
+	+ -random-agents 使用随机UA
+	+ ``python3 dirsearch.py -u http://172.16.100.104 -e php`` 
 - nikto
 	+ ``常规扫描：nikto -host/-h http://www.example.com`` 
 	+ ``指定端口(https)：nikto -h http://www.example.com -p 443 -ssl`` 
