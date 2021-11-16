@@ -176,13 +176,16 @@ Linux/Unix系统
 
 ::
 
-	/etc/passwd // 账户信息
-	/etc/shadow // 账户密码文件
-	/usr/local/app/apache2/conf/httpd.conf // Apache2默认配置文件
-	/usr/local/app/apache2/conf/extra/httpd-vhost.conf // 虚拟网站配置
-	/usr/local/app/php5/lib/php.ini // PHP相关配置
-	/etc/httpd/conf/httpd.conf // Apache配置文件
-	/etc/my.conf // mysql 配置文件
+	/etc/passwd 	//账户信息
+	/etc/shadow 	//账户密码文件
+	/usr/local/app/apache2/conf/httpd.conf	//Apache2默认配置文件
+	/usr/local/app/apache2/conf/extra/httpd-vhost.conf	//虚拟网站配置
+	/usr/local/app/php5/lib/php.ini		//PHP相关配置
+	/etc/httpd/conf/httpd.conf 		//Apache配置文件
+	/etc/my.conf 		//mysql配置文件
+	/etc/hostname		//获取主机名
+	/etc/httpd/logs/access_log		//apache配置log
+	/etc/httpd/logs/error_log		//apache配置log
 
 
 
