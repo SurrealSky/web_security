@@ -59,8 +59,11 @@
 	- mkpasswd -m des生成用户密码。
 - 脏牛漏洞本地提权
 - 内核漏洞利用
-    - searchspolit linux
-    - searchspolit centos 7 kernel 3.10
+	- 搜索特定系统和内核版本利用漏洞
+		- searchsploit linux kernel 3.2 
+		- searchsploit centos 7 kernel 3.10
+	- 搜索漏洞利用文件路径
+		- searchsploit -p 37951.py
 - 攻击有root权限的服务
 - 通过有SUID属性的可执行文件
     - 查找可能提权的可执行文件
