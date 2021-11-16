@@ -33,6 +33,7 @@ IP信息
 	+ ``IP反查：dig -x 192.168.17.28 +short``
 	+ ``指定域名服务器：dig baidu.com ANY @8.8.8.8``
 	+ ``解析过程：dig www.ustc.edu.cn +trace``
+	+ ``查询所有子域名：dig @192.168.56.102 greenoptic.vm axfr``
 - nslookup
 	+ ``查询A记录：nslookup -q=A baidu.com``
 	+ ``指定域名服务器：nslookup baidu.com -type=any 8.8.8.8``
