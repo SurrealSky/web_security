@@ -21,6 +21,7 @@
 	+ ``nmap -sP 192.168.0.1/24`` 
 - arp-scan
 	+ ``arp-scan -l`` 
+- netdiscover
 
 IP信息
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -339,6 +340,7 @@ CDN判别
 	+ ``Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host -`` 
 	+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080`` 
 - `GOBUSTER <https://github.com/OJ/gobuster>`_
+	+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
 - `bfac <https://github.com/mazen160/bfac>`_
 - `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
 - `cansina <https://github.com/deibit/cansina>`_

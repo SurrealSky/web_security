@@ -186,6 +186,8 @@ Linux/Unix系统
 	/etc/hostname		//获取主机名
 	/etc/httpd/logs/access_log		//apache配置log
 	/etc/httpd/logs/error_log		//apache配置log
+	.htaccess		//文件中的配置指令作用于.htaccess文件所在的目录及其所有子目录
+	.htpasswd		//HTTP用户的basic认证密码文件，一般在/var/www(/mysite)/.htpasswd
 
 
 
