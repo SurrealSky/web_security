@@ -1,6 +1,10 @@
 信息收集
 ----------------------------------------
 
+系统信息
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `linux系统信息获取LinEnum <https://github.com/rebootuser/LinEnum>`_
+
 漏洞查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - searchsploit
@@ -86,7 +90,7 @@ CDN判别
 	 | ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 21 -e nsr -t 1 -vV`` 
 	 | ``mysql破解：hydra 192.168.43.113 mysql -l root -P /usr/share/wordlists/rockyou.txt -t 1`` 
 	 | ``HTTP服务器身份验证破解：hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
-	 | ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form \"/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed\" -V``
+	 | ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form "/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed" -V``
 
 		::
 		
@@ -102,6 +106,16 @@ CDN判别
 				登录失败是表单返回的登录失败消息
 				-V用于显示每次尝试的详细输出 
 				注：此类模块是破解HTTP协议表单数据。
+				
+	| ``hydra -l 用户名 -P password_file 127.0.0.1 http-get-form/http-post-form "vulnerabilities/brute/:username=^USER^&password=^PASS^&submit=login:F=Username and/or password incorrect.:H=Cookie: security=low;PHPSESSID=xxxxxxx"``
+
+		::
+
+				说明：引号内的部分是自行构建的参数，这些参数用冒号隔开。
+				第一个参数是接受收据的地址；
+				第二个参数是页面接受的数据，需要破解的参数用^符号包起来；
+				第三个参数是判断破解是否成功的标志(F代表错误，S代表正确)；
+				第四个参数是本次请求中的head cookie
 				
 - `medusa(美杜莎) <https://github.com/jmk-foofus/medusa>`_
 	 | ``查询模块用法：medusa -M http -q``
@@ -134,9 +148,48 @@ CDN判别
 	::
 	
 			注：HTTP破解支持的是HTTP服务器身份验证。
+			
+- fcrackzip
+	| ``fcrackzip -b -l 6-6 -c 1 -p 000000 passwd.zip`` 
+		
+		::
+		
+			-b 暴力破解
+			-c 1 限制密码是数字
+			-l 6-6 限制密码长度为6
+			-p 000000 初始化破解起点
+	
+	| ``fcrackzip -D -p passwd passwd.zip``
+		
+		::
+		
+			-D -p passwd 密码本passwd文件
+			
+- john
+	| ``unshadow /etc/passwd /etc/shadow > passwd_shadow``
+	
+		::
+		
+			unshadow命令基本上会结合/etc/passwd的数据和/etc/shadow的数据，
+			创建1个含有用户名和密码详细信息的文件。
+			
+	| ``unique -v -inp=allwords.txt uniques.txt``
+	
+		::
+		
+			unique工具可以从一个密码字典中去除重复行。
+	
+	| ``密码文件破解：john --wordlist=/usr/share/john/password.lst --rules passwd_shadow``
+	| ``直接破解：john passwd_shadow``
+	| ``查看上一次破解结果：john --show shadow``
 
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+	注意在目录探测中，对于关键的目录，需要递归进行扫描。
+	可根据robots.txt中的目录进行扫描。
+
 - `dirmap <https://github.com/H4ckForJob/dirmap.git>`_
 	+ ``git clone https://github.com/H4ckForJob/dirmap.git``
 	+ ``python3 -m pip install -r requirement.txt``
@@ -393,27 +446,26 @@ Waf指纹
 端口扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `nmap <https://github.com/nmap/nmap>`_
-	``范围扫描：nmap 192.168.0.100-110`` 
-	``网段扫描：nmap 192.168.0.1/24`` 
-	``文件列表：nmap -iL /root/target.txt`` 
-	``指定端口：nmap 192.168.0.101 -p 80,8080,3306,3389`` 
-	``路由追踪：nmap --traceroute 192.168.0.101`` 
-	``服务版本:nmap -sV 192.168.0.101`` 
-	``操作系统版本:nmap -O 192.168.0.101`` 
-	``探测防火墙:nmap -sF -T4 192.168.0.101`` 
-	``弱口令扫描:nmap --script=auth 192.168.0.101`` 
-	``暴力破解(数据库,SMB,SNMP):nmap --script=brute 192.168.0.101`` 
-	``检查常见漏洞:nmap --script=vuln 192.168.0.101`` 
-	``默认脚本扫描:nmap --script=default 192.168.0.101 或者 nmap -sC 192.168.0.101`` 
-	``局域网服务探测：nmap -n -p445 --script=broadcast 192.168.137.4`` 
-	``smb破解:nmap --script=smb-brute.nse 192.168.137.4`` 
-	``smb字典破解:nmap --script=smb-brute.nse --script-args=userdb=/var/passwd,passdb=/var/passwd 192.168.137.4`` 
-	``smb漏洞：nmap --script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
-	``查看共享目录:nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4`` 
+	+ ``范围扫描：nmap 192.168.0.100-110`` 
+	+ ``网段扫描：nmap 192.168.0.1/24`` 
+	+ ``文件列表：nmap -iL /root/target.txt`` 
+	+ ``指定端口：nmap 192.168.0.101 -p 80,8080,3306,3389`` 
+	+ ``路由追踪：nmap --traceroute 192.168.0.101`` 
+	+ ``服务版本:nmap -sV 192.168.0.101`` 
+	+ ``操作系统版本:nmap -O 192.168.0.101`` 
+	+ ``探测防火墙:nmap -sF -T4 192.168.0.101`` 
+	+ ``弱口令扫描:nmap --script=auth 192.168.0.101`` 
+	+ ``暴力破解(数据库,SMB,SNMP):nmap --script=brute 192.168.0.101`` 
+	+ ``检查常见漏洞:nmap --script=vuln 192.168.0.101`` 
+	+ ``默认脚本扫描:nmap --script=default 192.168.0.101 或者 nmap -sC 192.168.0.101`` 
+	+ ``局域网服务探测：nmap -n -p445 --script=broadcast 192.168.137.4`` 
+	+ ``smb破解:nmap --script=smb-brute.nse 192.168.137.4`` 
+	+ ``smb字典破解:nmap --script=smb-brute.nse --script-args=userdb=/var/passwd,passdb=/var/passwd 192.168.137.4`` 
+	+ ``smb漏洞：nmap --script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
+	+ ``查看共享目录:nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4`` 
 - `zmap <https://github.com/zmap/zmap>`_
 - `masscan <https://github.com/robertdavidgraham/masscan>`_
 - `ShodanHat <https://github.com/HatBashBR/ShodanHat>`_
-- DNS ``dnsenum nslookup dig fierce``
 - SNMP ``snmpwalk``
 
 DNS数据查询
@@ -487,3 +539,12 @@ Samba
 web破解
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Brute_force <..//_static//Brute_force.py>`_
+
+系统监控
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `pspy64 <https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64>`_
+	|pspy|
+
+	注：其中uid为0标识具有root权限运行的进程。
+
+.. |pspy| image:: ../images/pspy.jpg

