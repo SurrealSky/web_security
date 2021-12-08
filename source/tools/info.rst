@@ -4,6 +4,7 @@
 系统信息
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `linux系统信息获取LinEnum <https://github.com/rebootuser/LinEnum>`_
+- `系统信息获取PEASS-ng <https://github.com/carlospolop/PEASS-ng>`_
 
 漏洞查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,13 +67,24 @@ CDN判别
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
-- `wydomain <https://github.com/ring04h/wydomain>`_
-- `broDomain <https://github.com/code-scan/BroDomain>`_
 - `ESD <https://github.com/FeeiCN/ESD>`_
+	| ``pip pip install esd``
+	| ``esd -d baidu.com``
+- `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
+	| ``python3 subDomainsBrute.py baidu.com``
+- `broDomain <https://github.com/code-scan/BroDomain>`_
+	+ 查询域名注册邮箱,查询备案号
+	+ 通过备案号查询域名,反查注册邮箱,注册人
+	+ 通过注册人查询到的域名在查询邮箱
+	+ 通过上一步邮箱去查询域名
+	+ 查询以上获取出的域名的子域名
 - `aiodnsbrute <https://github.com/blark/aiodnsbrute>`_
+	| ``pip install aiodnsbrute``
+	| ``aiodnsbrute -w wordlist.txt -vv -t 1024 domain.com``
 - `OneForAll <https://github.com/shmilylty/OneForAll>`_
 - `subfinder <https://github.com/subfinder/subfinder>`_
+	| ``subfinder -d yuanqisousou.com/``
+- `wydomain <https://github.com/ring04h/wydomain>`_
 
 域名获取
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -463,6 +475,14 @@ Waf指纹
 	+ ``smb字典破解:nmap --script=smb-brute.nse --script-args=userdb=/var/passwd,passdb=/var/passwd 192.168.137.4`` 
 	+ ``smb漏洞：nmap --script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
 	+ ``查看共享目录:nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4`` 
+	
+	::
+	
+	
+		注：NMAP执行结果中，端口状态后经常标记tcpwrapped。tcpwrapped表示服务器运行TCP_Wrappers服务。
+		TCP_Wrappers是一种应用级防火墙。它可以根据预设，对SSH、Telnet、FTP服务的请求进行拦截，判断
+		是否符合预设要求。如果符合，就会转发给对应的服务进程；否则，会中断连接请求。
+		
 - `zmap <https://github.com/zmap/zmap>`_
 - `masscan <https://github.com/robertdavidgraham/masscan>`_
 - `ShodanHat <https://github.com/HatBashBR/ShodanHat>`_

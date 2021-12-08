@@ -112,5 +112,12 @@ SQL注入小技巧
 
 		[*] shutting down at 05:36:36
 
-- 宽字节注入
-	使用--tamper "unmagicquotes.py"参数。
+- sqlmap脚本
+	--tamper "unmagicquotes.py"
+
+空格绕过
+-----------------------------------------
+- 注释绕过
+	``admin"/**/or/**/1=1'``
+- sqlmap脚本
+	--tamper=space2comment

