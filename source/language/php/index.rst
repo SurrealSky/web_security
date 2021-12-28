@@ -14,5 +14,6 @@ PHP
    htaccess
    webshell
    phar
+   lfiphpinfo
    misc
    ref

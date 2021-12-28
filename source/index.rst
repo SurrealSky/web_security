@@ -12,6 +12,7 @@
    websec/index
    STCE-info/index
    STCE-WEB/index
+   STCE-SOURCE/index
    STCE-MOBILE/index
    LDWJ-vuln/index
    intranet/index

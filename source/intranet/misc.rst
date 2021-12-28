@@ -4,36 +4,46 @@
 端口转发
 ----------------------------------------
 - nc
-    - 端口扫描
-	``nc -z -v -n 172.31.100.7 21-25``
-    - 聊天
-	``nc -l 1567``
-	``nc 172.31.100.7 1567``
-    - 文件传输
-	``nc -l 1567 < file.txt``
-	``nc -n 172.31.100.7 1567 > file.txt``
-    - 目录传输
-	``tar -cvf – dir_name | nc -l 1567``
-	``nc -n 172.31.100.7 1567 | tar -xvf -``
-    - 加密传输
-	``nc localhost 1567 | mcrypt –flush –bare -F -q -d -m ecb > file.txt``
-	``mcrypt –flush –bare -F -q -m ecb < file.txt | nc -l 1567``
-    - 端口转发
-	``nc -l 8000`` 
-	``cat /tmp/fifo | nc localhost 8000 | nc -l 9000 > /tmp/fifo`` 
-	``nc -n 192.168.1.102 9000`` 
+	- 端口扫描
+		+ ``nc -z -v -n 172.31.100.7 21-25``
+	- 端口转发
+		+ ``nc -l 8000`` 
+		+ ``cat /tmp/fifo | nc localhost 8000 | nc -l 9000 > /tmp/fifo`` 
+		+ ``nc -n 192.168.1.102 9000`` 
 - socat
-    - 显示本地文件
-	``socat - /etc/sysctl.conf`` 
-    - 监听本地端口
-	``socat TCP-LISTEN:12345 -`` 
-    - UNIX DOMAIN域套接字转成TCP SOCKET
-	``socat TCP-LISTEN:12345,reuseaddr,fork UNIX-CONNECT:/data/deCOREIDPS/unix.domain`` 
-    - 端口转发
-	``对于所有15000端口的TCP访问，一律转发到 server.wesnoth.org:15000 上`` 
-	``socat -d -d -lf /var/log/socat.log TCP4-LISTEN:15000,reuseaddr,fork,su=nobody TCP4:server.wesnoth.org:15000`` 
-	``tcp：nohup socat TCP4-LISTEN:2333,reuseaddr,fork TCP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
-	``udp：nohup socat UDP4-LISTEN:2333,reuseaddr,fork UDP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
+	- 显示本地文件
+		+ ``socat - /etc/sysctl.conf`` 
+	- 监听本地端口
+		+ ``socat TCP-LISTEN:12345 -`` 
+	- UNIX DOMAIN域套接字转成TCP SOCKET
+		+ ``socat TCP-LISTEN:12345,reuseaddr,fork UNIX-CONNECT:/data/deCOREIDPS/unix.domain`` 
+	- 端口转发
+		+ ``对于所有15000端口的TCP访问，一律转发到 server.wesnoth.org:15000 上`` 
+		+ ``socat -d -d -lf /var/log/socat.log TCP4-LISTEN:15000,reuseaddr,fork,su=nobody TCP4:server.wesnoth.org:15000`` 
+		+ ``tcp：nohup socat TCP4-LISTEN:2333,reuseaddr,fork TCP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
+		+ ``udp：nohup socat UDP4-LISTEN:2333,reuseaddr,fork UDP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
+	
+文件传输
+----------------------------------------
+- nc
+	- 文件传输
+		+ 将B机器上的file.txt传输到A机器上
+		+ ``A机器：nc -lvp 1567 > file.txt``
+		+ ``B机器：nc 172.31.100.7 1567 < file.txt``
+	- 目录传输
+		+ ``tar -cvf – dir_name | nc -l 1567``
+		+ ``nc -n 172.31.100.7 1567 | tar -xvf -``
+	- 加密传输
+		+ ``nc localhost 1567 | mcrypt –flush –bare -F -q -d -m ecb > file.txt``
+		+ ``mcrypt –flush –bare -F -q -m ecb < file.txt | nc -l 1567``
+- python
+	- 目标机器转base64
+		+ ``目标机器有python：python -c 'print(__import__("base64").b64encode(open("secret.zip", "rb").read()))'``
+	- 个人机器还原
+		+ ``cat - > zip.txt``
+		+ ``输入拿到的base64串：UEsDBBQACQAIAEZ/CE8bl，输入完成按回车``
+		+ ``^C即ctrl+c``
+		+ ``还原文件：base64 -d zip.txt > secret.zip``
 
 脱裤
 ----------------------------------------

