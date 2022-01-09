@@ -26,8 +26,10 @@ Web Fuzz
 	+ 线程：``-t``
 	
 - `wfuzz <https://github.com/xmendez/wfuzz>`_
+	+ ``-c:Output with colors``
 	+ ``字典路径：/usr/share/wfuzz/wordlist`` 
-	+ ``子域爆破：wfuzz -w /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt -H "Host: FUZZ.votenow.local" --hw 854 --hc 400 votenow.local``
+	+ ``子域爆破：wfuzz -w /medium.txt -H "Host: FUZZ.votenow.local" --hw 854 --hc 400 -u votenow.local``
+	+ ``子域爆破：wfuzz -w /medium.txt -H "Host: FUZZ.votenow.local" --hw 854 --hc 400 -u 192.168.100.105``
 	+ ``爆破文件：wfuzz -w /usr/share/wordlists/wfuzz/general/megabeast.txt --hc 404 http://172.16.100.102/FUZZ.sh`` 
 	+ ``爆破目录：wfuzz -w wordlist http://192.168.91.137/FUZZ`` 
 	+ ``枚举参数值：wfuzz -z range,000-999 http://127.0.0.1/getuser.php?uid=FUZZ`` 

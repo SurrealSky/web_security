@@ -11,6 +11,8 @@
    domain
    linux
    linuxpersistence
+   privilege
+   shift
    traceremove
    misc
    ref

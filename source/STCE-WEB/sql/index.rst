@@ -8,7 +8,6 @@ SQL注入
    reason
    classify
    fuzz
-   privilege
    dbident
    bypass
    tricks

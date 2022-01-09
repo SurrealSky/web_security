@@ -83,6 +83,9 @@ WebShell
 - `b374k - PHP WebShell Custom Tool <https://github.com/b374k/b374k>`_
 - `c99shell <https://github.com/KaizenLouie/C99Shell-PHP7>`_
 - `wso <https://github.com/phpFileManager/WSO>`_
+- `JSPSPY <https://www.webshell.cc/wp-content/uploads/2013/09/ASPXspy2.rar>`_
+- `ASPXSPY <https://www.webshell.cc/wp-content/uploads/2013/09/ASPXspy2.rar>`_
+- `phpspy <https://www.webshell.cc/wp-content/uploads/2013/09/phpspy.rar>`_
 - ``/usr/share/webshells/*`` 
 
 Web后门
