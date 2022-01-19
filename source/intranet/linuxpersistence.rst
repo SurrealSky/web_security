@@ -277,6 +277,8 @@
 			binaries/scripts from the current directory and it can be an excellent technique for an 
 			attacker to escalate root privilege.
 			
+			前提：程序或脚本具有SUID权限。
+			
 	- Ubuntu LAB SET_UP
 		::
 		

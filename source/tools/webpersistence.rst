@@ -87,6 +87,7 @@ WebShell
 - `ASPXSPY <https://www.webshell.cc/wp-content/uploads/2013/09/ASPXspy2.rar>`_
 - `phpspy <https://www.webshell.cc/wp-content/uploads/2013/09/phpspy.rar>`_
 - ``/usr/share/webshells/*`` 
+- `revshells.com在线shell生成 <https://www.revshells.com/>`_
 
 Web后门
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -94,10 +95,3 @@ Web后门
 - `Apache backdoor <https://github.com/WangYihang/Apache-HTTP-Server-Module-Backdoor>`_
 - `SharpGen <https://github.com/cobbr/SharpGen>`_  .NET Core console application that utilizes the Rosyln C# compiler to quickly cross-compile .NET Framework console applications or libraries
 - `IIS-Raid <https://github.com/0x09AL/IIS-Raid>`_ A native backdoor module for Microsoft IIS
-
-转发
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `reDuh <https://github.com/sensepost/reDuh>`_ Create a TCP circuit through validly formed HTTP requests
-- `reGeorg <https://github.com/sensepost/reGeorg>`_ pwn a bastion webserver and create SOCKS proxies through the DMZ. Pivot and pwn
-- `Neo-reGeorg <https://github.com/L-codes/Neo-reGeorg>`_ Neo-reGeorg is a project that seeks to aggressively refactor reGeorg
-- `ABPTTS <https://github.com/nccgroup/ABPTTS>`_ TCP tunneling over HTTP/HTTPS for web application servers

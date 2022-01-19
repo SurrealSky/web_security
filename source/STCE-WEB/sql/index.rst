@@ -5,12 +5,10 @@ SQL注入
    :maxdepth: 2
    :caption: 内容索引:
 
-   reason
-   classify
-   fuzz
-   dbident
-   bypass
-   tricks
+   basic
+   method
    cheatsheet/index
+   tricks
+   bypass
    precompile
    ref

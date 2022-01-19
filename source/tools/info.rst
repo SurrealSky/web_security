@@ -123,6 +123,8 @@ firefox缓存破解
 弱密码爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `hydra(九头蛇) <https://github.com/vanhauser-thc/thc-hydra>`_
+	+ ``GUI版本(xhydra)``
+	+ ``支持协议：adam6500、asterisk、cisco、cisco-enable、cvs、firebird、ftp、ftps、http[s]-{head|get|post}、http[s]-{get|post}-form、http-proxy、http-proxy-urlenum、icq、imap[s]、irc、ldap2[s]、ldap3[-{cram|digest}md5][s]、mssql、mysql、nntp、oracle-listener、oracle-sid、pcanywhere、pcnfs、pop3[s]、postgres、radmin2、rdp、redis、rexec、rlogin、rpcap、rsh、rtsp、s7-300、sip、smb、smtp[s]、smtp-enum、snmp、socks5、ssh、sshkey、svn、teamspeak、telnet[s]、vmauthd、vnc、xmpp``
 	+ ``查看模块用法：hydra -U http-form-post``
 	+ ``smb破解：hydra -l Administrator -P pass.txt smb://192.168.47`` 
 	+ ``3389破解：hydra -l Administrator -P pass.txt rdp://192.168.47.124 -t 1 -V`` 
@@ -159,6 +161,7 @@ firefox缓存破解
 				第四个参数是本次请求中的head cookie
 				
 	+ ``-f``：破解了一个密码就停止
+	+ 注意：不支持含有token的http协议破解。
 				
 - `medusa(美杜莎) <https://github.com/jmk-foofus/medusa>`_
 	+ ``查询模块用法：medusa -M http -q``
@@ -234,12 +237,16 @@ firefox缓存破解
 		| ``john hash5 --format=PKZIP --wordlist=/home/kali/Downloads/rockyou.txt``
 		
 - wordpress密码破解
-	- ``auxiliary/scanner/http/wordpress_xmlrpc_login``
-	- ``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
-	- `WPCracker <https://github.com/JoniRinta-Kahila/WPCracker>`_
+	+ ``auxiliary/scanner/http/wordpress_xmlrpc_login``
+	+ ``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
+	+ `WPCracker <https://github.com/JoniRinta-Kahila/WPCracker>`_
 		- 枚举用户：``.\WPCracker.exe --enum -u <Url to victims WordPress page> -o <Output file path (OPTIONAL)>``
 		- 暴力破解：``.\WPCracker.exe --brute -u <Url to victims WordPress page> -p <Path to wordlist> -n <Username> -o <Output file path (OPTIONAL)>``
-
+- hashcat
+	+ 基于规则密码突变
+		- 在线文档：``https://hashcat.net/wiki/doku.php?id=rule_based_attack``
+		- 示例：``hashcat --stdout pass.txt -r /usr/share/hashcat/rules/best64.rule > passlist.txt``
+		
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
@@ -405,6 +412,7 @@ firefox缓存破解
 - `GOBUSTER <https://github.com/OJ/gobuster>`_
 	+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
 	+ ``文件扫描：gobuster dir -u http://192.168.100.106 -w /home/kali/Downloads/SecLists/Discovery/Web-Content/directory-list-1.0.txt -x php``
+	+ ``不包含特定长度：--exclude-length 280``
 	+ 批量脚本
 	
 		::
@@ -609,5 +617,7 @@ SSH用户名枚举
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - stegsolve
 	+ 图片隐写分析
+- peepdf
+	+ pdf审计工具
 
 .. |pspy| image:: ../images/pspy.jpg
