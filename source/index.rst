@@ -1,4 +1,4 @@
-网络安全技术
+﻿网络安全技术
 ================================
 
 .. toctree::
@@ -13,7 +13,9 @@
    STCE-info/index
    STCE-WEB/index
    STCE-SOURCE/index
-   STCE-MOBILE/index
+   window/index
+   linux/index
+   MOBILE/index
    LDWJ-vuln/index
    intranet/index
    defense/index

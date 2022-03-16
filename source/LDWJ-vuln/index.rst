@@ -6,11 +6,14 @@
    :caption: 内容索引:
 
    stackvuln
-   heapvuln
+   winheap
+   linuxheap
+   offbyone
    HeapSpray
    UAF
    DoubleFree
    IntegerOverflow
-   shellcode
+   kernelvuln
    defense
+   shellcode
    skill

@@ -4,12 +4,7 @@
 
 协议漏洞挖掘
 ----------------------------------------
-- `SPIKE <https://resources.infosecinstitute.com/topic/intro-to-fuzzing/>`_
-- `Fuzzowski <https://github.com/nccgroup/fuzzowski>`_
-- `backfuzz <https://github.com/localh0t/backfuzz>`_
-- GANFuzz
-- `boofuzz <https://boofuzz.readthedocs.io/en/stable/>`_
-- BFuzz
+如SPIKE，boofuzz等。
 
 文件型漏洞挖掘
 ----------------------------------------
@@ -19,77 +14,29 @@ Blind Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 一个形象的Blind Fuzzer例子就比如下面让一个猴子去测试应用程序。通过让它胡乱点击电脑的键盘或者移动鼠标，产生不在预期内的输入，从而发现目标程序的bug。（Android应用测试中的Monkey测试也是类似的，它通过胡乱点击Android手机上所有可见的控件，进行压力测试，当Android应用出现闪退或者不能响应的问题时，bug也就发现了）。
 
-- Filefuzz
-- `EasyFuzzer <https://bbs.pediy.com/thread-193340.htm>`_
+如Filefuzz，EasyFuzzer。
 
 Mutation-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 基于变异的Fuzzer（mutation-based fuzzer）不再是胡乱的产生输入，而是在已知合法的输入的基础上，对该输入进行随机变种或者依据某种经验性的变种，从而产生不可预期的测试输入。
 
-- Taof
-- GPF
-- ProxyFuzz
-- `Peach Fuzzer <https://sourceforge.net/projects/peachfuzz/>`_
+如Taof，GPF，ProxyFuzz，Peach Fuzzer。
 
 Generation-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-基于变异的Fuzzer对于合法的输入集合有较强的依赖性。为了能够测试尽可能多的输入类型，必须要有足够丰富类型的合法输入，以及花样够多的变种方式。。如果测试人员对目标程序或者协议已经有了较为充分的了解，那么也有可能制造出更为高效的Fuzzer工具（通过对目标协议或文件格式进行建模）。即，测试的目的性更强，输入的类型有意识的多样化，将有可能更快速的挖掘到漏洞。这类方法的名称叫做基于模板的Fuzzer（Generation-based）。
+基于变异的Fuzzer对于合法的输入集合有较强的依赖性。为了能够测试尽可能多的输入类型，必须要有足够丰富类型的合法输入，以及花样够多的变种方式。。如果测试人员对目标程序或者协议已经有了较为充分的了解，那么也有可能制造出更为高效的Fuzzer工具（通过对目标协议或文件格式进行建模）。即，测试的目的性更强，输入的类型有意识的多样化，将有可能更快速的挖掘到漏洞。这类方法的名称叫做基于模板/生成的Fuzzer（Generation-based）。
 
-- `boofuzz(python) <https://boofuzz.readthedocs.io/en/stable/>`_
-	 **网络协议** fuzz工具。
-- `Peach Fuzzer(linux/windows) <https://sourceforge.net/projects/peachfuzz/>`_
-	Peach支持对 **文件格式、ActiveX、网络协议** 进行Fuzz测试，Peach Fuzz的关键是编写Peach Pit配置文件。
-- SPIKE（linux）
-	 **网络协议** fuzz工具。
-- Sulley
-- Mu‐4000
-- Codenomicon
+如boofuzz(python)，Peach Fuzzer，SPIKE，，Sulley，Mu‐4000，Codenomicon。
 
 Evolutionary-based Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 基于程序代码的覆盖率是一个此类方法的核心，主要有路径覆盖率（可以有类似的利用BL算法的路径标记和压缩算法），分支覆盖率，代码行覆盖率。
 
-- 相关工具
-	- `afl-fuzz（linux） <https://lcamtuf.coredump.cx/afl/>`_
-		AFL全称是American Fuzzy Lop，由Google安全工程师Michał Zalewski开发的一款开源fuzzing测试工具，原理是在相关代码处插桩，因此AFL主要用于对 **开源软件** 进行测试。当然配合QEMU等工具，也可对 **闭源二进制代码** 进行fuzzing，但执行效率会受到影响。
-		::
-				
-			有源码：
-			afl-gcc -g -o afl_test afl_test.c
-			afl-g++ -g -o afl_test afl_test.cpp
-			afl-fuzz -i fuzz_in -o fuzz_out ./afl_test
-			需要根据提示设置一波core_pattern
-			sudo su
-			echo core >/proc/sys/kernel/core_pattern
-			
-			无源码：
-			afl使用了qemu模式进行测试，只要在之前的命令的基础上加上-Q的参数即可。
-			先进行安装,在afl的根目录打开终端执行以下命令
-			cd qemu_mode
-			./build_qemu_support.sh
-			cd ..
-			make install
+如afl-fuzz，Winafl，libFuzzer，syzkaller。
 
-			gcc -g -o afl_test2 afl_test.c
-			afl-fuzz -i fuzz_in -o fuzz_out -Q ./afl_test2
-
-		
-	- `Winafl（windows） <https://github.com/googleprojectzero/winafl>`_
-		基于二进制插桩工具DynamoRIO。
-	- `libFuzzer(linux) <https://github.com/Dor1s/libfuzzer-workshop>`_
-		libFuzzer 和要被测试的库链接在一起，通过一个模糊测试入口点（目标函数），把测试用例喂给要被测试的 **库函数（开源或闭源）** 。fuzzer会跟踪哪些代码区域已经测试过，然后在输入数据的语料库上进行变异，来使代码覆盖率最大化。代码覆盖率的信息由 LLVM 的SanitizerCoverage 插桩提供。
-		``clang++ -g -std=c++11 -fsanitize=address,fuzzer first_fuzzer.cc ./libFuzzer/libFuzzer.a -o first_fuzzer``
-	- syzkaller
-		Syzkaller是Google开发的一款内核模糊测试工具，简单点说就是自动化向内核输入各种有效的、无效的、完全随机化的参数数据，并观察内核的运行状况，是否发生了panic、内存泄漏等问题，以此发现隐藏在内核中的漏洞。近些年很多内核的CVE发现均来自于此，而且该工具的开发维护还挺活跃的。而且它不仅支持x86，还支持ARM、Power、MIPS等处理器，而且不仅支持Linux，还支持windows、FreeBSD、Fuchsia等系统，同时还能支持对远程物理机、本地虚拟机的测试，此外还能支持分布式多机器测试。
-
-其它
+静态代码审计
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- Fuzzgrind
-- `FileFuzz <https://bbs.pediy.com/thread-125263.htm>`_
-- MiniFuzz
-- `pngcheck <http://www.libpng.org/pub/png/apps/pngcheck.html>`_
-- `pdfcheck <https://www.datalogics.com/products/pdf-tools/pdf-checker/>`_
-
+		
 FTP漏洞挖掘
 ----------------------------------------
 
@@ -146,11 +93,17 @@ ActiveX漏洞挖掘
 	
 工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `modbus fuzzer <https://github.com/youngcraft/boofuzz-modbus>`_
-- `BACnet fuzzer <https://github.com/VDA-Labs/BACnet-fuzzer>`_
-- `iec60870_fuzzing_scripts <https://github.com/robidev/iec60870_fuzzing_scripts>`_
-- `RTSPhuzz <https://github.com/IncludeSecurity/RTSPhuzz>`_
+如modbus fuzzer，BACnet fuzzer，iec60870_fuzzing_scripts，RTSPhuzz。
 
 其它
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 协议识别：https://www.zoomeye.org/topic?id=ics_project
+
+内核漏洞挖掘思路
+----------------------------------------
+- windows
+	+ 审计（nday，补丁）
+	+ Fuzz（驱动IOCT fuzz）
+	+ 攻击面（外部协议）
+- linux
+	+ Fuzz（源码级fuzz）
