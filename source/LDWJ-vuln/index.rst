@@ -1,13 +1,13 @@
-二进制漏洞
+﻿二进制漏洞
 ========================================
 
 .. toctree::
    :maxdepth: 2
    :caption: 内容索引:
 
-   stackvuln
+   winstack
    winheap
-   linuxheap
+   linux/index
    offbyone
    HeapSpray
    UAF

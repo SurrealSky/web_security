@@ -1,4 +1,4 @@
-windows逆向工程
+﻿windows逆向工程
 ========================================
 
 .. toctree::
@@ -8,6 +8,8 @@ windows逆向工程
    basic
    lowlevel
    osbase
+   stack
+   heap
    reverse
    enc
    tools
