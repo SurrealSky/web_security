@@ -25,13 +25,18 @@ windows
 	+ 对抗：如果SEH链指向的地址不在SEH链指向模块（exe、dll）地址的情况下，那就可以执行了。因此在程序中非模块的数据空间找到jmp esp，比方说nls后缀的资源文件等。或者是在支持JS脚本的软件中（浏览器等），通过脚本申请堆空间写入shellcode。
 - DEP
 	+ 防护：数据执行保护（DEP）指的是堆和栈只有读写权限没有执行权限。
-	+ 对抗：对抗DEP的方式是将shellcode写入堆栈中，从程序自身的代码去凑到执行VirtualProtect()将shellcode所在内存属性添加上可执行权限，将函数返回值或者SEH链覆盖成代码片段的起始地址。这种利用程序自身碎片绕过DEP的方式被称作ROP。ROP技术的前提是代码片段的地址固定，这样才能知道往函数返回值或者SEH链中填写哪个地址。
+	+ 对抗
+		- ROP：对抗DEP的方式是将shellcode写入堆栈中，从程序自身的代码去凑到执行VirtualProtect()将shellcode所在内存属性添加上可执行权限，将函数返回值或者SEH链覆盖成代码片段的起始地址。ROP技术的前提是代码片段的地址固定，这样才能知道往函数返回值或者SEH链中填写哪个地址。
+		- ROPgadget：主要思想是在栈缓冲区溢出的基础上，利用程序中已有的小片段 (gadgets) 来改变某些寄存器或者变量的值，从而控制程序的执行流程。所谓gadgets就是以ret结尾的指令序列，通过这些指令序列，我们可以修改某些地址的内容，方便控制程序的执行流程。
 - ASLR
 	+ 防护：ALSR即是让exe、dll的地址全都随机。
 	+ 对抗：对抗ASLR的方式是暴力把程序空间占满，全铺上shellcode，只要跳转地址没落在已有模块中，落在我们的空间中即可以执行了shellcode，但是这样做无法绕过DEP，这种将程序空间全部占满铺上shellcode的技术被称为堆喷射技术，堆喷射技术只能对抗ASLR，缺无法对抗ASLR+DEP的双重防护。ASLR+DEP的双重防护使得大多数软件的漏洞只能造成崩溃，无法稳定利用。将程序空间占满的技术，称之为堆喷射（Heap Spraying），这种技术只能应用在可以执行JS等脚本的软件上，如浏览器等。堆喷射通过大面积的申请内存空间并构造适当的数据，一旦EIP指向这片空间，就可以执行shellcode。堆喷射已经是不得已而为之，有时候会造成系统卡一段时间，容易被发现；另一点，如果EIP恰好指向shellcode中间部分就会造成漏洞利用失败，因此不能保证100%成功。
 - CFG
 	+ 防护：微软在最新的操作系统win10当中，对基于执行流防护的实际应用中采用了CFG技术。CFG是Control Flow Guard的缩写，就是控制流保护，它是一种编译器和操作系统相结合的防护手段，目的在于防止不可信的间接调用。
 	+ 对抗：无。
+- SMEP
+	+ 防护：Supervisor Mode Execution Prevention是一种基于硬件的CPU缓解机制，专门针对内核漏洞攻击而实现的。当引入NonPagedPoolNx时，就不能再直接将shellcode写入内核模式并执行它。即可以使用Windows API函数(如VirtualAlloc())在用户模式下分配shellcode，然后将返回shellcode的指针传回内核模式。然后内核将在内核的“上下文中”执行用户模式代码，也就是说shellcode将以内核权限运行。通过禁止从内核执行用户模式代码，SMEP可以缓解这种攻击。
+	+ 对抗：内核模式下使用ROP禁用这个机制。
 
 linux
 -----------------------------------------
@@ -61,6 +66,32 @@ linux
 			gcc -fno-stack-protector -o test test.c //禁用栈保护
 			gcc -fstack-protector -o test test.c //启用堆栈保护，不过只为局部变量中含有char数组的函数插入保护代码
 			gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数插入保护代码
+	+ 原理
+		- 当启用栈保护后，函数开始执行的时候会先往栈里插入cookie信息，该cookie往往放置在ebp/rbp的正上方，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。
+		- 攻击者在覆盖返回地址的时候也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。
+	+ 示例
+		::
+		
+			IDA打开开启cannary保护的函数如下：
+			unsigned int func()
+			{
+			  char buf; // [esp+4h] [ebp-24h]
+			  unsigned int v2; // [esp+1Ch] [ebp-Ch]
+
+			  v2 = __readgsdword(0x14u);
+			  puts("1st read");
+			  read(0, &buf, 0x28u);
+			  printf("you say: %s\n", &buf);
+			  puts("2nd read");
+			  read(0, &buf, 0x80u);
+			  printf("you say: %s\n", &buf);
+			  return __readgsdword(0x14u) ^ v2;
+			}
+			注：
+			1.局部变量v2用来存放canary的值。
+			2.函数启动会自动分配一个cannary，通过函数_readgsdword(0x14u)获得。
+			3.函数结束时，再次通过v2和_readgsdword(0x14u)比较。
+
 
 - FORTIFY
 	+ FORTIFY机制用于检查程序是否存在缓冲区溢出错误，适用于memcpy，memset，stpcpy，strcpy，strncpy，strcat，strncat，sprintf，snprintf，vsprintf，vsnprintf，gets等函数。

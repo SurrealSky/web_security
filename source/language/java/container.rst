@@ -17,7 +17,7 @@ Tomcat是一个轻量级应用服务器，在中小型系统和并发访问用�
 
 Tomcat服务器是由一系列可配置的组件构成的，其中核心组件是Catalina Servlet容器，它是所有其他Tomcat组件的顶层容器。
 
-相关CVE
+Tomcat历史CVE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - CVE-2020-1938
     - https://www.freebuf.com/vuls/228108.html
@@ -40,13 +40,13 @@ Tomcat服务器是由一系列可配置的组件构成的，其中核心组件�
 Weblogic
 ----------------------------------------
 
-简介
+Weblogic简介
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 WebLogic是美国Oracle公司出品的一个Application Server，是一个基于Java EE架构的中间件，WebLogic是用于开发、集成、部署和管理大型分布式Web应用、网络应用和数据库应用的Java应用服务器。其将Java的动态功能和Java Enterprise标准的安全性引入大型网络应用的开发、集成、部署和管理之中。
 
 WebLogic对业内多种标准的全面支持，包括EJB、JSP、Servlet、JMS、JDBC等。
 
-相关CVE
+Weblogic历史CVE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - CVE-2019-2725
     - wls-wsat 反序列化远程代码执行
@@ -89,11 +89,11 @@ WebLogic对业内多种标准的全面支持，包括EJB、JSP、Servlet、JMS�
 JBoss
 ----------------------------------------
 
-简介
+JBoss简介
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 JBoss是一个基于J2EE的管理EJB的容器和服务器，但JBoss核心服务不包括支持servlet/JSP的WEB容器，一般与Tomcat或Jetty绑定使用。
 
-相关CVE
+JBoss历史CVE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - CVE-2017-12149
     - 反序列化漏洞

@@ -19,7 +19,9 @@ elf加载
 + 创建一个独立的虚拟地址空间（先共享父进程的页框，即COW机制）
 + 读取可执行文件头，并且建立虚拟空间与可执行文件的映射关系（在子进程需要加载新elf文件时）。
 + 将CPU的指令寄存器设置成可执行文件的入口地址，启动运行。
-	
+
+|elfload|
+
 用户空间execve调用
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 执行ELF文件在用户态的表现就是执行execve系统调用，随后陷入内核进行处理。
@@ -144,3 +146,123 @@ Linux可执行文件类型的注册机制
 + 判断是否需要链接器
 	- 程序头中包含INTERP。
 	- 一般包含了INTERP，同时也会有DYNAMIC段。
+
+main函数启动过程
+----------------------------------------
+
+总览
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|mainload|
+
+_start函数分析
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ shell或者GUI会执行系统调用execve()
++ 控制权会传递给_start()
+
+__libc_start_main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 函数原型
+	::
+	
+		int __libc_start_main(
+				(int (*main) (int, char**, char**),
+				int argc,
+				char **argv,
+				__typeof (main) init,
+				void (*fini) (void),
+				void (*rtld_fini) (void),
+				void* stack_end
+			)
+			{
+				...
+				/* Register the destructor of the dynamic linker if there is any.  */
+				if (__builtin_expect (rtld_fini != NULL, 1))
+				__cxa_atexit ((void (*) (void *)) rtld_fini, NULL, NULL);
+
+				/* Call the initializer of the libc.  This is only needed here if we
+				 are compiling for the static library in which case we haven't
+				 run the constructors in `_dl_start_user'.  */
+				__libc_init_first (argc, argv, __environ);
+
+				/* Register the destructor of the program, if any.  */
+				if (fini)
+				__cxa_atexit ((void (*) (void *)) fini, NULL, NULL);
+
+				/* Call the initializer of the program, if any.  */
+				if (init)
+				(*init) (argc, argv, __environ MAIN_AUXVEC_PARAM);
+
+				/* Nothing fancy, just call the function.  */
+				result = main (argc, argv, __environ MAIN_AUXVEC_PARAM);
+
+				exit (result);
+			}
+		注：
+		init: main()的构造函数，即__libc_csu_init。
+		fini: main()的析构函数，即__libc_csu_fini。
+		rtld_fini: 动态链接器的析构函数
+
+			
++ 主要功能
+	- 处理关于setuid、setgid程序的安全问题
+	- 启动线程
+	- 通过atexit()注册fini与rtld_fini这两个参数
+	- 调用其init参数
+	- 调用main函数，并把argc和argv参数、环境变量传递给它
+	- 调用exit函数，并将main函数的返回值传递给它
+
+__libc_csu_init
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 主要功能
+	- 对libc（动态链接库）进行初始化.
++ _init
+	- gmon_start
+		::
+		
+			如果它是空的，跳过它。否则，调用一个例程开始profiling，并且调用at_exit去调用另一个程序运行,
+			并且在运行结束的时候生成gmon.out，是一个记录程序运行状态的文件，可以使用一个名为gprof的GNU 
+			profiler工具来分析该文件从而获得程序各部分的运行时间，来反映其运行性能
+	- frame_dummy
+	- _do_global_ctors_aux
+		+ 全局C++对象的构造函数
++ .init_array
+	::
+		
+		void
+		__libc_csu_init (int argc, char **argv, char **envp)
+		{
+		 
+		  _init ();
+		 
+		  const size_t size = __init_array_end - __init_array_start;
+		  for (size_t i = 0; i < size; i++)
+			  (*__init_array_start [i]) (argc, argv, envp);
+		}
+		
+		__init_array_start会执行.init_array段中所有的构造函数。
+
+main
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+exit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ rtdl_fini
+	- rtdl_fini实际指向_dl_fini()函数, 源码再dl-fini.c文件中, 会被编译到ld.so.2中。
+	- _dl_fini()的功能就是调用进程空间中所有模块的析构函数 （.fini_array段中）。
++ __libc_csu_fini
+	::
+	
+		__libc_csu_fini (void)
+		{
+			#ifndef LIBC_NONSHARED
+				size_t i = __fini_array_end - __fini_array_start;
+				while (i-- > 0)
+					(*__fini_array_start [i]) ();
+
+				_fini();
+			#endif
+		}
+		注:.fini_array中的函数是被倒着调用的。
+
+.. |elfload| image:: ../images/elfload.png
+.. |mainload| image:: ../images/mainload.png

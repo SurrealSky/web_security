@@ -35,8 +35,12 @@ release = '_build'
 import sphinx_rtd_theme
 extensions = [
     'sphinx.ext.todo',
-    'sphinx.ext.ifconfig'
+    'sphinx.ext.ifconfig',
+	'sphinx.ext.autosectionlabel'
 ]
+
+autosectionlabel_prefix_document = True
+autosectionlabel_maxdepth = 3
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

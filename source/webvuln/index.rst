@@ -1,4 +1,4 @@
-WEB渗透测试
+﻿WEB渗透测试
 ================================
 
 .. toctree::
@@ -20,7 +20,6 @@ WEB渗透测试
    xxe
    ssti
    xpath
-   config
-   middleware/index
    captcha
    other/index
+   tools/index

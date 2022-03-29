@@ -7,7 +7,8 @@
 
    winstack
    winheap
-   linux/index
+   linuxheap/index
+   linuxstack/index
    offbyone
    HeapSpray
    UAF
@@ -17,3 +18,4 @@
    defense
    shellcode
    skill
+   tools

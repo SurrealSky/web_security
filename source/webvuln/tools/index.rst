@@ -1,11 +1,10 @@
-工具与资源
+﻿相关工具
 ================================
 
 .. toctree::
    :maxdepth: 2
    :caption: 内容索引:
 
-   info
    socialengineering
    fuzz
    exploit
@@ -14,4 +13,3 @@
    misc
    defense
    operation
-   source
