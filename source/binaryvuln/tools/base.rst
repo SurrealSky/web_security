@@ -1,5 +1,11 @@
-﻿相关工具
+﻿基础
 ========================================
+
+DynELF
+----------------------------------------
++ 背景
+	- 由于ASLR，获取函数地址有两种方法，一种方法是先泄露出 libc.so 中的某个函数，然后根据函数之间的偏移计算。前提是能找到和目标服务器上一样的libc.so。
+	- 利用pwntools的DynELF模块，对内存进行搜索，直接得到我们需要的函数地址。
 
 ROPgadget
 ----------------------------------------
@@ -22,7 +28,24 @@ one_gadget
 	- one_gadget是寻找libc中存在的一些执行execve("/bin/sh", NULL, NULL)的片段，
 	- 当可以泄露libc地址，并且可以知道libc版本的时候，可以使用此方法来快速控制指令寄存器开启shell。
 	- 相比于system("/bin/sh")，这种方式更加方便，不用控制RDI、RSI、RDX等参数。运用于不利构造参数的情况。
++ 使用示例
+	::
+	
+		one_gadget libc_32.so.6 
+		0x3a819 execve("/bin/sh", esp+0x34, environ)
+		constraints:					#以下是调用one_gadget前需要满足的条件
+		  esi is the GOT address of libc
+		  [esp+0x34] == NULL
 
+		0x5f065 execl("/bin/sh", eax)
+		constraints:
+		  esi is the GOT address of libc
+		  eax == NULL
+
+		0x5f066 execl("/bin/sh", [esp])
+		constraints:
+		  esi is the GOT address of libc
+		  [esp] == NULL
 
 pwntools
 ----------------------------------------
@@ -131,9 +154,10 @@ pwnlib用法
 - IO交互
 	::
 	
-		send(payload)	# 发送payload
-		sendline(payload) # payload + 换行\n
-		sendafter(string, payload) # 接收到指定string后发送payload
+		send(payload)	#发送payload
+		sendline(payload) #payload + 换行\n
+		sendafter(string, payload) #接收到指定string后发送payload
+		sendlineafter(string, payload) #接收到指定string后发送payload + 换行\n
 		recvn(n) # 接收n个字符
 		recvline() # 接收一行输出
 		recvlines(n) # 接收n行输出

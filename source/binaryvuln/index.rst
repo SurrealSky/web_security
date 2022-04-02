@@ -9,7 +9,7 @@
    winheap
    linuxheap/index
    linuxstack/index
-   offbyone
+   linuxvuln/index
    HeapSpray
    UAF
    DoubleFree
@@ -17,5 +17,5 @@
    kernelvuln
    defense
    shellcode
-   skill
-   tools
+   vulnskill/index
+   tools/index

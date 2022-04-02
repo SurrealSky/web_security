@@ -9,7 +9,6 @@
    fuzz
    exploit
    webpersistence
-   vulner
    misc
    defense
    operation

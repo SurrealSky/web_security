@@ -118,14 +118,13 @@ linux
 				dr)
 			③执行 return 指令，因为这时 rsp 是指向 system_addr 的，这时就会调用 system 函数，而参
 				数是通过 rdi 传递的，也就是会将 /bin/sh 传入，从而实现调用 system('/bin/sh')
-			gadget_addr工具ROPgadget：https://github.com/JonathanSalwan/ROPgadget.git
 - PIE
-	+ PIE叫做代码部分地址无关，类似与windows下的ASLR,PIE能使程序像共享库一样在主存任何位置装载，这需要将程序编译成位置无关，并链接为ELF共享对象。
-	+ 关闭pie指令： ``sudo -s echo 0 > /proc/sys/kernel/randomize_va_space``
+	+ PIE叫做代码部分地址无关，类似与windows下的ASLR,PIE能使程序像共享库一样在主存任何位置装载，这需要将程序编译PIE并且系统PIE开启，并链接为ELF共享对象。
+	+ 开启关闭系统PIE： ``sudo -s echo 0 > /proc/sys/kernel/randomize_va_space``
 		- 0:没有随机化。即关闭ASLR。
 		- 1:保留的随机化。共享库、栈、mmap()分配的内存空间以及VDSO将被随机化。
 		- 2:完全的随机化。在1的基础上，通过 brk()分配的内存空间也将被随机化。
-	+ gcc编译
+	+ 开启编译PIE选项
 		- -fPIC与-fpic都是在编译时加入的选项，用于生成位置无关的代码(Position-Independent-Code)。这两个选项都是可以使代码在加载到内存时使用相对地址，所有对固定地址的访问都通过全局偏移表(GOT)来实现。-fPIC和-fpic最大的区别在于是否对GOT的大小有限制。-fPIC对GOT表大小无限制，所以如果在不确定的情况下，使用-fPIC是更好的选择。
 		- -fPIE与-fpie是等价的。这个选项与-fPIC/-fpic大致相同，不同点在于：-fPIC用于生成动态库，-fPIE用与生成可执行文件。再说得直白一点：-fPIE用来生成位置无关的可执行代码。
 			::
