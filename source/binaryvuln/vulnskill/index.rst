@@ -8,4 +8,7 @@
    basic
    core1
    core2
+   core3
+   core4
+   core5
 
