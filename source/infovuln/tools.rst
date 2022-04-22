@@ -204,7 +204,13 @@ firefox缓存破解
 		
 			-D -p passwd 密码本passwd文件
 			-u 不显示错误密码冗余信息
-			
+		
+- rarcrack
+	+ ``rarcrack 文件名 --threads 线程数 --type rar|7z|zip``
+		::
+		
+			启动软件，会在当前目录生成.rar.xml文件。
+			修改abc节点，更该爆破使用的字符集。
 - john
 	+ 破解/etc/shadow
 		| ``unshadow /etc/passwd /etc/shadow > passwd_shadow``
