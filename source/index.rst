@@ -16,8 +16,8 @@
    window/index
    linux/index
    MOBILE/index
+   bin/index
    binaryvuln/index
    intranet/index
-   defense/index
    auth/index
    misc/index

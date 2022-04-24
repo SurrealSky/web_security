@@ -1,4 +1,4 @@
-﻿windows栈溢出利用
+﻿栈溢出利用
 ========================================
 
 栈溢出
@@ -259,16 +259,16 @@ EXP过程
 	|stack16|
 
 
-.. |stack4| image:: ../images/stack4.png
-.. |stack5| image:: ../images/stack5.png
-.. |stack6| image:: ../images/stack6.png
-.. |stack7| image:: ../images/stack7.png
-.. |stack8| image:: ../images/stack8.png
-.. |stack9| image:: ../images/stack9.png
-.. |stack10| image:: ../images/stack10.jpg
-.. |stack11| image:: ../images/stack11.png
-.. |stack12| image:: ../images/stack12.png
-.. |stack13| image:: ../images/stack13.png
-.. |stack14| image:: ../images/stack14.png
-.. |stack15| image:: ../images/stack15.png
-.. |stack16| image:: ../images/stack16.png
+.. |stack4| image:: ../../images/stack4.png
+.. |stack5| image:: ../../images/stack5.png
+.. |stack6| image:: ../../images/stack6.png
+.. |stack7| image:: ../../images/stack7.png
+.. |stack8| image:: ../../images/stack8.png
+.. |stack9| image:: ../../images/stack9.png
+.. |stack10| image:: ../../images/stack10.jpg
+.. |stack11| image:: ../../images/stack11.png
+.. |stack12| image:: ../../images/stack12.png
+.. |stack13| image:: ../../images/stack13.png
+.. |stack14| image:: ../../images/stack14.png
+.. |stack15| image:: ../../images/stack15.png
+.. |stack16| image:: ../../images/stack16.png

@@ -5,16 +5,8 @@
    :maxdepth: 2
    :caption: 内容索引:
 
-   winstack
-   winheap
-   linuxheap/index
-   linuxstack/index
-   linuxvuln/index
-   HeapSpray
-   UAF
-   DoubleFree
-   IntegerOverflow
-   kernelvuln
+   windows/index
+   linux/index
    defense
    shellcode
    vulnskill/index
