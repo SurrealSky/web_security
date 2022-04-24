@@ -65,7 +65,7 @@ todo_include_todos = True
 
 html_last_updated_fmt = '%b %d, %Y'
 html_domain_indices = True
-html_logo = "_static/logo.png"
+#html_logo = "_static/logo.png"
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_use_index = True
