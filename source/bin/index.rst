@@ -7,5 +7,6 @@
 
    basic
    ics
+   software
    avr
    stm32
