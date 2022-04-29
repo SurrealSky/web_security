@@ -6,5 +6,6 @@
    :caption: 内容索引:
 
    basic
+   ics
    avr
    stm32
