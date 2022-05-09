@@ -8,6 +8,7 @@
 - `TCPFlow <https://github.com/simsong/tcpflow>`_
 - `TCPDump <http://www.tcpdump.org/>`_
 - `WireShark <https://www.wireshark.org>`_
+- `RawCap <https://www.netresec.com/index.ashx?page=RawCap>`_
 - `Argus <https://github.com/salesforce/Argus>`_
 - `PcapPlusPlus <https://github.com/seladb/PcapPlusPlus>`_
 - `ngrep <https://github.com/jpr5/ngrep>`_
