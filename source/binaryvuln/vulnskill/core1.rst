@@ -27,42 +27,21 @@ AFL fuzzer
 AFL概述
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 AFL全称是American Fuzzy Lop，由Google安全工程师Michał Zalewski开发的一款开源fuzzing测试工具，原理是在相关代码处插桩，因此AFL主要用于对 **开源软件** 进行测试。当然配合QEMU等工具，也可对 **闭源二进制代码** 进行fuzzing，但执行效率会受到影响。
-
-AFL安装
+	
+DynamoRIO
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 官网：https://lcamtuf.coredump.cx/afl/
-+ linux
-	::
-	
-		$ wget http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz
-		$ tar zxvf afl-latest.tgz
-		$ cd afl-2.52b
-		$ make
-		$ sudo make install
-		
-		有源码：
-		afl-gcc -g -o afl_test afl_test.c
-		afl-g++ -g -o afl_test afl_test.cpp
-		afl-fuzz -i fuzz_in -o fuzz_out ./afl_test
-		需要根据提示设置一波core_pattern
-		sudo su
-		echo core >/proc/sys/kernel/core_pattern
-		
-		无源码：
-		afl使用了qemu模式进行测试，只要在之前的命令的基础上加上-Q的参数即可。
-		先进行安装,在afl的根目录打开终端执行以下命令
-		cd qemu_mode
-		./build_qemu_support.sh
-		cd ..
-		make install
++ 概述
+	DynamoRIO是一款流行的动态二进制插桩工具，工作于操作系统与应用程序之间，通过将二进制程序的代码拷贝到代码缓存的方式模拟目标程序的执行。在动态模拟执行的过程中，可以根据分析需求，对二进制程序的运行状态进行监控与修改。
++ 基本组成
+	+ DynamoRIO：负责解释并执行目标程序；提供丰富的跨平台API接口
+	+ Client ：通过API自定义分析操作来扩展DynamoRIO
+	+ DynamoRIO Extensions：主要指drmgr，drsyms，drwrap等官方提供的扩展接口
++ 事件
+	+ 应用程序事件：应用程序在动态执行时的事件，包括进程创建，模块加载，系统调用等
+	+ DynamoRIO事件：包括基本快、轨迹流的创建等
+	+ 事件回调函数的注册：dr_register_xx_event,dr_ungister_xx_event等
 
-		gcc -g -o afl_test2 afl_test.c
-		afl-fuzz -i fuzz_in -o fuzz_out -Q ./afl_test2
-+ windows
-	- 官网：https://github.com/googleprojectzero/winafl
-	- 基于二进制插桩工具DynamoRIO
-	
-AFL示例
+代码分析
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 二次开发
