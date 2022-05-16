@@ -116,7 +116,14 @@ COM FUZZ
 		- 参数说明
 			::
 			
-				-c <client> [client options] — <app and args to run>
+				USAGE: drrun [options] <app and args to run>
+				   or: drrun [options] -- <app and args to run>
+				   or: drrun [options] [DR options] -- <app and args to run>
+				   or: drrun [options] [DR options] -c <client> [client options] -- <app and args to run>
+				   or: drrun [options] [DR options] -t <tool> [tool options] -- <app and args to run>
+				   or: drrun [options] [DR options] -c32 <32-bit-client> [client options] -- -c64 <64-bit-client> [client options] -- <app and args to run>
+				
+				官网：https://dynamorio.org/index.html
 				
 	+ winafl
 		- 官网：https://github.com/googleprojectzero/winafl
@@ -193,10 +200,15 @@ COM FUZZ
 		- 语料库修剪
 			+ afl-cmin
 			+ afl-tmin
-	+ 无源码FUZZ
-		- 生成代码覆盖率文件:  ``drrun.exe -t drcov -- test_gdiplus.exe 1.bmp``
-		- 测试运行：``drrun.exe  -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x1680 -fuzz_iterations 50 -nargs 2 -- test_gdiplus.exe in/1.bmp``
-		- 启动FUZZ测试：``afl-fuzz.exe -i in -o out -D . -t 20000 -- -coverage_module gdiplus.dll -target_module test_gdiplus.exe -target_offset 0x1680 -fuzz_iterations 50 -nargs 2 -- test_gdiplus.exe @@``
+	+ 示例
+		- 覆盖率文件
+			+ ``drrun.exe -t drcov -dump_text -- test_gdiplus.exe 1.bmp``
+			+ ``drcov2lcov -input drcov.notepad.exe.01556.0000.proc.log -output cov.info``
+			+ ``perl genhtml cov.info -o html``	
+		- 测试运行
+			+ ``drrun.exe  -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x1680 -fuzz_iterations 50 -nargs 2 -- test_gdiplus.exe in/1.bmp``
+		- FUZZ测试
+			+ ``afl-fuzz.exe -i in -o out -D . -t 20000 -- -coverage_module gdiplus.dll -target_module test_gdiplus.exe -target_offset 0x1680 -fuzz_iterations 50 -nargs 2 -- test_gdiplus.exe @@``
 			+ 注意call_convention参数，标记了函数的调用约定（如 -call_convention thiscall）
 			+ winafl默认的调用约定是stdcall，错误的调用约定可能导致程序在后续的迭代fuzz过程中崩溃
 		- 界面说明
