@@ -36,8 +36,15 @@ COM FUZZ
 - Taof
 - GPF
 - ProxyFuzz
-- `Peach Fuzzer(linux/windows) <https://sourceforge.net/projects/peachfuzz/>`_
-	Peach支持对 **文件格式、ActiveX、网络协议** 进行Fuzz测试，Peach Fuzz的关键是编写Peach Pit配置文件。
+- Peach Fuzzer(linux/windows)
+	+ Peach支持对 **文件格式、ActiveX、网络协议** 进行Fuzz测试，Peach Fuzz的关键是编写Peach Pit配置文件。
+	+ 官网：https://sourceforge.net/projects/peachfuzz/
+	+ pit文件结构
+		- DataModel
+		- StateModel
+		- Agents
+		- Test Block
+		- Run Block
 - Sulley
 - Mu‐4000
 - Codenomicon
@@ -159,7 +166,7 @@ COM FUZZ
 				cmake --build . --config Release
 				
 		- 使用前提
-			+ 可以用于测试dll和GUI程序的，但必须保证被测试目标函数能在不需用户交互的情况下被执行到且能返回，同时该目标函数还能打开输入文件并关闭输入文件。
+			+ 可以用于测试dll和GUI程序的，但必须保证被测试目标函数能在 **不需用户交互** 的情况下被执行到且能返回，同时该目标函数还能打开输入文件并关闭输入文件。
 		- 使用方式
 			::
 			
@@ -207,8 +214,11 @@ COM FUZZ
 			+ ``perl genhtml cov.info -o html``	
 		- 测试运行
 			+ ``drrun.exe  -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x1680 -fuzz_iterations 50 -nargs 2 -- test_gdiplus.exe in/1.bmp``
+			+ 生成得log文件中显示 ``Everything appears to be running normally`` 证明运行正常。
 		- FUZZ测试
 			+ ``afl-fuzz.exe -i in -o out -D . -t 20000 -- -coverage_module gdiplus.dll -target_module test_gdiplus.exe -target_offset 0x1680 -fuzz_iterations 50 -nargs 2 -- test_gdiplus.exe @@``
+			+ afl-fuzz会创建子进程,参数如下
+				- ``.\drrun.exe -pidfile childpid_82ef960aa080045c.txt -no_follow_children -c winafl.dll -coverage_module gdiplus.dll -target_module test_gdiplus.exe -target_offset 0x1680 -fuzz_iterations 50 -nargs 2 -fuzzer_id 82ef960aa080045c -- test_gdiplus.exe out\.cur_input``
 			+ 注意call_convention参数，标记了函数的调用约定（如 -call_convention thiscall）
 			+ winafl默认的调用约定是stdcall，错误的调用约定可能导致程序在后续的迭代fuzz过程中崩溃
 		- 界面说明
