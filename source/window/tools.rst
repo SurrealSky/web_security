@@ -31,6 +31,72 @@ IDA
 	| PEBrowseDbg
 	| Reflector
 
+插桩工具
+----------------------------------------
+
+frida
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 简介
+	- 官网：https://frida.re/docs/installation/
+	- frida框架分为两部分，一部分是运行在系统上的交互工具frida CLI; 另一部分是运行在目标机器上的代码注入工具 frida-server。
++ server端
+	- github下载：https://github.com/frida/frida/releases
++ client端
+	- 安装方式
+		+ pip install frida
+		+ pip install frida-tools
+	- frida
+		+ -U：通过USB连接远程设备
+		+ -R：连接远程机器
+		+ -H：连接远程机器HOST
+		+ -l：加载注入脚本
+		+ 附加进程：frida -p 1234
+		+ 启动进程：frida c:\\windows\\notepad.exe
+			::
+				
+				Available commands:
+				%resume(0) - resume execution of the spawned process
+				%load(1) - Load an additional script and reload the current REPL state
+				%reload(0) - reload (i.e. rerun) the script that was given as an argument to the REPL
+				%unload(0) - no description
+				%autoperform(1) - receive on/off as first and only argument, when switched onwill wrap any REPL code with Java.performNow()
+				%autoreload(1) - disable or enable auto reloading of script files
+				%exec(1) - execute the given file path in the context of the currently loaded scripts
+				%time(1+) - measure the execution time of the given expression and print it to the screen
+				%help(0) - print a list of available REPL commands
+				
+	- frida-ps
+	- frida-trace
+		+ -f target:即spawn模式
+		+ -F：附加顶层程序
+		+ -n name：附加进程名
+		+ -p pid：附加进程id
+		+ -I MODULE：包含模块
+		+ -X MODULE：排除模块
+		+ -i FUNCTION, include [MODULE!]FUNCTION：包含函数，函数名可以使用通配符
+		+ -x FUNCTION, exclude [MODULE!]FUNCTION：排除函数，函数名可以使用通配符
+		+ -a MODULE!OFFSET, add MODULE!OFFSET：包含非导出函数，使用偏移地址
+		+ -T INCLUDE_IMPORTS, include program's imports
+		+ -t MODULE, include MODULE imports
+		+ -m OBJC_METHOD, include OBJC_METHOD
+		+ -M OBJC_METHOD, exclude OBJC_METHOD
+		+ -j JAVA_METHOD, include JAVA_METHOD
+		+ -J JAVA_METHOD, exclude JAVA_METHOD
+		+ -s DEBUG_SYMBOL, include DEBUG_SYMBOL
+		+ -q, do not format output messages
+		+ -d, --decorate,add module name to generated onEnter log statement
+		+ -S PATH, path to JavaScript file used to initialize the session
+		+ -P PARAMETERS_JSON, parameters as JSON, exposed as a global named 'parameters'
+		+ -o OUTPUT, dump messages to file
+	- frida-discover
+		+ rida-discover -n name：发现进程内部函数
+		+ frida-discover -p pid：发现进程内部函数
+	- frida-ls-devices
+		+ 列举连接到电脑上的设备
+	- frida-kill
+		+ 杀死进程
++ 示例
+
 脱壳
 ----------------------------------------
 - DLL_Loader
