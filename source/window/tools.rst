@@ -1,12 +1,12 @@
 相关工具
 ========================================
 
-IDA
+反汇编/调试软件
 ----------------------------------------
 
-基础
+IDA
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ y
++ 更该变量类型
 	::
 	
 		IDA F5反编译的C代码
@@ -14,22 +14,224 @@ IDA
 		在unk_80BF804处按Y键更改变量类型，输入char，确定后即可看到打印的字符串：
 		printf("%d\n", v2[v1 - 1]);
 		
-
-反汇编/调试软件
-----------------------------------------
-- MDebug102
-- OllyICE
-- PointH
-- x32dbg/x64dbg
-- c32asm
-- IDA
-- W32dsm
-- masm32
-- .NET
-	| injectreflector
-	| ildasm
-	| PEBrowseDbg
-	| Reflector
+windbg
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 介绍
+	- 标准命令：提供基本调试功能，不区分大小写。如：bp g dt dv k等。
+	- 元命令：内建在调试引擎中，以.开头。如.sympath .reload等。
+	- 扩展命令：用于扩展某一方面的调试功能，实现在动态加载的扩展模块中，以!开头。如!analyze等。
++ 基本设置
+	- 清屏命令：``.cls``
+	- 设置数据进制：``n [8/10/16]``
+	- 设置处理器模式：``.effmach  x86``
+	- 格式化显示：``.formats 0x123abc``
+	- 将windbg设置成默认调试器：``windbg -I``
++ 设置符号库
+	- 设置环境变量
+		+ 存在问题是会导致vs调试缓慢
+	- 注册表方式
+	- 菜单方式
+		+ ``SRV*c:\localsymbols*https://msdl.microsoft.com/download/symbols``
+	- 命令方式
+		+ ``.sympath SRV*c:\localsymbols*https://msdl.microsoft.com/download/symbols``
+		+ ``.reload``
+	- 符号加载
+		+ 加载指定模块的符号：``ld [ModuleName]``
+		+ 加载所有模块的符号：``ld *``
+		+ 获取符号加载状态：``!sym``
+		+ 增加符号搜索路径：``.sympath+ c:\symbols``
+		+ 设置符号库路径：``.symfix``
+		+ 为所有已加载模块载入符号信息：``.reload``
+		+ 重新加载不匹配符号的模块：``.reload /i [module name]``
+		+ 指定模块加载符号信息：``.reload /f @[module path]``
+		+ 指定模块加载符号信息：``.reload /f [module name]``
+	- 查看符号信息
+		+ 列出所有模块对应的符号信息：``x *!``
+		+ 列出指定模块中所有符号：``x ConsoleTest!*``
+		+ 带数据类型、符号类型和大小信息：``x /t /v ConsoleTest!*``
+		+ 查看pdb是否能匹配：``!itoldyouso mono D:\mySymbols\mono.pdb``
+		+ 查看地址附近符号：``ln``
+	- 源文件
+		+ 查看当前源文件查找路径：``.srcpath``
+		+ 设置源文件查找路径设：``.srcpath f:\src``
+		+ 添加源文件查找路径：``.srcpath+ f:\src``
+	- 查找路径
+		+ 查看可执行文件查找路径：``.exepath``
+		+ 设置可执行文件查找路径：``.exepath f:\bin``
+		+ 添加可执行文件查找路径：``.exepath+ f:\bin``
++ 模块加载命令
+	- 显示模块加载信息：``lm[ v | l | k | u | f ] [m Pattern]``
+		+ 显示所有加载和未加载的模块信息：``lm``
+		+ 显示已加载模块的详细信息：``lmv``
+		+ 同时显示加载的符号信息：``lml``
+		+ 显示内核模块信息：``lmk``
+		+ 显示用户模块信息：``lmu``
+		+ 显示镜像路径：``lmf``
+		+ 匹配模块名称：``lmm``
+		+ DML方式显示：``lmD``
+		+ 显示kernel32模块详细信息：``lmv m kernel32``
+		+ 显示kernel32.dll模块的信息：``!lmi kernel32``
+	- !dlls
+		+ 列出所有加载的模块和加载数量：``!dlls``
+		+ 根据初始化顺序：``!dlls -i``
+		+ 根据加载顺序（默认项）：``!dlls -l``
+		+ 根据内存顺序：``!dlls -m``
+		+ 显示更多详细信息：``!dlls -v``
+		+ 仅显示ModuleAddr地址的模块信息：``!dlls -c ModuleAddr``
+		+ 显示kernel32.dll的信息：``!dlls -v -c kernel32``
++ 异常分析命令
+	- 显示当前异常的详细信息：``!analyze -v``
+	- 诊断阻塞信息：``!analyze -hang``
+	- 查看异常分析信息：``!analyze -f``
++ 解析错误信息
+	- 解析错误信息：``!error ErrValue``
+	- 将错误值作为 NTSTATUS 代码：``!error ErrValue 1``
++ 断点
+	- 列出所有断点：``bl``
+	- 清除所有断点：``bc *``
+	- 清除1号断点：``bc 1``
+	- 启用所有断点：``be *``
+	- 启用1号断点：``be 1``
+	- 禁用所有断点：``bd *``
+	- 禁用1号断点：``bd 1``
+	- 设置断点：``bp 7c801b00``
+	- 设置断点：``bp MyDll+0x1032``
+	- 设置断点：``bp `ConsoleTest.cpp:36```
+	- 设置断点：``bp main``
+	- 进程入口设置断点：``bp @$exentry``
+	- 设置断点：``bp TestCommon! CTest::add``
+	- 条件断点：``bp `ConsoleTest.cpp:40` ".if (poi(pVar)>5) {}; {g}"``
+		+ ``".if (Condition) {Optional Commands}; {g}"``
+		+ pVar指针指向的值>5，执行空语句（;）断住,否则继续执行
+	- 条件断点：``bp `ConsoleTest.cpp:40` "j (poi(pVar)>5) ' '; 'g'"``
+		+ ``"j (Condition) 'Optional Commands'; 'g'"``
+		+ 条件断点 pVar指针指向的值>5，执行空语句（;）断住,否则继续执行
+	- 匹配add_开头的函数，并在这些函数起始处都打上断点：``bm add_*``
+	- 内存断点：``ba [r|w|e] [Size] Addr``
+		+ ``[r=read/write, w=write, e=execute], Size=[1|2|4 bytes]``
++ 调试执行控制
+	- 执行：``g``
+	- 强制调试器处理异常：``gH``,``gN``
+	- 执行到函数完成：``gu``
+	- 暂停正在运行的程序：``Ctrl+Break``
+	- 单步执行：``p [step]``
+	- 执行到下一个函数调用处暂停：``pc``
+	- 执行到指定地址处暂停：``pa 7c801b0b``
+	- 单步步入：``t``
+	- 执行到下一个函数调用处暂停：``tc``
+	- 执行到分支指令停下：``tb``
+	- 执行到特定地址处暂停：``ta 7c801b0b``
+	- Trace and Watch Data：``WT``
+	- 重新启动程序调试：``.restart``
++ 查看句柄
+	- 查看所有句柄的ID：``!handle``
+	- 查看所有句柄的类型和名称：``!handle 0 5``
+	- 查看ID为000007f8的句柄的类型：``!handle 000007f8 1``
+	- 查看ID为000007f8的句柄的名称：``!handle 000007f8 4``
++ 查看变量 
+	- 查看局部变量：``dt [var]``
+	- 显示dll中的类型信息：``dt ntdll!*``
+	- 显示所有模块中含有IMAGE_DOS字符的类型信息：``dt *!*IMAGE_DOS*``
+	- 显示myApp进程里全局变量g_app的内存布局：``dt myApp!g_app``
+	- 将0x0041f8d4地址处内容按照模块WindbgTest的CTest的内存布局来解析：``dt WindbgTest!CTest 0x0041f8d4``
+	- 查看this指针的类型和成员变量：``dt this``
+	- 查看变量的值：``?? this->m_nPen``
+	- 查看变量的地址：``? [var]``
+	- 显示当前函数所有变量和参数：``dv [var]``
++ 查看汇编
+	- 反汇编当前eip寄存器地址的后8条指令：``u .``
+	- 反汇编寄存器地址的后8条指令：``u $eip``
+	- 反汇编当前eip寄存器地址的前8条指令：``ub .``
+	- 反汇编寄存器地址的前8条指令：``ub $eip``
+	- 反汇编main+0x29地址的后30条指令：``u main+0x29 L30``
+	- 反汇编main函数：``uf [/c] main``
++ 查看寄存器
+	- 显示所有寄存器信息：``r``
+	- 显示eax，edx寄存器信息：``r eax,edx``
+	- 对寄存器eax赋值为5，edx赋值为6：``r eax=5,edx=6``
++ 查看内存
+	- 查看进程的所有内存页属性：``!address [-summary][-f:stack][addr]``
+	- 从7c801e02内存处开始以dword为单位显示内存,默认显示128字节长度的内容：``dd /c 5 7c801e02``
+	- 从7c801e02内存处开始以dword为单位显示内存,显示8个dword：``dd /c 5 7c801e02 L8``
+	- 从7c80ff03内存处开始显示Ascii字符串：``da /c 100 7c80ff03``
+	- 从7c8022f5内存处开始显示Unicode字符串：``du /c 100 7c8022f5``
+	- ``d[a|u|b|w|W|d|c|q|f|D] [/c 列数] [地址]``
+		+ a = ascii chars
+		+ u = Unicode chars
+		+ b = byte + ascii   -- 和UE一样，左边为byte为单位的二进制内容，右边块为ascii形式的字符串内容
+		+ w = word (2b)
+		+ W = word (2b) + ascii
+		+ d = dword (4b)
+		+ c = dword (4b) + ascii
+		+ q = qword (8b)
+		+ f = floating point (single precision - 4b)
+		+ D = floating point (double precision - 8b)
++ 查看堆
+	- 显示进程堆的个数：``!heap -s``
+	- 打印堆的内存结构：``dt _HEAP 00140000``
+	- 打印堆的内存详细信息：``!heap -a 00140000``
++ 虚拟内存：``!vadump``
++ 进程命令信息
+	- 显示当前进程：``| [进程号]``
+	- 切换进程：``| [进程号] s``
+	- 显示调试器当前运行进程信息：``!process``
+	- 显示进程列表：``!process 0 0``
+	- 显示进程信息：``!process PID``
+	- DML方式显示当前进程的信息：``!dml_proc``
+	- 显示当前所有进程：``.tlist``
++ 线程信息命令
+	- 查看线程信息
+		+ 显示线程信息：``~``
+		+ 所有线程：``~* [Command]``
+		+ 当前线程：``~. [Command]``
+		+ 引发当前事件或异常的线程：``~# [Command]``
+		+ 显示指定序号的线程：``~Number [Command]``
+		+ 显示指定线程ID的线程：``~~[TID] [Command]``
+		+ 切换到线程 N：``~Ns``
+		+ 显示所有线程的调用栈：``~* k``
+		+ 显示2号线程的调用栈：``~2 k``
+		+ 显示线程环境信息：``!teb``
+		+ 显示当前线程所有的slot信息：``!tls -1``
+		+ 显示每个线程消耗的时间：``!runaway [n]``
+			- 0 用户态时间
+			- 1 内核态时间
+			- 2 自线程创建起的时间间隔
+	- 线程上执行命令
+		+ 在所有线程上执行命令：``~* e CommandString``
+		+ 在当前线程上执行命令：``~. e CommandString``
+		+ 在引发异常的线程上执行命令：``~# e CommandString``
+		+ 在指定序号的线程上执行命令：``~Number e CommandString``
+	- 冻结线程：``~Thread f``
+		+ 冻结2号线程：``~2 f``
+		+ 冻结引发异常的线程：``~# f``
+		+ 解除对3号线程的冻结：``~3 u``
+	- 挂起线程
+		+ 挂起线程，增加线程挂起数量：``~Thread n``
+		+ 恢复线程，减少线程挂起数量：``~Thread m``
+	- 显示线程错误信息
+		+ 打印当前线程最近的错误信息LastError：``!gle``
+		+ 打印所有线程的最近的错误信息：``!gle -all``
+		+ 显示所有线程的最后一个错误信息：```~*e !gle``
++ 堆栈信息命令
+	- 显示调用栈信息：``k[n][f][L] [#Frames]``
+		+ 调用栈包含帧号：``kn``
+		+ 临近帧的距离：``kf``
+		+ 忽略源代码：``kL``
+		+ 最开始的 3 参数：``kb ...``
+		+ 所有的参数：``k[p/P] ...``
+		+ FPO信息：``kv ...``
+		+ 显示最开始的 5 个帧：``kb 5``
+	- 显示当前栈帧
+		+ 显示当前帧：``.frame``
+		+ 指定帧号：``.frame #``
+		+ 显示寄存器信息：``.frame /r [#]``
++ 扩展帮助命令
+	- 常规扩展命令帮助：``!Ext.help``,``!Exts.help``
+	- 用户态模式扩展命令帮助：``!Uext.help``,``!Ntsdexts.help``
+		
+其它
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MDebug102，OllyICE，PointH，x32dbg/x64dbg，c32asm，W32dsm，masm32，.NET（injectreflector，ildasm，PEBrowseDbg，Reflector）
 
 插桩工具
 ----------------------------------------
