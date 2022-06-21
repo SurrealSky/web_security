@@ -45,9 +45,11 @@ COM FUZZ
 - Taof
 - GPF
 - ProxyFuzz
-- Peach Fuzzer(linux/windows)
+- Peach Fuzzer
 	+ Peach支持对 **文件格式、ActiveX、网络协议** 进行Fuzz测试，Peach Fuzz的关键是编写Peach Pit配置文件。
 	+ 官网：https://sourceforge.net/projects/peachfuzz/
+	+ 最新版本源码：https://gitlab.com/gitlab-org/security-products/protocol-fuzzer-ce
+	+ windows编译：https://zhuanlan.zhihu.com/p/386565953
 	+ pit文件结构
 		- DataModel
 		- StateModel
