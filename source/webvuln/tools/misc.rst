@@ -76,6 +76,49 @@ metasploit
 	+ 将目标主机192.168.16.59的3389转发到本地主机的7070端口：portfwd add -l 7070 -r 192.168.16.59 -p 3389
 	+ 端口转发成功后就可以从本地端口连接rdp：rdesktop 127.0.0.1:7070
 
+xray
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 全局配置
+	+ --config 用于指定配置文件的位置，默认加载同目录的 config.yaml
+	+ --log_level 用于指定全局的日志配置
+	+ ``xray_windows_amd64.exe --log_level debug --config 1.yaml webscan --url xxx``
+- reverse命令
+	+ 启用单独的盲打平台服务，盲打平台用于处理没有回显或延迟触发的问题
+- genca
+	+ 用于快速生成一个根证书，主要用于被动代理扫描 HTTPS 流量时用到
+- subdomain
+	+ 子域名扫描
+	+ ``xray_windows_amd64.exe  subdomain --target example.com --text-output example.txt``
+	+ ``xray_windows_amd64.exe subdomain --target example.com --console-ui --text-output example.txt``
+- webscan
+	+ 扫描web漏洞，核心功能
+	+ --plugins 配置本次扫描启用哪些插件, 不再使用配置文件中的配置
+		- ``--plugins xss --plugins xss,sqldet,phantasm``
+	+ --poc 配置本次扫描启用哪些 POC,因为所有 POC 隶属于 phantasm 插件, 所以该参数其实是 phantasm 插件独有的配置。
+		- ``--plugins phantasm --poc poc-yaml-thinkphp5-controller-rce``
+		- ``--plugins phantasm --poc "*thinkphp*"``
+		- ``--plugins phantasm --poc "/home/test/pocs/*"``
+		- ``--plugins phantasm --poc "/home/test/pocs/*thinkphp*" ...``
+	+ 配置输入来源
+		- --listen 
+			+ 启动一个被动代理服务器作为输入，如 --listen 127.0.0.1:4444，然后配置浏览器或其他访问工具的 http 代理为 http://127.0.0.1:4444 就可以自动检测代理中的 HTTP 请求并进行漏洞扫描
+		- --basic-crawler 
+			+ 启用一个基础爬虫作为输入， 如 --basic-crawler http://example.com，就可抓取 http://example.com 的内容并以此内容进行漏洞扫描
+		- --url 
+			+ 用于快速测试单个 url，这个参数不带爬虫，只对当前链接进行测试。默认为 GET 请求，配合下面的 --data 参数可以指定 body，同时变为 POST 请求。
+		- --raw-request 
+			+ 用于加载一个原始的 HTTP 请求并用于扫描，原始请求类似上面代码框中的原始请求，如果你用过 sqlmap -r，那么这个参数应该也很容易上手。
+	+ 输出方式
+		- --html-output 将结果输出为 html 报告, 报告样例
+		- --webhook-output 将结果发送到一个地址
+		- --json-output 将结果输出到一个 json 文件中
+	+ 示例
+		- ``xray_darwin_amd64 webscan --plugins xss --listen 127.0.0.1:1111 --html-output 1.html``
+		- ``xray_darwin_amd64 --log_level debug webscan --plugins xss,cmd_injection --basic-crawler http://example.com --json-output 1.json``
+		- ``xray_darwin_amd64 webscan --url http://example.com --data "x=y" --html-output 2.html --json-output 1.json``
+		- ``xray_darwin_amd64 webscan --url http://example.com/ --webhook-output http://host:port/path``
+
+
 Joomscan
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 介绍
@@ -104,6 +147,7 @@ dnslog
 其它
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - AWVS
+- Immunity Canvas
 - openvas
 - nessus
 - `PenTesters Framework(ptf) <https://github.com/trustedsec/ptf>`_
@@ -117,5 +161,4 @@ dnslog
 - `Fuxi <https://github.com/jeffzh3ng/Fuxi-Scanner>`_
 - `vooki <https://www.vegabird.com/vooki/>`_
 - `BadMod <https://github.com/MrSqar-Ye/BadMod>`_
-- `xray <https://github.com/chaitin/xray>`_
 - `x-scan <https://x-scan.apponic.com/>`_

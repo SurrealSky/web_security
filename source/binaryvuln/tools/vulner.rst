@@ -11,6 +11,11 @@
 - RTF解析工具
 	+ OffVis
 
+dll劫持漏洞
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `Rattler <https://github.com/sensepost/rattler/releases/>`_
+- `ChkDllHijack <https://github.com/anhkgg/anhkgg-tools>`_
+
 COM FUZZ
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - COMRaider 
