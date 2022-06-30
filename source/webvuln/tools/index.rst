@@ -12,3 +12,4 @@
    misc
    defense
    operation
+   ctf

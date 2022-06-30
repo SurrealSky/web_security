@@ -450,9 +450,6 @@ firefox缓存破解
 		+ ott http://192.168.56.121 50
 		+ ott http://192.168.56.121 50 .phtml,.php,.txt,.html
 		
-- `bfac <https://github.com/mazen160/bfac>`_
-- `ds_store_exp <https://github.com/lijiejie/ds_store_exp>`_
-- `cansina <https://github.com/deibit/cansina>`_
 - `weakfilescan <https://github.com/ring04h/weakfilescan>`_
 - `DirBrute <https://github.com/Xyntax/DirBrute>`_
 - auxiliary/scanner/http/dir_scanner
@@ -460,10 +457,7 @@ firefox缓存破解
 - auxiliary/scanner/http/brute_dirs
 - DirBuster
 - 御剑
-
-路径爬虫
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `crawlergo <https://github.com/0Kee-Team/crawlergo>`_ A powerful dynamic crawler for web vulnerability scanners
+- 路径爬虫 `crawlergo <https://github.com/0Kee-Team/crawlergo>`_
 
 Waf指纹
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -518,21 +512,14 @@ Waf指纹
 		
 - `zmap <https://github.com/zmap/zmap>`_
 - `masscan <https://github.com/robertdavidgraham/masscan>`_
-- `ShodanHat <https://github.com/HatBashBR/ShodanHat>`_
-- SNMP ``snmpwalk``
 
-DNS数据查询
+DNS解析域名IP查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `证书子域查询 <https://crt.sh/>`_
 - `VirusTotal <https://www.virustotal.com/>`_
 - `PassiveTotal <https://passivetotal.org>`_
 - `DNSDB <https://www.dnsdb.info/>`_
 - `sitedossier <http://www.sitedossier.com/>`_
-
-DNS关联
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Cloudflare Enumeration Tool <https://github.com/mandatoryprogrammer/cloudflare_enum>`_
-- `amass <https://github.com/caffix/amass>`_
-- `Certificate Search <https://crt.sh/>`_
 
 搜索引擎查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -622,13 +609,6 @@ SSH用户名枚举
 		https://github.com/Rhynorater/CVE-2018-15473-Exploit/blob/master/sshUsernameEnumExploit.py
 		python sshUsernameEnumExploit.py --port 22 --userList /home/kali/Downloads/rockyou.txt 192.168.100.103 
 		
-- auxiliary(scanner/ssh/ssh_enumusers
-
-隐写
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- stegsolve
-	+ 图片隐写分析
-- peepdf
-	+ pdf审计工具
+- auxiliary(scanner/ssh/ssh_enumusers)
 
 .. |pspy| image:: ../images/pspy.jpg
