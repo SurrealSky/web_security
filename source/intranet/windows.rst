@@ -12,6 +12,7 @@
 - 查看安装驱动 ``DRIVERQUERY``
 - 查看操作系统架构 ``wmic os get osarchitecture``
 - 查看逻辑盘 ``wmic logicaldisk get caption``
+- 查看安装的软件 ``wmic product get name,version``
 
 域信息
 ----------------------------------------
@@ -25,9 +26,10 @@
 用户信息
 ----------------------------------------
 - 查看用户 ``net user`` / ``whoami`` / ``whoami /all``
+- 查看用户信息: ``net user <administrator>``
 - 用户特权信息 ``whoami /priv``
 - 查看当前权限 ``net localgroup administrators``
-- 查看在线用户 ``qwinsta`` / ``query user``
+- 查看在线用户 ``qwinsta`` / ``query user`` / ``quser``
 - 查看当前计算机名，全名，用户名，系统版本，工作 站域，登陆域 ``net config Workstation``
 
 网络信息
@@ -52,22 +54,22 @@
 
 密码信息
 ----------------------------------------
-- Windows RDP连接记录
-- 浏览器中保存的账号密码
-- 系统密码管理器中的各种密码
-- 无人值守安装文件中的密码信息
-    - ``C:\sysprep.inf``
-    - ``C:\sysprep\sysprep.xml``
-    - ``C:\Windows\Panther\Unattend\Unattended.xml``
-    - ``C:\Windows\Panther\Unattended.xml``
++ 当前系统凭据
+	- ``cmdkey /l``
++ 浏览器中保存的账号密码
++ 系统密码管理器中的各种密码
++ 无人值守安装文件中的密码信息
+	- ``C:\sysprep.inf``
+	- ``C:\sysprep\sysprep.xml``
+	- ``C:\Windows\Panther\Unattend\Unattended.xml``
+	- ``C:\Windows\Panther\Unattended.xml``
 
 其他
 ----------------------------------------
-- 查看补丁安装情况
-    - ``wmic qfe get Caption,Description,HotFixID,InstalledOn``
-- 日志与事件信息
-    - ``wevtutil``
-- 注册表信息
-    - ``reg``
-- 安装的监控软件
-- 安装的杀毒软件
++ wmic
+	- 提供了从命令行接口和批命令脚本执行系统管理的支持
+	- 查看补丁安装情况: ``wmic qfe get Caption,Description,HotFixID,InstalledOn``
++ 日志与事件信息
+	- ``wevtutil``
++ 注册表信息
+	- ``reg``

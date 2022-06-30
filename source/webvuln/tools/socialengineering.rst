@@ -5,7 +5,6 @@ fake flash
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Fake-flash <https://github.com/r00tSe7en/Fake-flash.cn>`_
 
-
 OSINT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `osint <http://osintframework.com/>`_
@@ -42,6 +41,7 @@ OSINT
 - `spoofcheck <https://github.com/BishopFox/spoofcheck>`_
 - `gophish <https://github.com/gophish/gophish>`_
 - `SocialFish <https://github.com/UndeadSec/SocialFish>`_
+- `WiFiDuck <https://github.com/spacehuhn/WiFiDuck>`_ Bad USB
 
 wifi
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

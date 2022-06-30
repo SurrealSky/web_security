@@ -7,5 +7,4 @@
 
    webcache
    httpSmuggling
-   sshvul
    phpadmin

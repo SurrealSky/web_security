@@ -8,6 +8,7 @@
    socialengineering
    fuzz
    exploit
+   bypass
    webpersistence
    misc
    defense
