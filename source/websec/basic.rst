@@ -233,6 +233,10 @@ Splunk
 
 CMS应用
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- thinkphp
+	+ 漏扫工具
+		- https://github.com/Lucifer1993/TPscan
+		- https://github.com/theLSA/tp5-getshell
 
 - wordpress
 	+ 扫描插件和主题是否包含漏洞

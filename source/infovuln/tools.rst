@@ -8,6 +8,7 @@ CDN判别
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 在线多地超级ping
 	+ 多地ping得到不同的IP地址，基本判断为开启了CDN。
+	+ ``https://ping.chinaz.com/``
 - dig/nslookup
 	+ 多个IP则可能开启了CDN。
 - DNS历史记录查询
@@ -38,6 +39,8 @@ DNS解析域名IP查询
 		docker volume create arl_db
 		docker-compose pull
 		docker-compose up -d 
+		
+		默认端口5003 (https), 默认用户名密码admin/arlpass
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -203,8 +206,6 @@ web指纹识别
 - `whatweb <https://github.com/urbanadventurer/whatweb>`_
 - `Webfinger <https://github.com/se55i0n/Webfinger>`_
 - `CMSeek <https://github.com/Tuhinshubhra/CMSeeK>`_
-- `TPscan <https://github.com/Lucifer1993/TPscan>`_ 一键ThinkPHP漏洞检测
-- `TPscan.jar <https://github.com/tangxiaofeng7/TPScan>`_ ThinkPHP漏洞扫描
 - `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
 - `EHole <https://github.com/EdgeSecurityTeam/EHole>`_ 红队重点攻击系统指纹探测工具
 
@@ -229,6 +230,7 @@ Waf指纹
 - dirbuster
 	+ dirbuster -H headless方式启动
 	+ dirbuster ，默认GUI方式启动
+	+ ``dirbuster -H -u http://www.xxx.com -l SecLists/Discovery/Web-Content/raft-large-directories.txt``
 - `dirmap <https://github.com/H4ckForJob/dirmap.git>`_
 	+ ``git clone https://github.com/H4ckForJob/dirmap.git``
 	+ ``python3 -m pip install -r requirement.txt``
@@ -381,7 +383,7 @@ Waf指纹
 	+ ``绕过IDS检测：nikto -host/-h http://www.example.com -evasion`` 
 	+ ``Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host -`` 
 	+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080`` 
-- `GOBUSTER <https://github.com/OJ/gobuster>`_
+- gobuster
 	+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
 	+ ``文件扫描：gobuster dir -u http://192.168.100.106 -w /home/kali/Downloads/SecLists/Discovery/Web-Content/directory-list-1.0.txt -x php``
 	+ ``不包含特定长度：--exclude-length 280``
@@ -419,8 +421,6 @@ Waf指纹
 - DirBuster
 - 御剑
 - 路径爬虫 `crawlergo <https://github.com/0Kee-Team/crawlergo>`_
-
-
 
 暴力破解
 ----------------------------------------
