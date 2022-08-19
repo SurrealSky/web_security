@@ -99,6 +99,14 @@ Windows可以自定义屏幕保护程序，使用 ``HKEY_CURRENT_USER\Control Pa
 隐藏用户
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Windows可以使用在用户名后加入 ``$`` 来创建匿名用户，这种方式创建的用户只能通过注册表查看。
+::
+	
+	添加用户：
+	net user admin123 123456 /add
+	加入管理员组：
+	net localgroup administrators admin123 /add
+	加入远程登录组：
+	net localgroup "Remote Desktop Users" admin123 /add
 
 CLR
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

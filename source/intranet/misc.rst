@@ -13,11 +13,10 @@
 ----------------------------------------
 - nc
 	- 端口扫描
-		+ ``nc -z -v -n 172.31.100.7 21-25``
+		+ 默认TCP：``nc -z -v -n 172.31.100.7 21-25``
 	- 端口转发
-		+ ``nc -l 8000`` 
-		+ ``cat /tmp/fifo | nc localhost 8000 | nc -l 9000 > /tmp/fifo`` 
-		+ ``nc -n 192.168.1.102 9000`` 
+		+ 将本地9000端口数据转发到192.168.100.2/8000：``mkfifo tmp/fifo|cat /tmp/fifo | nc 192.168.100.2 8000 | nc -l 9000 > /tmp/fifo`` 
+		+ 访问：``nc -n 192.168.1.102 9000`` 
 - socat
 	- 显示本地文件
 		+ ``socat - /etc/sysctl.conf`` 
@@ -30,7 +29,15 @@
 		+ ``socat -d -d -lf /var/log/socat.log TCP4-LISTEN:15000,reuseaddr,fork,su=nobody TCP4:server.wesnoth.org:15000`` 
 		+ ``tcp：nohup socat TCP4-LISTEN:2333,reuseaddr,fork TCP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
 		+ ``udp：nohup socat UDP4-LISTEN:2333,reuseaddr,fork UDP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
-	
+
+传输数据
+----------------------------------------
+- nc
+	+ 连续传输两个数据包：``cat poc1.dat | sed s'/.$//' |nc -u 10.0.0.3 1023 -w 2 | cat poc2.dat | sed s'/.$//' |nc -u 10.0.0.3 1023 -w 2``
+	+ dat文件存储数据包内容
+	+ ``sed s'/.$//'`` 为去掉最后一个字节0a
+	+ -u参数表示使用udp协议
+
 文件传输
 ----------------------------------------
 - nc
