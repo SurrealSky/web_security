@@ -41,6 +41,53 @@ windwos内网横穿
 	- Kerberos服务，监听KDC的票据请求，用户黄金票据和白银票据的伪造
 + 5985
 	WinRM服务
-	
 
+端口转发
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ portfwd
+	- MSF自带工具
+	- 将192.168.100.4的8888端口，映射到当前主机的8899端口
+	- ``portfwd add -l 8899 -r 192.168.100.4 -p 8888``
 
+代理工具
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ proxychains
+	- 修改配置/etc/proxychains.conf
+		::
+		
+			[ProxyList]
+			socks5 172.20.0.59 7222
+	- 直接在程序前增加proxychains
+	- ``sudo proxychains apt-get update``
+	- 注意：socks代理不支持UDP协议，不支持icmp/ping协议，nmap使用受限。
+
+内网穿透
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ frp
+	- 官网下载：https://github.com/fatedier/frp/releases
+	- 示例
+		::
+		
+			跳板机（假设IP为172.20.0.59/192.168.100.3双网卡）上frps.ini配置：
+			[common]
+			bind_port = 7111
+			
+			执行命令：frps.exe -c frps.ini
+			
+			目标机器（假设IP为192.168.100.4/128.0.0.2双网卡）上frpc.ini配置：
+			[common]
+			server_addr = 192.168.100.3
+			server_port = 7111
+
+			[plugin_1]
+			type = tcp
+			remote_port = 7222
+			plugin = socks5
+			
+			执行命令：frpc.exe -c frpc.ini
+			
+			这样再kali里面设置proxychains代理/etc/proxychains.conf：
+			[ProxyList]
+			socks5 172.20.0.59 7222
+			在172.20.0.1/24网段机器使用nmap直接对内网128网段进行扫描：
+			proxychains nmap -sT -Pn -p- 128.0.0.1/24
