@@ -120,9 +120,11 @@ pwnlib用法
 	::
 	
 		# 将数据解包
+		u8()
 		u32()
 		u64()
 		# 将数据打包
+		p8()
 		p32()
 		p64()
 - Cyclic
@@ -174,3 +176,85 @@ pwnlib用法
 		# 第一个参数是需要call的函数或地址，第二个为函数参数
 		rop.call('read', (0, elf.bss(0x80)))
 		rop.dump()
+
+python struct模块
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 主要函数
+	::
+	
+		string pack(fmt,v1,v2…)               按照给定的格式(fmt),把数据转换成字符串(字节流),并将该字符串返回.
+		pack_into(fmt,buffer,offset,v1,v2…)   按照给定的格式(fmt),将数据转换成字符串(字节流),并将字节流写入以offset开始的buffer中.(buffer为可写的缓冲区,可用array模块)
+		tuple unpack(fmt,v1,v2…..)            按照给定的格式(fmt)解析字节流,并返回解析结果
+		tuple pack_from(fmt,buffer,offset)    按照给定的格式(fmt)解析以offset开始的缓冲区,并返回解析结果
+		calcsize(fmt)                         计算给定的格式(fmt)占用多少字节的内存，注意对齐方式
+- 对齐方式
+	::
+	
+		Character    Byte           order      Size    Alignment
+		@(默认)      本机           本机       本机    凑够4字节
+		=            本机           标准       none    按原字节数
+		<            小端           标准       none    按原字节数
+		>            大端           标准       none    按原字节数
+		!            network(大端)  标准       none    按原字节数
+
+- 格式符
+	::
+	
+		格式符      C语言类型              Python类型            Standard size
+		x           pad byte(填充字节)     no value
+		c           char                   string of length 1       1
+		b           signed char            integer                  1
+		B           unsigned char          integer                  1
+		?           _Bool                  bool                     1
+		h           short                  integer                  2
+		H           unsigned short         integer                  2
+		i           int	integer	4
+		I(大写的i)  unsigned int           integer                  4
+		l(小写的L)  long                   integer                  4
+		L           unsigned long          long                     4
+		q           long long              long                     8
+		Q           unsigned long long     long                     8
+		f           float                  float                    4
+		d           double                 float                    8
+		s           char[]                 string
+		p           char[]                 string
+		P           void *                 long
+- 进制转换
+	::
+	
+		# 获取用户输入十进制数
+		dec = int(input("输入数字："))
+		print("十进制数为：", dec)
+		print("转换为二进制为：", bin(dec))
+		print("转换为八进制为：", oct(dec))
+		print("转换为十六进制为：", hex(dec))
+
+python binascii模块
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 主要函数
+	::
+	
+		a2b_uu(string)            将以ascii编码的一行数据转化为二进制,并且返回二进制数据.
+		b2a_uu(data)              将二进制数据转化为一行以ascii编码的字符,date的最大长度为45.
+		a2b_base64(string)        将一块base64的数据转换为二进制数据,并返回该二进制数据
+		b2a_base64(string)        与上面相反
+		a2b_qp(string[, header])  quoted-printable data->bin,并返回
+		b2a_qp(data[, quotetabs, istext, header])   与上面相反
+		a2b_hqx(string)           binhex4格式化的ASCII数据转换为二进制,没有做RLE解压.
+		b2a_hqx(data)             与上相反
+		rledecode_hqx(data)       按照binhex4标准,对data执行RLE解压
+		rlecode_hqx(data)        对data执行binhex方式的压缩,并返回结果
+		crc_hqx(data, crc)       计算data的binhex4的crc值
+		crc32(data[, crc])       根据crc,计算crc32(32位检验和数据,然后将结果&0xffffffff(为了在所有Python版本中生成相同的结果,具体不清楚,求指导…)
+		b2a_hex(data)            返回二进制数据的16进制的表现形式
+		a2b_hex(data)            与上面相反
+		hexlify(data)            返回二进制数据的16进制的表现形式
+		unhexlify(hexstr)        与上面相反
+- 进制转换
+	::
+	
+		chr()      把一个整形转换成ASCII码表中对应的单个字符
+		ord()      把ASCII码表中的字符转换成对应的整形
+		hex()      把十进制转换成16进制字符
+		oct()      把十进制转换成八进制字符
+		bin()      把十进制整形转换成二进制字符
