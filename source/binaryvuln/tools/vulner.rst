@@ -239,10 +239,9 @@ COM FUZZ
 			+ winafl默认的调用约定是stdcall，错误的调用约定可能导致程序在后续的迭代fuzz过程中崩溃
 		- 界面说明
 			+ stage progress -> now trying && stage execs，now trying 表示目前执行的任务，而 stage execs 表示任务执行的进度，用百分率表示。
-			
 - `libFuzzer(linux) <https://github.com/Dor1s/libfuzzer-workshop>`_
 - syzkaller
-	
+
 工控漏洞挖掘
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `modbus fuzzer <https://github.com/youngcraft/boofuzz-modbus>`_
@@ -256,6 +255,11 @@ COM FUZZ
 	
 内核漏洞挖掘
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `DriverView驱动查看工具 <http://www.nirsoft.net/utils/driverview.html>`_
+- `DeviceTree驱动关联设备查看工具 <http://www.osronline.com/article.cfm%5earticle=97.htm>`_
+- `WinObj查看符号链接 <http://technet.microsoft.com/en-us/sysinternals/bb896657>`_
+- `IrpTracker IRP跟踪器 <http://www.osronline.com/article.cfm%5earticle=199.htm>`_
+- `IOCTLbf漏洞挖掘 <https://code.google.com/archive/p/ioctlbf/>`_
 - `IOCTL Fuzzer（Windows） <https://code.google.com/archive/p/ioctlfuzzer/>`_
 - syzkaller
 
