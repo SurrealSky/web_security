@@ -231,7 +231,7 @@ windbg
 		
 其它
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MDebug102，OllyICE，PointH，x32dbg/x64dbg，c32asm，W32dsm，masm32，.NET（injectreflector，ildasm，PEBrowseDbg，Reflector）
+MDebug102，OllyICE，PointH，x32dbg/x64dbg，c32asm，W32dsm，masm32，.NET（injectreflector，ildasm，PEBrowseDbg，Reflector,ILSpy,dnSpy）
 
 插桩工具
 ----------------------------------------
@@ -334,15 +334,15 @@ frida
 - java
 	Decafe Pro
 - Dephi
-	DeDeDark
+	+ DeDeDark
 - PowerBuilder
-	| PBKiller
-	| DePB
+	+ PBKiller
+	+ DePB
 - VB
-	| VB.Decompiler.Pro
+	+ VB.Decompiler.Pro
 	| exdec818
 - 易语言
-	| EcE
+	+ EcE
 
 外挂
 ----------------------------------------
