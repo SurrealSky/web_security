@@ -85,10 +85,7 @@ pwnlib用法
 	::
 	
 		from pwn import *
-		# 本地
-		p = process('')
-		# 远程
-		p = remote('8.8.8.8', 8888)
+
 - 汇编与反汇编
 	::
 	
@@ -156,6 +153,10 @@ pwnlib用法
 - IO交互
 	::
 	
+		# 本地
+		p = process('')
+		# 远程
+		p = remote('8.8.8.8', 8888 ,typ="tcp")
 		send(payload)	#发送payload
 		sendline(payload) #payload + 换行\n
 		sendafter(string, payload) #接收到指定string后发送payload
