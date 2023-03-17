@@ -99,6 +99,8 @@ gdb调试指令
 	+ clear 清空所有断点
 - bt：打印调用堆栈
 - s：执行一行源程序代码，如果此行代码中有函数调用，则进入该函数（Step Into (单步跟踪进入)）；
+    + 在源文件server.cpp中PacketSenderThread函数加断点：` b server.cpp:PacketSenderThread`
+    + 在源文件server.cpp中11行加断点：` b server.cpp:11`
 - n：相当于其它调试器中的“Step Over (单步跟踪)”
 - si：相当于s，针对汇编代码
 - ni：相当于n，针对汇编代码
