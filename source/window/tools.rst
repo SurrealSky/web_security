@@ -26,6 +26,7 @@ windbg
 	- 设置处理器模式：``.effmach  x86``
 	- 格式化显示：``.formats 0x123abc``
 	- 将windbg设置成默认调试器：``windbg -I``
+	- 结束长时间未完成的命令：``ctrl + break``
 + 设置符号库
 	- 设置环境变量
 		+ 存在问题是会导致vs调试缓慢
@@ -175,6 +176,7 @@ windbg
 	- 显示当前进程：``| [进程号]``
 	- 切换进程：``| [进程号] s``
 	- 显示调试器当前运行进程信息：``!process,.process``
+	- 显示当前进程的EPROCESS：``.process``
 	- 显示进程列表：``!process 0 0``
 	- 显示进程信息：``!process PID``
 	- DML方式显示当前进程的信息：``!dml_proc``
