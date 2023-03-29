@@ -174,7 +174,7 @@ windbg
 + 进程命令信息
 	- 显示当前进程：``| [进程号]``
 	- 切换进程：``| [进程号] s``
-	- 显示调试器当前运行进程信息：``!process``
+	- 显示调试器当前运行进程信息：``!process,.process``
 	- 显示进程列表：``!process 0 0``
 	- 显示进程信息：``!process PID``
 	- DML方式显示当前进程的信息：``!dml_proc``
@@ -340,7 +340,7 @@ frida
 	+ DePB
 - VB
 	+ VB.Decompiler.Pro
-	| exdec818
+	+ exdec818
 - 易语言
 	+ EcE
 
