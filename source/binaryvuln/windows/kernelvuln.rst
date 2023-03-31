@@ -43,3 +43,27 @@ IoControl
 	2.IoControl Driver Fuzz
 	这种方法指的是对DeviceIoControl每个参数都畸形化，然后组合出不同的参数组（完全给出畸形化参数，而不是去将正常参数部分修改为畸形参数）。
 	相比上面的方法，这种方法测试得更为全面。
+
+内核漏洞利用
+----------------------------------------
+
+提权
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 替换进程token
+    - https://improsec.com/tech-blog/windows-kernel-shellcode-on-windows-10-part-1
+    - 查找当前进程的EPROCESS地址
+    - 找到SYSTEM进程的EPROCESS地址
+    - 将SYSTEM进程的token复制到当前进程
+    - 执行需要SYSTEM权限的操作
+    - 示例：https://github.com/MortenSchenk/Token-Stealing-Shellcode 
++ 特权进程ACL NULL
+    - https://improsec.com/tech-blog/windows-kernel-shellcode-on-windows-10-part-2
+    - EPROCESS结构中SecurityDescriptor数据清0
+    - 示例：https://github.com/MortenSchenk/ACL_Edit
++ 特权进程ACL 修改
++ 启用权限
+    - https://improsec.com/tech-blog/windows-kernel-shellcode-on-windows-10-part-3
+    - 修改进程EPROCESS结构TOKEN结构Privileges结构，偏移0x8设置为Enabled（-1）
+    - 示例：https://github.com/MortenSchenk/Privilege_Shellcode
++ 令牌窃取
+    - https://improsec.com/tech-blog/windows-kernel-shellcode-on-windows-10-part-4-there-is-no-code
