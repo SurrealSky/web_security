@@ -67,31 +67,21 @@ linux
 			gcc -fstack-protector -o test test.c //启用堆栈保护，不过只为局部变量中含有char数组的函数插入保护代码
 			gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数插入保护代码
 	+ 原理
-		- 当启用栈保护后，函数开始执行的时候会先往栈里插入cookie信息，该cookie往往放置在ebp/rbp的正上方，当函数真正返回的时候会验证cookie信息是否合法，如果不合法就停止程序运行。
-		- 攻击者在覆盖返回地址的时候也会将cookie信息给覆盖掉，导致栈保护检查失败而阻止shellcode的执行。在Linux中我们将cookie信息称为canary。
-	+ 示例
-		::
-		
-			IDA打开开启cannary保护的函数如下：
-			unsigned int func()
-			{
-			  char buf; // [esp+4h] [ebp-24h]
-			  unsigned int v2; // [esp+1Ch] [ebp-Ch]
-
-			  v2 = __readgsdword(0x14u);
-			  puts("1st read");
-			  read(0, &buf, 0x28u);
-			  printf("you say: %s\n", &buf);
-			  puts("2nd read");
-			  read(0, &buf, 0x80u);
-			  printf("you say: %s\n", &buf);
-			  return __readgsdword(0x14u) ^ v2;
-			}
-			注：
-			1.局部变量v2用来存放canary的值。
-			2.函数启动会自动分配一个cannary，通过函数_readgsdword(0x14u)获得。
-			3.函数结束时，再次通过v2和_readgsdword(0x14u)比较。
-
+		- 当程序启用cannary后，在函数开始处会取fs寄存器0x28处的值，存放在栈中%ebp-0x8的位置。
+			::
+			
+				mov    rax, qword ptr fs:[0x28]
+				mov    qword ptr [rbp - 8], rax
+		- 在函数返回前，会取出该值，并与fs:0x28处的值进行异或比较，如果结果为0，说明canary没有被修改，函数正常返回，否则会跳转到异常函数（__stack_chk_failed函数）。
+			::
+			
+				mov    rcx, qword ptr [rbp - 8]
+				xor    rcx, qword ptr fs:[0x28]
+				je     0x564098833c65
+				call   __stack_chk_fail@plt
+				0x564098833c65 leave
+				ret
+	+ 对抗
 
 - FORTIFY
 	+ FORTIFY机制用于检查程序是否存在缓冲区溢出错误，适用于memcpy，memset，stpcpy，strcpy，strncpy，strcat，strncat，sprintf，snprintf，vsprintf，vsnprintf，gets等函数。

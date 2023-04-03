@@ -41,17 +41,11 @@ pwndbg-进程状态信息
 - fsbase：查看FS base address
 - canary：查看当前的static canary
 - context：查看进程上下文环境信息
-- regs：查看所有寄存器数据
 - telescope：Recursively dereferences pointers starting at the specified address ($sp by default)
-- stack [count] [offset]：查看堆栈数据
-- retaddr：查看堆栈中的返回地址
 - libs：查看程序加载的库
-- entry_point：查看entry地址
-- piebase [offset] [module]：Calculate VA of RVA from PIE base.
-- dumpargs [-f]：显示在调用指令处停止时传递给函数的参数
 - dumprop <from> <to>：显示特定内存范围内的所有ROP gadgets
 - getfile
-- getpid		
+- getpid
 
 pwndbg-反汇编
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,8 +61,14 @@ pwndbg-反汇编
 pwndbg-调试指令
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - show args: 查看程序运行参数
-- entry_point：查看entry地址
+- k：查看堆栈
+- backtrace: 查看堆栈
+- dumpargs [-f]：显示在调用指令处停止时传递给函数的参数
+- piebase [offset] [module]：Calculate VA of RVA from PIE base.
+- retaddr：查看堆栈中的返回地址
+- stack [count] [offset]：查看堆栈数据
 - i r [a]：查看寄存器值
+- regs：查看所有寄存器数据
 - i f:查看所有函数名
 - i b：断点列表
 - bl：断点列表
@@ -77,8 +77,6 @@ pwndbg-调试指令
 - bp where：设置断点
 - breakrva [offset] [module]：相对于程序PIE base设置offset偏移断点
 - bc [which]：删除指定断点
-- k：查看堆栈
-- backtrace: 查看堆栈
 - ln [addr]：查看指定地址附近的符号
 - peb：查看peb
 - go：执行程序

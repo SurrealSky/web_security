@@ -185,6 +185,10 @@ gdb内存指令
 	+ info variables：显示所有全局静态变量
 	+ info watchpoints
 	+ info win ：显示所有窗口
+- 修改寄存器值
+	+ set $rax = 1
+	+ elfags图示
+		|eflags|
 
 中断显示设置
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,3 +204,6 @@ patchelf
 	- ``patchelf --replace-needed libc.so.6 ./libc_32.so.6 ./dubblesort``
 + 替换ld（ELF interpreter）加载器
 	- ``patchelf --set-interpreter /lib/my-ld-linux.so.2 ./dubblesort``
+
+
+.. |eflags| image:: ../images/eflags.png
