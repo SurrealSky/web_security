@@ -66,8 +66,11 @@ pwndbg-反汇编
 	
 pwndbg-调试指令
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- show args: 查看程序运行参数
 - entry_point：查看entry地址
 - i r [a]：查看寄存器值
+- i f:查看所有函数名
+- i b：断点列表
 - bl：断点列表
 - bd [which]：禁用断点
 - be [which]：启用断点
@@ -75,6 +78,7 @@ pwndbg-调试指令
 - breakrva [offset] [module]：相对于程序PIE base设置offset偏移断点
 - bc [which]：删除指定断点
 - k：查看堆栈
+- backtrace: 查看堆栈
 - ln [addr]：查看指定地址附近的符号
 - peb：查看peb
 - go：执行程序
