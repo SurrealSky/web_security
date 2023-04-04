@@ -82,7 +82,9 @@ linux
 				0x564098833c65 leave
 				ret
 	+ 对抗
-
+		- 存在子进程，然后爆破canary
+		- 如果存在字符串格式化漏洞可以输出canary并利用溢出覆盖canary从而达到绕过
+		
 - FORTIFY
 	+ FORTIFY机制用于检查程序是否存在缓冲区溢出错误，适用于memcpy，memset，stpcpy，strcpy，strncpy，strcat，strncat，sprintf，snprintf，vsprintf，vsnprintf，gets等函数。
 	+ 在函数编译时，加入FORTIFY机制的代码会在编译过程中自动添加一部分代码，判断数组的大小，削减缓冲区溢出的危害。
