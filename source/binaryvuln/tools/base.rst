@@ -79,97 +79,174 @@ https://pwntools-docs-zh.readthedocs.io/zh_CN/dev/
 		update              Check for pwntools updates
 		version             Pwntools version
 
-pwnlib用法
+模块和函数
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- 导入
+- pwn：简单的用 from pwn import * 就能把所有子模块和一些常用的系统库导入当前命名空间中，是专门为了CTF比赛优化的。
+- pwnlib：适合开发成产品，根据需要导入不同的子模块。
+- 模块列表
 	::
 	
-		from pwn import *
+		pwnlib.adb: 安卓adb
+		pwnlib.asm: 汇编和反汇编
+		pwnlib.constans: 包含各种体系结构和操作系统中的系统调用号常量（来自头文件），constants.linux.i386.SYS_stat
+		pwnlib.context: 设置运行环境
+		pwnlib.dynelf: 利用信息泄漏远程解析函数
+		pwnlib.encoders: 对shellcode进行编码，如encoders.encoder.null('xxx')
+		pwnlib.elf: 操作ELF可执行文件和共享库
+		pwnlib.fmtstr: 格式化字符串利用工具
+		pwnlib.gdb: 调试，配合gdb使用
+		pwnlib.libcbd: libc数据库，入libcdb.search_by_build_id('xxx')
+		pwnlib.log: 日志记录管理,比如log.info('hello')
+		pwnlib.memleak: 内存泄漏工具，将泄漏的内存缓存起来，可作为Payload
+		pwnlib.qume: QEMU模拟相关，一般用来模拟不同架构的指令或运行程序
+		pwnlib.rop: ROP利用工具，包括rop,srop等
+		pwnlib.runner: 运行Shellcode，例如：run_assembly('mov eax,SYS_exit;int 0x80;')
+		pwnlib.shellcraft: Shellcode生成器
+		pwnlib.tubes: scokets、ssh、进程管道通信
+		pwnlib.utils: 一些实用小工具，比如CRC计算,cyclic字符串生成等
 
-- 汇编与反汇编
+- pwnlib.context
+	+ 设置进程运行时的环境，比如目标是什么CPU架构，多少位数，什么平台，是否开启日志等等
+		::
+		
+			#架构32位X86,平台Linux
+			context(arch='i386',os='linux')
+			#设置tmux分屏
+			context.terminal['tmux','splitw','-h']
+			#开启日志信息
+			context.log_level = 'debug'
+	+ 架构如下
+		::
+		
+			architectures = _longest({
+			'aarch64':   little_64,
+			'alpha':     little_64,
+			'avr':       little_8,
+			'amd64':     little_64,
+			'arm':       little_32,
+			'cris':      little_32,
+			'i386':      little_32,
+			'ia64':      big_64,
+			'm68k':      big_32,
+			'mips':      little_32,
+			'mips64':    little_64,
+			'msp430':    little_16,
+			'powerpc':   big_32,
+			'powerpc64': big_64,
+			'riscv':     little_32,
+			's390':      big_32,
+			'sparc':     big_32,
+			'sparc64':   big_64,
+			'thumb':     little_32,
+			'vax':       little_32,
+			'none':      {},
+			})
+			transform = [('ppc64', 'powerpc64'),
+						 ('ppc', 'powerpc'),
+						 ('x86-64', 'amd64'),
+						 ('x86_64', 'amd64'),
+						 ('x86', 'i386'),
+						 ('i686', 'i386'),
+						 ('armv7l', 'arm'),
+						 ('armeabi', 'arm'),
+						 ('arm64', 'aarch64')]
+			位数：
+			big_32    = {'endian': 'big', 'bits': 32}
+			big_64    = {'endian': 'big', 'bits': 64}
+			little_8  = {'endian': 'little', 'bits': 8}
+			little_16 = {'endian': 'little', 'bits': 16}
+			little_32 = {'endian': 'little', 'bits': 32}
+			little_64 = {'endian': 'little', 'bits': 64}
+			平台：
+			oses = sorted(('linux','freebsd','windows','cgc','android','baremetal'))
+
+- pwnlib.tubes
+	+ pwnlib.tubes.process
+	+ pwnlib.tubes.serialtube
+	+ pwnlib.tubes.sock
+	+ pwnlib.tubes.ssh
+	+ IO交互示例
+		::
+	
+			打开本地进程：
+			p = process('./hackhack')
+			打开远程socket：
+			p = remote('8.8.8.8', 8888 ,typ="tcp")
+			
+			send(payload)	#发送payload
+			sendline(payload) #payload + 换行\n
+			sendafter(string, payload) #接收到指定string后发送payload
+			sendlineafter(string, payload) #接收到指定string后发送payload + 换行\n
+			recvn(n) # 接收n个字符
+			recvline() # 接收一行输出
+			recvlines(n) # 接收n行输出
+			recvuntil(string) # 接收到指定string为止
+			interactive() # shell式交互
+
+- pwnlib.gdb
+	::
+	
+		# 打开调试进程，并设置断点
+		pwnlib.gdb.debug('./human', 'b *main')
+
+		# 附加调试进程p
+		pwnlib.gdb.attach(pid)
+
+- pwnlib.asm
 	::
 	
 		asm('nop', arch='arm')
-		disaasm('')
-- shellcode
+		(disasm(unhex('E007BF'),arch='aarch64',bits=64))
+		
+- pwnlib.shellcraft
 	::
 	
 		shellcraft.sh()
 		shellcraft.i386.linux.sh()
 		shellcraft.amd64.linux.sh()
-- ELF
+- pwnlib.elf
 	::
 	
-		elf = ELF('')
+		elf = ELF('./hack')
 		# 或者
 		p = process('')
 		elf = p.elf
-
-		# 文件装载地址
+		
+		#文件装载地址
 		elf.address
+		elf.arch
+		elf.bits
+		elf.os
 		# 符号表
 		elf.symbols
 		# GOT表
-		elf.got
+		for kv in elf.got.items():
+			print(kv)
 		# PLT表
-		elf.plt
-- pack与unpack
-	::
-	
-		# 将数据解包
-		u8()
-		u32()
-		u64()
-		# 将数据打包
-		p8()
-		p32()
-		p64()
-- Cyclic
-	::
-	
-		# 生成一个0x100大小的字符串
-		cyclic(0x100)
-		cyclic_find(0x12345678)
-		cyclic_find('abcd')
-- Context
-	::
-	
-		# 环境设置
-		context(os='linux', arch='amd64', log_level='debug')
-		# 或者
-		context.log_level = 'debug'
-		context.arch = 'i386'
-		...
-- gdb
-	::
-	
-		from pwnlib import *
-		# 打开调试进程，并设置断点
-		pwnlib.gdb.debug('./human', 'b *main')
-
-		# 附加调试进程p
-		pwnlib.gdb.attach(p)
+		for kv in elf.plt.items():
+			print(kv)
+		#hack函数偏移:hex(elf.symbols['hack'])
+- pwnlib.util
+	+ packing
+		::
 		
-- IO交互
-	::
-	
-		# 本地
-		p = process('')
-		# 远程
-		p = remote('8.8.8.8', 8888 ,typ="tcp")
-		send(payload)	#发送payload
-		sendline(payload) #payload + 换行\n
-		sendafter(string, payload) #接收到指定string后发送payload
-		sendlineafter(string, payload) #接收到指定string后发送payload + 换行\n
-		recvn(n) # 接收n个字符
-		recvline() # 接收一行输出
-		recvlines(n) # 接收n行输出
-		recvuntil(string) # 接收到指定string为止
+			# 将数据解包
+			u8()
+			u32()
+			u64()
+			# 将数据打包
+			p8()
+			p32()
+			p64()
+	+ Cyclic
+		::
+		
+			# 生成一个0x100大小的字符串
+			cyclic(0x100)
+			cyclic_find(0x12345678)
+			cyclic_find('abcd')
 
-		interactive() # shell式交互
-- FmtStr
-	计算偏移。
-- rop
+- pwnlib.rop
 	::
 	
 		elf = ELF('./proc')
