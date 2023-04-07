@@ -152,6 +152,7 @@ NT系统特征
 			4.定位物理页面
 			kd> !dd 0x06c4a000 + 0x30 * 8
 			# 6c4a180 6e607025 80000000 6e108025 80000000
+			5.计算物理地址
 			0x6e607000 + 0x1 = 0x6e607001即最终物理地址
 			
 			直接使用!pte命令查看：
@@ -287,6 +288,155 @@ NT系统特征
 
 - 存储
 	|osbase7|
+
+- 分页池
+	+ 分类
+		- nonpaged pool
+			+ 只能常驻于物理内存地址，不能映射。
+			+ 只能在DPC/dispatch level或者更高IRQL才可以访问。
+		- paged pool
+			+ 可以映射。
+			+ 任何级别的IRQL都可以访问，所以每个进程都可以访问。
+		- 都使用ExAllocatePool()和ExFreePool()来分配和释放。
+	+ paged pool
+		::
+		
+			查看数量：
+			kd> ln nt!ExpNumberOfPagedPools
+			Browse module
+			Set bu breakpoint
+
+			(83daa014)   nt!ExpNumberOfPagedPools   |  (83daa018)   nt!WmipMaxKmWnodeEventSize
+			Exact matches:
+				nt!ExpNumberOfPagedPools = <no type information>
+			kd> dd 83daa014
+			83daa014  00000004 00080000 00000000 00000001
+			4个paged pool。
+			1.单处理器系统中，4个paged pool descriptors地址在nt!ExpPagedPoolDescriptor数组中存储(index of 1-4)。
+			2.多处理器系统中，每一个node定义一个paged pool descriptor。
+			3.还有一类特殊的按页分配的pool(prototype pools/full page allocations)，位于nt!ExpPagedPoolDescriptor的第一个索引(index 0)。
+			
+			查看_POOL_DESCRIPTOR：
+			kd> ln nt!ExpPagedPoolDescriptor
+			Browse module
+			Set bu breakpoint
+
+			(83d7cb60)   nt!ExpPagedPoolDescriptor   |  (83d7cba4)   nt!ExpLargePoolTableLock
+			Exact matches:
+				nt!ExpPagedPoolDescriptor = <no type information>
+			kd> dd 83d7cb60
+			83d7cb60  8633d000 8633e140 8633f280 863403c0
+			83d7cb70  86341500 00000000 00000000 00000000
+			83d7cb80  00000000 00000000 00000000 00000000
+			83d7cb90  00000000 00000000 00000000 00000000
+			83d7cba0  00000000 00000000 00000000 00000000
+			83d7cbb0  83d77940 8633d000 00000000 00000000
+			
+			kd> ln nt!PoolVector
+			Browse module
+			Set bu breakpoint
+
+			(83d7cbb0)   nt!PoolVector   |  (83d7cbc0)   nt!ExpNonPagedPoolDescriptor
+			Exact matches:
+				nt!PoolVector = <no type information>
+			
+			kd> dd 83d7cbb0
+			83d7cbb0  83d77940 8633d000 00000000 00000000
+			
+			nt!ExpPagedPoolDescriptor[0]= PoolVector[1],即poi(0x83d7cb60)=poi(0x83d7cbb0+4) 
+			
+			查看 prototy pools ：
+			kd>  dt nt!_POOL_DESCRIPTOR 8633d000
+			   +0x000 PoolType         : 1 ( PagedPool )
+			   +0x004 PagedLock        : _KGUARDED_MUTEX
+			   +0x004 NonPagedLock     : 1
+			   +0x040 RunningAllocs    : 0n16642
+			   +0x044 RunningDeAllocs  : 0n3001
+			   +0x048 TotalBigPages    : 0n14890
+			   +0x04c ThreadsProcessingDeferrals : 0n0
+			   +0x050 TotalBytes       : 0x3b2ece0
+			   +0x080 PoolIndex        : 0
+			   +0x0c0 TotalPages       : 0n265
+			   +0x100 PendingFrees     : 0x96acdbc8  -> 0x91c93968 Void
+			   +0x104 PendingFreeDepth : 0n7
+			   +0x140 ListHeads        : [512] _LIST_ENTRY [ 0x8633d140 - 0x8633d140 ]
+			查看正常的paged pool：
+			kd>  dt nt!_POOL_DESCRIPTOR 8633e140
+			   +0x000 PoolType         : 1 ( PagedPool )
+			   +0x004 PagedLock        : _KGUARDED_MUTEX
+			   +0x004 NonPagedLock     : 1
+			   +0x040 RunningAllocs    : 0n889212
+			   +0x044 RunningDeAllocs  : 0n857690
+			   +0x048 TotalBigPages    : 0n482
+			   +0x04c ThreadsProcessingDeferrals : 0n0
+			   +0x050 TotalBytes       : 0x74e490
+			   +0x080 PoolIndex        : 1
+			   +0x0c0 TotalPages       : 0n1413
+			   +0x100 PendingFrees     : 0x8c6160e8  -> 0x9b206938 Void
+			   +0x104 PendingFreeDepth : 0n26
+			   +0x140 ListHeads        : [512] _LIST_ENTRY [ 0x8633e280 - 0x8633e280 ]
+	+ nonpaged pool
+		::
+		
+			查看数量：
+			kd> ln nt!ExpNumberOfNonPagedPools
+			Browse module
+			Set bu breakpoint
+
+			(83d7cc00)   nt!ExpNumberOfNonPagedPools   |  (83d7cc04)   nt!ExpCacheLineSize
+			Exact matches:
+				nt!ExpNumberOfNonPagedPools = <no type information>
+			
+			kd> dd 83d7cc00
+			83d7cc00  00000001 00000040 00000000 00010000
+			存在1个无分页池。
+			1.单处理器系统中，nt!PoolVector数组的第一成员就是nonpaged pool descriptor。
+			2.多处理系统中，每一个node(NUMA system call processors and memory)都有自己的nonpaged pool descriptor。
+			存储在nt!ExpNonPagedPoolDescriptor中。
+			
+			kd> ln nt!PoolVector
+			Browse module
+			Set bu breakpoint
+
+			(83d7cbb0)   nt!PoolVector   |  (83d7cbc0)   nt!ExpNonPagedPoolDescriptor
+			Exact matches:
+				nt!PoolVector = <no type information>
+			
+			kd> dd 83d7cbb0
+			83d7cbb0  83d77940 8633d000 00000000 00000000
+			
+			查看_POOL_DESCRIPTOR：
+			kd> dt nt!_POOL_DESCRIPTOR 83d77940
+			   +0x000 PoolType         : 0 ( NonPagedPool )
+			   +0x004 PagedLock        : _KGUARDED_MUTEX
+			   +0x004 NonPagedLock     : 0
+			   +0x040 RunningAllocs    : 0n427096
+			   +0x044 RunningDeAllocs  : 0n391902
+			   +0x048 TotalBigPages    : 0n6608
+			   +0x04c ThreadsProcessingDeferrals : 0n0
+			   +0x050 TotalBytes       : 0x1d64b58
+			   +0x080 PoolIndex        : 0
+			   +0x0c0 TotalPages       : 0n1448
+			   +0x100 PendingFrees     : 0x882f3008  -> 0x8812d840 Void
+			   +0x104 PendingFreeDepth : 0n10
+			   +0x140 ListHeads        : [512] _LIST_ENTRY [ 0x83d77a80 - 0x83d77a80 ]
+			或使用以下命令：
+			kd>  dt nt!_POOL_DESCRIPTOR poi(nt!PoolVector) 
+			   +0x000 PoolType         : 0 ( NonPagedPool )
+			   +0x004 PagedLock        : _KGUARDED_MUTEX
+			   +0x004 NonPagedLock     : 0
+			   +0x040 RunningAllocs    : 0n427096
+			   +0x044 RunningDeAllocs  : 0n391902
+			   +0x048 TotalBigPages    : 0n6608
+			   +0x04c ThreadsProcessingDeferrals : 0n0
+			   +0x050 TotalBytes       : 0x1d64b58
+			   +0x080 PoolIndex        : 0
+			   +0x0c0 TotalPages       : 0n1448
+			   +0x100 PendingFrees     : 0x882f3008  -> 0x8812d840 Void
+			   +0x104 PendingFreeDepth : 0n10
+			   +0x140 ListHeads        : [512] _LIST_ENTRY [ 0x83d77a80 - 0x83d77a80 ]
+	+ Session Pool
+	+ ListHeads(x86)
 
 应用程序编程接口
 ----------------------------------------
