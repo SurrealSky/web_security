@@ -91,19 +91,187 @@ NT系统特征
 - 系统内核内存布局
 	|osbase4|
 - 逻辑地址到内存地址的转换
-	|osbase5|
+	+ 逻辑地址
+		- 机器语言指令仍用这种地址指定一个操作数的地址或一条指令的地址。
+		- 这种寻址方式在Intel的分段结构中表现得尤为具体，它使得MS-DOS或Windows程序员把程序分为若干段。
+		- 每个逻辑地址都由一个段和偏移量组成。
+	+ 线性地址
+		- 针对32位CPU，线性地址是一个32位的无符号整数，可以表达高达2^32（4GB）的地址。
+		- 通常用16进制表示线性地址，其取值范围为0x00000000～0xffffffff。对64位CPU，线性地址是一个64位的无符号整数，可以表达高达264。
+	+ 物理地址
+		- 也就是内存单元的实际地址，用于芯片级内存单元寻址。物理地址也由32位无符号整数表示。
+	+ 操作系统将内存空间按照“页”为单位划分了很多页面，这个页的大小默认是4KB（当然可以改的），各进程拥有虚拟的完整的地址空间，进程中使用到的页面会映射到真实的物理内存上，程序中使用的地址是虚拟地址（分三段：页目录索引、页表索引、页内偏移。），CPU在运行时自动将其翻译成真实的物理地址。
+		- 32位系统未开启PAE（10-10-12分页）
+			|PAE1|
+			
+		::
+		
+			1.Directory Entry(PDE)     = PDBR[Directory];
+			2.Page-Table Entry(PTE) = PDE + Table * 4;
+			3.Physical Address  = PTE + Offset;
+			
+		- 32系统开启PAE（2-9-9-12分页）
+			|PAE2|
+			
+		::
+		
+			1.Dir.Pointer Entry(PDPTE)  = PDPTR[Directory Pointer];
+			2.Director Entry(PDE)  = PDPTE + Directory * 0x8;
+			3.Page-Table Entry(PTE)  = PDE + Table * 0x8;
+			4.Physical Address  = PTE+Offset;
+			注：CR3不直接指向PDT表，而是指向一张新的表，叫做PDPT表（页目录指针表），每项占8个字节。
+		
+			kd> .formats 0x30001
+			Evaluate expression:
+			  Hex:     00030001
+			  Decimal: 196609
+			  Octal:   00000600001
+			  Binary:  00000000 00000011 00000000 00000001
+			  Chars:   ....
+			  Time:    Sat Jan  3 14:36:49 1970
+			  Float:   low 2.75508e-040 high 0
+			  Double:  9.71378e-319
+			
+			VA为：
+			2位：（30—31）页目录指针表的索引（00B）
+			9位：（21—29）页目录表索引（000000000B）
+			9位：（12—20）页表索引（000110000B）
+			12位：（0—11）页内偏移（000000000001B）
+			
+			1.获取页目录指针表物理地址
+			kd> r cr3
+			cr3=7f145360
+			2.定位页目录指针表并获取页目录表物理页地址
+			kd> !dd 7f145360
+			#7f145360 0915f801 00000000 07160801 00000000
+			页目录指针表项的下标为0,所以就是0x0915f801,因此0x0915f000是页目录表物理页面的首地址。
+			3.定位页表项
+			kd> !dd 0x0915f000 + 0x0 * 8
+			# 915f000 06c4a867 00000000 08bcd867 00000000
+			0x06c4a867就是要找的页目录表项,因此页表物理内存页面首地址为0x06c4a000.
+			4.定位物理页面
+			kd> !dd 0x06c4a000 + 0x30 * 8
+			# 6c4a180 6e607025 80000000 6e108025 80000000
+			0x6e607000 + 0x1 = 0x6e607001即最终物理地址
+			
+			直接使用!pte命令查看：
+			kd> !pte 0x30001
+						   VA 00030001
+			PDE at C0600000            PTE at C0000180
+			contains 0000000006C4A867  contains 800000006E607025
+			pfn 6c4a      ---DA--UWEV  pfn 6e607     ----A--UR-V
+			kd> dc C0000180
+			c0000180  6e607025 80000000 6e108025 80000000  %p`n....%..n....
+			c0000190  6e709025 80000000 6e10a025 80000000  %.pn....%..n....
+
+		- 64位系统（9-9-9-9-12分页）
+
 - 管理方式
-	- 虚拟内存和分页
-		虚拟内存：软件和物理内存之间的不可见层
-		离散分配管理：分段，分页
-	- 区段对象
+	+ 虚拟内存和分页
+		- 虚拟内存：软件和物理内存之间的不可见层
+		- 离散分配管理：分段
+		
+		::
+		
+			当前进程：
+			kd> r
+			eax=00000003 ebx=00000000 ecx=00002010 edx=0000006a esi=fffffffe edi=00000065
+			eip=83c83110 esp=8d6735c0 ebp=8d67360c iopl=0         nv up ei pl zr na pe nc
+			cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00000246
+			查看描述符寄存器内容：
+			kd> rM 100
+			gdtr=80b99000   gdtl=03ff idtr=80b99400   idtl=07ff tr=0028  ldtr=0000
+			即GDT地址从80b99000开始，大小为1023字节（8184二进制位），意味着GDT大约由127个段描述符构成，每个描述符占用64位。
+			使用dg命令直观显示与段选择器对应的段描述符：
+			kd> dg 0 50
+											  P Si Gr Pr Lo
+			Sel    Base     Limit     Type    l ze an es ng Flags
+			---- -------- -------- ---------- - -- -- -- -- --------
+			0000 00000000 00000000 <Reserved> 0 Nb By Np Nl 00000000
+			0008 00000000 ffffffff Code RE Ac 0 Bg Pg P  Nl 00000c9b
+			0010 00000000 ffffffff Data RW Ac 0 Bg Pg P  Nl 00000c93
+			0018 00000000 ffffffff Code RE Ac 3 Bg Pg P  Nl 00000cfb
+			0020 00000000 ffffffff Data RW Ac 3 Bg Pg P  Nl 00000cf3
+			0028 801e3000 000020ab TSS32 Busy 0 Nb By P  Nl 0000008b
+			0030 83d33c00 00003748 Data RW Ac 0 Bg By P  Nl 00000493
+			0038 7ffde000 00000fff Data RW Ac 3 Bg By P  Nl 000004f3
+			0040 00000400 0000ffff Data RW    3 Nb By P  Nl 000000f2
+			0048 00000000 00000000 <Reserved> 0 Nb By Np Nl 00000000
+			0050 83d31000 00000068 TSS32 Avl  0 Nb By P  Nl 00000089
+
+			界限值都是0xffffffff。
+			第1列表示选择子
+			第2，3列表示基地址和边界。
+			第4列表示段的类型，E代表只读和可执行,Ac表示被访问过。
+			第5列表示特权级（环0或环3）
+			第7列表示边界值的粒度单位（Byte或Page）。
+			第8列表示段是否在内存中。
+			注：
+			kd> dg 08
+											  P Si Gr Pr Lo
+			Sel    Base     Limit     Type    l ze an es ng Flags
+			---- -------- -------- ---------- - -- -- -- -- --------
+			0008 00000000 ffffffff Code RE Ac 0 Bg Pg P  Nl 00000c9b
+			kd> dg 0x10
+											  P Si Gr Pr Lo
+			Sel    Base     Limit     Type    l ze an es ng Flags
+			---- -------- -------- ---------- - -- -- -- -- --------
+			0010 00000000 ffffffff Data RW Ac 0 Bg Pg P  Nl 00000c93
+			kd> dg 0x23
+											  P Si Gr Pr Lo
+			Sel    Base     Limit     Type    l ze an es ng Flags
+			---- -------- -------- ---------- - -- -- -- -- --------
+			0023 00000000 ffffffff Data RW Ac 3 Bg Pg P  Nl 00000cf3
+			
+			注：它们的基地址都是0x00000000，整个段的大小都是0xFFFFFFFF，这意味着整个进程的地址空间实际上就是一个段！
+			
+			操作系统这样分段，实际上是相当于把段给架空了！（linux系统同样存在这样情况）
+			即Windows和Linux都选择了通过这种方式架空了CPU的分段内存管理机制。
+			于是到了64位平台，段寄存器中指向的段基址无论是什么内容，都会被当成0来对待。（FS和GS寄存器例外）
+
+		- 离散分配管理：分页
+		
+		::
+		
+			查看当前进程的一些线性地址：
+			kd> !pte 0
+			                   VA 00000000
+			PDE at C0600000            PTE at C0000000
+			contains 0000000006C4A867  contains 0000000000000000
+			pfn 6c4a      ---DA--UWEV  not valid
+
+			kd> !pte 0x7fffffff
+			                   VA 7fffffff
+			PDE at C0601FF8            PTE at C03FFFF8
+			contains 00000000091C7867  contains 0000000000000000
+			pfn 91c7      ---DA--UWEV  not valid
+
+			kd> !pte 0x80000000
+			                   VA 80000000
+			PDE at C0602000            PTE at C0400000
+			contains 0000000000191063  contains 0000000000000000
+			pfn 191       ---DA--KWEV  not valid
+
+			kd> !pte 0xffffffff
+			                   VA ffffffff
+			PDE at C0603FF8            PTE at C07FFFF8
+			contains 000000000018B063  contains 0000000000000000
+			pfn 18b       ---DA--KWEV  not valid
+			
+			从以上输出可知：
+			1.页目录从线性地址0xC0600000处开始加载。
+			2.页表从线性地址0xC0000000处开始加载。
+			3.用户级页面在线性地址0x80000000处结束。
+			注：如果目标机器没有启用PAE，页目录基地址从0xC0300000处开始。
+
+	+ 区段对象
 		即内存映射文件，相关API：CreateFileMapping，MapViewofFileEx，UnmapViewofFile
-	- VAD树
+	+ VAD树
 		映射分配：所有载入内存的可执行文件和区段对象。
 		私有分配：私有局部分配，如堆，堆栈。
-	- 用户模式内存分配
+	+ 用户模式内存分配
 		私有分配（VirtualAlloc），堆，堆栈，可执行文件，映射视图
-	- 内存管理API
+	+ 内存管理API
 		VirtualAlloc，VirtualProtect，VirtualQuery，VirtualFree，MapViewofFileEx，UnmapViewofFile等
 
 对象管理
@@ -274,7 +442,8 @@ NT系统特征
 .. |osbase2| image:: ../images/osbase2.png
 .. |osbase3| image:: ../images/osbase3.png
 .. |osbase4| image:: ../images/osbase4.png
-.. |osbase5| image:: ../images/osbase5.png
+.. |PAE1| image:: ../images/PAE1.jpg
+.. |PAE2| image:: ../images/PAE2.jpg
 .. |osbase6| image:: ../images/osbase6.png
 .. |osbase7| image:: ../images/osbase7.png
 .. |PE1| image:: ../images/PE1.png

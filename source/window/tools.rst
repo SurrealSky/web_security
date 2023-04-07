@@ -20,11 +20,14 @@ windbg
 	- 标准命令：提供基本调试功能，不区分大小写。如：bp g dt dv k等。
 	- 元命令：内建在调试引擎中，以.开头。如.sympath .reload等。
 	- 扩展命令：用于扩展某一方面的调试功能，实现在动态加载的扩展模块中，以!开头。如!analyze等。
+	- 帮助
+		+ ? 显示常规命令
+		+ .help 显示.系列命令
+		+ .hh 打开windbg帮助文件
 + 基本设置
 	- 清屏命令：``.cls``
 	- 设置数据进制：``n [8/10/16]``
 	- 设置处理器模式：``.effmach  x86``
-	- 格式化显示：``.formats 0x123abc``
 	- 将windbg设置成默认调试器：``windbg -I``
 	- 结束长时间未完成的命令：``ctrl + break``
 + 设置符号库
@@ -139,6 +142,7 @@ windbg
 	- 查看变量的值：``?? this->m_nPen``
 	- 查看变量的地址：``? [var]``
 	- 显示当前函数所有变量和参数：``dv [var]``
+	- 显示数据的各种进制形式：``.formats 0x30001``
 + 查看汇编
 	- 反汇编当前eip寄存器地址的后8条指令：``u .``
 	- 反汇编寄存器地址的后8条指令：``u $eip``
@@ -150,6 +154,24 @@ windbg
 	- 显示所有寄存器信息：``r``
 	- 显示eax，edx寄存器信息：``r eax,edx``
 	- 对寄存器eax赋值为5，edx赋值为6：``r eax=5,edx=6``
+	- ``rM num`` 则是根据num的值转储指定的寄存器值，num是8位掩码值
+		::
+		
+			rM 1
+			rM 2
+			eax=00000001 ebx=ffdff980 ecx=8054bd4c edx=000002f8 esi=00000000 edi=1aa78a2c
+			eip=80528bdc esp=8054abd0 ebp=8054abe0 iopl=0         nv up ei pl nz na po nc
+			可以看到1转储的寄存器和r指令差不多，只是减少了段寄存器和efl标志寄存器，而rM 2也是一样的结果 
+			
+			rM 4：转储浮点寄存器
+			rM 8：转储段寄存器和efl标志寄存器 
+			rM 10：转储8个64位寄存器 
+			rM 20：转储调试寄存器，dr0-3是四个硬件断点寄存器，dr6和dr7是断点状态和断点控制寄存器，而cr4则是Pentium处理器新增的控制寄存器 
+			rM 40：浮点计算的寄存器 
+			rM 80：目前intel处理器使用到的三个控制寄存器，cr1处于保留状态
+			rM 100：转储gdtr，gdtl，idtr，idtl，tr，ldtr寄存器的值。
+			rM 16：即相当于输出rM 10+rM 2+rM 4的值。 
+
 + 查看内存
 	- 查看进程的所有内存页属性：``!address [-summary][-f:stack][addr]``
 	- 从7c801e02内存处开始以dword为单位显示内存,默认显示128字节长度的内容：``dd /c 5 7c801e02``
@@ -167,6 +189,26 @@ windbg
 		+ q = qword (8b)
 		+ f = floating point (single precision - 4b)
 		+ D = floating point (double precision - 8b)
+		+ g = 显示指定选择器的段描述符
+			::
+			
+				dg FirstSelector [LastSelector]
+				KGDT_NULL 		0x00
+				KGDT_R0_CODE	0x08
+				KGDT_R0_DATA	0x10
+				KGDT_R3_CODE	0x18
+				KGDT_R3_DATA	0x20
+				KGDT_TSS		0x28
+				KGDT_R0_PCR		0x30
+				KGDT_R3_TEB		0x38
+				KGDT_VDM_TILE	0x40
+				KGDT_LDT		0x48
+				KGDT_DF_TSS		0x50
+				KGDT_NMI_TSS	0x58
+
++ 写内存
+	- ``e[b|d|D|f|p|q|w] address [Values]``
+	- 批量内存写 ``f Address L count Values``
 + 查看堆
 	- 显示进程堆的个数：``!heap -s``
 	- 打印堆的内存结构：``dt _HEAP 00140000``
@@ -178,6 +220,15 @@ windbg
 	- 显示调试器当前运行进程信息：``!process``
 	- 显示当前进程的EPROCESS：``.process``
 	- 显示进程列表：``!process 0 0``
+		::
+		
+			PROCESS 881a2a20  SessionId: 1  Cid: 07e8    Peb: 7ffd6000  ParentCid: 0224
+			DirBase: 7f145480  ObjectTable: 97ce2510  HandleCount:   0.
+			Image: cmd.exe
+			注：PROCESS域指定了当前进程的EPROCESS结构的线性地址。
+			Cid域指定了当前进程的PID。
+			DirBase域指定了存储在CR3寄存器中的物理地址（DirBase约等于页目录物理基地址）
+
 	- 显示进程信息：``!process PID``
 	- DML方式显示当前进程的信息：``!dml_proc``
 	- 显示当前所有进程：``.tlist``
@@ -227,10 +278,7 @@ windbg
 		+ 显示当前帧：``.frame``
 		+ 指定帧号：``.frame #``
 		+ 显示寄存器信息：``.frame /r [#]``
-+ 扩展帮助命令
-	- 常规扩展命令帮助：``!Ext.help``,``!Exts.help``
-	- 用户态模式扩展命令帮助：``!Uext.help``,``!Ntsdexts.help``
-		
+
 其它
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MDebug102，OllyICE，PointH，x32dbg/x64dbg，c32asm，W32dsm，masm32，.NET（injectreflector，ildasm，PEBrowseDbg，Reflector,ILSpy,dnSpy）
