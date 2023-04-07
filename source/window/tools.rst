@@ -178,7 +178,7 @@ windbg
 	- 从7c801e02内存处开始以dword为单位显示内存,显示8个dword：``dd /c 5 7c801e02 L8``
 	- 从7c80ff03内存处开始显示Ascii字符串：``da /c 100 7c80ff03``
 	- 从7c8022f5内存处开始显示Unicode字符串：``du /c 100 7c8022f5``
-	- ``d[a|u|b|w|W|d|c|q|f|D] [/c 列数] [地址]``
+	- 从虚拟地址访问内存：``d[a|u|b|w|W|d|c|q|f|D] [/c 列数] [地址]``
 		+ a = ascii chars
 		+ u = Unicode chars
 		+ b = byte + ascii   -- 和UE一样，左边为byte为单位的二进制内容，右边块为ascii形式的字符串内容
@@ -205,9 +205,11 @@ windbg
 				KGDT_LDT		0x48
 				KGDT_DF_TSS		0x50
 				KGDT_NMI_TSS	0x58
+	- 从物理地址访问内存：``!d[a|u|b|w|W|d|c|q|f|D] [/c 列数] [地址]``
 
 + 写内存
-	- ``e[b|d|D|f|p|q|w] address [Values]``
+	- 从虚拟地址写内存：``e[b|d|D|f|p|q|w] address [Values]``
+	- 从物理地址写内存：``!e[b|d|D|f|p|q|w] address [Values]``
 	- 批量内存写 ``f Address L count Values``
 + 查看堆
 	- 显示进程堆的个数：``!heap -s``
