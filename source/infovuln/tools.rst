@@ -97,7 +97,6 @@ IP信息
 	+ ``masscan --ping 28.41.0.0/16 --rate 1000000``
 	+ ``心脏出血漏洞：masscan -p443 28.41.0.0/16 --banners --heartbleed``
 	+ ``masscan 192.168.1.1/24 --ports 445`` 
-	+ ``nmap -sP 28.41.0.0/16``
 - nmap
 	+ ``nmap -sP 192.168.0.1/24`` 
 - arp-scan
@@ -162,6 +161,9 @@ IP信息
 		
 - `zmap <https://github.com/zmap/zmap>`_
 - `masscan <https://github.com/robertdavidgraham/masscan>`_
+	+ 全端口扫描：``masscan 192.168.1.1 -p 1-65535 --banner``
+	+ 输出扫描结果：``masscan -p80,8000-8100 10.0.0.0/8 --echo > scan.conf``
+	+ 输出文件：``-oL/-oJ/-oD/-oG/-oB/-oX/-oU <file>: Output scan in List/JSON/nDjson/Grepable/Binary/XML/Unicornscan format``
 
 Samba服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
