@@ -14,12 +14,6 @@ CDN判别
 - DNS历史记录查询
 	+ ``https://www.dnsdb.io/zh-cn/`` 
 	+ ``https://viewdns.info/`` 
-- 查找动态内容
-	+ 有的cdn只缓存静态内容
-	+ 注册登陆之类的服务器IP
-- 二级域名
-	+ 搜索二级域名IP
-- `securitytrails <https://securitytrails.com>`_
 
 DNS解析域名IP查询
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,13 +161,28 @@ IP信息
 
 Samba服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- smbmap
+	+ 枚举整个域中的samba共享磁盘
+	+ ``smbmap -H 192.168.1.40``
+	+ 枚举特定用户共享：``smbmap -H 192.168.1.17 -u raj -p 123456``
 - enum4linux
 - smbclient
-	``查看共享文件夹：smbclient -L //192.168.1.110 -U Jerry`` 
-	``进入共享文件夹：smbclient //192.168.1.110/share -U Jerry`` 
-	``上传文件：smbclient //192.168.1.110/share -c 'cd /home/dulingwen/Downloads; put shaolin.jpg'`` 
-	``smb直接上传：put flower.jpg`` 
-	``smb下载文件：get flower.jpg`` 
+	+ ``查看共享文件夹：smbclient -L //192.168.1.110 -U Jerry`` 
+	+ ``进入共享文件夹：smbclient //192.168.1.110/share -U Jerry`` 
+	+ ``上传文件：smbclient //192.168.1.110/share -c 'cd /home/dulingwen/Downloads; put shaolin.jpg'`` 
+	+ ``smb直接上传：put flower.jpg`` 
+	+ ``smb下载文件：get flower.jpg`` 
+- nmap
+	+ ``nmap --script smb-enum-shares -p139,445 192.168.1.17``
+	+ ``nmap --script smb-os-discovery 192.168.1.17``
+	+ 检测smb类型的所有漏洞：``nmap --script smb-vuln* 192.168.1.16``
+- msf
+	+ ``auxiliary/scanner/smb/smb_lookupsid``
+		::
+		
+			set rhosts 192.168.1.17
+			set smbuser raj
+			set smbpass 
 
 系统信息
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -194,21 +203,11 @@ web系统
 web指纹识别
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Wappalyzer <https://github.com/AliasIO/Wappalyzer>`_
-- `Wordpress Finger Print <https://github.com/iniqua/plecost>`_
 - `CMS指纹识别 <https://github.com/n4xh4ck5/CMSsc4n>`_
-- `JA3 <https://github.com/salesforce/ja3>`_ is a standard for creating SSL client fingerprints in an easy to produce and shareable way
-- `Joomla Vulnerability Scanner <https://github.com/rezasp/joomscan>`_
-- `Drupal enumeration & exploitation tool <https://github.com/immunIT/drupwn>`_
-- wpscan
-	- 插件漏洞:``wpscan --url https://www.xxxxx.wiki/ -e vp`` 
-	- 主题漏洞:``wpscan --url https://www.xxxxxx.wiki -e vt`` 
-	- 枚举用户:``wpscan --url https://www.xxxxxxx.wiki/ -e u`` 
-	- 穷举密码:``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
 - `云悉指纹 <https://www.yunsee.cn/>`_
 - `whatweb <https://github.com/urbanadventurer/whatweb>`_
 - `Webfinger <https://github.com/se55i0n/Webfinger>`_
 - `CMSeek <https://github.com/Tuhinshubhra/CMSeeK>`_
-- `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
 - `EHole <https://github.com/EdgeSecurityTeam/EHole>`_ 红队重点攻击系统指纹探测工具
 
 Waf指纹

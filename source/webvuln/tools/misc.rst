@@ -50,6 +50,17 @@ metasploit
 	+ 将目标主机192.168.16.59的3389转发到本地主机的7070端口：``portfwd add -l 7070 -r 192.168.16.59 -p 3389``
 	+ 端口转发成功后就可以从本地端口连接rdp：``rdesktop 127.0.0.1:7070``
 
+vulmap
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 项目地址：``https://github.com/zhzyker/vulmap``
+- 安装
+		::
+		
+			git clone https://github.com/zhzyker/vulmap.git
+			pip3 install -r requirements.txt
+			
+- 基本用法：``python3 vulmap.py -u http://example.com``
+
 xray
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 全局配置
@@ -92,18 +103,26 @@ xray
 		- ``xray_darwin_amd64 webscan --url http://example.com --data "x=y" --html-output 2.html --json-output 1.json``
 		- ``xray_darwin_amd64 webscan --url http://example.com/ --webhook-output http://host:port/path``
 
-
-Joomscan
+特定CMS漏洞利用
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- 介绍
-	+ Joomla security scanner可以检测Joomla整站程序搭建的网站是否存在文件包含、sql注入、命令执行等漏洞。
-- 使用方法
-	+ 默认检测：``joomscan -u www.example.com``
-	+ 组件检测：``joomscan -u www.example.com –ec``
-	+ 设置cookie：``joomscan -u www.example.com --cookie "test=demo;"``
-	+ 随机UA：``joomscan -u www.example.com -r``
-	+ 设置代理：``joomscan -u www.example.com --proxy http://127.0.0.1:8080``
-	
++ Joomscan
+	- 介绍
+		+ Joomla security scanner可以检测Joomla整站程序搭建的网站是否存在文件包含、sql注入、命令执行等漏洞。
+	- 使用方法
+		+ 默认检测：``joomscan -u www.example.com``
+		+ 组件检测：``joomscan -u www.example.com –ec``
+		+ 设置cookie：``joomscan -u www.example.com --cookie "test=demo;"``
+		+ 随机UA：``joomscan -u www.example.com -r``
+		+ 设置代理：``joomscan -u www.example.com --proxy http://127.0.0.1:8080``
++ wpscan
+	- 插件漏洞:``wpscan --url https://www.xxxxx.wiki/ -e vp`` 
+	- 主题漏洞:``wpscan --url https://www.xxxxxx.wiki -e vt`` 
+	- 枚举用户:``wpscan --url https://www.xxxxxxx.wiki/ -e u`` 
+	- 穷举密码:``wpscan --url https://www.xxxxxxx.wiki/ -U 'admin' -P /root/wordlist.txt``
++ Drupal enumeration & exploitation tool 
+	- https://github.com/immunIT/drupwn
++ `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
+
 dnslog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 利用场景
@@ -126,13 +145,5 @@ dnslog
 - nessus
 - `PenTesters Framework(ptf) <https://github.com/trustedsec/ptf>`_
 - katoolin
-- `w3af <http://w3af.org/>`_
-- `AutoSploit <https://github.com/NullArray/AutoSploit/>`_
-- `skipfish <https://my.oschina.net/u/995648/blog/114321>`_
-- `Arachni <http://www.arachni-scanner.com/>`_
-- `Spiderfoot <https://github.com/smicallef/spiderfoot>`_
-- `AZScanner <https://github.com/az0ne/AZScanner>`_
-- `Fuxi <https://github.com/jeffzh3ng/Fuxi-Scanner>`_
-- `vooki <https://www.vegabird.com/vooki/>`_
-- `BadMod <https://github.com/MrSqar-Ye/BadMod>`_
+	+ 自动安装所有Kali Linux工具
 - `x-scan <https://x-scan.apponic.com/>`_

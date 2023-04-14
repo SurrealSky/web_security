@@ -42,6 +42,7 @@
 - ARP表 ``arp -a``
 - 路由表 ``route print``
 - 监听的端口 ``netstat -ano``
+- 查看netbios：``nbtscan 192.168.1.17``
 - 防火墙状态及规则
 	+ ``netsh firewall show config``
 	+ ``netsh firewall show state``
