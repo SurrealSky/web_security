@@ -140,6 +140,7 @@ dnslog
 其它
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - AWVS
+- goby
 - Immunity Canvas
 - openvas
 - nessus
