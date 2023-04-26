@@ -122,6 +122,9 @@ xray
 + Drupal enumeration & exploitation tool 
 	- https://github.com/immunIT/drupwn
 + `dedecmscan <https://github.com/lengjibo/dedecmscan>`_ 织梦全版本漏洞扫描
++ thinkphp
+	- https://github.com/Lucifer1993/TPscan
+	- https://github.com/theLSA/tp5-getshell
 
 dnslog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

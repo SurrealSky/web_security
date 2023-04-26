@@ -8,7 +8,6 @@
    shell
    windows
    winpersistence
-   domain
    linux
    linuxpersistence
    privilege

