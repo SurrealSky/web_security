@@ -54,4 +54,9 @@ LDAP + JNDI Reference
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LDAP服务的Reference远程加载Factory类不受 ``com.sun.jndi.rmi.object.trustURLCodebase`` 、``com.sun.jndi.cosnaming.object.trustURLCodebase`` 等属性的限制，适用范围更广。
 
+利用工具
+----------------------------------------
++ JNDIExploit
+	- 地址：``https://github.com/0x727/JNDIExploit``
+
 .. |jndiarch| image:: ../../images/jndiarch.gif

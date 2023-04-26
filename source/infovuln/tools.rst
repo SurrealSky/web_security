@@ -592,19 +592,6 @@ web破解
 		- 在线文档：``https://hashcat.net/wiki/doku.php?id=rule_based_attack``
 		- 示例：``hashcat --stdout pass.txt -r /usr/share/hashcat/rules/best64.rule > passlist.txt``
 
-资产侦察
-----------------------------------------
-- ARL:资产侦察灯塔系统
-	::
-	
-		git clone https://github.com/TophantTechnology/ARL
-		cd ARL/docker/
-		docker volume create arl_db
-		docker-compose pull
-		docker-compose up -d 
-		
-		默认端口5003 (https), 默认用户名密码admin/arlpass
-
 搜索引擎查询
 ----------------------------------------
 - `Shodan <https://www.shodan.io/>`_

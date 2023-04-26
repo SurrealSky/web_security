@@ -231,6 +231,18 @@ MOF是Windows系统的一个文件（ ``c:/windows/system32/wbem/mof/nullevt.mof
 
 凭证窃取
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 综合工具
+	+ LaZagne
+		- 一键抓取目标机器上存储的所有明文密码。
+		- 项目地址：``https://github.com/AlessandroZ/LaZagne``
+- 浏览器
+	+ HackBrowserData
+		- 一款可全平台运行的浏览器数据导出解密工具。
+		- 项目地址：``https://github.com/moonD4rk/HackBrowserData``
+- 向日葵
+	+ Sunflower_get_Password
+		- 一款针对向日葵的识别码和验证码提取工具
+		- 项目地址：``https://github.com/wafinfo/Sunflower_get_Password``
 - Windows本地密码散列导出工具
     + mimikatz
         - https://github.com/gentilkiwi/mimikatz/

@@ -78,3 +78,7 @@
 			``LAMPP：/opt/lampp/etc/httpd.conf``
 			``Apache：/etc/httpd/conf/httpd.conf``
 			``PHP：/etc/php.ini``
+- JS信息搜集
+	+ JSINFO-SCAN
+		- 递归爬取域名 (netloc/domain)，以及递归从 JS 中获取信息的工具。
+		- 项目地址：``https://github.com/p1g3/JSINFO-SCAN``

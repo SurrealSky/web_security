@@ -15,6 +15,9 @@ WebShell管理工具
 - `冰蝎 <https://github.com/rebeyond/Behinder>`_
 	+ 动态二进制加密网站管理客户端，支持java,.net,php，HTTPS。
 	+ 非通用后门。
+- `天蝎Skyscorpion <https://github.com/shack2/skyscorpion>`_
+	+ 采用 Java平台的 JavaFX 技术开发的桌面客户端，支持跨平台运行，目前基于JDK1.8开发，天蝎权限管理工具基于冰蝎加密流量进行 WebShell通信管理的原理。
+	+ 目前实现了jsp、aspx、php、asp端的常用操作功能，在原基础上，优化了大文件上传下载、Socket代理的问题，修改了部分API接口代码。
 - `Altman <https://github.com/keepwn/Altman>`_ 
 	+ 支持asp，jsp，php。
 - `Webshell Sniper <https://github.com/WangYihang/Webshell-Sniper>`_ 
@@ -101,6 +104,12 @@ WebShell管理工具
 			进入交互页面meterpreter会话执行以下：
 			shell
 			python -c "import pty;pty.spawn('/bin/bash')"
+
+- Platypus【Linux】
+	+ 支持多会话的交互式反向 Shell 管理器。
+	+ 在多会话管理的基础上增加了在渗透测试中更加有用的功能（如：交互式 Shell、文件操作、隧道等），可以更方便灵活地对反向 Shell 会话进行管理。
+	+ 项目地址：``https://github.com/WangYihang/Platypus``
+	+ 帮助：``https://platypus-reverse-shell.vercel.app/quick-start/``
 
 WebShell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

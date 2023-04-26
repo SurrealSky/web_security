@@ -43,6 +43,19 @@ Tomcat
 	- 默认口令、弱口令，爆破，tomcat5 默认有两个角色：tomcat和role1。其中账号both、tomcat、role1的默认密码都是tomcat。弱口令一般存在5以下的版本中。
 	- 在管理后台部署 war 后门文件
 	- 远程代码执行漏洞
+	- msf暴力破解
+		::
+		
+			msfconsole
+			search tomcat
+			use auxiliary/scanner/http/tomcat_mgr_login 
+			show options
+			set rhosts 192.168.48.128
+			run
+			参考：https://blog.csdn.net/weixin_45006817/article/details/114936847
+	- 防火墙绕过
+		+ 包体前填充大量数据
+		+ 示例：`tomcat.war <..//_static//tomcat.war>`_
 + 常见漏洞
 	- CVE-2016-8735
 	- CVE-2017-12615
@@ -83,6 +96,15 @@ WebLogic
 	- CVE-2016-3510
 	- CVE-2015-4852
 	- CVE-2014-4210
++ 利用工具
+	- 地址：``https://github.com/21superman/weblogic_exploit``
+	- Weblogic 反序列化 RCE 图形化利用工具。
+
+Shiro
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 利用工具
+	- 地址：``https://github.com/j1anFen/shiro_attack``
+	- Shiro反序列化漏洞综合利用,包含（回显执行命令/注入内存马）.
 
 WebSphere
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,6 +135,8 @@ Struts2
 + 扫描工具
 	+ https://github.com/x51/STS2G/releases
 	+ ``ST2SG --mode scan --url http://xxx.com/index.action``
++ 利用工具
+	+ 地址：``https://github.com/shack2/Struts2VulsTools``
 
 Spring 框架
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,6 +147,17 @@ Spring 框架
 	+ CVE-2018-1273
 	+ 反序列化
 	+ 目录穿越
++ 利用工具
+	- SpringBootExploit
+		+ 地址：``https://github.com/0x727/SpringBootExploit``
+		+ 一款针对 SpringBootEnv 页面进行快速漏洞利用的工具。
+
+Fastjson
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 利用工具
+	- Fastjson_rce_tool
+		+ 地址：``https://github.com/wyzxxz/fastjson_rce_tool``
+		+ Fastjson命令执行自动化利用工具， remote code execute，JNDI服务利用工具 RMI/LDAP，LDAP反序列方式部分回显.
 
 IIS：Windows 的 WWW 服务器
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -237,6 +272,13 @@ Splunk
 - Exchange
 - IBM Lotus
 
+nacos
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 阿里巴巴产品，微服务配置中心。
++ 漏洞
+	- 未授权文件泄露
+	- 未授权任意用户添加
+	- ``https://github.com/alibaba/nacos/issues/4593``
 
 wordpress
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -371,6 +413,21 @@ DB2 数据库
 - 默认端口：5000
 - 攻击方法
 	+ 安全限制绕过：成功后可执行未授权操作（CVE-2015-1922）
+
+ActiveMQ
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 默认端口：8161
+- 攻击方法
+	+ CVE-2016-3088：任意文件写入漏洞（Apache ActiveMQ 5.0.0 - 5.13.2）
+		::
+		
+			https://jishuin.proginn.com/p/763bfbd74e97
+
+数据库【综合工具】
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ MDUT
+	- MDUT 全称 Multiple Database Utilization Tools，是一款中文的数据库跨平台利用工具，集合了多种主流的数据库类型。基于前人 SQLTOOLS 的基础开发了这套程序(向 SQLTOOLS 致敬)，旨在将常见的数据库利用手段集合在一个程序中，打破各种数据库利用工具需要各种环境导致使用相当不便的隔阂。
+	- 地址：``https://github.com/SafeGroceryStore/MDUT``
 
 FTP 服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

