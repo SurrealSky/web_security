@@ -49,6 +49,7 @@ windbg
 		+ 重新加载不匹配符号的模块：``.reload /i [module name]``
 		+ 指定模块加载符号信息：``.reload /f @[module path]``
 		+ 指定模块加载符号信息：``.reload /f [module name]``
+		+ 在内核态时强制重新加载当前所处用户态符号：``.reload /f /user``
 	- 查看符号信息
 		+ 列出所有模块对应的符号信息：``x *!``
 		+ 列出指定模块中所有符号：``x ConsoleTest!*``
@@ -206,7 +207,7 @@ windbg
 				KGDT_DF_TSS		0x50
 				KGDT_NMI_TSS	0x58
 	- 从物理地址访问内存：``!d[a|u|b|w|W|d|c|q|f|D] [/c 列数] [地址]``
-
+	- ``dds`` ：显示给定范围内的内存内容。假定该内存是符号表中的一系列地址。相应的符号也会显示出来。
 + 写内存
 	- 从虚拟地址写内存：``e[b|d|D|f|p|q|w] address [Values]``
 	- 从物理地址写内存：``!e[b|d|D|f|p|q|w] address [Values]``
@@ -220,7 +221,9 @@ windbg
 	- 显示当前进程：``| [进程号]``
 	- 切换进程：``| [进程号] s``
 	- 显示调试器当前运行进程信息：``!process``
-	- 显示当前进程的EPROCESS：``.process``
+	- 显示当前所调试的进程的EPROCESS：``.process``
+	- 切换到目标应用程序的地址空间：``.process /p [EPROCESS]``
+	- 目标进程的EPROCESS侵入式调试：``.process /i /p [EPROCESS]``
 	- 显示进程列表：``!process 0 0``
 		::
 		

@@ -152,13 +152,20 @@ Samba服务
 	+ 枚举整个域中的samba共享磁盘
 	+ ``smbmap -H 192.168.1.40``
 	+ 枚举特定用户共享：``smbmap -H 192.168.1.17 -u raj -p 123456``
+- nmblookup
+	+ 网络中查询NetBIOS名称，网络中查询NetBIOS名称
+	+ ``nmblookup -A 192.168.1.17``
+- nbtscan
+	+ 扫描IP网络以获取NetBIOS名称信息
+	+ ``nbtscan 192.168.1.17``
 - enum4linux
 - smbclient
-	+ ``查看共享文件夹：smbclient -L //192.168.1.110 -U Jerry`` 
-	+ ``进入共享文件夹：smbclient //192.168.1.110/share -U Jerry`` 
-	+ ``上传文件：smbclient //192.168.1.110/share -c 'cd /home/dulingwen/Downloads; put shaolin.jpg'`` 
-	+ ``smb直接上传：put flower.jpg`` 
-	+ ``smb下载文件：get flower.jpg`` 
+	+ 无密码：``smbclient -L //192.168.99.4 -N``
+	+ 查看共享文件夹：``smbclient -L //192.168.1.110 -U Jerry`` 
+	+ 进入共享文件夹：``smbclient //192.168.1.110/share -U Jerry`` 
+	+ 上传文件：``smbclient //192.168.1.110/share -c 'cd /home/dulingwen/Downloads; put shaolin.jpg'`` 
+	+ smb直接上传：``put flower.jpg`` 
+	+ smb下载文件：``get flower.jpg`` 
 - nmap
 	+ ``nmap --script smb-enum-shares -p139,445 192.168.1.17``
 	+ ``nmap --script smb-os-discovery 192.168.1.17``

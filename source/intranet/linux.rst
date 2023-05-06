@@ -4,9 +4,11 @@
 获取内核，操作系统和设备信息
 ----------------------------------------
 - PEASS-ng
-	- ``https://github.com/carlospolop/PEASS-ng/blob/master/linPEAS/linpeas.sh`` 列举在Linux系统上提升特权的所有可能方法
+	- 列举在Linux系统上提升特权的所有可能方法
+	- ``https://github.com/carlospolop/PEASS-ng`` 
 - LinEnum
-	- ``https://github.com/rebootuser/LinEnum`` Linux文件枚举及权限提升检查工具
+	- Linux文件枚举及权限提升检查工具
+	- ``https://github.com/rebootuser/LinEnum`` 
 - 版本信息
     - ``uname -a`` 所有版本
     - ``uname -r`` 内核版本信息

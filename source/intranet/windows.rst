@@ -55,6 +55,9 @@
 
 其他
 ----------------------------------------
++ winPEAS
+	- 列举在windows系统上提升特权的所有可能方法
+	- ``https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS``
 + wmic
 	- 提供了从命令行接口和批命令脚本执行系统管理的支持
 	- 查看补丁安装情况: ``wmic qfe get Caption,Description,HotFixID,InstalledOn``

@@ -437,6 +437,12 @@ NT系统特征
 			   +0x140 ListHeads        : [512] _LIST_ENTRY [ 0x83d77a80 - 0x83d77a80 ]
 	+ Session Pool
 	+ ListHeads(x86)
+	+ 相关资料
+		- https://juejin.cn/post/6844903769331744781
+		- https://www.likecs.com/show-983112.html
+		- https://learn.microsoft.com/zh-tw/archive/blogs/ntdebugging/stop-0x19-in-a-large-pool-allocation
+		- https://www.anquanke.com/post/id/86557
+		- http://www.studyofnet.com/284903014.html
 
 应用程序编程接口
 ----------------------------------------
