@@ -163,48 +163,323 @@ windwos内网横穿
 
 判断是否有域
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-一般域服务器都会同时作为时间服务器，所以使用下面命令判断主域
-::
++ systeminfo
+	- ``systeminfo | findstr 域:``
+	- ``此方法获取到域名信息``
++ net time方法
+	::
 
-	1.存在域，但当前用户不是域用户，提示说明权限不够
-		C:\Users>bypass>net time /domain
-		发生系统错误 5 
-		拒绝访问。
+		1.存在域，但当前用户不是域用户，提示说明权限不够
+			C:\Users>bypass>net time /domain
+			发生系统错误 5 
+			拒绝访问。
 
-	2.存在域，并且当前用户是域用户
-		C:\Users\Administrator>net time /domain
-		\\dc.test.com 的当前时间是 2020/10/23 21:18:37
-		
-		命令成功完成。
+		2.存在域，并且当前用户是域用户
+			C:\Users\Administrator>net time /domain
+			\\dc.test.com 的当前时间是 2020/10/23 21:18:37
+			
+			命令成功完成。
+		注：dc即域控主机的计算机名。
 
-	3.当前网络环境为工作组，不存在域
-		C:\Users\Administrator>net time /domain
-		找不到域 WORKGROUP 的域控制器。
+		3.当前网络环境为工作组，不存在域
+			C:\Users\Administrator>net time /domain
+			找不到域 WORKGROUP 的域控制器。
 
-找到域控主机IP
+搜集域信息
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-一般来说，域控服务器IP地址为DNS服务器地址，找到DNS服务器地址就可以定位域控。
-::
++ meterpreter：``run post/windows/gather/enum_domain``
++ NSE脚本
+	- smb-enum-domains.nse:对域控制器进行信息收集，可以获取主机信息、用户、可使用密码策略的用户等
+	- smb-enum-users.nse:在进行域渗透时，如获取了域内某台主机权限，但权限有限，无法获取更多的域用户信息，可借助此脚本对域控制器进行扫描
+	- smb-enum-shares.nse:遍历远程主机的共享目录
+	- smb-enum-processes.nse:对主机的系统进程进行遍历，通过此信息，可知道目标主机运行着哪些软件
+	- smb-enum-sessions.nse:获取域内主机的用户登陆会话，查看当前是否有用户登陆，且不需要管理员权限
+	- smb-os-discovery.nse:收集目标主机的操作系统、计算机名、域名、域林名称、NetBIOS机器名、NetBIOS域名、工作组、系统时间等信息
++ 查看域
+	- 查看域名列表：``net view /domain``
+	- 查看域test主机列表：``net view /domain:test``
+	- 注：computer browser服务未启动，net view命令报6118错误。
++ 查看域内用户组列表：``net group /domain``
++ 查看域内用户组信息：``net group "Enterprise Admins" /domain``
++ 查看域密码策略信息：``net accounts /domain``
++ 查看域信任信息：``nltest /domain_trusts``
 
-	nslookup 域名
-	ping 域名
-
-查找域管理员
+域控主机IP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-::
++ ipconfig查看dns服务器地址
++ nslookup 域名
++ ping 域名
 
-	net user /domain //获取域用户列表
-	net group /domain  //查询域内所有用户组列表
-	net group “Domain Admins” /domain //查询域管理员用户
-	net group "Domain Controllers" /domain  //查看域控制器
-	net localgroup administrators /domain  //查询域内置本地管理员组用户
+搜集域用户和管理员信息
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 当前当前主机当前登录的域和用户：``net config workstation``
++ 查询域用户列表：``net user /domain``
++ 查询域用户详细信息：``wmic useraccount get /all``
+
+查找域控制器
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 查看域控制器主机名
+	- ``nltest /DCLIST:teamssix``
+	- ``nslookup -type=SRV _ldap._tcp``
+	- ``netdom query pdc``
+	- ``nbtstat -A 127.0.0.1``
++ 查看域控制器组：``net group "domain controllers" /domain``
++ 定位域管理员
+	- PsLoggedOn：``https://docs.microsoft.com/en-us/sysinternals/downloads/psloggedon``
+	- PowerView
+		+ Recon目录下：``https://github.com/PowerShellMafia/PowerSploit/``
+		+ 打开powershell命令行
+		+ 执行 ``Import-Module PowerView.ps1``
+		+ 执行 ``Invoke-UserHunter``
+		+ 主要模块
+			::
+			
+				Get-NetDomain:获取当前用户所在域名称
+				Get-NetUser：获取所有用户的详细信息
+				Get-NetDomainController：获取所有域控制器的信息
+				Get-NetComputer：获取域内所有机器的详细信息
+				Get-NetOU：获取域中的OU信息
+				Get-NetGroup：获取所有域内组和组成员信息
+				Get-NetFileServer：根据SPN获取当前域使用的文件服务器信息
+				Get-NetShare：获取当前域内所有的网络共享信息
+				Get-NetSession：获取指定服务器的会话
+				Get-NetRDPSession：获取指定服务器的远程连接
+				Get-NetProcess：获取远程主机的进程
+				Get-UserEvent：获取指定用户的日志
+				Get-ADObject：获取活动目录的对象
+				Get-NetGPO：获取域内所有组的策略对象
+				Get-DomainPolicy：获取域默认策略或域控制器策略
+				Invoke-UserHunter：获取域用户登陆的计算机信息及该用户是否有本地管理员权限
+				Invoke-ProcessHunter：通过查询域内所有的机器进程找到特定用户
+				Invoke-UserEventHunter：根据用户日志查询某域用户登陆过哪些域机器
+	- ADFindUsersLoggedOn
+		+ ``https://github.com/chrisdee/Tools/tree/master/AD/ADFindUsersLoggedOn``
+		+ ``PVEFindADUser.exe -current``
 
 获取域用户hash
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ python3 GetNPUsers.py 'VULNNET-RST/' -usersfile user.txt -no-pass -dc-ip 10.10.33.36
++ :ref:`intranet/winpersistence:凭证窃取`
+
+相关漏洞
+--------------------------------
+
+可直接拿域控
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ ms17-010(CVE-2017-0143)：永恒之蓝
++ MS14-068(CVE-2014-6324)
+	- Kerberos 校验和漏洞：用户在向 Kerberos 密钥分发中心（KDC）申请TGT（由票据授权服务产生的身份凭证）时，可以伪造自己的 Kerberos 票据
+	- 利用条件
+		+ 小于2012R2的域控 没有打MS14-068的补丁(KB3011780)
+		+ 拿下一台加入域的计算机
+		+ 有这台域内计算机的域用户密码和Sid
+	- 利用效果：将任意域用户提升到域管权限
+	- 相关EXP
+		+ https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068
+		+ https://github.com/Al1ex/WindowsElevation
++ CVE-2020-1472
+	- 可将域控机器用户的password设置为空
+	- 利用效果：可利用此漏洞获取域管访问权限
+	- 影响版本
+		::
+		
+			Windows Server 2008 R2 for x64-based Systems Service Pack 1
+			Windows Server 2008 R2 for x64-based Systems Service Pack 1 (Server Core installation)
+			Windows Server 2012Windows Server 2012 (Server Core installation)
+			Windows Server 2012 R2Windows Server 2012 R2 (Server Core installation)
+			Windows Server 2016Windows Server 2016 (Server Core installation)
+			Windows Server 2019Windows Server 2019 (Server Core installation)
+			Windows Server, version 1903 (Server Core installation)
+			Windows Server, version 1909 (Server Core installation)Windows Server, version 2004 (Server Core installation)
+	- 风险：导致目标主机脱域
+	- 相关EXP
+		+ Impacket工具包：https://github.com/SecureAuthCorp/impacket.git
+		+ 检查是否存在漏洞：https://github.com/SecuraBV/CVE-2020-1472.git
+		+ exp：https://github.com/dirkjanm/CVE-2020-1472
+		+ exp：https://github.com/risksense/zerologon
+		+ https://github.com/blackarrowsec/redteam-research/tree/master/CVE-2020-1472
++ CVE-2021-42287&42278
+	- AD域计算机账户认证漏洞：攻击者可利用该漏洞造成将域内的普通用户权限提升到域管理员权限
+	- 利用效果：将任意域用户提升到域管权限
+	- 影响版本
+		::
+		
+			Windows Server 2012 R2 (Server Core installation)
+			Windows Server 2012 R2
+			Windows Server 2012 (Server Core installation)
+			Windows Server 2012
+			Windows Server 2008 R2 for x64-based Systems Service Pack 1 (Server Core installation)
+			Windows Server 2008 R2 for x64-based Systems Service Pack 1
+			Windows Server 2008 for x64-based Systems Service Pack 2 (Server Core installation)
+			Windows Server 2008 for x64-based Systems Service Pack 2
+			Windows Server 2008 for 32-bit Systems Service Pack 2 (Server Core installation)
+			Windows Server 2008 for 32-bit Systems Service Pack 2
+			Windows Server 2016 (Server Core installation)
+			Windows Server 2016
+			Windows Server, version 20H2 (Server Core Installation)
+			Windows Server, version 2004 (Server Core installation)
+			Windows Server 2022 (Server Core installation)
+			Windows Server 2022
+			Windows Server 2019 (Server Core installation)
+			Windows Server 2019
+	- 利用条件
+		+ 一个普通域成员帐户
+		+ 域用户有创建机器用户的权限（一般默认权限）
+		+ DC未打补丁KB5008380或KB5008602
+	- 相关EXP
+		+ https://github.com/WazeHell/sam-the-admin
+		+ https://github.com/cube0x0/noPac
++ CVE-2021-1675/CVE-2021-34527
+	- Windows Print Spooler权限提升漏洞
+	- 利用效果：未经身份验证的远程攻击者可利用该漏洞以SYSTEM权限在域控制器上执行任意代码，从而获得整个域的控制权
+	- 影响版本
+		::
+		
+			Windows Server 2012 R2 (Server Core installation)
+			Windows Server 2012 R2
+			Windows Server 2012 (Server Core installation)
+			Windows Server 2012
+			Windows Server 2008 R2 for x64-based Systems Service Pack 1 (Server Core installation)
+			Windows Server 2008 R2 for x64-based Systems Service Pack 1
+			Windows Server 2008 for x64-based Systems Service Pack 2 (Server Core installation)
+			Windows Server 2008 for x64-based Systems Service Pack 2
+			Windows Server 2008 for 32-bit Systems Service Pack 2 (Server Core installation)
+			Windows Server 2008 for 32-bit Systems Service Pack 2
+			Windows RT 8.1
+			Windows 8.1 for x64-based systems
+			Windows 8.1 for 32-bit systems
+			Windows 7 for x64-based Systems Service Pack 1
+			Windows 7 for 32-bit Systems Service Pack 1
+			Windows Server 2016 (Server Core installation)
+			Windows Server 2016
+			Windows 10 Version 1607 for x64-based Systems
+			Windows 10 Version 1607 for 32-bit Systems
+			Windows 10 for x64-based Systems
+			Windows 10 for 32-bit Systems
+			Windows Server, version 20H2 (Server Core Installation)
+			Windows 10 Version 20H2 for ARM64-based Systems
+			Windows 10 Version 20H2 for 32-bit Systems
+			Windows 10 Version 20H2 for x64-based Systems
+			Windows Server, version 2004 (Server Core installation)
+			Windows 10 Version 2004 for x64-based Systems
+			Windows 10 Version 2004 for ARM64-based Systems
+			Windows 10 Version 2004 for 32-bit Systems
+			Windows 10 Version 21H1 for 32-bit Systems
+			Windows 10 Version 21H1 for ARM64-based Systems
+			Windows 10 Version 21H1 for x64-based Systems
+			Windows 10 Version 1909 for ARM64-based Systems
+			Windows 10 Version 1909 for x64-based Systems
+			Windows 10 Version 1909 for 32-bit Systems
+			Windows Server 2019 (Server Core installation)
+			Windows Server 2019
+			Windows 10 Version 1809 for ARM64-based Systems
+			Windows 10 Version 1809 for x64-based Systems
+			Windows 10 Version 1809 for 32-bit Systems
+	- 利用条件
+		+ 目标开启Spooler服务；
+		+ 一个普通权限的域账户；
+		+ 创建的smb服务允许匿名访问，即目标可以直接获取到文件。
+	- 相关EXP
+		+ https://github.com/cube0x0/CVE-2021-1675
+		+ https://github.com/calebstewart/CVE-2021-1675
+		+ https://github.com/numanturle/PrintNightmare
++ CVE-2019-1040
+	- Microsoft Windows NTLM认证漏洞
+	- 利用效果：攻击者在仅有一个普通域账号的情况下可以远程控制 Windows 域内的任何机器，包括域控服务器。
+	- 影响版本
+		::
+			
+			Windows 7 sp1 至Windows 10 1903
+			Windows Server 2008 至Windows Server 2019
+	- 利用条件
+		+ Exchange服务器可以是任何版本。唯一的要求是，在以共享权限或RBAC模式安装，Exchange默认具有高权限。
+		+ 域内任意账户。
+		+ CVE-2019-1040漏洞的实质是NTLM数据包完整性校验存在缺陷，故可以修改NTLM身份验证数据包而不会使身份验证失效。而此攻击链中攻击者删除了数据包中阻止从SMB转发到LDAP的标志。
+		+ 构造请求使Exchange Server向攻击者进行身份验证，并通过LDAP将该身份验证中继到域控制器，即可使用中继受害者的权限在Active Directory中执行操作。比如为攻击者帐户授予DCSync权限。
+		+ 如果在可信但完全不同的AD林中有用户，同样可以在域中执行完全相同的攻击。
+	- 攻击链
+		+ 使用域内任意帐户，通过SMB连接到被攻击ExchangeServer，并指定中继攻击服务器。同时必须利用SpoolService错误触发反向SMB链接。
+		+ 中继服务器通过SMB回连攻击者主机，然后利用ntlmrelayx将利用CVE-2019-1040漏洞修改NTLM身份验证数据后的SMB请求据包中继到LDAP。
+		+ 使用中继的LDAP身份验证，此时Exchange Server可以为攻击者帐户授予DCSync权限。
+		+ 攻击者帐户使用DCSync转储AD域中的所有域用户密码哈希值（包含域管理员的hash，此时已拿下整个域）。
+	- 利用方式
+		+ https://github.com/Ridter/CVE-2019-1040
+		+ https://github.com/SecureAuthCorp/impacket
+		+ https://github.com/dirkjanm/krbrelayx
+		+ https://github.com/Ridter/CVE-2019-1040
+		+ https://github.com/Ridter/CVE-2019-1040-dcpwn
+	- 参考资料
+		+ 同一网段内：https://www.freebuf.com/vuls/274091.html
+		+ 隧道下：https://zhuanlan.zhihu.com/p/142080911
++ 域委派攻击
+	- https://mp.weixin.qq.com/s/GdmnlsKJJXhElA4GuwxTKQ
++ NTLM Relay
+	- https://www.anquanke.com/post/id/193149
+	- https://www.anquanke.com/post/id/193493
+	- https://www.anquanke.com/post/id/194069
+	- https://www.anquanke.com/post/id/194514
++ ADCS漏洞–ESC8(PetitPotam)(ADCS relay)
+	- ESC8是一个http的ntlm relay，原因在于ADCS的认证中支持NTLM认证
+	- 攻击效果：将普通域用户提升到域管权限
+	- 利用条件
+		+ 未打adcs的补丁
+		+ 有两台域控
+		+ 有adcs服务
+	- 利用方式
+		+ https://blog.csdn.net/qq_43645782/article/details/119322322
+		+ https://forum.butian.net/share/1583
++ ADCS漏洞–CVE-2022–26923
+	- 通过构造机器账户并篡改dNSHostName属性，在证书申请时AD CS将dNSHostName属性嵌入证书中，进而机器账户获得高权限的域控身份。
+	- 攻击效果：允许低权限用户在安装了 Active Directory 证书服务 (AD CS) 服务器角色的默认 Active Directory 环境中将权限提升到域管理员。
+	- 影响版本
+		+ Windows 8.1
+		+ Windows 10 Version 1607, 1809,1909, 2004, 20H2, 21H1, 21H2
+		+ Windows 11
+		+ Windows Server 2008，2012，2016，2019，2022
+	- 利用条件
+		+ 该提权漏洞适用于所有的Windows服务器活动目录版本，包含目前位于微软产品支持范围内的Windows Server 2012 R2到Windows Server 2022，以及超出产品支持范围的旧Windows服务器版本。
+		+ 入侵者至少控制一个活动目录用户账户，该用户账户对于活动目录中至少一个计算机账户具有“Validated write to DNS host name”权限。默认情况下，单个活动目录普通域用户可以加入或创建（包含创建空账户）10个计算机账户到活动目录中，并对自己所加入/创建的计算机账户具有CREATOR OWNER管理权限（包含“Validated write to DNShost name”权限）。因此该权限较为容易获得。
+		+ 在活动目录内部部署有企业证书服务，并允许上述被控制的计算机账户申请计算机身份验证证书。企业证书服务是活动目录中广泛部署的一种相关基础服务，并且默认情况下，与活动目录集成的企业证书服务默认即允许域内计算机申请计算机身份验证证书。
+	- 参考资料
+		+ https://forum.butian.net/share/1578
+		+ https://forum.butian.net/share/1583
+
+可控制Exchange服务器
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ CVE-2018-8581
+	- Microsoft Exchange任意用户伪造漏洞
+	- https://github.com/Ridter/Exchange2domain
+	- https://github.com/WyAtu/CVE-2018-8581
++ CVE-2020-0688
+	- Microsoft Exchange 反序列化RCE
+	- https://github.com/zcgonvh/CVE-2020-0688
+
++ CVE-2021-26855/CVE-2021-27065
+	- Exchange ProxyLogon远程代码执行漏洞
+	- https://github.com/hausec/ProxyLogon
++ CVE-2020-17144
+	- Microsoft Exchange 远程代码执行漏洞
+	- 利用条件：Exchange2010
+	- https://github.com/Airboi/CVE-2020-17144-EXP
++ CVE-2020-16875
+	- Microsoft Exchange 远程代码执行漏洞
+	- https://srcincite.io/pocs/cve-2020-16875.py.txt
++ CVE-2021-34473
+	- Exchange ProxyShell SSRF
+	- https://github.com/dmaasland/proxyshell-poc
++ CVE-2021-33766
+	- Exchange ProxyToken 信息泄露漏洞
+	- https://github.com/bhdresh/CVE-2021-33766-ProxyToken
 
 相关工具
 --------------------------------
+
+内网扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ auxiliary/scanner/discovery/udp_sweep    #基于udp协议发现内网存活主机
++ auxiliary/scanner/discovery/udp_probe    #基于udp协议发现内网存活主机
++ auxiliary/scanner/netbios/nbname         #基于netbios协议发现内网存活主机
++ auxiliary/scanner/portscan/tcp           #基于tcp进行端口扫描
++ nmap端口扫描
 
 CrackMapExec 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -224,18 +499,20 @@ CrackMapExec
 + 说明
 	- 帮助：``crackmapexec --help``
 	- 根据协议获取帮助信息：``crackmapexec smb --help``
+	- protocol：``ftp,smb,ssh,winrm,ldap,rdp,mssql``
 	- 基本探测
 		::
 		
-			crackmapexec protocol test.com
-			crackmapexec protocol 192.168.3.70/24
-			crackmapexec protocol 192.168.3.70-77  192.168.4.1-20
-			crackmapexec protocol ~/ip.txt
+			crackmapexec [protocol] test.com
+			crackmapexec [protocol] 192.168.3.70/24
+			crackmapexec [protocol] 192.168.3.70-77  192.168.4.1-20
+			crackmapexec [protocol] ~/ip.txt
 	- 携带认证信息
 		::
 		
-			crackmapexec protocol 192.168.3.70 -u administrator -p 'admin!@#45'
-			crackmapexec protocol 192.168.3.70 -u='-administrator' -p='-admin!@#45'   //第一个字母为-的特殊情况语句
+			crackmapexec [protocol] 192.168.3.70 -u administrator -p 'admin!@#45'
+			携带hash：
+			-H HASH [HASH ...], --hash HASH [HASH ...] NTLM hash(es) or file(s) containing NTLM hashes
 	- 协议探测：``crackmapexec  smb 192.168.3.73-76``
 	- 密码喷射
 		::
@@ -273,8 +550,8 @@ Impackt
 	- cd impacket/
 	- python setup.py install
 + 通用选项
-	- 密码认证连接：``python3 xxx.py [域]/[用户]:[密码]@[目标ip]``
-	- hash认证连接：``python3 xxx.py [域]/[用户]@ip -hashes :161cff084477fe596a5db81874498a24``
+	- 密码认证连接：``python3 xxx.py [域]/[用户名]:[密码]@[目标ip]``
+	- hash认证连接：``python3 xxx.py [域]/[用户名]@ip -hashes :161cff084477fe596a5db81874498a24``
 	- Kerberos认证：``export KRB5CCNAME=ad01.ccache ``,``python3 xxx.py -k -no-pass``
 	- 指定目标IP：``-target-ip 192.168.40.156``
 	- 指定域控IP：``-dc-ip 192.168.40.156``
@@ -302,8 +579,10 @@ Impackt
 	- 从头开始或基于模板（根据KDC的合法请求）创建金/银票据，允许您在PAC_LOGON_INFO结构中自定义设置的一些参数，特别是组、外接程序、持续时间等。
 + raiseChild.py
 	- 通过（ab）使用Golden Tickets和ExtraSids的基础来实现子域到林权限的升级。
++ samrdump.py
+	- 从MSRPC套件与安全帐户管理器远程接口通信的应用程序中。它列出了通过此服务导出的系统用户帐户、可用资源共享和其他敏感信息。
 + secretsdump.py
-	- 执行各种技术从远程机器转储Secrets，而不在那里执行任何代理。对于SAM和LSA Secrets（包括缓存的凭据），然后将hives保存在目标系统（％SYSTEMROOT％\ Temp目录）中，并从中读取其余数据。对于DIT文件，我们使用dl_drsgetncchanges()方法转储NTLM哈希值、纯文本凭据（如果可用）和Kerberos密钥。
+	- 执行各种技术从远程机器转储Secrets。
 + mimikatz.py
 	- 远程mimikatz RPC服务器的迷你shell。
 + ntlmrelayx.py
@@ -326,12 +605,8 @@ Impackt
 	- 转储目标上注册的RPC端点和字符串绑定列表,它还将尝试将它们与已知端点列表进行匹配。
 + opdump.py
 	- 这将绑定到给定的hostname:port和msrpc接口。然后，它尝试依次调用前256个操作号中的每一个，并报告每个调用的结果。
-+ samrdump.py
-	- 从MSRPC套件与安全帐户管理器远程接口通信的应用程序中。它列出了通过此服务导出的系统用户帐户、可用资源共享和其他敏感信息。
 + services.py
 	- 此脚本可用于通过[MS-SCMR] MSRPC接口操作Windows服务。它支持启动，停止，删除，状态，配置，列表，创建和更改。
-+ ifmap.py
-	- 此脚本将绑定到目标的管理接口，以获取接口ID列表。它将在另一个界面UUID列表上使用这个列表，尝试绑定到每个接口并报告接口是否已列出或正在侦听。
 + getArch.py
 	- 此脚本将与目标（或目标列表）主机连接，并使用文档化的msrpc功能收集由（ab）安装的操作系统体系结构类型。
 + netview.py
@@ -346,22 +621,10 @@ Impackt
 	- 从目标主机中检索MSSQL实例名称。
 + mssqlclient.py
 	- MSSQL客户端,支持SQL和Windows身份验证（哈希）.它还支持TLS。
-+ esentutl.py
-	- Extensibe存储引擎格式实现。它允许转储ESE数据库的目录，页面和表（例如NTDS.dit）
-+ ntfs-read.py
-	- NTFS格式实现。此脚本提供了一个用于浏览和提取NTFS卷的功能小的反弹shell，包括隐藏/锁定的内容
 + registry-read.py
 	- Windwows注册表文件格式实现。它允许解析脱机注册表配置单元.
 + GetADUsers.py
 	- 此脚本将收集有关域用户及其相应电子邮件地址的数据。它还将包括有关上次登录和上次密码设置属性的一些额外信息。
-+ mqtt_check.py
-	- 简单的MQTT示例，旨在使用不同的登录选项。可以很容易地转换成帐户/密码暴力工具。
-+ rdp_check.py
-	- [MS-RDPBCGR ]和[MS-CREDSSP]部分实现只是为了达到CredSSP身份验证。此示例测试帐户在目标主机上是否有效。
-+ sniff.py
-	- 简单的数据包嗅探器，使用pcapy库来监听在指定接口上传输的包。
-+ sniffer.py
-	- 简单的数据包嗅探器，它使用原始套接字来侦听与指定协议相对应的传输中的数据包。
 + ping.py
 	- 简单的ICMP ping。
 + ping6.py
