@@ -45,23 +45,249 @@ COM FUZZ
 
 文件型漏洞挖掘
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `FileFuzz <https://bbs.pediy.com/thread-125263.htm>`_
-- `EasyFuzzer <https://bbs.pediy.com/thread-193340.htm>`_
-- Taof
-- GPF
-- ProxyFuzz
 - Peach Fuzzer
 	+ Peach支持对 **文件格式、ActiveX、网络协议** 进行Fuzz测试，Peach Fuzz的关键是编写Peach Pit配置文件。
 	+ 官网：https://sourceforge.net/projects/peachfuzz/
 	+ 最新版本源码：https://gitlab.com/gitlab-org/security-products/protocol-fuzzer-ce
 	+ windows编译：https://zhuanlan.zhihu.com/p/386565953
+	+ 打开安装目录PeachService.exe，可以打开web服务，浏览器查看FUZZ进度和崩溃信息
 	+ pit文件结构
-		- DataModel
-		- StateModel
-		- Agents
-		- Test Block
-		- Run Block
-- Sulley
+		- 首先必须创建Peach Pit格式文件，文件是基于XML格式，里面记录了文件格式的组织方式，我们需要如何进行Fuzz，Fuzz的目标等信息。
+		- Pit文件主要包含5个元素
+			+ DataModel：定义数据结构的元素。
+			+ StateModel：管理 Fuzz 过程的执行流。
+			+ Agents：监视 Fuzz 过程中程序的行为，可以捕获程序的 crash 信息。
+			+ Test Block：将 StateModel 和 Agents 等联系到一个单一的测试用例里。
+			+ Run Block：定义 Fuzz 过程中哪些 Test 会被执行。这个块也会记录 Agent 产生的信息。
+	+ pit文件基本框架
+		::
+		
+			<?xml version="1.0" encoding="utf-8"?>
+			<Peach ...版本，作者介绍之类...>
+				<Include ...包含的外部文件/> 			#通用配置
+				<DataModel> 					#数据模型
+					<Block/>
+					<Blob/>
+					......
+				</DataModel>
+				<StateModel> 					#状态模型
+				</StateModel> 
+				<Agent> 					#代理器
+				</Agent>
+				<Test>
+					<StateModel/> 				#必须
+					<Publisher/> 				#必须
+					<agent> 				#可选
+						<Monitor>
+							<Param name="CommandLine" value="test01.exe fuzzed1.png"/> #注意fuzzed1.png与Publisher配置的Filename参数值一致
+						</Monitor>
+					</agent>
+					<Include/> 				#可选
+					<Exclude/> 				#可选
+					<Strategy/> 				#可选
+					<Logger/> 				#可选
+						......
+			  </Test>
+				<Run>Fuzzer执行的进入点</Run>
+			</Peach>
+	+ 文件fuzz
+		::
+		
+			<?xml version="1.0" encoding="utf-8"?>
+			<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+			<DataModel name="Chunk">
+				<Number name="Length" size="32" signed="false">
+					<Relation type="size" of="Data"/>
+				</Number>
+				<Block name="TypeAndData">
+					<String name="Type" length="4"/>
+					<Blob name="Data"/>
+				</Block>
+				<Number name="CRC" size="32">
+					<Fixup class="checksums.Crc32Fixup">
+						<Param name="ref" value="TypeAndData"/>
+					</Fixup>
+				</Number>
+			</DataModel>
+
+			<DataModel name="PngTemplate">
+				<Blob name="pngmagic" mutable="false" valueType="hex" value="89 50 4E 47 0D 0A 1A 0A"/>
+				<Block ref="Chunk" minOccurs="1" maxOccurs="1024"/>
+			</DataModel>
+
+			<StateModel name="State" initialState="Initial">
+				<State name="Initial">
+					<Action type="output" publisher="file"> #输出png文件
+						<DataModel ref="PngTemplate" />
+					</Action>
+					<!--	<Action type="output" publisher="cmd"> #命令行输出文件内容
+						<DataModel ref="PngTemplate" />
+					</Action> -->
+					<Action type="close" publisher="file"/>    #关闭png文件
+					<Action type="call" method="LaunchViwer" publisher="Peach.Agent"/> #输出样本后 call LaunchViewer 通知 Agent
+				</State>
+			</StateModel>
+
+			<Agent name="LocalAgent">
+				<Monitor class="debugger.WindowsDebugEngine">
+					<Param name="CommandLine" value="test01.exe fuzzed1.png"/>
+					<Param name="StartOnCall" value="LaunchViwer" /> #当接收到call LaunchViewer后启动被测程序，显示GUI界面
+					<Param name="Windbgpath" value="C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\"/>
+					<Param name="Executable" value="test01.exe"/>
+				</Monitor>
+				<Monitor class="PageHeap">
+					<Param name="Executable" value="test01.exe"/>
+				</Monitor>
+			</Agent>
+
+			<Test name="Default">
+				<Agent ref="LocalAgent" />
+				<StateModel ref="State"/>
+				<Publisher name="file" class="File">		#文件输出的publisher
+					<Param name="FileName" value="fuzzed1.png"/>
+				</Publisher>
+				<!-- <Publisher name="cmd" class="Console"/> -->	#命令行输出的publisher
+				<Strategy class="Random">			#变异策略
+					<Param name="MaxFieldsToMutate" value="15"/>
+					<Param name="SwitchCount" value="100"/>
+				</Strategy>
+				<Logger class="Filesystem">			#输出日志
+					<Param name="Path" value="logtest"/>
+				</Logger>
+			</Test>
+
+			</Peach>
+			<!-- end -->
+
+	+ UDP协议FUZZ
+		::
+		
+			<?xml version="1.0" encoding="utf-8"?>
+			<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+				<DataModel name="auth">
+					<Blob length="4" valueType="hex" value="03661471" mutable="false"/>
+					<Number value="0" size="32" mutable="true"/>
+					<Number size="32" signed ="false" endian="little">
+						<Relation type="size" of="netid"/>
+					</Number>
+					<String name="netid"/>
+					<Number value="0" size="16" mutable="true"/>
+					<Number value="5" size="32" mutable="true" endian="little"/>
+					<Block name="sourceip">
+						<Blob length="2" valueType="hex" value="0c00" mutable="false"/>
+						<Number size="16" signed ="false" endian="little">
+							<Relation type="size" of="ip"/>
+						</Number>
+						<String name="ip" nullTerminated="true"/>
+					</Block>
+					<Block name="sourcenetid">
+						<Blob length="2" valueType="hex" value="0700" mutable="false"/>
+						<Number size="16" signed ="false" endian="little">
+							<Relation type="size" of="netid"/>
+						</Number>
+						<String name="netid" nullTerminated="true"/>
+					</Block>
+					<Block name="username">
+						<Blob length="2" valueType="hex" value="0d00" mutable="false"/>
+						<Number size="16" signed ="false" endian="little">
+							<Relation type="size" of="user"/>
+						</Number>
+						<String name="user" nullTerminated="true"/>
+					</Block>
+					<Block name="password">
+						<Blob length="2" valueType="hex" value="0200" mutable="false"/>
+						<Number size="16" signed ="false" endian="little">
+							<Relation type="size" of="pass"/>
+						</Number>
+						<String name="pass" nullTerminated="true"/>
+					</Block>
+					<Block ref="sourceip">
+					</Block>
+				</DataModel>
+
+				<StateModel name="State" initialState="Initial">
+					<State name="Initial">
+
+						<Action name="SendValue" type="output" publisher="udp">
+							<DataModel ref="auth" />
+						</Action>
+						 <Action type="output" publisher="cmd">
+							<DataModel ref="auth" />
+						</Action>
+
+					</State>
+				</StateModel>
+				<Agent name="TheAgent">
+					<Monitor class="RunCommand">
+						<Param name="Command" value="python"/>
+						<Param name="Arguments" value="./monitor.py"/>
+						<Param name="FaultOnNonZeroExit" value="true"/>
+						<Param name="When" value="OnIterationEnd" />
+					</Monitor>
+				</Agent>
+
+				<Test name="Default">
+					<StateModel ref="State"/>
+					<Publisher name="cmd" class="Console"/>
+					<Publisher name="udp" class="Udp">
+						<Param name="Host" value="192.168.99.54" />
+						<Param name="Port" value="48899" />
+					</Publisher>
+					<Agent ref="TheAgent"/>
+					<Logger class="Filesystem">
+						<Param name="Path" value="Logs" />
+					</Logger>
+				</Test>
+			</Peach>
+			<!-- end -->
+			由于无法检测Udp端口是否开放，因此采用Run Command来检测,每次循环结束，执行自定义脚本monitor.py，检测服务器是否正常。
+			import socket
+			import binascii
+			import struct
+			import hexdump
+
+			def GetPkt():
+				return binascii.a2b_hex("03661471000333100")
+
+			if __name__ == '__main__':
+				aim = ("192.168.99.54", 48899)
+				client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+				client_socket.settimeout(5)
+
+			try:
+				pkt=GetPkt()
+				client_socket.sendto(pkt,aim)
+				replay,_ = client_socket.recvfrom(1024)
+				hexdump.hexdump(replay)
+			except:
+				client_socket.close()
+				print("failed")
+				exit(-1)
+			else:
+				client_socket.close()
+				print("success")
+				exit(0)
+			
+			脚本发送正常数据包，服务器无响应时，返回值非0，即服务器崩溃产生错误。
+
+	+ TCP协议FUZZ
+	+ 相关教程
+		- https://blog.csdn.net/weixin_40563850/article/details/107976133
+		- https://blog.csdn.net/weixin_40563850/article/details/107997609
+		- https://blog.csdn.net/weixin_40563850/article/details/108058576
+		- https://bbs.pediy.com/thread-176416.htm
+		- https://bbs.pediy.com/thread-176417.htm
+		- https://bbs.pediy.com/thread-176418.htm
+		- https://bbs.pediy.com/thread-176419.htm
+		- https://xz.aliyun.com/t/10652
+- `FileFuzz <https://bbs.pediy.com/thread-125263.htm>`_
+- `EasyFuzzer <https://bbs.pediy.com/thread-193340.htm>`_
+- Taof
+- GPF
+- ProxyFuzz
 - Mu‐4000
 - Codenomicon
 - Fuzzgrind
