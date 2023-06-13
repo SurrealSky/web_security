@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+<DataModel name="Chunk">
+	<Number name="Length" size="32" signed="false">
+		<Relation type="size" of="Data"/>
+	</Number>
+	<Block name="TypeAndData">
+		<String name="Type" length="4"/>
+		<Blob name="Data"/>
+	</Block>
+	<Number name="CRC" size="32">
+		<Fixup class="checksums.Crc32Fixup">
+			<Param name="ref" value="TypeAndData"/>
+		</Fixup>
+	</Number>
+</DataModel>
+
+<DataModel name="PngTemplate">
+	<Blob name="pngmagic" mutable="false" valueType="hex" value="89 50 4E 47 0D 0A 1A 0A"/>
+	<Block ref="Chunk" minOccurs="1" maxOccurs="1024"/>
+</DataModel>
+
+<StateModel name="State" initialState="Initial">
+	<State name="Initial">
+		<Action type="output" publisher="file">    #输出png文件
+			<DataModel ref="PngTemplate" />
+		</Action>
+		<!--     <Action type="output" publisher="cmd">     #命令行输出文件内容
+				<DataModel ref="PngTemplate" />
+		</Action> -->
+		<Action type="close" publisher="file"/>    #关闭png文件
+		<Action type="call" method="LaunchViwer" publisher="Peach.Agent"/>        #输出样本后 call LaunchViewer 通知 Agent
+	</State>
+</StateModel>
+
+<Agent name="LocalAgent">
+	<Monitor class="debugger.WindowsDebugEngine">
+		<Param name="CommandLine" value="test01.exe fuzzed1.png"/>
+		<Param name="StartOnCall" value="LaunchViwer" />      #当接收到call LaunchViewer后启动被测程序，显示GUI界面
+		<Param name="Windbgpath" value="C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\"/>
+		<Param name="Executable" value="test01.exe"/>
+	</Monitor>
+	<Monitor class="PageHeap">
+		<Param name="Executable" value="test01.exe"/>
+	</Monitor>
+</Agent>
+
+<Test name="Default">
+	<Agent ref="LocalAgent" />
+	<StateModel ref="State"/>
+	<Publisher name="file" class="File">          #文件输出的publisher
+		<Param name="FileName" value="fuzzed1.png"/>
+	</Publisher>
+	<!-- <Publisher name="cmd" class="Console"/> -->         #命令行输出的publisher
+	<Strategy class="Random">        #变异策略
+		<Param name="MaxFieldsToMutate" value="15"/>
+		<Param name="SwitchCount" value="100"/>
+	</Strategy>
+	<Logger class="Filesystem">      #输出日志
+		<Param name="Path" value="logtest"/>
+	</Logger>
+</Test>
+
+</Peach>
