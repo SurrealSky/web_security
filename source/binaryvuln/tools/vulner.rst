@@ -99,17 +99,10 @@ COM FUZZ
 	+ 相关示例
 		- `文件FUZZ <../../_static/peach_file.xml>`_
 		- `UDP协议FUZZ <../../_static/peach_udp.zip>`_
-		- `TCP协议FUZZ <../../_static/peach_tcp.xml>`_
+		- `TCP协议FUZZ <../../_static/peach_tcp.zip>`_
 
 - `FileFuzz <https://bbs.pediy.com/thread-125263.htm>`_
 - `EasyFuzzer <https://bbs.pediy.com/thread-193340.htm>`_
-- Taof
-- GPF
-- ProxyFuzz
-- Mu‐4000
-- Codenomicon
-- Fuzzgrind
-- MiniFuzz
 - `pngcheck <http://www.libpng.org/pub/png/apps/pngcheck.html>`_
 - `pdfcheck <https://www.datalogics.com/products/pdf-tools/pdf-checker/>`_
 

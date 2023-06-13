@@ -192,6 +192,9 @@ FileFuzz可以分为Blind Fuzz和Smart Fuzz。Blind Fuzz即通常所说的“盲
 		很难遇到。
 + 其它文件
 	- 图片，pdf等
++ Fuzz
+	- afl
+	- peach
 
 通信协议漏洞
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,8 +203,21 @@ FileFuzz可以分为Blind Fuzz和Smart Fuzz。Blind Fuzz即通常所说的“盲
 + 特定协议
 	- FTP漏洞挖掘
 	- Email漏洞挖掘
++ Fuzz
+	- afl-net
+	- peach
+	- boofuzz
 
 二进制漏洞
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 逆向分析
-+ 程序fuzz
+	使用IDA或OD静态，动态分析程序调用逻辑。
++ 危险函数检测
+	- 常见危险函数
+		::
+		
+			strcpy
+	- 动态插桩检测
+		- 使用frida hook危险函数，观察输入数据是否可控。
+	- IDA插件静态检测
+		- https://github.com/Accenture/VulFi
