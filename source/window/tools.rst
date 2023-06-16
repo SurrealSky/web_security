@@ -13,7 +13,41 @@ IDA
 		printf((const char *)&unk_80BF804, v2[v1 - 1]);
 		在unk_80BF804处按Y键更改变量类型，输入char，确定后即可看到打印的字符串：
 		printf("%d\n", v2[v1 - 1]);
++ 常用插件
+	::
+	
+		IDA FLIRT Signature Database -- 用于识别静态编译的可执行文件中的库函数
+		Find Crypt -- 寻找常用加密算法中的常数（需要安装 yara-python）
+		IDA signsrch -- 寻找二进制文件所使用的加密、压缩算法
+		Ponce -- 污点分析和符号化执行工具
+		snowman decompiler -- C/C++反汇编插件（F3 进行反汇编）
+		CodeXplorer -- 自动类型重建以及对象浏览（C++）（jump to disasm)
+		IDA Ref -- 汇编指令注释（支持arm，x86，mips）
+		auto re -- 函数自动重命名
+		nao -- dead code 清除
+		HexRaysPyTools -- 类/结构体创建和虚函数表检测
+		DIE -- 动态调试增强工具，保存函数调用上下文信息
+		sk3wldbg -- IDA 动态调试器，支持多平台
+		idaemu -- 模拟代码执行（支持X86、ARM平台）
+		Diaphora -- 程序差异比较
+		Keypatch -- 基于 Keystone 的 Patch 二进制文件插件​
+		FRIEND -- 哪里不会点哪里，提升汇编格式的可读性、提供指令、寄存器的文档等
+		SimplifyGraph -- 简化复杂的函数流程图
+		bincat -- 静态二进制代码分析工具包，2017 Hex-Rays 插件第一名
+		golang_loader_assist -- Golang编译的二进制文件分析助手
+		BinDiff
++ IDAPython
+	- 使用方法
+		点击file，Script command...菜单,选择python脚本运行。
+	- API接口文档：https://www.hex-rays.com/products/ida/support/idapython_docs/
+	- 7.4接口变更文档：https://hex-rays.com/products/ida/support/ida74_idapython_no_bc695_porting_guide.shtml
+	- 示例
+		::
 		
+			for functionAddr in Functions():
+				if "strcpy" in get_func_name(functionAddr):
+					print(hex(functionAddr))
+
 windbg
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 介绍

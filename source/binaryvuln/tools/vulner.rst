@@ -276,7 +276,11 @@ COM FUZZ
 			+ winafl默认的调用约定是stdcall，错误的调用约定可能导致程序在后续的迭代fuzz过程中崩溃
 		- 界面说明
 			+ stage progress -> now trying && stage execs，now trying 表示目前执行的任务，而 stage execs 表示任务执行的进度，用百分率表示。
-- `libFuzzer(linux) <https://github.com/Dor1s/libfuzzer-workshop>`_
+- libFuzzer
+	+ 项目地址：<https://github.com/Dor1s/libfuzzer-workshop
+	+ 官网：https://llvm.org/docs/LibFuzzer.html
+	+ 示例
+		- ``clang++ -g -std=c++11 -fsanitize=address,fuzzer first_fuzzer.cc ./libFuzzer/libFuzzer.a -o first_fuzzer``
 - syzkaller
 
 工控漏洞挖掘
