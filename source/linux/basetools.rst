@@ -18,6 +18,24 @@ strings
 
 readelf
 ----------------------------------------
++ -H，help 显示readelf所支持的命令行选项。
++ -v，version 显示readelf的版本信息。
++ -a，all 显示全部信息,等价于 -h -l -S -s -r -d -V -A -I。
++ -D,use-dynamic 使用动态段中的符号表显示符号，而不是使用符号段 。
++ -x,hex-dump=<number or name> 以16进制方式显示指定段内内容
++ -I,histogram 显示符号的时候，显示bucket list长度的柱状图
++ -A,arch-specific 显示CPU构架信息。
++ -V,version-info 显示版本段的信息。
++ -d,dynamic 显示动态段的信息。
++ -u,unwind 显示unwind段信息。当前只支持IA64 ELF的unwind段信息。
++ -r,relocs 显示可重定位段的信息。
++ -e,headers 显示全部头信息，等价于: -h -l -S 。
++ -s,symbols 显示符号表段中的项（如果有数据的话）。
++ -t,section-details 显示节的详细信息(-S的)。
++ -g(section groups),显示节组信息(如果有数据的话)。
++ -S(section headers),sections 显示节头信息(如果有数据的话)。
++ -l(program headers),segments 显示程序头（段头）信息(如果有数据的话)。
++ -h(elf header)，显示elf文件开始的文件头信息。
 
 objdump
 ----------------------------------------
