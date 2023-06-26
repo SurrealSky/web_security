@@ -393,10 +393,13 @@ COM FUZZ
 - `DriverView驱动查看工具 <http://www.nirsoft.net/utils/driverview.html>`_
 - `DeviceTree驱动关联设备查看工具 <http://www.osronline.com/article.cfm%5earticle=97.htm>`_
 - `WinObj查看符号链接 <http://technet.microsoft.com/en-us/sysinternals/bb896657>`_
+- IOCTLCODE解码
+	+ IDA插件：https://github.com/FSecureLABS/win_driver_plugin
 - IRP监控器
 	+ IrpTracker：http://www.osronline.com/article.cfm%5earticle=199.htm
 	+ IRPMon：https://github.com/MartinDrab/IRPMon
 - IOCTLpus
+	+ 说明：测试IOCTL CODE的有效性
 	+ 项目：https://github.com/jthuraisamy/ioctlpus
 - IOCTLbf
 	+ 下载：https://code.google.com/archive/p/ioctlbf/downloads
@@ -435,7 +438,7 @@ COM FUZZ
 			对X驱动的ioctl code 0xaabb1122-0xaabb3344范围内进行探测，探测时采用null pointer模式，并数据日志记录
 - IOCTL Fuzzer（Windows）
 	+ 说明
-		IOCTL Fuzzer 是一个自动化的 windows 内核驱动漏洞挖掘工具，它利用自己的驱动 hook 了 NtDeviceIoControlFile， 目的是接管整个系统所有的 IOCTL 请求。当处理 IOCTL 请求时，一旦符合配置文件中定义的条件，IOCTL Fuzzer 回用随机产生的 fuzz 数据去替换 IOCTL 的原始请求数据。IOCTL Fuzzer 只替换输入数据并不会改变 IOCTL 数据包的其他数据。
+		IOCTL Fuzzer 是一个自动化的 windows 内核驱动漏洞挖掘工具，它利用自己的驱动 hook 了 NtDeviceIoControlFile， 目的是接管整个系统所有的 IOCTL 请求。当处理 IOCTL 请求时，一旦符合配置文件中定义的条件，IOCTL Fuzzer 会用随机产生的 fuzz 数据去替换 IOCTL 的原始请求数据，此方法只能被动的等待通信发生，进行数据变异。
 	+ 下载：https://code.google.com/archive/p/ioctlfuzzer
 	+ xml配置说明
 		- fuzzing_type：random，dwords；

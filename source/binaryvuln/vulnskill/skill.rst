@@ -59,18 +59,116 @@
 
 windows驱动漏洞挖掘
 ----------------------------------------
-+ 确定驱动设备名称
-+ 确定有效的IOCTL CODE
-	- 监控正常交互
-	- 暴力破解
-	- 逆向分析
+
+基础
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 驱动对象创建驱动设备，设备名称形如（ **\\Device\\设备名** ）只能在内核访问, 所以有了设备的别名即 **符号链接** (内核中形如 **\\dosDevices\\设备名** 或 **\\??\\设备名** )。
++ 3环程序通过CreateFile函数打开符号链接(形如 **\\\\.\\DeviceName** )，获取驱动设备句柄。
++ 3环的程序向驱动发出I/O请求时，是由 **DeviceIoControl** 等函数所完成的
++ 不是所有驱动都使用符号链接和用户层进行通信，有很多驱动不是以这种方式和用户进行数据交换
+
+DeviceIoControl函数
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 原型
+	::
+	
+		BOOL WINAPI DeviceIoControl(
+		  _In_        HANDLE       hDevice,
+		  _In_        DWORD        dwIoControlCode,
+		  _In_opt_    LPVOID       lpInBuffer,
+		  _In_        DWORD        nInBufferSize,
+		  _Out_opt_   LPVOID       lpOutBuffer,
+		  _In_        DWORD        nOutBufferSize,
+		  _Out_opt_   LPDWORD      lpBytesReturned,
+		  _Inout_opt_ LPOVERLAPPED lpOverlapped
+		);
+		
+		参数：
+		hDevice [in]
+			需要执行操作的设备句柄。该设备通常是卷，目录，文件或流，使用 CreateFile 函数打开获取设备句柄。
+		dwIoControlCode [in]
+			操作的控制代码，该值标识要执行的特定操作以及执行该操作的设备的类型,每个控制代码决定lpInBuffer，nInBufferSize，lpOutBuffer和nOutBufferSize参数的使用细节。
+		lpInBuffer [in, optional]
+			（可选）指向输入缓冲区的指针。这些数据的格式取决于dwIoControlCode参数的值。
+		nInBufferSize [in]
+			输入缓冲区以字节为单位的大小。单位为字节。
+		lpOutBuffer [out, optional]
+			（可选）指向输出缓冲区的指针。这些数据的格式取决于dwIoControlCode参数的值。
+		nOutBufferSize [in]
+			输出缓冲区以字节为单位的大小。单位为字节。
+		lpBytesReturned [out, optional]
+			（可选）指向一个变量的指针，该变量接收存储在输出缓冲区中的数据的大小。如果输出缓冲区太小，无法接收任何数据，则GetLastError返回ERROR_INSUFFICIENT_BUFFER,
+				错误代码122(0x7a)，此时lpBytesReturned是零。
+			如果输出缓冲区太小而无法保存所有数据，但可以保存一些条目，某些驱动程序将返回尽可能多的数据,在这种情况下，调用失败，GetLastError返回ERROR_MORE_DATA,
+				错误代码234，lpBytesReturned指示接收到的数据量。您的应用程序应该再次使用相同的操作调用DeviceIoControl，指定一个新的起点。
+		lpOverlapped [in, out, optional]
+			（可选）指向OVERLAPPED结构的指针,
+			如果在未指定FILE_FLAG_OVERLAPPED的情况下打开hDevice，则忽略lpOverlapped。
+			如果使用FILE_FLAG_OVERLAPPED标志打开hDevice，则该操作将作为重叠（异步）操作执行。
+
+		返回值:
+			如果操作成功完成，DeviceIoControl将返回一个非零值。
+
+			如果操作失败或正在等待，则DeviceIoControl返回零。 要获得扩展的错误信息，请调用GetLastError。
++ dwIoControlCode
+	|ioctl1|
+	::
+	
+		由宏CTL_CODE构成，可分为四部分：
+		#define CTL_CODE( DeviceType, Function, Method, Access ) (((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method))
+		DeviceType(16-31) + Access(14-15) + Function(2-13) + Method(0-1)
+		DeviceType表示设备类型；
+		Access表示对设备的访问权限；
+		Function表示设备IoControl的功能号，0~0x7ff为微软保留，0x800~0xfff由程序员自己定义；
+		Method表示3环与0环通信中的内存访问方式。
+		
+		Method部分又有四种内存访问方式：
+		METHOD_BUFFERED(0):对I/O进行缓冲 
+		从ring3输入数据：在Win32 API DeviceIoControl函数的内部，用户提供的输入缓冲区的内容被复制到ring 0 IRP的pIRP->AssociatedIrp.SystemBuffer的内存地址，复制的字节是有DeviceControl指定的输入字节数。
+		从ring0输出数据：系统将AssociatedIrp.SystemBuffer的数据复制到DeviceIoControl提供的输出缓冲区，复制的字节数由pIrp->IoStatus.Information指定，DeviceIoControl也可以通过参数lpBytesReturned得到复制的字节数。       
+		这种方式避免了驱动程序在内核态直接操作用户态内存地址的问题，过程比较安全。
+		
+		METHOD_IN_DIRECT(1):对输入不进行缓冲 
+		METHOD_OUT_DIRECT(2):对输出不进行缓冲 
+		
+		METHOD_NEITHER(3):都不缓冲 
+		很少被用到，直接访问用户模式地址，要求调用DeviceIoControl的线程和派遣函数运行在同一个线程设备上下文中。
+		往驱动中Input数据：通过I/O堆栈的Parameters.DeviceIoControl.Type3InputBuffer得到DeviceIoControl提供的输入缓冲区地址，Parameters.DeviceIoControl.InputBufferLength得到其长度。
+		  由于不能保证传递过来的地址合法，所以需要先要结果ProbeRead函数进行判断。
+		从驱动中Output数据：通过pIrp->UserBuffer得到DeviceIoControl函数提供的输出缓冲区地址，再通过Parameters.DeviceIoControl.OutputBufferLength得到输出缓冲区大小。同样的要用ProbeWrite函数先进行判断。
+
+挖掘思路
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 信息搜集
+	- 符号连接
 		::
 		
-			分析DriverEntry入口函数中DriverObject->MajorFunction[0xE]的指针值（IRP_MJ_DEVICE_CONTROL），
-			因为在该指针处定义的函数使用了DeviceIoControl及其包含的I/O控制代码（IOCTL）来处理从用户模式发出的请求。
-			或
-			寻找对IofCompleteRequest的调用，然后从调用向上滚动，以查找DWORD比较。
-			或
-			搜索Text，"jumptable"
-+ IOCTL测试
-+ ioctl FUZZ
+			寻找IoCreateSymbolicLink函数调用参数。
+	- IOCTL CODE
+		- 监控正常交互
+		- 暴力破解
+		- 逆向分析
+			::
+			
+				分析DriverEntry入口函数中DriverObject->MajorFunction[0xE]的指针值（IRP_MJ_DEVICE_CONTROL），
+				因为在该指针处定义的函数使用了DeviceIoControl及其包含的I/O控制代码（IOCTL）来处理从用户模式发出的请求。
+				或
+				寻找对IofCompleteRequest的调用，然后从调用向上滚动，以查找DWORD比较。
+				或
+				搜索Text，"jumptable"
++ 逆向代码审计
++ IoControl MITM (Man-in-the-Middle) Fuzz
+	- 定义：通过对NtDeviceIoControlFile函数进行hook操作，从而接管用户层和内核层的通信，当监控到通信操作对其中的输入输出数据进行变异操作，属于被动等待式的FUZZ。
++ IoControl Driver Fuzz
+	- 定义：主动对内核驱动模块进行通信，首先需要通过逆向手段获得驱动的设备名称以及派遣函数对应的IoControlCode，接着对数据进行变异以后通过主动调用DeviceIoControl函数来完成FUZZ。
+	- 流程
+		+ 确定驱动设备名称
+		+ 确定有效的IOCTL CODE
+		+ IOCTL测试
+		+ ioctl FUZZ
+	- 变异策略
+		+ Method != METHOD_NEITHER：由于输入输出都有系统保护，因此修改地址没有意义，需要变异的数据只有：输入数据，输入长度，输出长度。
+		+ Method == NMETHOD_NEITHER：驱动中可能直接访问输入输出地址，而没有探测是否可写，因此需要变异的数据有：输入地址，输入数据，输出地址，输出长度。
+
+
+	.. |ioctl1| image:: ../../images/ioctl1.png
