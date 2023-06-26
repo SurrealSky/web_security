@@ -395,6 +395,8 @@ COM FUZZ
 - `WinObj查看符号链接 <http://technet.microsoft.com/en-us/sysinternals/bb896657>`_
 - IOCTLCODE解码
 	+ IDA插件：https://github.com/FSecureLABS/win_driver_plugin
+	+ OSR Online IOCTL Decoder：http://www.osronline.com/article.cfm%5Earticle=229.htm
+	+ pediy_IOCTL_DECODE
 - IRP监控器
 	+ IrpTracker：http://www.osronline.com/article.cfm%5earticle=199.htm
 	+ IRPMon：https://github.com/MartinDrab/IRPMon
