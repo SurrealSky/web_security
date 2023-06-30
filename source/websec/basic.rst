@@ -152,6 +152,16 @@ Spring 框架
 		+ 地址：``https://github.com/0x727/SpringBootExploit``
 		+ 一款针对 SpringBootEnv 页面进行快速漏洞利用的工具。
 
+Actuator信息泄露
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ Spring Boot Actuator 模块提供了健康检查，审计，指标收集，HTTP 跟踪等，是帮助我们监控和管理Spring Boot 应用的模块。
++ https://github.com/LandGrey/SpringBootVulExploit
++ heapdump获取*密码
+	- JDK/bin/jvisualvm.exe工具
+	- OQL执行： ``select s from java.util.LinkedHashMap$Entry s where /spring.datasource.password/.test(s.key)``
+	- ``https://github.com/wyzxxz/heapdump_tool``
++ jolokia接口利用
+
 Fastjson
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 利用工具
@@ -422,6 +432,25 @@ ActiveMQ
 		::
 		
 			https://jishuin.proginn.com/p/763bfbd74e97
+
+MQTT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ MQTT是一个基于客户端-服务器消息发布/订阅传输协议。
++ 相关漏洞
+	- 授权和认证漏洞
+	- 传输漏洞
+	- 应用漏洞
++ mqtt-pwn
+	::
+	
+		
+		git clone https://github.com/akamai-threat-research/mqtt-pwn.git
+		cd mqtt-pwn
+		sudo docker-compose up --build --detach
+		启动
+		sudo docker-compose ps
+		sudo docker-compose run cli
+
 
 数据库【综合工具】
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
