@@ -217,11 +217,13 @@ Waf指纹
 
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-::
-
-	注意在目录探测中，对于关键的目录，需要递归进行扫描。
-	可根据robots.txt中的目录进行扫描。
-
+- 注意
+	+ 注意在目录探测中，对于关键的目录，需要递归进行扫描。
+	+ 可根据robots.txt中的目录进行扫描。
+- 路径爬虫
+	+ gospider：``https://github.com/jaeles-project/gospider``
+	+ crawlergo：``https://github.com/0Kee-Team/crawlergo``
+	+ weakfilescan: ``https://github.com/ring04h/weakfilescan``
 - dirbuster
 	+ dirbuster -H headless方式启动
 	+ dirbuster ，默认GUI方式启动
@@ -408,14 +410,13 @@ Waf指纹
 		+ ott http://192.168.56.121 50
 		+ ott http://192.168.56.121 50 .phtml,.php,.txt,.html
 		
-- `weakfilescan <https://github.com/ring04h/weakfilescan>`_
+
 - `DirBrute <https://github.com/Xyntax/DirBrute>`_
 - auxiliary/scanner/http/dir_scanner
 - auxiliary/scanner/http/dir_listing
 - auxiliary/scanner/http/brute_dirs
 - DirBuster
 - 御剑
-- 路径爬虫 `crawlergo <https://github.com/0Kee-Team/crawlergo>`_
 
 暴力破解
 ----------------------------------------
