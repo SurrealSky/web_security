@@ -79,3 +79,39 @@
 			``Apache：/etc/httpd/conf/httpd.conf``
 			``PHP：/etc/php.ini``
 - JS信息搜集
+- 登录口渗透思路
+	+ 万能密码绕过登录
+		::
+		
+			存在 SQL 注入的情况下，有可能使用万能密码直接登录
+			admin' or '1'='1'--
+			admin' OR 4=4/*
+			"or "a"="a
+			' or''='
+			' or 1=1--
+	+ 登录口 SQL 注入
+	+ 后台未授权访问
+		- 使用目录扫描工具，如 dirsearch 等扫描路径，有的可能存在目录遍历
+		- 查看 js 代码中登录成功后的跳转 url
+		- 使用 jsfind 找可疑 url
+		- 利用 web 程序已知漏洞如：druid 未授权的 urls、springboot mapping 等未授权漏洞界面找可疑的 url，访问查看是否存在未授权
+		- 有些可能在未授权进入后台一瞬间，重定到登录页面，这时可以利用 burp 抓包把跳转包 drop 掉
+	+ 组件未授权
+		- Redis 未授权访问漏洞
+		- MongoDB 未授权访问漏洞
+		- Jenkins 未授权访问漏洞
+		- Memcached 未授权访问漏洞
+		- JBOSS 未授权访问漏洞
+		- VNC 未授权访问漏洞
+		- Docker 未授权访问漏洞
+		- ZooKeeper 未授权访问漏洞
+		- Rsync 未授权访问漏洞
+		- Atlassian Crowd 未授权访问漏洞
+		- CouchDB 未授权访问漏洞
+		- Elasticsearch 未授权访问漏洞
+		- Hadoop 未授权访问漏洞
+		- Jupyter Notebook 未授权访问漏洞
+	+ 任意重置密码
+	+ 用户枚举漏洞
+	+ 验证码问题
+	+ URL 重定向-钓鱼

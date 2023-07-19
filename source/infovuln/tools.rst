@@ -215,8 +215,10 @@ Waf指纹
 - sqlmap
 	+ ``sqlmap -u “www.xxx.com/xxx?id=1” --identify-waf``
 
-js敏感信息
+敏感信息
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ FindSomething
+	- 项目地址：https://github.com/momosecurity/FindSomething
 + JSINFO-SCAN
 	- 递归爬取域名 (netloc/domain)，以及递归从 JS 中获取信息的工具。
 	- 项目地址：``https://github.com/p1g3/JSINFO-SCAN``
@@ -226,6 +228,11 @@ js敏感信息
 	- 用法：
 		+ 简单爬取: ``python JSFinder.py -u http://www.mi.com``
 		+ 深度爬取: ``python JSFinder.py -u http://www.mi.com -d``
+
+备份文件扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ ihoneyBakFileScan_Modify
+	- 项目地址：https://github.com/VMsec/ihoneyBakFileScan_Modify
 
 路径及文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

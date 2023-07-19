@@ -170,6 +170,8 @@ DNS Rebinding
 	+ payload: ``<meta http-equiv="refresh" content="0;url=http://ssrf.jd.local/"/>``
 - 图片检索功能
 	+ url参数
+- 关键参数
+	+ ``share,wap,url,link,src,source,target,u,display,sourceURl,imageURL,domain``
 
 
 .. |ssrf1| image:: ../images/ssrf1.jpg
