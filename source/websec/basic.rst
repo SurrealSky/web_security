@@ -152,6 +152,94 @@ Spring 框架
 		+ 地址：``https://github.com/0x727/SpringBootExploit``
 		+ 一款针对 SpringBootEnv 页面进行快速漏洞利用的工具。
 
+swagger
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 未授权访问
+	::
+	
+		/api
+		/api-docs
+		/api-docs/swagger.json
+		/api.html
+		/api/api-docs
+		/api/apidocs
+		/api/doc
+		/api/swagger
+		/api/swagger-ui
+		/api/swagger-ui.html
+		/api/swagger-ui.html/
+		/api/swagger-ui.json
+		/api/swagger.json
+		/api/swagger/
+		/api/swagger/ui
+		/api/swagger/ui/
+		/api/swaggerui
+		/api/swaggerui/
+		/api/v1/
+		/api/v1/api-docs
+		/api/v1/apidocs
+		/api/v1/swagger
+		/api/v1/swagger-ui
+		/api/v1/swagger-ui.html
+		/api/v1/swagger-ui.json
+		/api/v1/swagger.json
+		/api/v1/swagger/
+		/api/v2
+		/api/v2/api-docs
+		/api/v2/apidocs
+		/api/v2/swagger
+		/api/v2/swagger-ui
+		/api/v2/swagger-ui.html
+		/api/v2/swagger-ui.json
+		/api/v2/swagger.json
+		/api/v2/swagger/
+		/api/v3
+		/apidocs
+		/apidocs/swagger.json
+		/doc.html
+		/docs/
+		/druid/index.html
+		/graphql
+		/libs/swaggerui
+		/libs/swaggerui/
+		/spring-security-oauth-resource/swagger-ui.html
+		/spring-security-rest/api/swagger-ui.html
+		/sw/swagger-ui.html
+		/swagger
+		/swagger-resources
+		/swagger-resources/configuration/security
+		/swagger-resources/configuration/security/
+		/swagger-resources/configuration/ui
+		/swagger-resources/configuration/ui/
+		/swagger-ui
+		/swagger-ui.html
+		/swagger-ui.html#/api-memory-controller
+		/swagger-ui.html/
+		/swagger-ui.json
+		/swagger-ui/swagger.json
+		/swagger.json
+		/swagger.yml
+		/swagger/
+		/swagger/index.html
+		/swagger/static/index.html
+		/swagger/swagger-ui.html
+		/swagger/ui/
+		/Swagger/ui/index
+		/swagger/ui/index
+		/swagger/v1/swagger.json
+		/swagger/v2/swagger.json
+		/template/swagger-ui.html
+		/user/swagger-ui.html
+		/user/swagger-ui.html/
+		/v1.x/swagger-ui.html
+		/v1/api-docs
+		/v1/swagger.json
+		/v2/api-docs
+		/v3/api-docs
++ 扫描
+	+ dirsearch
+	+ api泄露，直接测试，看是否需要授权
+
 Actuator信息泄露
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + Spring Boot Actuator 模块提供了健康检查，审计，指标收集，HTTP 跟踪等，是帮助我们监控和管理Spring Boot 应用的模块。
@@ -189,6 +277,11 @@ Apache Dubbo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + CVE-2020-1948 反序列化漏洞利用
 + https://blog.csdn.net/weixin_46137328/article/details/107194560
+
+Apache Flink
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 任意 Jar 包上传致 RCE 漏洞
++ https://zhuanlan.zhihu.com/p/328382373
 
 Nginx
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -423,6 +516,11 @@ DB2 数据库
 - 默认端口：5000
 - 攻击方法
 	+ 安全限制绕过：成功后可执行未授权操作（CVE-2015-1922）
+
+minio
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 未授权信息泄露
++ https://github.com/Okaytc/minio_unauth_check
 
 ActiveMQ
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

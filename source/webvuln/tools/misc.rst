@@ -140,14 +140,17 @@
 			fscan.exe -h 192.168.1.1/8  (A段的192.x.x.1和192.x.x.254,方便快速查看网段信息 )  
 			fscan.exe -h 192.168.1.1/24 -m smb -pwd password (smb密码碰撞)  
 			fscan.exe -h 192.168.1.1/24 -m ms17010 (指定模块)  
+			fscan64.exe -h 10.10.180.0-10.10.180.255 -p 445 -sc ms17|findstr "MS17-010"（指定模块）
 			fscan.exe -hf ip.txt  (以文件导入)
-+ Railgun
-	- 项目地址：``https://github.com/lz520520/railgun``
-	- Railgun为一款GUI界面的渗透工具，将部分人工经验转换为自动化，集成了渗透过程中常用到的一些功能，目前集成了端口扫描、端口爆破、web指纹扫描、漏洞扫描、漏洞利用以及编码转换功能，后续会持续更新。
++ Template 
+	+ 项目地址：https://github.com/1n7erface/Template
 + goon
 	- 项目地址：``https://github.com/i11us0ry/goon``
 	- goon,集合了fscan和kscan等优秀工具功能的扫描爆破工具。
 	- 功能包含：ip探活、port扫描、web指纹扫描、title扫描、fofa获取、ms17010、mssql、mysql、postgres、redis、ssh、smb、rdp、telnet等爆破以及如netbios探测等功能。
++ Railgun
+	- 项目地址：``https://github.com/lz520520/railgun``
+	- Railgun为一款GUI界面的渗透工具，将部分人工经验转换为自动化，集成了渗透过程中常用到的一些功能，目前集成了端口扫描、端口爆破、web指纹扫描、漏洞扫描、漏洞利用以及编码转换功能，后续会持续更新。
 + SweetBabyScan
 	- 项目地址：``https://github.com/inbug-team/SweetBabyScan``
 	- 轻量级内网资产探测漏洞扫描工具，支持弱口令爆破的内网资产探测漏洞扫描工具，集成了Xray与Nuclei的Poc
