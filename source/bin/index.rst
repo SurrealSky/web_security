@@ -10,3 +10,4 @@
    software
    avr
    stm32
+   tool
