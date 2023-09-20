@@ -191,7 +191,36 @@ UAC (User Account Control) 是Windows的一个安全机制，当一些敏感操�
 
 提权辅助工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-https://i.hacking8.com/tiquan/
++ 查看系统补丁信息
+	- ``systeminfo``
+	- ``Wmic qfe get Caption,Description,HotFixID,InstalledOn``
++ 查询系统未修复可提权补丁
+	- ``https://i.hacking8.com/tiquan/``
++ 相关工具
+	- MSF后模块
+		+ ``post/windows/gather/enum_patches``
+		+ ``post/multi/recon/local_exploit_suggester``
+	- windows exploit suggester
+		+ ``https://github.com/AonCyberLabs/Windows-Exploit-Suggester``
+	- powershell中的sherlock脚本
+		+ ``Import-Module C:\Sherlock.ps1 #下载ps1脚本，导入模块``
+		+ ``Find-AllVulns``
+	- Empire内置模块
+		+ ``usemodule privesc/powerup/allchecks``
+		+ ``execute``
+	- winPEAS
+		+ ``https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS``
+	- NSudoLG
+		+ 项目地址：``https://github.com/M2TeamArchived/NSudo``
+		+ 提权：``NSudoLG.exe -U:T -P:E cmd /C "C:\test.exe" & exit"``
+	- AdvancedRun
+		+ 项目地址：``https://www.nirsoft.net/utils/advanced_run.html``
+		+ 提权TrustedInstaller
+			- ``AdvancedRun.exe /Clear /EXEFilename "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" /StartDirectory "C:\" /CommandLine "" /RunAs 8 /Run``
+			- ``AdvancedRun.exe /Clear /EXEFilename "C:\Windows\System32\cmd.exe" /StartDirectory "C:\" /CommandLine "" /RunAs 8 /Run``
+		+ 提权SYSTEM
+			- ``AdvancedRun.exe /Clear /EXEFilename "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" /StartDirectory "C:\" /CommandLine "" /RunAs 4 /Run``
+			- ``AdvancedRun.exe /Clear /EXEFilename "C:\Windows\System32\cmd.exe" /StartDirectory "C:\" /CommandLine "" /RunAs 4 /Run``
 
 利用计划任务升级system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -207,27 +236,6 @@ https://i.hacking8.com/tiquan/
         关闭和卸载：
         net stop SuperCMD
         sc delete SuperCMD
-
-任意写文件利用
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-在Windows中用户可以写的敏感位置主要有以下这些
-
-+ 用户自身的文件和目录，包括 ``AppData`` ``Temp``
-+ ``C:\`` ，默认情况下用户可以写入
-+ ``C:\ProgramData`` 的子目录，默认情况下用户可以创建文件夹、写入文件
-+ ``C:\Windows\Temp`` 的子目录，默认情况下用户可以创建文件夹、写入文件
-
-具体的ACL信息可用AccessChk, 或者PowerShell的 ``Get-Acl`` 命令查看。
-
-可以利用对这些文件夹及其子目录的写权限，写入一些可能会被加载的dll，利用dll的加载执行来获取权限。
-
-MOF
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MOF是Windows系统的一个文件（ ``c:/windows/system32/wbem/mof/nullevt.mof`` ）叫做"托管对象格式"，其作用是每隔五秒就会去监控进程创建和死亡。
-
-当拥有文件上传的权限但是没有Shell时，可以上传定制的mof文件至相应的位置，一定时间后这个mof就会被执行。
-
-一般会采用在mof中加入一段添加管理员用户的命令的vbs脚本，当执行后就拥有了新的管理员账户。
 
 凭证窃取
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -6,13 +6,13 @@
 + metasploit
 	- Terminal下msf常用命令简介
 		+ 打开msf终端：``msfconsole``
-		+ msf数据库初始化：``msfdb init``
-		+ msf更新：``apt install metasploit framework``
 		+ 将汇编指令转换成为对应的16进制机器码：``msf-nasm_shell``
+		+ 设置全局变量
+			::
+			
+				set proxies socks5:127.0.0.1:7222
+				set ReverseAllowProxy true
 	- msf终端下常用命令简介
-		+ 查看数msf据库连接状态,连接数据库能够优化搜索等过程：``db_status`` 
-		+ 重建缓存，将模块等索引重新存入数据库：``db_rebuild_cache``
-		+ 调用nmap扫描，并将扫描结果存入数据库：``db_nmap``
 		+ 显示命令的帮助信息：``help [db_connect]``
 		+ 搜索含有关键字的模块：``search [module]``
 		+ 选择模块：``use [module]``
@@ -144,6 +144,7 @@
 			fscan.exe -hf ip.txt  (以文件导入)
 + Template 
 	+ 项目地址：https://github.com/1n7erface/Template
++ uniscan
 + goon
 	- 项目地址：``https://github.com/i11us0ry/goon``
 	- goon,集合了fscan和kscan等优秀工具功能的扫描爆破工具。
@@ -154,7 +155,8 @@
 + SweetBabyScan
 	- 项目地址：``https://github.com/inbug-team/SweetBabyScan``
 	- 轻量级内网资产探测漏洞扫描工具，支持弱口令爆破的内网资产探测漏洞扫描工具，集成了Xray与Nuclei的Poc
-
++ Ladon
+	- 项目地址：``https://github.com/k8gege/Ladon``
 
 特定CMS漏洞利用
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

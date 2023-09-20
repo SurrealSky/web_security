@@ -228,6 +228,8 @@ Waf指纹
 	- 用法：
 		+ 简单爬取: ``python JSFinder.py -u http://www.mi.com``
 		+ 深度爬取: ``python JSFinder.py -u http://www.mi.com -d``
++ js_info_finder
+	- 项目地址：``https://github.com/laohuan12138/js_info_finder``
 
 备份文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
