@@ -8,7 +8,6 @@ Java
    basic
    framework
    container
-   sandbox
    unserialize
    rmi
    jndi
