@@ -318,9 +318,15 @@ windbg
 		+ 指定帧号：``.frame #``
 		+ 显示寄存器信息：``.frame /r [#]``
 
+dnSpy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 下载地址：``https://github.com/dnSpy/dnSpy``
++ 支持动态调试.net程序。
+
+
 其它
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MDebug102，OllyICE，PointH，x32dbg/x64dbg，c32asm，W32dsm，masm32，.NET（injectreflector，ildasm，PEBrowseDbg，Reflector,ILSpy,dnSpy）
+MDebug102，OllyICE，PointH，x32dbg/x64dbg，c32asm，W32dsm，masm32，.NET（injectreflector，ildasm，PEBrowseDbg，Reflector,ILSpy）
 
 插桩工具
 ----------------------------------------
