@@ -151,6 +151,8 @@ Spring 框架
 	- SpringBootExploit
 		+ 地址：``https://github.com/0x727/SpringBootExploit``
 		+ 一款针对 SpringBootEnv 页面进行快速漏洞利用的工具。
+	- SBSCAN
+		+ 地址：``https://github.com/sule01u/SBSCAN.git``
 
 swagger
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

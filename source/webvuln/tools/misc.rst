@@ -122,7 +122,17 @@
 + LiqunKit
 	- 项目：``https://github.com/Liqunkit/LiqunKit_``
 	- 漏洞辅助工具箱，包含致远OA，泛微OA，万户OA，蓝凌OA，用友OA，通达OA，weblogic，struts2，thinkphp，shiro，数据库综合。
-
++ 带带弟弟
+	- 项目：``https://github.com/SleepingBag945/dddd``
+	- 示例：
+		::
+		
+			# 指定IP禁Ping全端口扫描指定端口
+			./dddd -t 172.16.100.1 -p 80,53,1433-5000 -Pn
+			先配置./config/subfinder-config.yaml中的FOFA 邮箱和KEY。
+				fofa: ["xxxx@qq.com:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
+			./dddd -t "domain=\"baidu.com\"" -fofa (从fofa取100个baidu.com域名的目标)
+			./dddd -t "domain=\"baidu.com\"" -fofa -ffmc 10000 (指定最大数量为10000 默认100)
 + fscan
 	- 项目地址：``https://github.com/shadow1ng/fscan``
 	- 示例
