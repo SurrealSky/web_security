@@ -248,6 +248,7 @@ Actuator信息泄露
 	- JDK/bin/jvisualvm.exe工具
 	- OQL执行： ``select s from java.util.LinkedHashMap$Entry s where /spring.datasource.password/.test(s.key)``
 	- ``https://github.com/wyzxxz/heapdump_tool``
+	- ``https://github.com/whwlsfb/JDumpSpider``
 + jolokia接口利用
 
 Fastjson
