@@ -239,6 +239,7 @@ swagger
 + 扫描
 	+ dirsearch
 	+ api泄露，直接测试，看是否需要授权
+	+ ``https://github.com/jayus0821/swagger-hack``
 
 Actuator信息泄露
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
