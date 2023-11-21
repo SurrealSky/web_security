@@ -328,6 +328,9 @@ Unquoted Service Paths
 
 				导出lsass.exe进程中所有的票据
 				sekurlsa::tickets /export
+				
+				获取aeskey
+				sekurlsa::ekeys
 		- kerberos模块
 			::
 			

