@@ -264,6 +264,10 @@ UAC (User Account Control) 是Windows的一个安全机制，当一些敏感操�
 		+ 提权SYSTEM
 			- ``AdvancedRun.exe /Clear /EXEFilename "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" /StartDirectory "C:\" /CommandLine "" /RunAs 4 /Run``
 			- ``AdvancedRun.exe /Clear /EXEFilename "C:\Windows\System32\cmd.exe" /StartDirectory "C:\" /CommandLine "" /RunAs 4 /Run``
+	- psexec提权
+		+ sysinternals工具
+		+ 原理：利用Windows 远程过程调用（RPC）机制来在目标计算机上创建了一个新的进程，并以管理员权限运行该进程。这个新进程就相当于是已经进行了提权操作的进程。
+		+ 命令：``psexec.exe -accepteula -s -i -d cmd.exe``
 
 利用计划任务升级system
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

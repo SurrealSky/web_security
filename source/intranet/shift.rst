@@ -278,7 +278,7 @@ IPC$共享利用
 				net use \\owa2010cn-god\c$
 				dir \\OWA2010CN-GOD\c$
 	- 黄金票据攻击
-		+ 根据kerberos认证协议，分析只要获取Krbtgt的NTLM哈希值，就可以伪造任意的 TGT 了。
+		+ 根据kerberos认证协议分析只要获取Krbtgt的NTLM哈希值，拿着krbtgt账户的票据，可以访问域内任意主机。
 		+ 前提：需要伪造的域管理员用户名，完整的域名，域 SID，krbtgt 的 NTLM 哈希值
 		+ 利用过程
 			::
