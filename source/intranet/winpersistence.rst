@@ -280,6 +280,18 @@ UAC (User Account Control) 是Windows的一个安全机制，当一些敏感操�
 		net stop SuperCMD
 		sc delete SuperCMD
 
+Unquoted Service Paths
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 该漏洞与文件名中包含空格的可执行文件的路径相关，文件名未包含在引号标记（""）中。
++ 如：C:\Program Files\something\legit.exe, Windows服务首先会加载以下程序文件:
+	- ``C:\Program.exe``
+	- ``C:\Program Files.exe``
++ 命令
+	- ``wmic service get name,displayname,pathname,startmode |findstr /i "Auto" |findstr /i /v "C:\Windows\\" |findstr /i /v """``
+	- ``wmic service get name,displayname,startmode,pathname | findstr /i /v "C:\Windows\\" |findstr /i /v """``
+
+
+
 凭证窃取
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 综合工具
