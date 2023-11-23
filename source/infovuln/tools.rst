@@ -151,6 +151,11 @@ IP信息
 	+ 输出扫描结果：``masscan -p80,8000-8100 10.0.0.0/8 --echo > scan.conf``
 	+ 输出文件：``-oL/-oJ/-oD/-oG/-oB/-oX/-oU <file>: Output scan in List/JSON/nDjson/Grepable/Binary/XML/Unicornscan format``
 
+RPC信息搜集
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- rpcclient
+	+ ``rpcclient -U "" 10.10.10.161``
+
 Samba服务
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - smbmap

