@@ -11,11 +11,6 @@
 - RTF解析工具
 	+ OffVis
 
-dll劫持漏洞
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Rattler <https://github.com/sensepost/rattler/releases/>`_
-- `ChkDllHijack <https://github.com/anhkgg/anhkgg-tools>`_
-
 COM FUZZ
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - COMRaider 
@@ -237,6 +232,11 @@ COM FUZZ
 		- 参数说明
 			::
 			
+				drrun -t <client> -- <guest>
+				
+				说明：Client可以观察guest在运行过程中的每一条指令，对任意指令做出任意修改，
+					  可以在任意位置插入任意指令。
+				
 				USAGE: drrun [options] <app and args to run>
 				   or: drrun [options] -- <app and args to run>
 				   or: drrun [options] [DR options] -- <app and args to run>

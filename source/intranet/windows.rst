@@ -15,6 +15,32 @@
 - 查看安装的软件 ``wmic product get name,version``
 - 查看Powershell版本：``REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine" /v PowerShellVersion``
 
+系统服务管理-sc
+----------------------------------------
+- start
+	+ 用于启动、停止或暂停服务
+- stop
+	+ 用于停止服务
+- query
+	+ 用于查询服务的状态
+	+ ``Sc [ServerName] query [ServiceName] [type= {driver | service | all}] [type= {own | share | interact | kernel | filesys | rec | adapt}] [state={active | inactive | all}] [bufsize= BufferSize] [ri= ResumeIndex] [group= GroupName]``
+		::
+		
+			ServerName：远程服务器名称须使用 UNC 格式（"\myserver"）。
+			ServiceName：指定服务名。
+			type= {driver | service | all}
+			type= {own | share | interact | kernel | filesys | rec | adapt}：指定要枚举的服务类型或驱动程序类型。
+			state= {active | inactive | all}:指定要枚举的服务的已开始状态。
+- config
+	+ 用于更改服务的配置（永久）
+	+ ``sc config stisvc start= demand``
+- create
+	+ 用于创建新服务
+	+ ``sc create TestService binPath= "C:\test.exe"``
+- delete
+	+ 用于删除指定服务
+	+ ``sc delete TestService``
+
 域信息
 ----------------------------------------
 - 获取当前组的计算机名 ``net view``
@@ -225,5 +251,10 @@
 		+ 远程执行单个命令：``Invoke-Command -ComputerName cd-lsr-svr -ScriptBlock { Get-Service WinRM } -credential ****(用户名)***``
 + 日志与事件信息
 	- ``wevtutil``
+		+ 显示系统日志配信信息：``wevtutil gl System /f:xml``
+		+ 显示系统日志状态：``wevtutil gli System``
+		+ 删除日志：``wevtutil cl system/application``
+		+ 显示应用程序日志三个最新事件：``wevtutil qe Application /c:3 /rd:true /f:text``
+		+ 导出系统日志：``wevtutil epl System C:\backup\system0506.evtx``
 + 注册表信息
 	- ``reg``

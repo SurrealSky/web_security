@@ -14,28 +14,73 @@ IDA
 		在unk_80BF804处按Y键更改变量类型，输入char，确定后即可看到打印的字符串：
 		printf("%d\n", v2[v1 - 1]);
 + 常用插件
-	::
-	
-		IDA FLIRT Signature Database -- 用于识别静态编译的可执行文件中的库函数
-		Find Crypt -- 寻找常用加密算法中的常数（需要安装 yara-python）
-		IDA signsrch -- 寻找二进制文件所使用的加密、压缩算法
-		Ponce -- 污点分析和符号化执行工具
-		snowman decompiler -- C/C++反汇编插件（F3 进行反汇编）
-		CodeXplorer -- 自动类型重建以及对象浏览（C++）（jump to disasm)
-		IDA Ref -- 汇编指令注释（支持arm，x86，mips）
-		auto re -- 函数自动重命名
-		nao -- dead code 清除
-		HexRaysPyTools -- 类/结构体创建和虚函数表检测
-		DIE -- 动态调试增强工具，保存函数调用上下文信息
-		sk3wldbg -- IDA 动态调试器，支持多平台
-		idaemu -- 模拟代码执行（支持X86、ARM平台）
-		Diaphora -- 程序差异比较
-		Keypatch -- 基于 Keystone 的 Patch 二进制文件插件​
-		FRIEND -- 哪里不会点哪里，提升汇编格式的可读性、提供指令、寄存器的文档等
-		SimplifyGraph -- 简化复杂的函数流程图
-		bincat -- 静态二进制代码分析工具包，2017 Hex-Rays 插件第一名
-		golang_loader_assist -- Golang编译的二进制文件分析助手
-		BinDiff
+	- IDA FLIRT Signature Database
+		+ 用于识别静态编译的可执行文件中的库函数
+		+ ``https://github.com/push0ebp/sig-database``
+	- Find Crypt
+		+ 寻找常用加密算法中的常数（需要安装 yara-python）
+		+ ``https://github.com/polymorf/findcrypt-yara``
+	- IDA signsrch
+		+ 寻找二进制文件所使用的加密、压缩算法
+		+ ``https://sourceforge.net/projects/idasignsrch``
+	- Ponce
+		+ 污点分析和符号化执行工具
+		+ ``https://github.com/illera88/Ponce``
+	- snowman decompiler
+		+ C/C++反汇编插件（F3 进行反汇编）
+		+ ``http://derevenets.com/``
+	- keystone
+		+ 二进制文件修改工具，可以直接修改汇编
+		+ ``https://github.com/keystone-engine/keypatch``
+	- CodeXplorer
+		+ 自动类型重建以及对象浏览（C++）（jump to disasm)
+		+ ``https://github.com/REhints/HexRaysCodeXplorer``
+	- IDA Ref
+		+ 汇编指令注释（支持arm，x86，mips）
+		+ ``https://github.com/nologic/idaref``
+	- auto re
+		+ 函数自动重命名
+		+ ``https://github.com/a1ext/auto_re``
+	- nao
+		+ dead code 清除
+		+ ``https://github.com/tkmru/nao``
+	- HexRaysPyTools
+		+ 类/结构体创建和虚函数表检测
+		+ ``https://github.com/igogo-x86/HexRaysPyTools``
+	- IDA sploiter
+		+ 漏洞利用开发工具，寻找gadget
+		+ ``http://thesprawl.org/projects/ida-sploiter/``
+	- DIE
+		+ 动态调试增强工具，保存函数调用上下文信息
+		+ ``https://github.com/ynvb/DIE``
+	- sk3wldbg
+		+ IDA 动态调试器，支持多平台
+		+ ``https://github.com/cseagle/sk3wldbg``
+	- ret-sync
+		+ 让调试器（WinDbg / GDB / LLDB / OllyDbg / OllyDbg2 / x64dbg）与IDA同步的一个插件
+		+ ``https://github.com/bootleg/ret-sync``
+	- idaemu
+		+ 模拟代码执行（支持X86、ARM平台）
+		+ ``https://github.com/36hours/idaemu``
+	- x86emu 
+		+ CPU模拟器吧，可以模拟执行一些代码这些。
+		+ ``https://github.com/cseagle/x86emu``
+	- Lighthouse 
+		+ 代码覆盖测试工具Code Coverage Explorer for IDA Pro
+		+ ``https://github.com/gaasedelen/lighthouse``
+	- Diaphora
+		+ 程序差异比较
+		+ ``https://github.com/joxeankoret/diaphora``
+	- FRIEND
+		+ 哪里不会点哪里，提升汇编格式的可读性、提供指令、寄存器的文档等
+		+ ``https://github.com/alexhude/FRIEND``
+	- SimplifyGraph
+		+ 简化复杂的函数流程图
+	- bincat
+		+ 静态二进制代码分析工具包
+		+ ``https://github.com/airbus-seclab/bincat``
+	- golang_loader_assist -- Golang编译的二进制文件分析助手
+	- BinDiff
 + IDAPython
 	- 使用方法
 		点击file，Script command...菜单,选择python脚本运行。
@@ -330,6 +375,47 @@ MDebug102，OllyICE，PointH，x32dbg/x64dbg，c32asm，W32dsm，masm32，.NET�
 
 插桩工具
 ----------------------------------------
+
+TinyInst
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+DynamoRIO
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Intel PT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 简介
+	- Pin可以被看做一个即时JIT编译器（Just in Time）。它可以程序运行时拦截常规可执行文件的指令，并在指令执行前生成新的代码，然后去执行生成的新的代码，并在新的代码执行完成后，将控制权交给被拦截的指令。
+	- Pin支持多平台（Windows、Linux、OSX、Android）和多架构（x86，x86-64、Itanium、Xscale)。
+	- 官方介绍: https://software.intel.com/sites/landingpage/pintool/docs/98484/Pin/html/index.html
+	- API文档：https://software.intel.com/sites/landingpage/pintool/docs/98484/Pin/html/group__API__REF.html
+	- 下载地址：https://www.intel.com/content/www/us/en/developer/articles/tool/pin-a-binary-instrumentation-tool-downloads.html
+	- tools编译
+		::
+		
+			1.Pin官网下载windows平台对应的安装包。
+			2.安装Cygwin，记得选择安装make、gcc、g++工具
+			3.将Cygwin目录下面的bin目录添加到环境变量Path中
+			4.通过VS的命令行(x86_x64交叉编译，x64_x86交叉编译)进入pin/source/tools目录下
+			5.使用make命令
++ 使用示例
+	- 基本命令：``pin [OPTION] [-t <tool> [<toolargs>]] -- <command line>``
+	- 简单指令计数（指令级插装）: ``pin -t obj-ia32\itrace.dll -- cmd /C dir``
+	- 指令地址追踪（指令级插装）: ``pin -t obj-ia32\itrace.dll -- cmd /C dir``
+	- 内存引用追踪（指令级插装）: ``pin -t obj-ia32\pinatrace.dll -- cmd /C dir``
+	- 检测镜像的加载和卸载（镜像级插装）: ``pin -t obj-ia32\imageload.dll -- cmd /C dir``
+	- 更有效的指令计数（Trace级插装）: ``pin -t obj-ia32\inscount1.dll -- cmd /C dir``
+	- 过程指令计数（函数级插装）: ``pin -t obj-ia32\proccount.dll -- cmd /C dir``
+	- 指令顺序: ``pin -t obj-ia32\invocation.dll -- cmd /C dir``
+	- 对线程级应用插装: ``pin -t obj-ia32\malloc_mt.dll -- cmd /C dir``
+	- 打印所有访问内存指令的PC（程序计数器）值和这个指令的有效访问地址: ``pin -t obj-ia32\buffer-lin_tls.dll -- cmd /C dir``
+	- 统计镜像文件的指令数：``pin -t obj-ia32\staticcount.dll -- cmd /C dir``
++ 二次开发
+	- 打开目录source\tools\MyPintool
+	- 打开工程文件，使用vs生成解决方案
+
+Syzygy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 frida
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

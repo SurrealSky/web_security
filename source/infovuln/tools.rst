@@ -19,14 +19,13 @@ CDN判别
 - DNS历史记录查询
 	+ ``https://www.dnsdb.io/zh-cn/`` 
 	+ ``https://viewdns.info/`` 
-
-DNS解析域名IP查询
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `证书子域查询 <https://crt.sh/>`_
-- `VirusTotal <https://www.virustotal.com/>`_
-- `PassiveTotal <https://passivetotal.org>`_
-- `DNSDB <https://www.dnsdb.info/>`_
-- `sitedossier <http://www.sitedossier.com/>`_
+- cdncheck
+	+ 安装：``go install -v github.com/projectdiscovery/cdncheck/cmd/cdncheck@latest``
+	+ 示例
+		::
+		
+			echo hackerone.com| cdncheck -resp
+			subfinder -d hackerone.com| cdncheck -resp
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,7 +47,7 @@ DNS解析域名IP查询
 - `subfinder <https://github.com/subfinder/subfinder>`_
 	| ``subfinder -d yuanqisousou.com/``
 - `wydomain <https://github.com/ring04h/wydomain>`_
-
+- `chaos <https://github.com/projectdiscovery/chaos-client>`_
 
 主机信息
 ----------------------------------------
@@ -68,6 +67,15 @@ IP信息
 - nslookup
 	+ ``查询A记录：nslookup -q=A baidu.com``
 	+ ``指定域名服务器：nslookup baidu.com -type=any 8.8.8.8``
+- dnsx
+	+ 项目地址：``https://github.com/projectdiscovery/dnsx``
+	+ 直接apt安装
+	+ 示例
+		::
+		
+			subfinder -silent -d hackerone.com | dnsx -silent
+			echo hackerone.com| dnsx -a -re
+
 - IP无法访问页面
 	+ 服务器开启虚拟主机
 		``如：www.ustc.edu.cn->218.22.21.21,页面显示400 Unknown Virtual Host``
