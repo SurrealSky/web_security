@@ -122,6 +122,12 @@
 	- Get Cleartext Pass: ``netsh wlan show profile <SSID> key=clear``
 	- ``cls & echo. & for /f "tokens=4 delims=: " %a in ('netsh wlan show profiles ^| find "Profile "') do @echo off > nul & (netsh wlan show profiles name=%a key=clear | findstr "SSID Cipher Content" | find /v "Number" & echo.) & @echo on``
 
+主机敏感数据
+----------------------------------------
+- Pillager
+	+ 项目地址：``https://github.com/qwqdanchun/Pillager``
+	+ 运行后，在系统temp目录生成Pillager.tar.gz文件。
+
 其他
 ----------------------------------------
 + wmic

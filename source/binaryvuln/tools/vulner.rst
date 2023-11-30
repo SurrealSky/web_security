@@ -200,7 +200,8 @@ COM FUZZ
 		- afl-net
 - Winafl
 	+ DynamoRIO
-		- 官网：https://github.com/DynamoRIO/dynamorio/releases
+		- 官网：``https://github.com/DynamoRIO/dynamorio/releases``
+		- 文档：``https://dynamorio.org/index.html``
 		- 编译
 			::
 			
@@ -326,10 +327,6 @@ COM FUZZ
 				- 减小单个输入文件的大小
 				- ``afl-tmin -i input_file -o output_file -- /path/to/tested/program [params] @@``
 	+ 示例
-		- 覆盖率文件
-			+ ``drrun.exe -t drcov -dump_text -- test_gdiplus.exe 1.bmp``
-			+ ``drcov2lcov -input drcov.notepad.exe.01556.0000.proc.log -output cov.info``
-			+ ``perl genhtml cov.info -o html``	
 		- 测试运行
 			+ ``drrun.exe  -c winafl.dll -debug -target_module test_gdiplus.exe -target_offset 0x1680 -fuzz_iterations 50 -nargs 2 -- test_gdiplus.exe in/1.bmp``
 			+ 生成得log文件中显示 ``Everything appears to be running normally`` 证明运行正常。

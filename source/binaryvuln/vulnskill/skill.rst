@@ -103,6 +103,7 @@ DLL劫持漏洞
 	+ ``frida-trace -p [pid] -a MODULE!OFFSET``
 	+ ``frida-trace -p [pid] -i FUNCTION`` ,函数名可以使用通配符。
 + drrun
++ pin
 	+ ``pin -t obj-ia32\proccount.dll -- cmd /C dir``
 
 windows驱动漏洞挖掘
