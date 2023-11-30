@@ -88,8 +88,22 @@ DLL劫持漏洞
 			点击File，Load file，Code coverage file，打开log文件
 + frida
 	- 项目地址：``https://github.com/gaasedelen/lighthouse/tree/develop/coverage/frida``
+	- 示例：``python frida-drcov.py <process name | pid>``
+	- 指定输出文件：``python frida-drcov.py -o more-coverage.log foo``
+	- 白名单模块：``python frida-drcov.py -w libfoo -w libbaz foo``
+	- 指定线程：``python frida-drcov.py -t 543 -t 678 foo``
 + pin
 	- 项目地址：``https://github.com/gaasedelen/lighthouse/tree/develop/coverage/pin``
+	- 编译好的：``https://github.com/gaasedelen/lighthouse/releases`` ，注意官网编译的版本需要和pin版本对应。
+	- 示例：``pin -t C:\CodeCoverage.dll -- C:\HashCalc.exe``
+
+函数级跟踪
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ frida
+	+ ``frida-trace -p [pid] -a MODULE!OFFSET``
+	+ ``frida-trace -p [pid] -i FUNCTION`` ,函数名可以使用通配符。
++ drrun
+	+ ``pin -t obj-ia32\proccount.dll -- cmd /C dir``
 
 windows驱动漏洞挖掘
 ----------------------------------------

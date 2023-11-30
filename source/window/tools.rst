@@ -394,13 +394,14 @@ Intel PT
 		::
 		
 			1.Pin官网下载windows平台对应的安装包。
-			2.安装Cygwin，记得选择安装make、gcc、g++工具
-			3.将Cygwin目录下面的bin目录添加到环境变量Path中
-			4.通过VS的命令行(x86_x64交叉编译，x64_x86交叉编译)进入pin/source/tools目录下
-			5.使用make命令
+			2.解压pin，将pin目录添加到path环境变量。
+			3.安装Cygwin，记得选择安装make、gcc、g++工具
+			4.将Cygwin目录下面的bin目录添加到环境变量Path中
+			5.这里是win10 64电脑，通过VS的命令行(x64_x86交叉编译，x64 native)进入pin/source/tools目录下
+			6.使用make命令，分别编译32，64位程序。
 + 使用示例
 	- 基本命令：``pin [OPTION] [-t <tool> [<toolargs>]] -- <command line>``
-	- 简单指令计数（指令级插装）: ``pin -t obj-ia32\itrace.dll -- cmd /C dir``
+	- 简单指令计数（指令级插装）: ``pin -t obj-ia32\inscount0.dll -- cmd /C dir``
 	- 指令地址追踪（指令级插装）: ``pin -t obj-ia32\itrace.dll -- cmd /C dir``
 	- 内存引用追踪（指令级插装）: ``pin -t obj-ia32\pinatrace.dll -- cmd /C dir``
 	- 检测镜像的加载和卸载（镜像级插装）: ``pin -t obj-ia32\imageload.dll -- cmd /C dir``
@@ -428,7 +429,10 @@ frida
 	- 安装方式
 		+ pip install frida
 		+ pip install frida-tools
-	- frida
+	- frida-server
+		+ 下载不同平台的server，可通过不同方式进行远程连接。
+		+ socket示例：``frida-server -l 127.0.0.1:1234``
+	- frida全局参数
 		+ -U：通过USB连接远程设备
 		+ -R：连接远程机器
 		+ -H：连接远程机器HOST
@@ -451,7 +455,7 @@ frida
 	- frida-ps
 	- frida-trace
 		+ -f target:即spawn模式
-		+ -F：附加顶层程序
+		+ -F：附加顶层当前运行的程序
 		+ -n name：附加进程名
 		+ -p pid：附加进程id
 		+ -I MODULE：包含模块
