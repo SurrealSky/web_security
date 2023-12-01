@@ -246,7 +246,21 @@ COM FUZZ
 				   or: drrun [options] [DR options] -c32 <32-bit-client> [client options] -- -c64 <64-bit-client> [client options] -- <app and args to run>
 				
 				官网：https://dynamorio.org/index.html
-				
+		- 客户端开发
+			+ 创建项目
+				Visual Studio创建空项目，生成dll
+			+ 添加Dynamorio自定义宏
+				- 属性管理器，添加新项目属性表，选择任一编译配置项，双击PropertySheet
+				- 点击用户宏，添加宏，名称Dynamorio_ROOT，值为Dynamorio项目解压目录。
+			+ 添加附加包含目录
+				- C/C++，常规，附加包含目录，添加：$(Dynamorio_ROOT)\include;$(Dynamorio_ROOT)\ext\include
+			+ 编写客户端代码
+			+ 修改编译选项
+				- VC++目录，库目录添加：$(Dynamorio_ROOT)
+				- 代码中添加包含的lib库
+				- 添加C/C++，预处理器定义，添加：WINDOWS，X86_32或X86_64
+				- 代码生成，使用静态运行库，/MT
+			+ 运行：``drrun -c demo.dll -- cmd /C dir``
 	+ winafl
 		- 官网：https://github.com/googleprojectzero/winafl
 		- 插桩方式
