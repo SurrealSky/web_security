@@ -100,9 +100,18 @@ DLL劫持漏洞
 函数级跟踪
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + frida
-	+ ``frida-trace -p [pid] -a MODULE!OFFSET``
-	+ ``frida-trace -p [pid] -i FUNCTION`` ,函数名可以使用通配符。
+	- ``frida-trace -p [pid] -a MODULE!OFFSET``
+	- ``frida-trace -p [pid] -i FUNCTION`` ,函数名可以使用通配符。
 + drrun
+	- 跟踪系统函数（NT*）
+		+ ``drrun.exe -t drstrace  -- C:\HashCalc.exe``
+		+ 初次运行，自动下载pdb符号库
+	- 跟踪win32函数调用
+		+ drmemory包含的工具
+		+ 解压DynamoRIO后，使用时，需要将 ``dynamorio\lib32\release\dynamorio.dll`` 放在drmemory目录下。
+		+ 参看单独的工具：``https://github.com/mxmssh/drltrace/releases``
+		+ 命令：``drltrace.exe -only_from_app -print_ret_addr -- cmd /C dir``
+		+ 运行后，在当前目录下生成drltrace.*文件。
 + pin
 	+ ``pin -t obj-ia32\proccount.dll -- cmd /C dir``
 
