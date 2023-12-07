@@ -387,6 +387,9 @@ COM FUZZ
 - honggfuzz
 	+ 项目地址：https://github.com/google/honggfuzz
 - syzkaller
+- wtf
+	+ 基于快照的fuzz工具
+	+ 项目地址：``https://github.com/0vercl0k/wtf``
 
 工控漏洞挖掘
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
