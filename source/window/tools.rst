@@ -381,6 +381,77 @@ TinyInst
 
 DynamoRIO
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 概述
+	DynamoRIO是一款流行的动态二进制插桩工具，工作于操作系统与应用程序之间，通过将二进制程序的代码拷贝到代码缓存的方式模拟目标程序的执行。在动态模拟执行的过程中，可以根据分析需求，对二进制程序的运行状态进行监控与修改。
+- 基本组成
+	+ DynamoRIO：负责解释并执行目标程序；提供丰富的跨平台API接口
+	+ Client ：通过API自定义分析操作来扩展DynamoRIO
+	+ DynamoRIO Extensions：主要指drmgr，drsyms，drwrap等官方提供的扩展接口
+- 事件
+	+ 应用程序事件：应用程序在动态执行时的事件，包括进程创建，模块加载，系统调用等
+	+ DynamoRIO事件：包括基本快、轨迹流的创建等
+	+ 事件回调函数的注册：dr_register_xx_event,dr_ungister_xx_event等
+- 官网：``https://github.com/DynamoRIO/dynamorio/releases``
+- 文档：``https://dynamorio.org/index.html``
+- 编译
+	::
+	
+		本机为x84，编译x86程序：
+		vs启动命令提示符：x86 Native Tools Command Prompt for VS 2019
+		到DynamoRIO目录，执行mkdir build32 && cd build32
+		cmake -G"Visual Studio 16 2019" -A Win32 ..
+		cmake --build . --config RelWithDebInfo
+		
+		本机为x84，编译x64程序：
+		vs启动命令提示符：x86_x64 Cross Tools Command Prompt for VS 2019
+		到DynamoRIO目录，执行mkdir build64 && cd build64
+		cmake -G"Visual Studio 16 2019" -A x64 ..
+		cmake --build . --config RelWithDebInfo
+		
+		本机为x64，编译x86程序：
+		vs启动命令提示符：x64_x86 Cross Tools Command Prompt for VS 2019
+		到DynamoRIO目录，执行mkdir buildx86 && cd buildx86
+		cmake -G"Visual Studio 16 2019" -A Win32 ..
+		cmake --build . --config RelWithDebInfo
+		
+		本机为x64，编译x64程序：
+		vs启动命令提示符：x64 Native Tools Command Prompt for VS 2019
+		到DynamoRIO目录，执行mkdir buildx64 && cd buildx64
+		cmake -G"Visual Studio 16 2019" -A x64 ..
+		cmake --build . --config RelWithDebInfo
+		
+		
+- 参数说明
+	::
+	
+		drrun -t <client> -- <guest>
+		
+		说明：Client可以观察guest在运行过程中的每一条指令，对任意指令做出任意修改，
+			  可以在任意位置插入任意指令。
+		
+		USAGE: drrun [options] <app and args to run>
+		   or: drrun [options] -- <app and args to run>
+		   or: drrun [options] [DR options] -- <app and args to run>
+		   or: drrun [options] [DR options] -c <client> [client options] -- <app and args to run>
+		   or: drrun [options] [DR options] -t <tool> [tool options] -- <app and args to run>
+		   or: drrun [options] [DR options] -c32 <32-bit-client> [client options] -- -c64 <64-bit-client> [client options] -- <app and args to run>
+		
+		官网：https://dynamorio.org/index.html
+- 客户端开发
+	+ 创建项目
+		Visual Studio创建空项目，生成dll
+	+ 添加Dynamorio自定义宏
+		- 属性管理器，添加新项目属性表，选择任一编译配置项，双击PropertySheet
+		- 点击用户宏，添加宏，名称Dynamorio_ROOT，值为Dynamorio项目解压目录。
+	+ 添加附加包含目录
+		- C/C++，常规，附加包含目录，添加：$(Dynamorio_ROOT)\include;$(Dynamorio_ROOT)\ext\include
+	+ 编写客户端代码
+	+ 修改编译选项
+		- VC++目录，库目录添加：$(Dynamorio_ROOT)
+		- 代码中添加包含的lib库
+		- 添加C/C++，预处理器定义，添加：WINDOWS，X86_32或X86_64
+		- 代码生成，使用静态运行库，/MT
+	+ 运行：``drrun -c demo.dll -- cmd /C dir``
 
 Intel PT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
