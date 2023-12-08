@@ -452,6 +452,9 @@ DynamoRIO
 		- 添加C/C++，预处理器定义，添加：WINDOWS，X86_32或X86_64
 		- 代码生成，使用静态运行库，/MT
 	+ 运行：``drrun -c demo.dll -- cmd /C dir``
+- 存在问题
+	+ 当导入表OriginalFirstThunk为0时，通过dr_symbol_import_iterator_hasnext无法获取导入表数据。
+
 
 Intel PT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
