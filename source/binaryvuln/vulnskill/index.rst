@@ -9,4 +9,5 @@
    core
    skill
    iotvuln
+   electron
 
