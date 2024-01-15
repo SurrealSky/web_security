@@ -4,14 +4,12 @@
 概述
 ----------------------------------------
 + electron.js是一个运行时框架，使用web技术来创建跨平台原生桌面应用的框架。
-+ 可以使用纯 JavaScript 来调用丰富的原生 APIs。
-+ electron负责硬件部分，Chromium和Node.js负责界面与逻辑，共同构成了成本低廉却高效的解决方案。
++ electron负责硬件部分，Chromium负责页面UI渲染，Node.js负责业务逻辑，Native API则提供原生能力和跨平台。
 
 特点
 ----------------------------------------
-+ 摆脱了不同浏览器之间的差异和版本的限制
++ 摆脱了不同浏览器之间的差异和版本的限制，可以开发跨平台的桌面应用。
 + 通过内置Node.js提供原生系统的能力，如文件系统和网络的访问，有活跃的贡献者社区管理和第三方丰富的包支持。
-+ 可以开发跨平台的桌面应用。
 + 摆脱浏览器的沙盒机制，可以访问操作系统层面的东西。
 + 前端人员能在不学习其他语言的情况下，快速构建跨平台，带来统一的用户体验
 
@@ -21,12 +19,11 @@
 程序结构
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 每个Electron应用都有一个单一的主进程，作为应用程序的入口点。
-+ 主进程在Chromium、Node.js环境中运行，这意味着它具有require模块和使用所有Node.js API的能力。
 + 主进程的主要目标是使用BrowserWindow模块创建和管理应用程序窗口。
 + 每个Electron应用都会为每个打开的BrowserWindow( 与每个网页嵌入 )生成一个单独的渲染器进程。
-+ 渲染器负责渲染网页内容。渲染器进程也有访问NodeJs共享库的能力，但是需要依赖系统配置。
 + 渲染器进程和主进程直接存在隔离，通过进程IPC进行通信，一般我们通过XSS拿到的JS执行权限处于渲染进程之中。
 + 渲染进程的上下文也可以分为两种，Preload.js和网页上下文，preload的上下文访问权限，一般高于网页上下文。
++ 主进程和渲染进程都集成了 Native API 和 Node.js，渲染进程还集成 Chromium 内核，成功实现跨端开发。
 
 |electron|
 
@@ -36,15 +33,38 @@
     - 即Chromium的沙盒特性，如果开启了这个选项， 渲染进程将运行在沙箱中，限制了大多数系统资源的访问，包括文件读写，新进程启动等， preload.js和网页中的js都会受到这个选项的影响
     - 该选项会随着Node Integration的开启而关闭
     - Sandbox选项从Electron 20开始默认为开启状态
+    - 检查方法
+        ::
+        
+            1.查找 app.enableSandbox()函数调用
+            2.查找sandbox: 选项设置，一般如下代码：
+            const win = new BrowserWindow({
+                webPreferences: {
+                  sandbox: false
+                }
+              })
 + Node Integration（Node集成）
     - Node集成，是否开启网页Js Nodej共享库的访问，如果开启的话，网页js将拥有直接Nodejs的执行权限，包括进程启动，文件加载等
     - preload.js Node集成是一直开启的，不受这个选项影响
     - 即使这个选项开启，上下文隔离选项开启的话，网页Js仍然无法访问Nodejs共享库
+    - 检查方法
+        ::
+        
+            查找nodeIntegration: 选项设置，一般如下代码：
+            const win = new BrowserWindow({
+                webPreferences: {
+                  nodeIntegration: true
+                }
+              })
 + Context Isolation（上下文隔离）
     - Electron的特性，使用了与Chromium相同的Content Scripts技术来实现。确保preload脚本和网页js在一个独立的上下文环境中
     - 开启后渲染页面的js中无法引入Electron和Node中的各种模块
     - 如果想在其中使用这部分功能，需要配置preload.js，使用contextBridge来暴露全局接口到渲染页面的脚本中
     - Electron 12开始默认启用
+    - 检查方法
+        ::
+        
+            查找contextIsolation: 选项设置
 
 文件结构
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,7 +113,7 @@ asar文件
 
 常规利用方法
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ NI为true, CISO为 false，无沙箱
++ NI为true, CISO为 false，SBX为false
     - 允许了页面之间访问nodejs共享库，只要获取目标应用的一个XSS漏洞，就能直接通过访问NodeJS共享库，升级为XSS漏洞。
     - NI配置方法：在man.js中webPreferences中配置了nodeIntegration为true/false
 + NI为false, CISO为false，SBX为false
@@ -121,5 +141,18 @@ asar文件
         + 关闭CISO,直接使用IPC，绕过限制
         + 关闭CISO,使用原型链污染获取remote模块进行RCE
         
+自定义协议
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ electron应用可以注册自己的url协议，例如custom://。
++ 这样可以通过浏览器直接打开应用，如果对url协议的处理不当可能导致rce等。
++ 检测方法
+    ::
+        
+        查找registerHttpProtocol方法调用
+
+代码审计
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 寻找输入点
+    - 如xss漏洞等
         
 .. |electron| image:: ../../images/electron1.webp
