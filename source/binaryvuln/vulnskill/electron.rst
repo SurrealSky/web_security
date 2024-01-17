@@ -241,7 +241,21 @@ asar文件
 
 更新升级
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ LPE本地特权提升
++ windows升级提权
+    ::
+    
+        恶意工程：https://github.com/parsiya/evil-electron/
+        1.告诉服务下载更新（windows一般通过命名管道）。
+        2.将C:\Program Files (x86)\vendor\electron-app\ 中的所有内容复制到 C:\ProgramData\[redacted]\Updates（下载更新的位置）。
+        3.删除下载的安装程序，但复制其文件名 (GUID.exe)。
+        4.将electro-app.exe重命名为下载的安装程序的名称 (GUID.exe)。
+        5.将目标中的 resources\app.asar文件替换为我自己的后门文件。
+        6.继续Windows服务运行安装程序。
+        7.弹出具有SYSTEM权限的cmd。
++ 免杀技术
+    ::
+    
+        恶意代码藏于app.asar文件中。
 
 挖掘思路
 ----------------------------------------
