@@ -16,16 +16,132 @@
 逆向分析
 ----------------------------------------
 
+文件结构
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 含有resources目录，包含一个app.asar文件。
++ app.asar是项目源码的归档文件。
++ exe文件是程序的启动文件。
+
+asar文件
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 程序解包
+    ::
+    
+        npm install asar -g
+        asar extract app.asar app //解压拿到源码
++ 程序打包
+    ::
+    
+        asar pack app app.asar //重新打包
++ 注意
+    - app.asar一般都没有做进一步的加密处理，所以拿到源码不难
+    - 不排除有的厂商可能在这方面做了一定的保护，就需要我们自己去逆向找到解密方法了，可以参考coco2d等。
+    - 拿到的js源码一般都会做一定的混淆，通过搜索js混淆技术和反混淆、格式化等，基本可以恢复到能够方便阅览的源码。
+    - 如果想验证某些功能，或者做些修改，可以通过重打包然后替换app.asar。
+
+查看版本
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ Devtool查看
+    ::
+    
+        前提是App启用了node Integration属性。
+        Devtool控制台输入：process.versions.electron
++ UA查看
+    ::
+    
+        使用Devtool查看网络通信数据，查看User Agent头。
++ 重新封包法
+    ::
+    
+        var fs = require("fs");
+        var querystring= require('querystring');
+
+        console.log("准备写入文件");
+        fs.writeFile('input.txt', querystring.stringify(process.versions),  function(err) {
+           if (err) {
+               return console.error(err);
+           }
+           console.log("数据写入成功！");
+           console.log("--------我是分割线-------------")
+           console.log("读取写入的数据！");
+           fs.readFile('input.txt', function (err, data) {
+              if (err) {
+                 return console.error(err);
+              }
+              console.log("异步读取文件数据: " + data.toString());
+           });
+        });
+        保存以上js内容为getVersionInfo.js，保存于解包后的文件夹中
+        修改package.json的main字段为getVersionInfo.js
+        重新封包，替换原来的.asar文件。
+
 程序结构
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 每个Electron应用都有一个单一的主进程，作为应用程序的入口点。
-+ 主进程的主要目标是使用BrowserWindow模块创建和管理应用程序窗口。
-+ 每个Electron应用都会为每个打开的BrowserWindow( 与每个网页嵌入 )生成一个单独的渲染器进程。
-+ 渲染器进程和主进程直接存在隔离，通过进程IPC进行通信，一般我们通过XSS拿到的JS执行权限处于渲染进程之中。
-+ 渲染进程的上下文也可以分为两种，Preload.js和网页上下文，preload的上下文访问权限，一般高于网页上下文。
-+ 主进程和渲染进程都集成了 Native API 和 Node.js，渲染进程还集成 Chromium 内核，成功实现跨端开发。
++ 主进程
+    - 特点
+        + 处理原生应用逻辑，是一个node.js进程。
+        + 每个Electron应用有且只有一个主进程，作为应用程序的入口点，即main脚本（package.json中main节点指定）的进程。
+    - 职责
+        + 创建渲染进程(可多个)
+        + 控制应用生命周期 (启动、退出app以及对app的一些事件监听)
+        + 调用系统底层功能、调用原生资源
+    - 调用接口
+        + NodeJS api
+        + Electron提供的主进程api(包括一些系统功能和Electron附加功能)
++ 渲染进程
+    - 特点
+        + 由electron的BrowserWindow模块来进行创建和销毁，它可以加载web页面。
+        + 渲染进程就是一个浏览器窗口，运行在各自的单个线程。
+        + 渲染进程中执行的代码可以访问node的所有API,利用这个特性可以使用原生模块，实现与底层系统的交互。
+        + 渲染器进程之间是相互隔离的不能够直接互相通信，并且不允许他们直接访问操作系统级别的API。
+        + 要先与主进程进行通信，再由主进程进行转发或者由主进程访问安全级别API再返回。
+    - 职责
+        + 用HTML和CSS渲染界面
+        + 用JS做界面交互
+    - 可调用接口
+        + DOM API
+        + NodeJS API
+        + Electron提供的渲染进程API
++ 进程通信
+    + IPC通信
+    + remote通信
 
-|electron|
+|electron1|
+|electron2|
+
+程序调试
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 添加代码法
+    ::
+    
+        asar extract app.asar app //解压拿到源码
+        mainWindow.webContents.openDevTools();//找到main.js，加入这行代码
+        asar pack app app.asar //重新打包，替换原始app.asar
+        注：这里调试的是渲染进程。
+
++ 端口调试法
+    ::
+    
+        安装chrome浏览器，打开chrome://inspect
+        配置Discover network targets，添加9222，9229端口
+        
+        调试渲染进程：
+        命令行启动目标程序 *.exe -remote-debugging-port=9222
+        浏览器中即可出现对应的页面，点击inspect调试
+        
+        调试主进程：
+        使用Electron提供的 ​--inspect​ 和 ​--inspect-brk​ 开关。
+        --inspect-brk=[port] 和--inspector 一样，但是会在JavaScript 脚本的第一行暂停运行。
+        使用以下命令：
+        electron --inspect[=5858] your/app
+        注：默认是9229端口。
+
++ Debugtron工具
+    ::
+    
+        地址：https://github.com/pd4d10/debugtron
+        注：可调试主进程和渲染进程。
+
 
 核心选项
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,38 +181,6 @@
         ::
         
             查找contextIsolation: 选项设置
-
-文件结构
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 含有resources目录，包含一个app.asar文件。
-+ app.asar是项目源码的归档文件。
-+ exe文件是程序的启动文件。
-
-asar文件
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 程序解包
-    ::
-    
-        npm install asar -g
-        asar extract app.asar app //解压拿到源码
-+ 程序打包
-    ::
-    
-        asar pack app app.asar //重新打包
-+ 注意
-    - app.asar一般都没有做进一步的加密处理，所以拿到源码不难
-    - 不排除有的厂商可能在这方面做了一定的保护，就需要我们自己去逆向找到解密方法了，可以参考coco2d等。
-    - 拿到的js源码一般都会做一定的混淆，通过搜索js混淆技术和反混淆、格式化等，基本可以恢复到能够方便阅览的源码。
-    - 如果想验证某些功能，或者做些修改，可以通过重打包然后替换app.asar。
-
-程序调试
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 修改程序
-    ::
-    
-        asar extract app.asar app //解压拿到源码
-        mainWindow.webContents.openDevTools();//找到main.js，加入这行代码
-        asar pack app app.asar //重新打包，替换原始app.asar
 
 攻击面分析
 ----------------------------------------
@@ -154,5 +238,30 @@ asar文件
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 寻找输入点
     - 如xss漏洞等
+
+更新升级
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ LPE本地特权提升
+
+挖掘思路
+----------------------------------------
++ 分析选项开启状态
+    ::
+    
+        grep -r "sandbox:" ./
+        grep -r "nodeIntegration:" ./
+        grep -r "contextIsolation:" ./
++ 分析组件版本
++ 查看是否有自定义协议
+    ::
+    
+        grep -r "registerHttpProtocol" ./
++ 查找有无html内容拼接
+    ::
+    
+        var $input2 = $("<input type='text' value='"+value+"' name='value' class='form-control' style=' width:20%; display: inline-block;' placeholder='value'>");
+        分析拼接的输入点是否用户可控，查看是否有xss漏洞。
+
         
-.. |electron| image:: ../../images/electron1.webp
+.. |electron1| image:: ../../images/electron1.webp
+.. |electron2| image:: ../../images/electron2.png

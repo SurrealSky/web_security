@@ -314,3 +314,4 @@
 - 最近五天的文件 ``find / -ctime +1 -ctime -5``
 - 文件系统细节 ``debugfs``
 - 历史命令：``cat /root/.bash_history``
+- 查找包含指定字符串内容的文件：``grep -r "registerHttpProtocol" ./`` , ``find . -type f -exec grep -H "register" {} \;``

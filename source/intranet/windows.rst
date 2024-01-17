@@ -15,6 +15,13 @@
 - 查看安装的软件 ``wmic product get name,version``
 - 查看Powershell版本：``REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine" /v PowerShellVersion``
 
+权限查询
+----------------------------------------
+- 访问权限 ``accesschk.exe [administrator] c:\windows\hh.exe``
+- 服务权限 ``accesschk.exe -cu [administrator] *``
+- 显示无权访问指定注册表对象 ``accesschk.exe -knsu [administrator] hklm\software``
+- 显示可操作的全局对象 ``accesschk64.exe [administrator] -ou \``
+
 系统服务管理-sc
 ----------------------------------------
 - start
