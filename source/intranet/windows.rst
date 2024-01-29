@@ -17,10 +17,14 @@
 
 权限查询
 ----------------------------------------
-- 访问权限 ``accesschk.exe [administrator] c:\windows\hh.exe``
+- 文件访问权限 ``accesschk.exe [administrator] [-v] c:\windows\hh.exe``
+- 整个目录文件访问权限 ``accesschk.exe [administrator]  -sv c:\windows``
+- 整个目录访问权限 ``accesschk.exe [administrator]  -dsv c:\windows``
 - 服务权限 ``accesschk.exe -cu [administrator] *``
 - 显示无权访问指定注册表对象 ``accesschk.exe -knsu [administrator] hklm\software``
 - 显示可操作的全局对象 ``accesschk64.exe [administrator] -ou \``
+- 注：-v权限显示访问权限详细信息。
+- 注：默认是文件权限，-d标识文件夹权限。
 
 系统服务管理-sc
 ----------------------------------------

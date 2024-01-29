@@ -1,5 +1,19 @@
-windows符号链接测试工具
+符号链接测试工具
 ========================================
+
+mklink
+----------------------------------------
+::
+
+    mklink /D <符号链接> <目标>
+    mklink /D "C:\Users\Administrator\Desktop\link" "C:\Users\Administrator\Documents"
+    mklink /H <硬链接> <目标>
+    mklink /H "C:\Users\Administrator\Desktop\doc.txt" "C:\Users\Administrator\Documents\doc.txt"
+    mklink /J <联接> <目标>
+    mklink /J "C:\Users\Administrator\Desktop\link" "C:\Users\Administrator\Documents"
+
+symboliclink-testing-tools
+----------------------------------------
 + 项目地址： ``https://github.com/googleprojectzero/symboliclink-testing-tools``
 + 工具说明
     - BaitAndSwitch 
@@ -14,10 +28,22 @@ windows符号链接测试工具
         ::
         
             Creates a object manager symbolic link using csrss
-    - CreateMountPoint
-        :: 
+    - CreateSymlink
+        ::
         
-            Create an arbitrary file mount point
+            创建符号链接
+            示例：CreateSymlink "C:\\test\\1.txt" "D:\\2.txt"
+            注:test目录必须为空
+    - CreateMountPoint
+        ::
+        
+            创建软链接
+            示例：CreateMountPoint "C:\\test1" "D:\\test2"
+            注：test1目录必须已经存在并且用户具有对目录的完全控制权限。
+    - CreateHardlink
+        ::
+        
+            创建硬链接
     - CreateNtfsSymlink
         :: 
         
