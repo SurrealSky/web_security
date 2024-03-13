@@ -19,6 +19,7 @@
 ----------------------------------------
 - 文件访问权限 ``accesschk.exe [administrator] [-v] c:\windows\hh.exe``
 - 整个目录文件访问权限 ``accesschk.exe [administrator]  -sv c:\windows``
+- 文件目录权限 ``powershell -c gci``
 - 整个目录访问权限 ``accesschk.exe [administrator]  -dsv c:\windows``
 - 服务权限 ``accesschk.exe -cu [administrator] *``
 - 显示无权访问指定注册表对象 ``accesschk.exe -knsu [administrator] hklm\software``
