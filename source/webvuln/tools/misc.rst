@@ -247,6 +247,8 @@
 			fscan.exe -hf ip.txt  (以文件导入)
 + Template 
 	+ 项目地址：https://github.com/1n7erface/Template
++ afrog
+	+ 项目地址：https://github.com/zan8in/afrog
 + uniscan
 + goon
 	- 项目地址：``https://github.com/i11us0ry/goon``
