@@ -7,5 +7,6 @@
 
    window/index
    linux/index
-   mobile/index
+   android/index
+   ios/index
    vuln/index
