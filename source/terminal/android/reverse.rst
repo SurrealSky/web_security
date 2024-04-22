@@ -56,11 +56,64 @@ DDMS日志分析
 + log插桩
 + 代码修改
 
-hook动态插桩
+动态插桩-xposed
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ xposed
-+ Cydia Substrate
-+ frida
++ 项目地址：https://github.com/rovo89/Xposed
++ 使用范围
+	- 仅支持到安卓8
+	- 已停止更新
+
+动态插桩-EdXposed
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 项目地址：https://github.com/ElderDrivers/EdXposedManager
++ 适用范围
+	- 支持 **Android 8.0以上版本** 
+	- 通过 **Magisk v19 或更高版本** 进行安装
+
+动态插桩-VirtualXposed
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 项目地址：https://github.com/android-hacker/VirtualXposed
++ 适用范围
+	- 免root
+	- 支持 **Android 5.0~10.0**
+
+动态插桩-LSPosed
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 项目地址：https://github.com/LSPosed/LSPosed
++ 适用范围
+	- 免root
+	- 支持 **Android 8.1 ~ 14**
+	- 通过 **Magisk v24 或更高版本** 进行安装
++ 环境部署
+	- Install Magisk v24+
+	- Install Riru v26.1.7+
+	- Download and install LSPosed in Magisk app
+	- Reboot
+	- Open LSPosed manager from notification
+
+动态插桩-Cydia Substrate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 项目地址：http://www.cydiasubstrate.com/
++ 适用范围
+	- 支持 **Android 2.3 ~ 4.3** 
+
+动态插桩-frida
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 项目地址：https://github.com/frida/frida
++ 适用范围
+	- 版本关系
+		::
+		
+			Frida版本 	Android版本
+			Frida 12.6.13 	Android 4.1 - 4.3
+			Frida 12.7.0 	Android 4.4
+			Frida 12.8.1 	Android 5.0 - 5.1
+			Frida 12.9.7 	Android 6.0 - 6.0.1
+			Frida 12.9.8 	Android 7.0 - 7.1
+			Frida 12.10.4 	Android 8.0 - 8.1
+			Frida 12.11.7 	Android 9
+			Frida 12.12.0 	Android 10
+			Frida 12.12.2 	Android 11
 
 SSL Pinning绕过
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------
