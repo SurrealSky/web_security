@@ -45,6 +45,80 @@ so-arm/x86
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + IDA分析
 
+adb shell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 项目地址：https://dl.google.com/android/repository/platform-tools-latest-windows.zip
++ 常用命令
+	- 手机进入 **开发者选项** ，打开 **usb调试** 
+	- adb help：帮助
+	- adb shell：进入设备shell
+	- 建立链接
+		::
+		
+			adb -d：如果同时连了usb，又开了模拟器，连接当前唯一通过usb连接的安卓设备
+			adb -e shell：指定当前连接此电脑的唯一的一个模拟器
+			adb -s <设备号> shell：当电脑插多台手机或模拟器时，指定一个设备号进行连接
+			exit：退出
+			adb kill-server：杀死当前adb服务，如果连不上设备时，杀掉重启。（没事不要用它）
+			adb start-server：杀掉后重启
+			5037：adb默认端口，如果该端口被占用，可以指定一个端口号，如下命令↓
+			adb -p 6666 start-server：任意指定一个 adb shell 的端口
+	- apk操作指令
+		::
+		
+			adb shell pm list packages：列出当前设备/手机，所有的包名
+			adb shell pm list packages -f：显示包和包相关联的文件(安装路径)
+			adb shell pm list packages -d：显示禁用的包名
+			adb shell pm list packages -e：显示当前启用的包名
+			adb shell pm list packages -s：显示系统应用包名
+			adb shell pm list packages -3：显示已安装第三方的包名
+			adb shell pm list packages xxxx：加需要过滤的包名，如：xxx = taobao
+			adb install <文件路径\apk>：将本地的apk软件安装到设备(手机)上。如手机外部安装需要密码，记得手机输入密码。
+			adb install -r <文件路径\apk>：覆盖安装
+			adb install -d <文件路径\apk>：允许降级覆盖安装
+			adb install -g <文件路径\apk>：授权/获取权限，安装软件时把所有权限都打开
+			adb uninstall <包名>：卸载该软件/app。
+			注意：安装时安装的是apk，卸载时是包名，可以通过 adb shell pm list packages 查看需要卸载的包名
+			adb shell pm uninstall -k <包名>：虽然把此应用卸载，但仍保存此应用的数据和缓存
+			adb shell am force-stop <包名>：强制退出该应用/app
+	- 文件操作
+		::
+		
+			adb push <本地路径\文件或文件夹> <手机端路径>：把本地(pc机)的文件或文件夹复制到设备(手机)
+			adb pull <设备路径> <本地路径>: 从 Android 设备上获取文件并保存到本地计算机上。
+	- 日志命令
+		::
+		
+			adb shell logcat -c：清理现有日志
+			adb shell logcat -v time ：输出日志，信息输出在控制台
+			adb shell logcat -v time > <存放路径\log.txt>：输出日志并保存在本地文件
+			Ctrl+C：终止日志抓取
+			adb shell logcat -v time *:E > <存放路径\log.txt>：打印级别为Error的信息
+			日志的等级：
+			-v：Verbse（明细）
+			-d：Debug（调试）
+			-i：Info（信息）
+			-w：Warn（警告）
+			-e：Error（错误）
+			-f：Fatal（严重错误）
+			抓取日志的步骤先输入命令启动日志，然后操作 App，复现 bug，再 ctrl+c 停止日志，分析本地保存的文件。
+			：日志是记录手机系统在运行app时有什么异常的事件
+			EXCEPTION
+			也可以把更详细得Anr日志拉取出来：adb shell pull /data/anr/traces.txt <存放路径>
+	- 系统操作指令
+		::
+		
+			adb shell getprop ro.product.model：获取设备型号
+			adb shell getprop ro.build.version.release：获取Android系统版本
+			adb get-serialno：获取设备的序列号（设备号）
+			adb shell wm size：获取设备屏幕分辨率
+			adb shell screencap -p /sdcard/mms.png：屏幕截图
+			adb shell screencap -p /sdcard/screenshot.png：屏幕截图
+			adb shell cat /proc/meminfo：获取手机内存信息
+			adb shell df：获取手机存储信息
+			adb shell screenrecord <存放路径/xxx.mp4>：录屏，命名以.mp4结尾
+			adb shell screenrecord --time-limit 10 <存放路径/xxx.mp4>：录屏时间为10秒
+
 动态分析
 ----------------------------------------
 
