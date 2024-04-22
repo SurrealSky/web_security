@@ -51,6 +51,7 @@ adb shell
 + 常用命令
 	- 手机进入 **开发者选项** ，打开 **usb调试** 
 	- adb help：帮助
+	- adb devices：查看连接设备
 	- adb shell：进入设备shell
 	- 建立链接
 		::
@@ -110,6 +111,10 @@ adb shell
 		
 			adb shell getprop ro.product.model：获取设备型号
 			adb shell getprop ro.build.version.release：获取Android系统版本
+			adb shell getprop ro.build.version.sdk
+			adb shell getprop ro.build.version.security_patch
+			adb shell getprop ro.build.description
+			adb shell getprop ro.product.cpu.abi：查看cpu架构信息
 			adb get-serialno：获取设备的序列号（设备号）
 			adb shell wm size：获取设备屏幕分辨率
 			adb shell screencap -p /sdcard/mms.png：屏幕截图
@@ -188,6 +193,13 @@ DDMS日志分析
 			Frida 12.11.7 	Android 9
 			Frida 12.12.0 	Android 10
 			Frida 12.12.2 	Android 11
++ 环境部署
+	- PC端安装python，frida-tools
+	- 手机端安装frida-server，增加权限，并且执行
++ 常用命令
+	- 查看APP包名：frida-ps -Uai
++ 
++ 通杀加密
 
 SSL Pinning绕过
 ----------------------------------------
