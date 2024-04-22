@@ -195,7 +195,14 @@ DDMS日志分析
 			Frida 12.12.2 	Android 11
 + 环境部署
 	- PC端安装python，frida-tools
-	- 手机端安装frida-server，增加权限，并且执行
+	- 手机端abd push安装frida-server
+	- 增加权限: chmod 777 frida-server
+	- 执行./frida-server
+	- 监听端口
+		::
+		
+			adb forward tcp:27042 tcp:27042
+			adb forward tcp:27043 tcp:27043
 + 常用命令
 	- 查看APP包名：frida-ps -Uai
 + 
