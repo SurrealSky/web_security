@@ -259,7 +259,7 @@ IPC$共享利用
 			sc \\192.168.3.32 create bindshell binpath= "c:\4444.exe" # 创建shell服务并绑定文件
 			sc \\192.168.3.32 start bindshell # 启动bindshell服务
 + PTT攻击
-	- 利用的票据凭证 TGT 进行的渗透测试，即利用Kerberos协议进行攻击的。
+	- 利用的票据凭证 **TGT** 或者 **ST** 进行的渗透测试，攻击者可以通过使用域账号的明文密码、NTLM-HASH、ASE（Account Session Key），或者直接伪造获取相关票据。
 	- 三种常见的攻击：MS14-068、Golden Ticket、SILVER ticket，简单来说就是将连接合法的票据注入到内存中实现连接。缺点：票据是有效期的，一般默认为10小时。
 	- 域控HASH伪造票据攻击
 		+ 项目地址：``https://github.com/gentilkiwi/kekeo``
@@ -285,7 +285,8 @@ IPC$共享利用
 				net use \\owa2010cn-god\c$
 				dir \\OWA2010CN-GOD\c$
 	- 黄金票据攻击
-		+ 根据kerberos认证协议分析只要获取Krbtgt的NTLM哈希值，拿着krbtgt账户的票据，可以访问域内任意主机。
+		+ 只要获取Krbtgt的NTLM哈希值（即TGS密钥），就可以伪造任意的TGT，进而与TGS交互。
+		+ 有了金票后,就跳过AS 验证,因为 Krbtgt只有域控制器上面才有，所以使用黄金凭据意味着你之前拿到过域控制器的权限，黄金凭据可以理解为一个后门。
 		+ 前提：需要伪造的域管理员用户名，完整的域名，域 SID，krbtgt 的 NTLM 哈希值
 		+ 利用过程
 			::
@@ -295,7 +296,7 @@ IPC$共享利用
 				票据导入内存：kerberos::ptt ticket.kirbi
 				访问域控：dir \\DC\c$
 	- 白银票据攻击
-		+ 伪造 TGS，通过已知的授权服务密码生成一张可以访问该服务的 TGT。
+		+ 即伪造的TGS。当获取需要访问的目标服务器NTLM HASH后，就可以利用 Mimikatz 伪造TGS，直接去访问目标服务器。
 		+ 前提：域名,域 SID,目标服务器的 FQDN,可利用的服务,服务账号的 NTLM 哈希值,要伪造的用户名 
 		+ 利用过程
 			::

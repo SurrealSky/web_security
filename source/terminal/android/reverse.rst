@@ -45,14 +45,28 @@ so-arm/x86
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + IDA分析
 
-adb shell
+adb调试
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 项目地址：https://dl.google.com/android/repository/platform-tools-latest-windows.zip
++ adb项目地址：https://dl.google.com/android/repository/platform-tools-latest-windows.zip
 + 常用命令
 	- 手机进入 **开发者选项** ，打开 **usb调试** 
 	- adb help：帮助
 	- adb devices：查看连接设备
 	- adb shell：进入设备shell
+	- adb root：使adb具备root权限
+		::
+		
+			如果提示"adbd cannot run as root in production builds",
+			首先安装adbd-Insecure-v2.00.apk
+			打开应用，选中"Enable insecure adbd","Enable at boot"
+			如果依然提示"adbd cannot run as root in production builds"
+			在adb shell，su下执行以下命令
+			su -c "resetprop ro.debuggable 1"
+			su -c "resetprop service.adb.root 1" # 减少调用 adb root
+			su -c "magiskpolicy --live 'allow adbd adbd process setcurrent'" # 配置缺少的权限
+			su -c "magiskpolicy --live 'allow adbd su process dyntransition'" # 配置缺少的权限
+			su -c "magiskpolicy --live 'permissive { su }'" # 将 su 配置为 permissive，防止后续命令执行缺少权限
+			su -c "kill -9 `ps -A | grep adbd | awk '{print $2}' `" # 杀掉 adbd
 	- 建立链接
 		::
 		
