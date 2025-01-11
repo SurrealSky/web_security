@@ -3,6 +3,16 @@
 
 windows
 ----------------------------------------
+- 工具：winchecksec
+	+ 项目地址：``https://github.com/trailofbits/winchecksec``
+	+ winchecksec用来检查可执行文件属性，例如ASLR、DEP、代码完整性/签名、结构化异常处理（SEH）、控制流防护（CFG）等属性。
+	+ ``./winchecksec -j <executable>``
+		|defense2|
+		::
+		
+			RPATH/RUNPATH
+			程序运行时的环境变量，运行时所需要的共享库文件优先从该目录寻找，可以fake lib造成攻击.
+
 - 栈保护GS选项
 	+ 防护：GS 编译选项为每个函数调用增加了一些额外的数据（“Security Cookie”/“canary”）和操作，用以检测栈中的溢出。
 	+ 弊端：难以防御基于函数指针，虚函数的攻击；难以防御异常处理的攻击；只是防御栈，对堆无能为力
@@ -170,4 +180,5 @@ linux
 		
 		
 .. |defense1| image:: ../../images/defense1.png
+.. |defense2| image:: ../../images/defense2.png
 .. |rop1| image:: ../../images/rop1.png
