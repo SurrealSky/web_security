@@ -140,6 +140,8 @@ windbg
 		+ 查看可执行文件查找路径：``.exepath``
 		+ 设置可执行文件查找路径：``.exepath f:\bin``
 		+ 添加可执行文件查找路径：``.exepath+ f:\bin``
++ 查看系统信息
+	- ``vertarget``
 + 模块加载命令
 	- 显示模块加载信息：``lm[ v | l | k | u | f ] [m Pattern]``
 		+ 显示所有加载和未加载的模块信息：``lm``
@@ -294,25 +296,30 @@ windbg
 	- 打印堆的内存详细信息：``!heap -a 00140000``
 + 虚拟内存：``!vadump``
 + 进程命令信息
-	- 显示当前进程：``| [进程号]``
+	- 显示进程列表
+		+ ``.tlist`` :显示当前系统中的所有进程（注意双机调试显示的也是宿主机进程列表）
+		+ ``!dml_proc`` ：DML方式显示当前进程的信息
+		+ ``!process 0 0`` ：显示进程列表
+			::
+		
+				PROCESS 881a2a20  SessionId: 1  Cid: 07e8    Peb: 7ffd6000  ParentCid: 0224
+				DirBase: 7f145480  ObjectTable: 97ce2510  HandleCount:   0.
+				Image: cmd.exe
+				注：PROCESS域指定了当前进程的EPROCESS结构的线性地址。
+				Cid域指定了当前进程的PID。
+				DirBase域指定了存储在CR3寄存器中的物理地址（DirBase约等于页目录物理基地址）
+	- 显示被调试进程
+		+ ``| [进程号]``
+			::
+		
+				大多数情况下调试器中只有一个被调试进程，但可以通过.attach或者.create命令同时挂载或创建多个调试对象。
+				当同时对多个进程调试时，进程号是从0开始的整数。
+		+ ``!process`` ：显示调试器当前运行进程信息
+		+ ``.process`` ：显示当前所调试的进程的EPROCESS
+	- 显示进程信息：``!process PID``
 	- 切换进程：``| [进程号] s``
-	- 显示调试器当前运行进程信息：``!process``
-	- 显示当前所调试的进程的EPROCESS：``.process``
 	- 切换到目标应用程序的地址空间：``.process /p [EPROCESS]``
 	- 目标进程的EPROCESS侵入式调试：``.process /i /p [EPROCESS]``
-	- 显示进程列表：``!process 0 0``
-		::
-		
-			PROCESS 881a2a20  SessionId: 1  Cid: 07e8    Peb: 7ffd6000  ParentCid: 0224
-			DirBase: 7f145480  ObjectTable: 97ce2510  HandleCount:   0.
-			Image: cmd.exe
-			注：PROCESS域指定了当前进程的EPROCESS结构的线性地址。
-			Cid域指定了当前进程的PID。
-			DirBase域指定了存储在CR3寄存器中的物理地址（DirBase约等于页目录物理基地址）
-
-	- 显示进程信息：``!process PID``
-	- DML方式显示当前进程的信息：``!dml_proc``
-	- 显示当前所有进程：``.tlist``
 + 线程信息命令
 	- 查看线程信息
 		+ 显示线程信息：``~``
