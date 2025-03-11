@@ -33,6 +33,12 @@ windbg内核调试
 			打开WinDbg.exe后Ctrl+K。
 			在COM选项卡填相关信息
 
-配置符号表
+调试技巧
 ----------------------------------------
-参考 :ref:`terminal/window/tool/debug:windbg`
+- 加载符号表
+	::
+	
+		.sympath SRV*c:\localsymbols*https://msdl.microsoft.com/download/symbols
+		.reload
+		加载所有模块符号表：ld *
+		获取符号加载状态：!sym
