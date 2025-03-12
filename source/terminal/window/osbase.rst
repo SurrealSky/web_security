@@ -166,6 +166,7 @@ NT系统特征
 			PDE at C0600000            PTE at C0000000
 			contains 0000000006C4A867  contains 0000000000000000
 			pfn 6c4a      ---DA--UWEV  not valid
+			注：pfn（Page Frame Number）是指物理内存中的页面帧号，用于标识和管理物理内存页面。‌
 
 			kd> !pte 0x7fffffff
 			                   VA 7fffffff
