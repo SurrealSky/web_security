@@ -127,6 +127,7 @@ windbg
 		+ 指定模块加载符号信息：``.reload /f [module name]``
 		+ 在内核态时强制重新加载当前所处用户态符号：``.reload /f /user``
 	- 查看符号信息
+		+ 查找符号的二进制地址：``x ntdll!GlobalCounter``
 		+ 列出所有模块对应的符号信息：``x *!``
 		+ 列出指定模块中所有符号：``x ConsoleTest!*``
 		+ 带数据类型、符号类型和大小信息：``x /t /v ConsoleTest!*``
@@ -154,6 +155,10 @@ windbg
 		+ DML方式显示：``lmD``
 		+ 显示kernel32模块详细信息：``lmv m kernel32``
 		+ 显示kernel32.dll模块的信息：``!lmi kernel32``
+	- !peb
+		+ 列出进程已经加载的dll
+	- !vad
+		+ 进程中用户空间已分配地址信息
 	- !dlls
 		+ 列出所有加载的模块和加载数量：``!dlls``
 		+ 根据初始化顺序：``!dlls -i``
@@ -212,7 +217,7 @@ windbg
 	- 查看ID为000007f8的句柄的类型：``!handle 000007f8 1``
 	- 查看ID为000007f8的句柄的名称：``!handle 000007f8 4``
 + 查看变量 
-	- 查看局部变量：``dt [var]``
+	- 格式化显示变量的资料和结构：``dt [var]``
 	- 显示dll中的类型信息：``dt ntdll!*``
 	- 显示所有模块中含有IMAGE_DOS字符的类型信息：``dt *!*IMAGE_DOS*``
 	- 显示myApp进程里全局变量g_app的内存布局：``dt myApp!g_app``
@@ -253,10 +258,10 @@ windbg
 
 + 查看内存
 	- 查看进程的所有内存页属性：``!address [-summary][-f:stack][addr]``
-	- 从7c801e02内存处开始以dword为单位显示内存,默认显示128字节长度的内容：``dd /c 5 7c801e02``
-	- 从7c801e02内存处开始以dword为单位显示内存,显示8个dword：``dd /c 5 7c801e02 L8``
-	- 从7c80ff03内存处开始显示Ascii字符串：``da /c 100 7c80ff03``
-	- 从7c8022f5内存处开始显示Unicode字符串：``du /c 100 7c8022f5``
+	- 虚拟内存(用户态)：``!vadump``
+	- 内存统计(物理内存方面)：``!memusage``
+	- 内存统计(虚拟内存方面)：``!vm``
+	- 查看文件缓存: ``!filecache``
 	- 从虚拟地址访问内存：``d[a|u|b|w|W|d|c|q|f|D] [/c 列数] [地址]``
 		+ a = ascii chars
 		+ u = Unicode chars
@@ -285,6 +290,10 @@ windbg
 				KGDT_DF_TSS		0x50
 				KGDT_NMI_TSS	0x58
 	- 从物理地址访问内存：``!d[a|u|b|w|W|d|c|q|f|D] [/c 列数] [地址]``
+	- 从7c801e02内存处开始以dword为单位显示内存,默认显示128字节长度的内容：``dd /c 5 7c801e02``
+	- 从7c801e02内存处开始以dword为单位显示内存,显示8个dword：``dd /c 5 7c801e02 L8``
+	- 从7c80ff03内存处开始显示Ascii字符串：``da /c 100 7c80ff03``
+	- 从7c8022f5内存处开始显示Unicode字符串：``du /c 100 7c8022f5``
 	- ``dds`` ：显示给定范围内的内存内容。假定该内存是符号表中的一系列地址。相应的符号也会显示出来。
 + 写内存
 	- 从虚拟地址写内存：``e[b|d|D|f|p|q|w] address [Values]``
@@ -294,7 +303,6 @@ windbg
 	- 显示进程堆的个数：``!heap -s``
 	- 打印堆的内存结构：``dt _HEAP 00140000``
 	- 打印堆的内存详细信息：``!heap -a 00140000``
-+ 虚拟内存：``!vadump``
 + 进程命令信息
 	- 显示进程列表
 		+ ``.tlist`` :显示当前系统中的所有进程（注意双机调试显示的也是宿主机进程列表）
