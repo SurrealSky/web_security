@@ -93,6 +93,16 @@ NT系统特征
 - 虚拟内存和分页
 	+ 虚拟内存：软件和物理内存之间的不可见层
 	+ 离散分配管理
+		- 概念
+		
+		::
+		
+			PDE：Page Directory Entry，页目录表项。
+			PTE：Page Table Entry，页表项。
+			PAE：Physical Address Extension，物理地址扩展。
+			PFT：Page Frame Table，页帧表。
+			PFN：Page Frame Number，页帧号。 PFN = 物理地址/4KB
+
 		- 分段
 		
 		::
@@ -166,7 +176,8 @@ NT系统特征
 			PDE at C0600000            PTE at C0000000
 			contains 0000000006C4A867  contains 0000000000000000
 			pfn 6c4a      ---DA--UWEV  not valid
-			注：pfn（Page Frame Number）是指物理内存中的页面帧号，用于标识和管理物理内存页面。‌
+			注：pfn（Page Frame Number）是指物理内存中的页面帧号，用于标识和管理物理内存页面。
+			pfn=物理地址/4KB‌
 
 			kd> !pte 0x7fffffff
 			                   VA 7fffffff
@@ -307,6 +318,24 @@ NT系统特征
 				- 兼容模式。这种子模式下，只使用 32 位的线性地址； 4 级和 5 级分页把线性地址中的位 63:32 全部当做 0 来看待。
 				- 64 位模式。这种子模式下，能够使用 64 位的线性地址。但由于 4 级分页只支持 48 位线性地址（5 级分页支持 57 位），所以 4 级分页线性地址的 63:47 位，5 级分页线性地址的 63:57 位，均未使用。在 64 位模式下，处理器要求线性地址必须是 canonical 的，即这些冗余位应该是一致的，要么全是 0，要么全是 1。
 			+ 参考：``https://zhuanlan.zhihu.com/p/708677622``
+	+ 快速方式
+		- 虚拟地址通过pte指令，找到pfn
+			::
+			
+				假设虚拟地址为0xfffff880`00d5e9e0
+				0: kd> !pte 0xfffff880`00d5e9e0
+				VA fffff88000d5e9e0
+				PXE at FFFFF6FB7DBEDF88    PPE at FFFFF6FB7DBF1000    PDE at FFFFF6FB7E200030    PTE at FFFFF6FC40006AF0
+				contains 000000007FF84863  contains 000000007FF83863  contains 000000007FF8C863  contains 8000000000BE0963
+				pfn 7ff84     ---DA--KWEV  pfn 7ff83     ---DA--KWEV  pfn 7ff8c     ---DA--KWEV  pfn be0       -G-DA--KW-V
+				找到pte对应的pfn为0xbe0，单位是4k（4096）。
+	
+		- 根据pfn和相对地址，找到虚拟地址对应物理地址位置
+			::
+			
+				pfn为0xbe0，则物理页地址是0xbe0000（0xbe0 × 0x1000）。
+				页内偏移为0x9e0（0xfffff880`00d5e9e0）
+				那么 物理地址=物理页地址+页内偏移 = 0xbe0000+0x9e0 = 0xbe09e0
 
 对象管理
 ----------------------------------------
