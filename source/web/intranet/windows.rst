@@ -25,6 +25,7 @@
 - 显示无权访问指定注册表对象 ``accesschk.exe -knsu [administrator] hklm\software``
 - 显示可操作的全局对象 ``accesschk64.exe [administrator] -ou \``
 - 注：-v权限显示访问权限详细信息。
+- 注：-s代表递归查询。
 - 注：默认是文件权限，-d标识文件夹权限。
 
 系统服务管理-sc
