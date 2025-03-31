@@ -45,98 +45,124 @@ so-arm/x86
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + IDA分析
 
+综合工具
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ MT管理器：``https://mt2.cn/``
+
 adb调试
+----------------------------------------
+
+基本原理
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + adb项目地址：https://dl.google.com/android/repository/platform-tools-latest-windows.zip
-+ 常用命令
-	- 手机进入 **开发者选项** ，打开 **usb调试** 
-	- adb help：帮助
-	- adb devices：查看连接设备
-	- adb shell：进入设备shell
-	- adb root：使adb具备root权限
++ C/S架构的应用程序，主要由三部分组成：
+	- 运行在电脑端的adb client程序
 		::
 		
-			如果提示"adbd cannot run as root in production builds",
-			首先安装adbd-Insecure-v2.00.apk
-			打开应用，选中"Enable insecure adbd","Enable at boot"
-			如果依然提示"adbd cannot run as root in production builds"
-			在adb shell，su下执行以下命令
-			su -c "resetprop ro.debuggable 1"
-			su -c "resetprop service.adb.root 1" # 减少调用 adb root
-			su -c "magiskpolicy --live 'allow adbd adbd process setcurrent'" # 配置缺少的权限
-			su -c "magiskpolicy --live 'allow adbd su process dyntransition'" # 配置缺少的权限
-			su -c "magiskpolicy --live 'permissive { su }'" # 将 su 配置为 permissive，防止后续命令执行缺少权限
-			su -c "kill -9 `ps -A | grep adbd | awk '{print $2}' `" # 杀掉 adbd
-	- 建立链接
+			当在命令行执行程序adb相关命令的时候,adb程序尝试连接到主机上的ADB服务器，如果找不到ADB服务器,
+			adb程序自动启动一个ADB服务器。ADB服务器启动之后会和手机设备的adbd后台服务进程建立连接后,adb client就可以向ADB servcer发送服务请求。
+	- 运行在PC端的adb server
 		::
 		
-			adb -d：如果同时连了usb，又开了模拟器，连接当前唯一通过usb连接的安卓设备
-			adb -e shell：指定当前连接此电脑的唯一的一个模拟器
-			adb -s <设备号> shell：当电脑插多台手机或模拟器时，指定一个设备号进行连接
-			exit：退出
-			adb kill-server：杀死当前adb服务，如果连不上设备时，杀掉重启。（没事不要用它）
-			adb start-server：杀掉后重启
-			5037：adb默认端口，如果该端口被占用，可以指定一个端口号，如下命令↓
-			adb -p 6666 start-server：任意指定一个 adb shell 的端口
-	- apk操作指令
+			ADB Server是运行在主机上的一个后台进程。它的作用在于检测USB端口监听设备的连接和拔除。
+			ADB Server还需要将adb client的请求通过tcp连接方式转发送到对应手机设备的adbd进程上去处理。
+	- 运行在设备端的常驻进程adb daemon
 		::
 		
-			adb shell pm list packages：列出当前设备/手机，所有的包名
-			adb shell pm list packages -f：显示包和包相关联的文件(安装路径)
-			adb shell pm list packages -d：显示禁用的包名
-			adb shell pm list packages -e：显示当前启用的包名
-			adb shell pm list packages -s：显示系统应用包名
-			adb shell pm list packages -3：显示已安装第三方的包名
-			adb shell pm list packages xxxx：加需要过滤的包名，如：xxx = taobao
-			adb install <文件路径\apk>：将本地的apk软件安装到设备(手机)上。如手机外部安装需要密码，记得手机输入密码。
-			adb install -r <文件路径\apk>：覆盖安装
-			adb install -d <文件路径\apk>：允许降级覆盖安装
-			adb install -g <文件路径\apk>：授权/获取权限，安装软件时把所有权限都打开
-			adb uninstall <包名>：卸载该软件/app。
-			注意：安装时安装的是apk，卸载时是包名，可以通过 adb shell pm list packages 查看需要卸载的包名
-			adb shell pm uninstall -k <包名>：虽然把此应用卸载，但仍保存此应用的数据和缓存
-			adb shell am force-stop <包名>：强制退出该应用/app
-	- 文件操作
-		::
-		
-			adb push <本地路径\文件或文件夹> <手机端路径>：把本地(pc机)的文件或文件夹复制到设备(手机)
-			adb pull <设备路径> <本地路径>: 从 Android 设备上获取文件并保存到本地计算机上。
-	- 日志命令
-		::
-		
-			adb shell logcat -c：清理现有日志
-			adb shell logcat -v time ：输出日志，信息输出在控制台
-			adb shell logcat -v time > <存放路径\log.txt>：输出日志并保存在本地文件
-			Ctrl+C：终止日志抓取
-			adb shell logcat -v time *:E > <存放路径\log.txt>：打印级别为Error的信息
-			日志的等级：
-			-v：Verbse（明细）
-			-d：Debug（调试）
-			-i：Info（信息）
-			-w：Warn（警告）
-			-e：Error（错误）
-			-f：Fatal（严重错误）
-			抓取日志的步骤先输入命令启动日志，然后操作 App，复现 bug，再 ctrl+c 停止日志，分析本地保存的文件。
-			：日志是记录手机系统在运行app时有什么异常的事件
-			EXCEPTION
-			也可以把更详细得Anr日志拉取出来：adb shell pull /data/anr/traces.txt <存放路径>
-	- 系统操作指令
-		::
-		
-			adb shell getprop ro.product.model：获取设备型号
-			adb shell getprop ro.build.version.release：获取Android系统版本
-			adb shell getprop ro.build.version.sdk
-			adb shell getprop ro.build.version.security_patch
-			adb shell getprop ro.build.description
-			adb shell getprop ro.product.cpu.abi：查看cpu架构信息
-			adb get-serialno：获取设备的序列号（设备号）
-			adb shell wm size：获取设备屏幕分辨率
-			adb shell screencap -p /sdcard/mms.png：屏幕截图
-			adb shell screencap -p /sdcard/screenshot.png：屏幕截图
-			adb shell cat /proc/meminfo：获取手机内存信息
-			adb shell df：获取手机存储信息
-			adb shell screenrecord <存放路径/xxx.mp4>：录屏，命名以.mp4结尾
-			adb shell screenrecord --time-limit 10 <存放路径/xxx.mp4>：录屏时间为10秒
+			手机系统中的程序adbd作为一个后台进程在Android设备系统中运行。它的作用是连接PC端的ADB服务器,
+			接收PC端ADB 服务转发过来的命令请求并进行处理。比如处理apk 安装和卸载等请求。
++ ``注：客户端的adb要与手机端adbd版本一致``
+
+基本命令
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 手机进入 **开发者选项** ，打开 **usb调试** 
+- adb help：帮助
+- adb devices：查看连接设备
+- adb shell：进入设备shell
+- adb root：使adb具备root权限
+	::
+	
+		如果提示"adbd cannot run as root in production builds",
+		首先安装adbd-Insecure-v2.00.apk
+		打开应用，选中"Enable insecure adbd","Enable at boot"
+		如果依然提示"adbd cannot run as root in production builds"
+		在adb shell，su下执行以下命令
+		su -c "resetprop ro.debuggable 1"
+		su -c "resetprop service.adb.root 1" # 减少调用 adb root
+		su -c "magiskpolicy --live 'allow adbd adbd process setcurrent'" # 配置缺少的权限
+		su -c "magiskpolicy --live 'allow adbd su process dyntransition'" # 配置缺少的权限
+		su -c "magiskpolicy --live 'permissive { su }'" # 将 su 配置为 permissive，防止后续命令执行缺少权限
+		su -c "kill -9 `ps -A | grep adbd | awk '{print $2}' `" # 杀掉 adbd
+- 建立链接
+	::
+	
+		adb -d：如果同时连了usb，又开了模拟器，连接当前唯一通过usb连接的安卓设备
+		adb -e shell：指定当前连接此电脑的唯一的一个模拟器
+		adb -s <设备号> shell：当电脑插多台手机或模拟器时，指定一个设备号进行连接
+		exit：退出
+		adb kill-server：杀死当前adb服务，如果连不上设备时，杀掉重启。（没事不要用它）
+		adb start-server：杀掉后重启
+		5037：adb默认端口，如果该端口被占用，可以指定一个端口号，如下命令↓
+		adb -p 6666 start-server：任意指定一个 adb shell 的端口
+- apk操作指令
+	::
+	
+		adb shell pm list packages：列出当前设备/手机，所有的包名
+		adb shell pm list packages -f：显示包和包相关联的文件(安装路径)
+		adb shell pm list packages -d：显示禁用的包名
+		adb shell pm list packages -e：显示当前启用的包名
+		adb shell pm list packages -s：显示系统应用包名
+		adb shell pm list packages -3：显示已安装第三方的包名
+		adb shell pm list packages xxxx：加需要过滤的包名，如：xxx = taobao
+		adb install <文件路径\apk>：将本地的apk软件安装到设备(手机)上。如手机外部安装需要密码，记得手机输入密码。
+		adb install -r <文件路径\apk>：覆盖安装
+		adb install -d <文件路径\apk>：允许降级覆盖安装
+		adb install -g <文件路径\apk>：授权/获取权限，安装软件时把所有权限都打开
+		adb uninstall <包名>：卸载该软件/app。
+		注意：安装时安装的是apk，卸载时是包名，可以通过 adb shell pm list packages 查看需要卸载的包名
+		adb shell pm uninstall -k <包名>：虽然把此应用卸载，但仍保存此应用的数据和缓存
+		adb shell am force-stop <包名>：强制退出该应用/app
+- 文件操作
+	::
+	
+		adb push <本地路径\文件或文件夹> <手机端路径>：把本地(pc机)的文件或文件夹复制到设备(手机)
+		adb pull <设备路径> <本地路径>: 从 Android 设备上获取文件并保存到本地计算机上。
+- 日志命令
+	::
+	
+		adb shell logcat -c：清理现有日志
+		adb shell logcat -v time ：输出日志，信息输出在控制台
+		adb shell logcat -v time > <存放路径\log.txt>：输出日志并保存在本地文件
+		Ctrl+C：终止日志抓取
+		adb shell logcat -v time *:E > <存放路径\log.txt>：打印级别为Error的信息
+		日志的等级：
+		-v：Verbse（明细）
+		-d：Debug（调试）
+		-i：Info（信息）
+		-w：Warn（警告）
+		-e：Error（错误）
+		-f：Fatal（严重错误）
+		抓取日志的步骤先输入命令启动日志，然后操作 App，复现 bug，再 ctrl+c 停止日志，分析本地保存的文件。
+		：日志是记录手机系统在运行app时有什么异常的事件
+		EXCEPTION
+		也可以把更详细得Anr日志拉取出来：adb shell pull /data/anr/traces.txt <存放路径>
+- 系统操作指令
+	::
+	
+		adb shell getprop ro.product.model：获取设备型号
+		adb shell getprop ro.build.version.release：获取Android系统版本
+		adb shell getprop ro.build.version.sdk
+		adb shell getprop ro.build.version.security_patch
+		adb shell getprop ro.build.description
+		adb shell getprop ro.product.cpu.abi：查看cpu架构信息
+		adb get-serialno：获取设备的序列号（设备号）
+		adb shell wm size：获取设备屏幕分辨率
+		adb shell screencap -p /sdcard/mms.png：屏幕截图
+		adb shell screencap -p /sdcard/screenshot.png：屏幕截图
+		adb shell cat /proc/meminfo：获取手机内存信息
+		adb shell df：获取手机存储信息
+		adb shell screenrecord <存放路径/xxx.mp4>：录屏，命名以.mp4结尾
+		adb shell screenrecord --time-limit 10 <存放路径/xxx.mp4>：录屏时间为10秒
 
 动态分析
 ----------------------------------------

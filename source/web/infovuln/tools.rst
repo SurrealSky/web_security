@@ -328,20 +328,21 @@ Waf指纹
 - auxiliary/scanner/http/dir_listing
 - auxiliary/scanner/http/brute_dirs
 - DirBuster
-- 御剑
 
 暴力破解
 ----------------------------------------
 
-字典
+常用字典集合
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `fuzzDicts <https://github.com/TheKingOfDuck/fuzzDicts>`_
 - `SecLists <https://github.com/danielmiessler/SecLists>`_
 - `Blasting dictionary <https://github.com/rootphantomer/Blasting_dictionary>`_
-- `pydictor <https://github.com/LandGrey/pydictor>`_
-- `Probable Wordlists <https://github.com/berzerk0/Probable-Wordlists>`_ Wordlists sorted by probability originally created for password generation and testing
-- `Common User Passwords Profiler <https://github.com/Mebus/cupp>`_
-- `chrome password grabber <https://github.com/x899/chrome_password_grabber>`_
 - kali自带字典：/usr/share/wordlists/
+
+字典生成工具
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `pydictor <https://github.com/LandGrey/pydictor>`_
+- `Common User Passwords Profiler <https://github.com/Mebus/cupp>`_
 - cewl字典生成工具
 	+ 根据url爬取并生成字典：cewl http://www.ignitetechnologies.in/ -w dict.txt
 	+ 生成长度最小限制的字典：cewl http://www.ignitetechnologies.in/ -m 9
@@ -370,10 +371,11 @@ Waf指纹
 	+ 制作6为数字字典 ``crunch 6 6  0123456789 –o num6.dic`` 
 	+ 制作139开头的手机密码字典 ``crunch 11 11  +0123456789 -t 139%%%%%%%% -o num13.dic`` 
 
-firefox缓存破解
+浏览器缓存破解
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `Firefox_Decrypt <https://github.com/unode/firefox_decrypt>`_
 	+ ``python3 firefox_decrypt.py ../esmhp32w.default-default``
+- `chrome password grabber <https://github.com/x899/chrome_password_grabber>`_
 
 web破解
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

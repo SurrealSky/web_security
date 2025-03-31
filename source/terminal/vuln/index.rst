@@ -10,7 +10,5 @@
    linux/index
    defense
    shellcode
-   android/index
-   ios/index
    vulnskill/index
    tools/index

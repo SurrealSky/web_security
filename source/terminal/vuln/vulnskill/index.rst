@@ -10,4 +10,6 @@
    skill
    iotvuln
    electron
+   android
+   ios
 
