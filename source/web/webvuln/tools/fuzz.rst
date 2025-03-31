@@ -81,6 +81,18 @@ Web Fuzz
 			按照从右往左顺序对字典数据进行多次转换。
 	+ 注：FUZZ位置即为需要模糊测试。
 
+参数fuzz
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Arjun
+	+ 项目地址：``https://github.com/s0md3v/Arjun``
+	+ 安装：``pip3 install arjun``
+	+ 扫描
+		::
+		
+			arjun -u https://api.example.com/endpoint
+			arjun -i targets.txt
+	+ 指定http方法：``-m GET/POST/JSON/XML``
+
 Unicode Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `utf16encode <http://www.fileformat.info/info/charset/UTF-16/list.htm>`_
