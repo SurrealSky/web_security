@@ -80,9 +80,6 @@ Web Fuzz
 			多次转换，使用一个@号分隔的列表.
 			按照从右往左顺序对字典数据进行多次转换。
 	+ 注：FUZZ位置即为需要模糊测试。
-- `SecLists <https://github.com/danielmiessler/SecLists>`_
-- `fuzzdb <https://github.com/fuzzdb-project/fuzzdb>`_
-- `foospidy payloads <https://github.com/foospidy/payloads>`_
 
 Unicode Fuzz
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,3 +89,9 @@ WAF Bypass
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `abuse ssl bypass waf <https://github.com/LandGrey/abuse-ssl-bypass-waf>`_
 - `wafninja <https://github.com/khalilbijjou/wafninja>`_
+
+FUZZ资源库
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `fuzzdb <https://github.com/fuzzdb-project/fuzzdb>`_
+- `foospidy payloads <https://github.com/foospidy/payloads>`_
+- `fuzzDicts <https://github.com/TheKingOfDuck/fuzzDicts>`_

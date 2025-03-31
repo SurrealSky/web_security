@@ -334,7 +334,6 @@ Waf指纹
 
 常用字典集合
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `fuzzDicts <https://github.com/TheKingOfDuck/fuzzDicts>`_
 - `SecLists <https://github.com/danielmiessler/SecLists>`_
 - `Blasting dictionary <https://github.com/rootphantomer/Blasting_dictionary>`_
 - kali自带字典：/usr/share/wordlists/
