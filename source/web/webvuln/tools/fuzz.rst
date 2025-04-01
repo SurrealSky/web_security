@@ -102,7 +102,7 @@ WAF Bypass
 - `abuse ssl bypass waf <https://github.com/LandGrey/abuse-ssl-bypass-waf>`_
 - `wafninja <https://github.com/khalilbijjou/wafninja>`_
 
-FUZZ资源库
+FUZZ爆破字典
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - `fuzzdb <https://github.com/fuzzdb-project/fuzzdb>`_
 - `foospidy payloads <https://github.com/foospidy/payloads>`_
