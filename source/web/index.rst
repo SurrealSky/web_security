@@ -12,3 +12,4 @@
    webvuln/index
    sourcevuln/index
    intranet/index
+   vulnskill/index

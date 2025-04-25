@@ -11,6 +11,4 @@
    bypass
    webpersistence
    misc
-   defense
-   operation
    ctf
