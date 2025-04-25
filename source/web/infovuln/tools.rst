@@ -337,6 +337,7 @@ Waf指纹
 - `SecLists <https://github.com/danielmiessler/SecLists>`_
 - `Blasting dictionary <https://github.com/rootphantomer/Blasting_dictionary>`_
 - kali自带字典：/usr/share/wordlists/
+- `SuperWordlist <https://github.com/CrackerCat/SuperWordlist>`_
 
 字典生成工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

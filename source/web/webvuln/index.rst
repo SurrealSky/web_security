@@ -23,3 +23,4 @@
    captcha
    other/index
    tools/index
+   vulnskill/index
