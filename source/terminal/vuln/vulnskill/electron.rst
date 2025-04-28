@@ -113,6 +113,18 @@ asar文件
         保存以上js内容为getVersionInfo.js，保存于解包后的文件夹中
         修改package.json的main字段为getVersionInfo.js
         重新封包，替换原来的.asar文件。
++ 功能特性
+    - 查看特性: ``npx @electron/fuses read --app *.exe``
+    - **runAsNode** ：是否考虑ELECTRON_RUN_AS_NODE环境变量。
+    - **cookieEncryption** :磁盘上的cookie存储是否使用操作系统级别的加密密钥进行加密。
+    - **nodeOptions** ：是否遵守--inspect、--inspect-brk 等标志。
+    - **embeddedAsarIntegrityValidation** ：macOS上的一项实验性功能，该功能在加载app.asar文件时验证其内容。
+    - **onlyLoadAppFromAsar** ： 改变了Electron用来定位应用程序代码的搜索系统。默认情况下，Electron将按照以下顺序搜索 app.asar -> app -> default_app.asar。
+    - **loadBrowserProcessSpecificV8Snapshot** ：更改浏览器进程使用的V8快照文件。
+    - **grantFileProtocolExtraPrivileges** ：从 file:// 协议加载的页面是否被赋予超出它们在传统Web浏览器中所获得的权限的权限。
+    - 总结
+        + **绕过验证** ：开启 EnableEmbeddedAsarIntegrityValidation 让程序在启动时检查 .asar 文件的完整性。程序执行时会读取.asar文件的头部，计算hash后和二进制程序内部的值进行对比，如果对比通过了就加载.asar文件进行执行。问题在于，程序只会校验头部计算后的hash，但不会校验头部中的记录的hash是否有效，因此如果修改了文件内容，文件大小不变，偏移也就不会变（偏移在头部），就能够绕过验证。
+        + **asar劫持** ：onlyLoadAppFromAsar关闭后，劫持优先级高的文件。
 + Sandbox（沙箱）
     - 即Chromium的沙盒特性，如果开启了这个选项， 渲染进程将运行在沙箱中，限制了大多数系统资源的访问，包括文件读写，新进程启动等， preload.js和网页中的js都会受到这个选项的影响
     - 该选项会随着Node Integration的开启而关闭
