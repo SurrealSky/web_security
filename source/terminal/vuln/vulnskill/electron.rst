@@ -257,6 +257,58 @@ asar文件
     ::
     
         /app.exe --args --proxy-server=127.0.0.1:8080 --ignore-certificate-errors
++ 抓包工具
+	- httptoolkit: ``https://httptoolkit.com/download/win-exe/``
++ 无法打开devtools
+	- 原因分析
+		+ 程序监听了控制台的打开事件，当发现控制台打开，则立刻将其关闭。
+		+ 程序在用BrowserWindow创建窗口时，配置了webPreferences中的devTools为false。
+		+ 程序在打包时，去除了Electron的控制台功能模块。
+	- 绕过
+		+ 第一种：通常是使用的是devtools-opened事件），可以通过解绑事件或移除相关代码的方式绕过。
+		+ 第二种：程序入口文件寻找窗口的devTools配置项，并修改它。
+		+ 第三种
+			::
+			
+				(1)解压app.asar后，在app文件夹中新建一个js文件并写入以下代码：
+				const { app, BrowserWindow } = require("electron");
+
+				//创建窗口
+				function createWindow () {
+				let mainWindow = new BrowserWindow({
+				title: "测试",
+				width: 670,
+				height: 420,
+				offscreen: true,
+				show: true,
+				titleBarStyle: "customButtonsOnHover",
+				backgroundColor: "#fff",
+				acceptFirstMouse: true, //是否允许单击页面来激活窗口
+				allowRunningInsecureContent: true,//允许一个 https 页面运行 http url 里的资源
+				webPreferences: {
+				devTools: true, //是否允许打开调试模式
+				webSecurity: false,//禁用安全策略
+				allowDisplayingInsecureContent: true,//允许一个使用 https的界面来展示由 http URLs 传过来的资源
+				allowRunningInsecureContent: true, //允许一个 https 页面运行 http url 里的资源
+				nodeIntegration: true//5.x以上版本，默认无法在渲染进程引入node模块，需要这里设置为true
+				}
+				});
+				mainWindow.loadURL('about:blank');
+				// 完成第一次绘制后显示
+				mainWindow.on('ready-to-show', () => {
+				mainWindow.webContents.openDevTools();
+				})
+				// 窗口关闭
+				mainWindow.on('closed', function () {
+				mainWindow = null
+				});
+				}
+				// 主进程准备好以后创建窗口
+				app.on('ready', () => {
+				createWindow();
+				});
+				(2)打开app文件夹中的package.json文件，将入口（main）指向新建的js文件。
+				(3)启动程序，看打开的窗口是否有控制台，若有，则说明程序内打包了控制台模块，若无，则说明没有打包。
 
 注入hook
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

