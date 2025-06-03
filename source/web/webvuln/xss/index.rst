@@ -6,7 +6,6 @@ XSS
    :caption: 内容索引:
 
    classify
-   harm
    vuln
    security/index
    source
