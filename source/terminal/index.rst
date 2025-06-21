@@ -10,3 +10,4 @@
    android/index
    ios/index
    vuln/index
+   vulnskill/index

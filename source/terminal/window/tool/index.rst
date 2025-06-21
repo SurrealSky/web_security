@@ -6,7 +6,8 @@
    :caption: 内容索引:
 
    debug
-   kerneldbg
+   dotnet
+   windbg
    instrumentation
    symboliclink
    other

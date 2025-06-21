@@ -12,4 +12,5 @@
    electron
    android
    ios
+   tools/index
 

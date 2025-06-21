@@ -1,4 +1,4 @@
-﻿漏洞挖掘
+﻿漏洞原理
 ========================================
 
 .. toctree::
@@ -10,5 +10,3 @@
    linux/index
    defense
    shellcode
-   vulnskill/index
-   tools/index

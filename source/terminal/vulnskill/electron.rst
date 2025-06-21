@@ -452,5 +452,5 @@ asar文件
         分析拼接的输入点是否用户可控，查看是否有xss漏洞。
 
         
-.. |electron1| image:: ../../../images/electron1.webp
-.. |electron2| image:: ../../../images/electron2.png
+.. |electron1| image:: ../../images/electron1.webp
+.. |electron2| image:: ../../images/electron2.png

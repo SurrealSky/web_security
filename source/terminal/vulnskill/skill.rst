@@ -133,7 +133,7 @@ TOCTOU
 代码覆盖率
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + drrun
-	- DynamoRIO工具组件见 :ref:`terminal/vuln/tools/vulner:二进制程序黑盒FUZZ`
+	- DynamoRIO工具组件见 :ref:`terminal/vulnskill/tools/vulner:二进制程序黑盒FUZZ`
 	- 示例
 		::
 		
@@ -176,13 +176,29 @@ windows驱动漏洞挖掘
 
 基础
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 驱动对象创建驱动设备，设备名称形如（ **\\Device\\设备名** ）只能在内核访问, 所以有了设备的别名即 **符号链接** (内核中形如 **\\dosDevices\\设备名** 或 **\\??\\设备名** )。
-+ 3环程序通过CreateFile函数打开符号链接(形如 **\\\\.\\DeviceName** )，获取驱动设备句柄。
++ 设备名称：驱动对象创建驱动设备，设备名称形如（ **\\Device\\设备名** ）只能在内核访问(内核中形如 **\\dosDevices\\设备名** 或 **\\??\\设备名** )。
++ 符号链接：3环程序通过CreateFile函数打开符号链接(形如 **\\\\.\\DeviceSymlink** )，获取驱动设备句柄。
 + 3环的程序向驱动发出I/O请求时，是由 **DeviceIoControl** 等函数所完成的
 + 不是所有驱动都使用符号链接和用户层进行通信，有很多驱动不是以这种方式和用户进行数据交换
 
+查询驱动
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 命令：``driverquery /v /fo list``
++ 目录：``C:\Windows\System32\drivers``
++ Sysinternals套件中的Autoruns工具
+
 DeviceIoControl函数
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 基础
+	- MajorFunctions数组存储了驱动程序设备的行为调度例程。
+	- MajorFunctions数组特殊索引，它定义为IRP_MJ_DEVICE_CONTROL。
+	- 它指向在驱动程序的设备上调用DeviceIoControl API后被调用的调度例程的函数指针。
+		::
+		
+			IRP_MJ_CREATE是在调用CreateFile这个API时驱动程序将要调用的函数的指针的索引；
+			IRP_MJ_READ是与ReadFile等函数相关的索引。
+			IRP_MJ_DEVICE_CONTROL与DeviceIoControl相对应的索引。
+	- 位于索引IRP_MJ_DEVICE_CONTROL处的调度例程，其代码大体上就是一个switch语句。
 + 原型
 	::
 	
@@ -443,4 +459,4 @@ COM挖掘思路
 	- 覆盖COM对象
 		+ 在HKCU注册表种创建正确的键值，当引用目标COM对象时，HKLM中的键值就会被覆盖（并且“添加”到HKCR中）。
 
-	.. |ioctl1| image:: ../../../images/ioctl1.png
+	.. |ioctl1| image:: ../../images/ioctl1.png
