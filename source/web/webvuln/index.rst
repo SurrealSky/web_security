@@ -10,6 +10,7 @@
    xss/index
    csrf
    ssrf
+   jsonp
    codeexec
    cmdinjection
    pathtraversal
