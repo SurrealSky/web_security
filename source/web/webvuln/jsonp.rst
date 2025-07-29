@@ -82,6 +82,7 @@ JSONP (JSON with Padding) 是一种用于解决浏览器同源策略限制的跨
 		</html>
 		
 		注意：
+		jquery.min.js需要在https://jquery.com官网下载，放在当前js目录下
 		jsonp 填写回调参数的名字
 		jsonpcallback 就是回调参数的值
 		alert 的地方根据需要更改取值

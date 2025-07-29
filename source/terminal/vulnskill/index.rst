@@ -7,7 +7,8 @@
 
    basic
    core
-   skill
+   bin
+   skill/index
    iotvuln
    electron
    android

