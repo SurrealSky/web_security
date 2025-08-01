@@ -36,3 +36,5 @@
                 CreateSymlink.exe test\2.txt c:\2.bat
                 注：test目录必须为空。
     - 若程序对CreateFile函数调用，检测GetLastError为REPARSE（重解析）导致漏洞无法利用
++ runas
+    - 使用user组下普通用户test运行cmd.exe： ``runas /user:test cmd.exe``
