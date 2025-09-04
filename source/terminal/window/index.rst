@@ -12,4 +12,5 @@
    heap
    reverse
    enc
+   pri
    tool/index

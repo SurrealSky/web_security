@@ -9,7 +9,7 @@ mklink
 	mklink /D "C:\Users\Administrator\Desktop\link" "C:\Users\Administrator\Documents"
 	mklink /H <硬链接> <目标>
 	mklink /H "C:\linkdoc.txt" "C:\dstdoc.txt"
-	注：其中对dstdoc.txt文件应具备写入权限
+	注：其中对dstdoc.txt文件应具备写入权限（测试需要是文件拥有者）
 	mklink /J <软联接/连接点> <目标>
 	mklink /J "C:\linkdir" "C:\dstdir"
 	注：其中linkdir在当前目录中应当不存在，且对dstdir目录应具备写入权限
