@@ -29,8 +29,9 @@ symboliclink-testing-tools
 	- CreateDosDeviceSymlink
 		::
 		
-			创建对象管理器符号链接：
-			Creates a object manager symbolic link using csrss
+			使用csrss创建对象管理器符号链接：
+			CreateDosDeviceSymlink.exe "\RPC Control\config.txt" "??\C:\dont_delete.txt"
+			注：\RPC Control下的符号链接会在系统重启后丢失。
 	- CreateSymlink
 		::
 		
