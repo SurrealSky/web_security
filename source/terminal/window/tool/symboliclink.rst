@@ -41,6 +41,7 @@ symboliclink-testing-tools
 			CreateDosDeviceSymlink.exe "\RPC Control\config.txt" "??\C:\dont_delete.txt"
 			CreateMountPoint.exe "C:\test" "\RPC Control"
 			删除C:\test目录下config.txt文件，就是删除C:\dont_delete.txt文件。
+			注：\RPC Control下的符号链接会在系统重启后丢失。
 
 	- CreateMountPoint
 		::
