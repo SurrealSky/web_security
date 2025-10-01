@@ -15,7 +15,7 @@
 代码覆盖率
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + drrun
-	- DynamoRIO工具组件见 :ref:`terminal/vulnskill/tools/vulner:二进制程序黑盒FUZZ`
+	- DynamoRIO工具组件见 :ref:`terminal/vulnskill/tools/binfuzz:二进制程序黑盒FUZZ`
 	- 示例
 		::
 		

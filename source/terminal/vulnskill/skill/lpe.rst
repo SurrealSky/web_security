@@ -61,5 +61,20 @@
                 CreateSymlink.exe test\2.txt c:\2.bat
                 注：test目录必须为空。
     - 若程序对CreateFile函数调用，检测GetLastError为REPARSE（重解析）导致漏洞无法利用
++ 注册表提权
+    - 全局注册表项
+        + HKEY_LOCAL_MACHINE
+        + HKEY_USERS\\.DEFAULT​​
+        + 重要的全局注册表项
+            - ``HKLM\SYSTEM\CurrentControlSet\Services``
+            - ``HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run​​``
+            - ``HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce​​``
+            - ``HKLM\SOFTWARE\[Application Name]​​``
+            - 文件关联，com对象配置：``HKLM\SOFTWARE\Classes``
+        + 注意
+            - 如果服务进程读取了非全局的注册表项，比如加载了非全局注册表指定的exe/dlll，将存在漏洞。
+    - 权限检查
+        + 检查所有授予"Everyone"用户写权限的HKLM子键：``accesschk.exe -kquwsv "Everyone" hklm\``
+        + 检查Services下的所有弱权限:``accesschk.exe -kquwsv "Users" hklm\system\currentcontrolset\services\``
 + runas
     - 使用user组下普通用户test运行cmd.exe： ``runas /user:test cmd.exe``
