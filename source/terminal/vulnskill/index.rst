@@ -10,7 +10,7 @@
    bin
    skill/index
    iotvuln
-   electron
+   electron/index
    android
    ios
    tools/index

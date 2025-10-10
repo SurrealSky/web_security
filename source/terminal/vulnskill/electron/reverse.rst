@@ -1,63 +1,8 @@
-﻿electron程序漏洞挖掘
+﻿逆向分析
 ========================================
 
-概述
-----------------------------------------
-+ electron.js是一个运行时框架，使用web技术来创建跨平台原生桌面应用的框架。
-+ electron负责硬件部分，Chromium负责页面UI渲染，Node.js负责业务逻辑，Native API则提供原生能力和跨平台。
-
-特点
-----------------------------------------
-+ 摆脱了不同浏览器之间的差异和版本的限制，可以开发跨平台的桌面应用。
-+ 通过内置Node.js提供原生系统的能力，如文件系统和网络的访问，有活跃的贡献者社区管理和第三方丰富的包支持。
-+ 摆脱浏览器的沙盒机制，可以访问操作系统层面的东西。
-+ 前端人员能在不学习其他语言的情况下，快速构建跨平台，带来统一的用户体验
-
-逆向分析
-----------------------------------------
-
-文件结构
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 含有resources目录，包含一个app.asar文件。
-+ app.asar是项目源码的归档文件。
-+ exe文件是程序的启动文件。
-
-程序结构
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 主进程
-    - 特点
-        + 处理原生应用逻辑，是一个node.js进程。
-        + 每个Electron应用有且只有一个主进程，作为应用程序的入口点，即main脚本（package.json中main节点指定）的进程。
-    - 职责
-        + 创建渲染进程(可多个)
-        + 控制应用生命周期 (启动、退出app以及对app的一些事件监听)
-        + 调用系统底层功能、调用原生资源
-    - 调用接口
-        + NodeJS api
-        + Electron提供的主进程api(包括一些系统功能和Electron附加功能)
-+ 渲染进程
-    - 特点
-        + 由electron的BrowserWindow模块来进行创建和销毁，它可以加载web页面。
-        + 渲染进程就是一个浏览器窗口，运行在各自的单个线程。
-        + 渲染进程中执行的代码可以访问node的所有API,利用这个特性可以使用原生模块，实现与底层系统的交互。
-        + 渲染器进程之间是相互隔离的不能够直接互相通信，并且不允许他们直接访问操作系统级别的API。
-        + 要先与主进程进行通信，再由主进程进行转发或者由主进程访问安全级别API再返回。
-    - 职责
-        + 用HTML和CSS渲染界面
-        + 用JS做界面交互
-    - 可调用接口
-        + DOM API
-        + NodeJS API
-        + Electron提供的渲染进程API
-+ 进程通信
-    + IPC通信
-    + remote通信
-
-|electron1|
-|electron2|
-
 asar文件
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------
 + 程序解包
     ::
     
@@ -80,7 +25,7 @@ asar文件
     - 如果想验证某些功能，或者做些修改，可以通过重打包然后替换app.asar。
 
 信息收集
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------
 + 查看版本
     ::
     
@@ -175,8 +120,64 @@ asar文件
         
             for /r C:/Users/Administrator/Desktop/app %i in (*.js) do @echo %i|jsluice secrets
 
-程序调试
+内存分析
+----------------------------------------
+
+内存对象分类
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ JavaScript对象 (V8 Heap)
+    - 核心部分，存在于主进程和渲染进程，其JavaScript代码执行环境都由V8 JavaScript引擎管理。
+    - 所有​​你用 JavaScript 代码创建的对象（变量、函数、数组、自定义对象实例、DOM 元素引用等）都存在于 V8 引擎管理的堆内存中。
+    - 这是 JavaScript 开发者最直接接触到的内存。
++ DOM 对象(Blink/WebKit)
+    - 在渲染进程中，当你操作 document、window、div等时，你是在操作 DOM。
+    - DOM 本身是一个用 C++ 实现的复杂对象树（由 Blink 渲染引擎管理）。
+    - JavaScript 代码通过 V8 提供的 ​​Wrapper 对象​​ 来访问和操作这些底层的 C++ DOM 对象。
+    - Wrapper是一个特殊的JS对象，它持有对底层 C++ DOM 对象的引用，并将 JS 操作转发给 C++ 实现。
+    - 存在 JS Wrapper 对象与底层 C++ 实现对象的关联。
++ Node.js内置模块对象
+    - 在主进程和启用了Node.js集成的渲染进程中，使用的Node.js的 API（如 fs, net, path, process等）。
+    - 核心功能通常是用 C++ 实现的（例如 fs.readFile最终调用 libuv 和操作系统 API）。
+    - 当你调用 require('fs')时，你得到一个 JavaScript 对象。这个 JS 对象的方法内部会通过 Node.js/V8 的绑定机制调用底层的 C++ 代码。
+    - 存在 JS Wrapper 对象与底层 C++ 实现对象的关联。
++ Electron特有API对象
+    - Electron 提供的 API，如 BrowserWindow, ipcRenderer, ipcMain, app, dialog等
+    - 核心逻辑也是用 C++ 实现的（或者 TypeScript 调用 C++）。
+    - 当JS 代码中调用 new BrowserWindow()时
+        ::
+        
+            V8 创建一个 JS 对象（BrowserWindow实例）。
+            Electron 的 C++ 部分会创建一个对应的底层 C++ BrowserWindow对象（管理原生窗口创建、消息循环等）。
+            这个 JS 对象充当了底层 C++ 对象的 Wrapper/Proxy。​​ 
+            JS 对象上的方法调用（如 win.loadURL()）会被转发到底层的 C++ 对象执行实际的操作。
++ 原生资源/缓冲区​​
+    - 例如 Buffer对象（Node.js）、ArrayBuffer、SharedArrayBuffer、ImageBitmap等
+    - 这些对象通常在 V8 堆外分配内存（可能由 V8 管理，也可能由操作系统或原生模块直接管理），但通过 JS API 暴露给 JavaScript 访问。
+    - 它们代表了原始的内存块（图片数据、文件内容、网络数据等）。
++ V8和引擎内部对象
+    - V8 引擎本身需要内存来管理其内部状态（编译后的代码、优化信息、垃圾回收元数据等）。
+    - Blink/WebKit 渲染引擎也有其庞大的 C++ 内部数据结构（渲染树、样式计算、网络栈、GPU 通信等）。
+
+对象绑定
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 不是每个 JavaScript 对象都对应一个封装的 C++ 对象。​​
++ 纯 JavaScript 对象
+    - 绝大多数你创建的普通 JavaScript 对象（例如 let obj = { name: 'Alice', age: 30 };或 function greet() { ... }）​​只存在于 V8 堆中​​。
+    - 它们没有直接的、一对一的底层 C++ 对象封装。
++ Wrapper/Proxy 对象
+    - 当你与​​浏览器环境​​（DOM）或​​Node.js/Electron 环境​​（fs, BrowserWindow, process）交互时，你操作的 JavaScript 对象（如 document.getElementById('myDiv')返回的对象，或 new BrowserWindow()返回的对象）​​通常是 Wrapper 对象​​。
+    - 这些 Wrapper JS 对象​​持有对底层 C++ 实现对象的引用​​。
+    - 调用这些 JS 对象的方法或访问其属性，最终会通过 V8 的绑定机制调用到 C++ 代码。
+    - 这些 C++ 对象负责执行实际的、需要原生能力的操作（操作文件、创建窗口、网络请求、渲染像素等）。
+    - 关键点：​​ 一个 JS Wrapper 对象对应一个（或一组相关的）底层 C++ 对象。这是 Electron/Node.js/浏览器将原生能力暴露给 JavaScript 的核心机制。
++ 简单值类型
+    - number, string, boolean, null, undefined, symbol这些基本类型值通常直接由 V8 处理，不需要单独的 C++ 对象封装（虽然它们在 V8 内部也有表示）
++ 原生资源缓冲区
+    - Buffer/ArrayBuffer等对象本身是 JS 对象，但它们管理的内存块通常在 V8 堆外。
+    - 它们可以被视为一种特殊类型的 Wrapper，包装了一块原始内存。
+
+程序调试
+----------------------------------------
 + 添加代码法
     ::
     
@@ -311,7 +312,7 @@ asar文件
 				(3)启动程序，看打开的窗口是否有控制台，若有，则说明程序内打包了控制台模块，若无，则说明没有打包。
 
 注入hook
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------
 + did-finish-load事件
     ::
     
@@ -325,132 +326,3 @@ asar文件
             //这里填写js hook代码
         };
         inject();
-
-攻击面分析
-----------------------------------------
-
-利用渲染进程本身进行RCE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 通过NodeJs共享库RCE
-+ 通过chromium Nday RCE
-
-通过IPC影响主进程进行RCE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 需要主进程ipcmain，实现了危险方法
-    ::
-    
-        例如主进程：
-        ipcMain.on('fetch-data', (event, data) => {
-            exec(data);  // Potentially dangerous function call
-        });
-        渲染进程：
-        ipcRenderer.send('fetch-data', 'rm -rf /');
-+ 需要当前执行上下文可以访问IPC
-
-常规利用方法
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 分析选项开启状态
-    ::
-    
-        grep -r "sandbox:" ./
-        grep -r "nodeIntegration:" ./
-        grep -r "contextIsolation:" ./
-+ NI为true, CISO为 false，SBX为false
-    - 允许了页面之间访问nodejs共享库，只要获取目标应用的一个XSS漏洞，就能直接通过访问NodeJS共享库，升级为XSS漏洞。
-    - NI配置方法：在man.js中webPreferences中配置了nodeIntegration为true/false
-+ NI为false, CISO为false，SBX为false
-    - 关闭了Nodejs集成，导致我们不能在web页面上下文访问Nodejs共享库。
-    - 因为上下文隔离没有开启，web页面和preload.js处于同一上下文中，导致我们可以通过污染原型链，获取preload,js的函数，进行ipcmain调用，命令执行等。
-    - 限制条件
-        ::
-        
-            Electron<10
-            - 可以使用原型链污染获取remote/IPC模块
-            - Remote模块可以直接通过主进程执行node js绕过沙箱
-            Electron 10<version<14
-            - 可以使用原型链污染获取remote/IPC模块
-            - 需要Remote Module Explicitly Enabled，才可以使用remote模块RCE
-            - 主进程IPC存在错误配置，通过进程间通信IPC，进行RCE
-            Electron >14
-            - 只能通过原型链污染获取IPC模块
-+ NI为true/false, CISO为true，SBX为false
-    - 因为没有开启沙箱，通过Chrome渲染进程远程代码执行漏洞，就可以直接RCE。
-    - Chromium 83、86、87、88版本，如果electorn内置了Chromium就可以通过XSS，直接攻击，进行RCE。
-+ NI:false, CISO:true, SBX为true
-    - 有沙箱， 我们只能通过IPC进行攻击，但是如果我们js处于iframe之中，可能没有ipc访问权限,需要绕过。
-    - 绕过思路
-        + iframe下无ipc接口绕过
-        + 关闭CISO,直接使用IPC，绕过限制
-        + 关闭CISO,使用原型链污染获取remote模块进行RCE
-        
-自定义协议
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ electron应用可以注册自己的url协议，例如custom://。
-+ 这样可以通过浏览器直接打开应用，如果对url协议的处理不当可能导致rce等。
-+ 检测方法
-    ::
-        
-        查找registerHttpProtocol方法调用
-
-代码审计
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 寻找输入点
-    - 如xss漏洞等
-
-更新升级
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ MITM
-    - HTTP方式升级
-+ windows升级提权
-    ::
-    
-        恶意工程：https://github.com/parsiya/evil-electron/
-        1.告诉服务下载更新（windows一般通过命名管道）。
-        2.将C:\Program Files (x86)\vendor\electron-app\ 中的所有内容复制到 C:\ProgramData\[redacted]\Updates（下载更新的位置）。
-        3.删除下载的安装程序，但复制其文件名 (GUID.exe)。
-        4.将electro-app.exe重命名为下载的安装程序的名称 (GUID.exe)。
-        5.将目标中的 resources\app.asar文件替换为我自己的后门文件。
-        6.继续Windows服务运行安装程序。
-        7.弹出具有SYSTEM权限的cmd。
-+ 免杀技术
-    ::
-    
-        恶意代码藏于app.asar文件中。
-
-挖掘思路
-----------------------------------------
-+ 组件漏洞
-    ::
-    
-        使用asar解压程序文件，切换到解压目录中.
-        执行 npm install --package-lock-only 生成package-lock.json文件。
-        执行 npm audit --verbose进行组件漏洞分析。
-+ XSS漏洞
-    ::
-    
-        示例程序：https://github.com/MrH4r1/Electro-XSS
-        payload：
-        <img src=x onerror=alert(1) />
-        <img src=x onerror=alert(require('child_process').execSync('gnome-calculator')); />
-        <img src=x onerror=alert(require('child_process').exec('calc')); />
-+ IPC攻击
-+ webview攻击
-    ::
-    
-        webPreferences中启用webview：
-        webviewTag: true
-        <webview src="http://malicious.site"></webview>
-+ 升级漏洞
-+ 查看是否有自定义协议
-    ::
-    
-        grep -r "registerHttpProtocol" ./
-+ 查找有无html内容拼接
-    ::
-    
-        var $input2 = $("<input type='text' value='"+value+"' name='value' class='form-control' style=' width:20%; display: inline-block;' placeholder='value'>");
-        分析拼接的输入点是否用户可控，查看是否有xss漏洞。
-
-        
-.. |electron1| image:: ../../images/electron1.webp
-.. |electron2| image:: ../../images/electron2.png
