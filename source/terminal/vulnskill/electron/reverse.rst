@@ -232,16 +232,20 @@ asar文件
         
         调试主进程：
         下载对应版本的node和electron，然后将node添加到环境变量中。
-        配置electron下载源，安装npm install electron@17.1.2
+        配置electron下载源，全局安装npm install -g electron@17.1.2 --arch=ia32
         npm config set ELECTRON_MIRROR https://npm.taobao.org/mirrors/electron/
         使用Electron提供的 ​--inspect​ 和 ​--inspect-brk​ 开关以调试模式打开程序。
-        --inspect-brk=[port] 和--inspector 一样，但是会在JavaScript 脚本的第一行暂停运行。
+        --inspect-brk=[port] 和--inspector 一样，但是会在JavaScript 系统脚本的main.js第一行暂停运行。
+        1.第一种方法是在调试的js脚本文件前面插入console.log('debug');重新调试。
+        输出日志之后，会在命令窗口出现调试的文件
+        点击文件之后，再下断点，重新调试即可。
+        2.第二种方式是在调试的js脚本文件前面插入debugger;即可。
         使用以下命令：
         electron --inspect[=5858] your/app
         注：默认是9229端口。
         
         安装chrome浏览器，打开chrome://inspect
-        配置Discover network targets，添加9222，9229端口
+        配置Discover network targets，添加9222，9229端口或自定义的端口
         加载源码，在js入口处添加断点。
 + 初始调试法
     ::
