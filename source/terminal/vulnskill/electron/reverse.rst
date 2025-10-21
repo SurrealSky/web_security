@@ -242,7 +242,8 @@ asar文件
         2.第二种方式是在调试的js脚本文件前面插入debugger;即可。
         使用以下命令：
         electron --inspect[=5858] your/app
-        注：默认是9229端口。
+        注：默认是9229端口,其中electron程序也可以使用程序自己的主程序。
+        your/app可以是主程序的main.js文件，也可以是app.asar文件
         
         安装chrome浏览器，打开chrome://inspect
         配置Discover network targets，添加9222，9229端口或自定义的端口
