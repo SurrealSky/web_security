@@ -361,6 +361,14 @@ web系统
 	+ 项目地址：``https://github.com/shmilylty/OneForAll``
 	+ ``python3 oneforall.py --target baidu.com run``
 	+ ``python3 oneforall.py --targets ./domains.txt run``
+- bbot
+	+ 项目地址：``https://github.com/blacklanternsecurity/bbot``
+	+ 安装：``cd bbot , pip install -e .``
+	+ 子域寻找：``bbot -t evilcorp.com -p subdomain-enum`` ，``bbot -t evilcorp.com -p subdomain-enum -rf passive``
+	+ 网页爬虫：``bbot -t evilcorp.com -p spider``
+	+ 邮箱收集：``bbot -t evilcorp.com -p email-enum``
+	+ 网页扫描：``bbot -t www.evilcorp.com -p web-basic`` , ``bbot -t www.evilcorp.com -p web-thorough`` 
+	+ 综合扫描：``bbot -t evilcorp.com -p kitchen-sink --allow-deadly`` , ``bbot -t evilcorp.com -p subdomain-enum cloud-enum code-enum email-enum spider web-basic paramminer dirbust-light web-screenshots --allow-deadly``
 - `subfinder <https://github.com/subfinder/subfinder>`_
 	| ``subfinder -d yuanqisousou.com/``
 - `wydomain <https://github.com/ring04h/wydomain>`_
@@ -662,6 +670,8 @@ web破解
 
 搜索引擎查询
 ----------------------------------------
+- `scans <https://scans.io/>`_
+	+ 互联网快照存档，保存了历史扫描数据
 - `Shodan <https://www.shodan.io/>`_
 - `Zoomeye <https://www.zoomeye.org/>`_
 - `fofa <https://fofa.so/>`_
@@ -678,8 +688,42 @@ web破解
 	+ ports=="3306,443,22" 搜索只开启3306端口、443端口和22端口的IP
 	+ && – 表示逻辑与
 	+ || – 表示逻辑或
-- `scans <https://scans.io/>`_
 - `Just Metadata <https://github.com/FortyNorthSecurity/Just-Metadata>`_
+	+ IP地址情报搜集和分析工具
+	+ 收集数据：``python Just-Metadata.py --input ip_list.txt --full``
+	+ 分析数据：``python Just-Metadata.py --analyze``
 - `publicwww - Find Web Pages via Snippet <https://publicwww.com/>`_
+	+ 一个强大的源码搜索引擎，可以搜索网页源码中的关键词、脚本、CSS样式等内容。
+	+ 查找使用特定代码、框架、组件的网站
+	+ 追踪恶意软件、后门、特定漏洞
+	+ 发现配置错误和敏感信息泄露
+	+ 进行竞争对手分析和技术栈识别
+- google hack
+	+ 站点搜索
+		+ ``site:example.com`` 只搜索example.com域名下的内容
+		+ ``site:*.example.com``
+		+ ``-site:www.example.com site:*.example.com``
+	+ 文件类型
+		+ ``filetype:ext`` 只搜索指定扩展名的文件，如 filetype:pdf
+	+ 关键词搜索
+		+ ``inurl:keyword`` 搜索URL中包含keyword关键词的页面
+	+ 目录列表
+		+ ``intitle:"index of"`` 搜索标题中包含“index of”关键词的页面，通常是目录泄露页面
+		+ ``"parent directory"``
+	+ 登录页面
+		+ ``inurl:login`` 搜索URL中包含login关键词的页面
+		+ ``intitle:login`` 搜索标题中包含login关键词的页面
+		+ ``inurl:admin`` 搜索URL中包含admin关键词的页面
+	+ 查找敏感配置文件
+		+ ``site:example.com filetype:env``
+		+ ``site:example.com "API_KEY"``
+		+ ``site:example.com "password" filetype:txt``
+		+ ``site:example.com "config" filetype:php``
+		+ ``site:example.com filetype:sql``
+		+ ``"db_password" site:example.com``
+		+ ``inurl:"phpmyadmin" intitle:"phpMyAdmin"``
+		+ ``site:example.com filetype:bak``
+		+ ``site:example.com "backup" filetype:zip``
+		+ ``site:example.com "backup" filetype:sql``
 
 .. |pspy| image:: ../../images/pspy.jpg
