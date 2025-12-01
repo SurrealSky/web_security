@@ -19,6 +19,7 @@
    fileinclude
    logic
    xxe
+   cors
    ssti
    xpath
    captcha
