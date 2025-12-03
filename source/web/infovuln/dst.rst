@@ -674,6 +674,12 @@ web破解
 	+ 互联网快照存档，保存了历史扫描数据
 - `Shodan <https://www.shodan.io/>`_
 - `Zoomeye <https://www.zoomeye.org/>`_
+- `crt.sh <https://crt.sh/>`_
+	+ 通过证书信息查询域名: ``example.com``
+	+ 通过证书信息查询子域名: ``%.example.com``
+	+ 通过证书序列号查询: ``serial:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx``
+	+ 通过证书指纹查询: ``sha1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx``
+	+ 通过证书颁发机构查询: ``issuer:Let's Encrypt``
 - `fofa <https://fofa.so/>`_
 	+ title="后台管理" 搜索页面标题中含有“后台管理”关键词的网站和IP
 	+ header="thinkphp" 搜索HTTP响应头中含有“thinkphp”关键词的网站和IP
