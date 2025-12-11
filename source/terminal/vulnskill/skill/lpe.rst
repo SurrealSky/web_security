@@ -29,6 +29,33 @@
 	- 利用方法：攻击者以一个普通用户的身份，编写一个程序向这个高权限服务的接口发送精心构造的恶意指令。服务接收到指令后，会无条件地以高权限执行攻击者想要的操作（例如，启动一个cmd.exe），从而绕过UAC。著名的 "UACME" 项目中很多绕过方法都属于此类，它们利用了大量合法软件（如Intel、NVIDIA、Citrix等）的此类服务。
 + DLL劫持
     - 服务进程DLL文件劫持
+    - 安装包或者应用程序文件关联DLL劫持，当需要UAC授权的时候，DLL劫持就会产生提权效果。
++ Elevated COM对象提权
+    - 两个条件同时满足
+        + 条件A：某些COM对象被注册为“elevated”，即它们在调用时会以管理员权限运行，并且可以自动批准（AutoApprove）调用请求（无UAC弹框）。
+        + 条件B：对象的LaunchPermission或AccessPermission允许低权限用户（如Everyone、BUILTIN\Users）激活和调用它。
+    - 攻击流程
+        + 使用OLEView等工具查看系统中注册的COM对象，寻找那些标记为“elevated”的对象。
+        + 编写一个利用程序，调用这些COM对象的接口，执行恶意代码。
+    - 查找有Elevation或AutoApproval标志的COM对象
+        ::
+
+            #查找所有的Elevation，Auto-Approved标志的COM对象
+            $CLSIDs = Get-ChildItem HKLM:\Software\Classes\CLSID -Name
+            foreach ($clsid in $CLSIDs) {
+                $path = "HKLM:\Software\Classes\CLSID\$clsid"
+                $elevation = Get-ItemProperty -Path "$path" -Name "Elevation" -ErrorAction SilentlyContinue
+                $autoApprove = Get-ItemProperty -Path "$path" -Name "AutoApprove" -ErrorAction SilentlyContinue
+                if ($elevation -or $autoApprove) {
+                    Write-Host "Found potential elevated COM: $clsid"
+                }
+            }
+
+            # 检查是否包含危险组
+            # 危险的：Everyone, Authenticated Users, BUILTIN\Users, INTERACTIVE
+            # 安全的：BUILTIN\Administrators, NT AUTHORITY\SYSTEM
+            accesschk.exe -k -q "HKLM\Software\Classes\AppID\{APPID}"
+
 + 文件移动操作劫持
     - 原理
         + Windows平台下高权限进程的Symlink攻击（高权限进程在操作文件时，未作严格的权限校验，导致攻击利用符号链接到一些受保护的目录文件，比如C盘的系统DLL文件，后面系统或应用去自动加载时，实现代码执行并提权）。

@@ -120,8 +120,8 @@ COM挖掘思路
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 遍历系统COM组件
 	::
-	
-		编写powershell脚本，将CLSID输出到txt文本中：
+
+		#编写powershell脚本，将CLSID输出到txt文本中：
 		New-PSDrive -PSProvider registry -Root HKEY_CLASSES_ROOT -Name HKCR
 		Get-ChildItem -Path HKCR:\CLSID -Name | Select -Skip 1 > clsids.txt
 		利用这些clsid通过powershell创建对应的COM对象，并且使用Get-Member方法获取对应的方法和属性，并最终输出到文本中，pwoershell脚本如下：
@@ -136,6 +136,11 @@ COM挖掘思路
 			  $handle | Get-Member | Out-File $Filename -Append
 			  $Position += 1
 		}
+		
+		#使用oleview.exe工具，包含在Windows SDK 中提供的应用程序
+		路径：C:\Program Files (x86)\Windows Kits\10\bin\<version>\x64\oleview.exe
+
+
 + 自动化FUZZ
 	- 使用Fuzz测试工具:比较出名的有ComRaider、Axman等。
 + 人工测试
