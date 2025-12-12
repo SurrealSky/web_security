@@ -4,41 +4,34 @@
 确定目标
 ----------------------------------------
 + 专属SRC
++ 明确测试范围
+    - 通过SRC活动页面，查看测试目标域名范围
 
-测试范围
+顶级域名
 ----------------------------------------
-+ 通过SRC活动页面，查看测试目标域名范围
++ ICP备案查询
+    + 通过ICP备案号查询注册的域名，比如百度的备案号是 ``京ICP证030173号``
+    + 工信部ICP/IP地址/域名信息备案管理系统: ``https://beian.miit.gov.cn``
+    + 爱站网: ``https://icp.aizhan.com/``
 + 爱企查获取公司所属域名
     搜索想要测试等SRC所属公司名称，在知识产权->网站备案中可以获取测试范围。
++ firefly: ``https://firefly-src.geekyoung.com``
++ virustotal域名信息
+    ::
+    
+        https://www.virustotal.com/gui/domain/{domain}/details
+
 
 子域名
 ----------------------------------------
 + 使用oneforall扫描获取子域名
-
-系统指纹探测
-----------------------------------------
-+ 使用Ehole
-+ 使用Glass
-
-框架站点漏洞测试
-----------------------------------------
-+ Nday漏洞
-
-非框架型站点漏洞测试
-----------------------------------------
-+ 登录框
-    - 用户名枚举
-    - 验证码绕过/置空
-    - 暴力破解
-    - 自行注册
-
-端口扫描
-----------------------------------------
-+ ``sudo nmap -sS -Pn -n --open --min-hostgroup 4 --min-parallelism 1024 --host-timeout 30 -T4 -v  examples.comsudo nmap -sS -Pn -n --open --min-hostgroup 4 --min-parallelism 1024 --host-timeout 30 -T4 -v -p 1-65535 examples.com``
-
-目录扫描
-----------------------------------------
-+ ``python3 dirsearch.py -u www.xxx.com -e * -t 2``
++ 使用fofa搜索子域名
++ 使用Layer挖掘机进行
++ 使用arl灯塔
++ 使用Certsh获取子域名
+    ::
+    
+        https://cert.sh/
 
 JS信息搜集
 ----------------------------------------
