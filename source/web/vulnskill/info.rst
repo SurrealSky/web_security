@@ -13,14 +13,10 @@
     + 通过ICP备案号查询注册的域名，比如百度的备案号是 ``京ICP证030173号``
     + 工信部ICP/IP地址/域名信息备案管理系统: ``https://beian.miit.gov.cn``
     + 爱站网: ``https://icp.aizhan.com/``
+    + 工具：``https://github.com/HG-ha/ICP_Query``
 + 爱企查获取公司所属域名
     搜索想要测试等SRC所属公司名称，在知识产权->网站备案中可以获取测试范围。
 + firefly: ``https://firefly-src.geekyoung.com``
-+ virustotal域名信息
-    ::
-    
-        https://www.virustotal.com/gui/domain/{domain}/details
-
 
 子域名
 ----------------------------------------
@@ -32,6 +28,7 @@
     ::
     
         https://cert.sh/
++ virustotal API
 
 JS信息搜集
 ----------------------------------------
