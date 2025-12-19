@@ -60,9 +60,8 @@
 + electron应用可以注册自己的url协议，例如custom://。
 + 这样可以通过浏览器直接打开应用，如果对url协议的处理不当可能导致rce等。
 + 检测方法
-    ::
-        
-        查找registerHttpProtocol方法调用
+    - 代码查找法：查找 **registerHttpProtocol** 方法调用
+    - 工具： **UrlProtocolView**
 
 代码审计
 ----------------------------------------
