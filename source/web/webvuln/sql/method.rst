@@ -4,6 +4,20 @@
 数据库类型检测
 ----------------------------------------
 
+一般经验
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- asp:  SQL Server,Access
+- .net: SQL Server
+- php:  MySQL,PostgreSQL
+- java: Oracle,MySQL
+
+借助注释符
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ MySQL: ``#``
++ Access： ``null`` 和 ``%00``
++ Oracle和SQLServer： ``--``
++ Oracle： ``;`` Oracle不支持多行查询，如果返回错误，则可能是Oracle数据库
+
 acess
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - ``and exists (select * from msysobjects ) > 0``

@@ -389,6 +389,28 @@ Waf指纹
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + FindSomething
 	- 项目地址：https://github.com/momosecurity/FindSomething
+	- 介绍：浏览器插件，全面的敏感信息被动提取。
++ Packer Fuzzer
+	- 项目地址：https://github.com/hyr0ky/PackerFuzzer
+	- 介绍：针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具.
++ UrlFinder
+	- 项目地址：https://github.com/pingc0y/URLFinder
+	- 介绍：快速、全面、易用的页面信息提取工具，用于分析页面中的js与url,查找隐藏在其中的敏感信息或未授权api接口
+	- 用法
+		::
+
+			显示全部状态码
+			URLFinder.exe -u http://www.baidu.com -s all -m 3
+
+			显示200和403状态码
+			URLFinder.exe -u http://www.baidu.com -s 200,403 -m 3
+
+			导出全部
+			URLFinder.exe -s all -m 3 -f url.txt -o .
+			只导出html
+			URLFinder.exe -s all -m 3 -f url.txt -o res.html
+			结果统一保存
+			URLFinder.exe -s all -m 3 -ff url.txt -o .
 + JSINFO-SCAN
 	- 递归爬取域名 (netloc/domain)，以及递归从 JS 中获取信息的工具。
 	- 项目地址：``https://github.com/p1g3/JSINFO-SCAN``

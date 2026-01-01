@@ -22,6 +22,7 @@
    cors
    ssti
    xpath
+   graphql
    captcha
    other/index
    tools/index

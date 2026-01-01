@@ -1,6 +1,28 @@
 挖掘思路
 ========================================
 
+SRC主流漏洞
+---------------------------------------
++ 业务逻辑
++ XSS
++ 越权
++ 信息泄露
++ SSRF
++ sql
++ 其它
+
+开放重定位漏洞
+----------------------------------------
++ 类型
+    - url参数：如 ``login?next=http://example.com``
+    - referer参数
++ 场景： 登录，注册，注销等
++ 挖掘方法
+    - google语法： ``inurl:%3Dhttp site:example.com``
+    - google语法： ``inurl:%3D%2F site:example.com``
++ 绕过技巧
+    - 可利用不同浏览器的特性，构造一些非常规的url，具体方法再研究。
+
 文件上传漏洞
 ----------------------------------------
 + FUZZ上传参数
@@ -9,6 +31,14 @@
     - 修改type、fileType、breach等参数为0、1、2或all，绕过文件类型检测，上传成功。
 + IE上传绕过
     - 用IE打开上传点，上传马子，通过filename="1.asp";filename="1.jpg"绕过检测。
++ 命令执行
+    - 原理：文件上传到服务器后，后台有task在轮询目录进行文件移动move，使用反撇号的优先级``执行任意命令
+    - 场景：
+    - 触发
+        ::
+
+            上传文件的"filename"参数改为 `sleep 5`
+            注：漏洞触发前提可能是文件名需要自己传入的而不是服务器给的随机文件名。
 
 XSS
 ----------------------------------------
@@ -31,11 +61,13 @@ XSS
     - 无法弹框的情况下，插入img:  ``<img src=""/>`` ,src加入黄色网站，赌博网站，钓鱼网站等
     - 编码绕过
         ::
+            
             %3Cscript%3Ealert(1)%3C/script%3E
             %253Cscript%253Ealert(1)%253C/script%253E
             &#x3C;script&#x3E;alert(1)&#x3C;/script&#x3E;
             &#x253C;script&#x253E;alert(1)&#x253C;/script&#x3E;
             \u003Cscript\u003Ealert(1)\u003C/script\u003E
+            %26%2360;/u%26%2362;
 
 CSRF
 ----------------------------------------
@@ -50,9 +82,54 @@ CSRF
 + json格式跨域的两种情况
     - 没有严格校验Content-Type头：application/json，导致CSRF攻击。
     - 存在cors配置不当：允许任意域名访问，导致CSRF攻击。
++ postMessage
+    - 判断页面是否接受消息
+        + 发送消息到当前页面
+            ::
+                
+                window.postMessage('Hello from test', '*');
+        + 发送消息到iframe中的页面
+            ::
+
+                var iframe = document.querySelector('iframe');
+                iframe.contentWindow.postMessage('Hello from test', '*');
+                检查iframe的sandbox 属性，如果 iframe 元素包含 sandbox 属性，并且没有 allow-scripts 或 allow-same-origin，则它会限制跨域 postMessage 的功能。
+
+        + 源码查看
+            - 检查源代码查看 ``postMessage`` 调用
+        + 如果 Access-Control-Allow-Origin 头的值是 * 或者包含了你的来源，则说明目标页面可能支持跨域通信。
+    - 测试跨域通信
+        + 打开 www.example1.com 页面，控制台输入
+            ::
+
+                var iframe = document.createElement('iframe');
+                iframe.src = 'https://www.example2.com';
+                document.body.appendChild(iframe);
+                iframe.onload = function() {
+                iframe.contentWindow.postMessage('Hello from example1', 'https://www.example2.com');
+                };
+        + 在 www.example2.com 页面中，添加监听 postMessage 的代码
+            ::
+
+                window.addEventListener('message', function(event) {
+                if (event.origin === 'https://www.example1.com') {
+                    console.log('Received message from example1:', event.data);
+                }
+                }, false);
+        + 如果 www.example2.com 页面正确接收了消息并在控制台打印了消息，则说明 postMessage 允许跨域通信。
+
+
+
+
+模版注入
+----------------------------------------
++ payload: ``${7*7}, {{7*7}}, <%= 7*7 %>``
++ 注入点： ``User-Agent、Referer、表单数据、URL参数、JSON请求体等``
 
 SSRF漏洞
 ----------------------------------------
++ 关于盲SSRF
+    - 通常通过响应时间，状态代码等进行漏洞测试。
 + FUZZ目录与参数名
     - 通过FUZZ目录、参数名得到/xxx?image_url=xx，直接无脑get一个SSRF漏洞。
 + 修改imageurl参数
@@ -63,6 +140,18 @@ SSRF漏洞
     - 开发票，导出pdf，图片合成，图片上增加文字等。
 + 邮件会议
     - 邮件内容可能会解析为html，包含内网链接等。
+
+寻找SQL注入点
+----------------------------------------
++ 除法可用： ``?id=2/1``
++ 找到可执行的函数或方法
+    - ``?id=4/if(2=2,2,1)`` 即 ``?id=2``
+    - ``?id=4/if(length(user)=1,1,0)`` ：length方法可用
+    - ``?id=4/if(left('123',1)=1,1,0)`` :left方法可用
+    - ``?id=4/if(left(user,1)='a',1,1)`` :证明user可以用
+    - ``?id=1+and+sleep(10)`` :证明sleep函数可用
++ 其它
+    - 一般java的网站sql注入会多一点
 
 越权
 ----------------------------------------
@@ -93,11 +182,6 @@ SSRF漏洞
 注册登录类漏洞
 ----------------------------------------
 
-登录
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ **session_key泄漏** ：通过session_key和iv解密encrypteData参数，越权篡改数据，实现任意账号登录。
-+ **响应时间** ：暴力破解，根据响应时间，返回内容一样，但是响应时间长的可能是用户名存在，密码错误的情况。
-
 注册
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + **MySQL数据截断** ：insert into数据长度溢出时截断数据，导致注册时的任意用户覆盖。
@@ -113,6 +197,7 @@ SSRF漏洞
 + **万能、默认验证码** ：使用万能或默认验证码绕过验证。
 + **验证码4-5位可爆破** ：通过爆破4-5位验证码绕过验证。
 + **验证码未失效即重复使用** : 60s、5分钟等规定时间内没有失效（也可以提交漏洞）。
++ **验证码DOS漏洞**：用户可控图片的大小如长宽，相关工具 capchados
 
 密码重置
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -174,6 +259,12 @@ SSRF漏洞
 ----------------------------------------
 + 敏感信息泄露
 + 接口未授权：路径爆破
+
+注销账号
+----------------------------------------
++ 新用户优惠券重复领取
++ 首次优惠重复使用
++ 新用户免费体验7天等
 
 其它逻辑漏洞
 ----------------------------------------

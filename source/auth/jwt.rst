@@ -7,14 +7,22 @@ Json web token (JWT), 是为了在网络应用环境间传递声明而执行的�
 
 构成
 ----------------------------------------
-分为三个部分，分别为header/payload/signature。其中header是声明的类型和加密使用的算法。payload是载荷，最后是加上 ``HMAC(base64(header)+base64(payload), secret)``
++ 分为三个部分: ``header.payload.signature``
++ header是声明的类型和加密使用的算法。
+    - alg：签名算法（如 HS256、RS256 等）。
+    - typ（可选）：声明这个 token 的类型，通常是 JWT。
++ payload是载荷,关于实体（通常是用户）和其他数据的陈述。
++ signature是签名,通过使用header中指定的算法，对header和payload进行编码，使用密钥生成的。
+    - 如 ``HMAC(base64(header)+base64(payload), secret)``
 
 安全问题
 ----------------------------------------
 
 Header部分
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- 是否支持修改算法为none/对称加密算法
+- 如果支持修改算法alg字段值为none，那么签名部分为空也为有效令牌。
+- 切换切名算法
+    + 如将算法RSA->HMAC，那么原本用来验证签名的RSA公钥同时可以进行HMAC的签名和验签。
 - 删除签名
 - 插入错误信息
 - kid字段是否有SQL注入/命令注入/目录遍历

@@ -7,3 +7,4 @@ SRC挖掘思路
 
    info
    skill
+   red
