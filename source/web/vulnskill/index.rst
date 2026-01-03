@@ -6,5 +6,6 @@ SRC挖掘思路
    :caption: 内容索引:
 
    info
+   password
    skill
    red

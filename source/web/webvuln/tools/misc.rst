@@ -145,14 +145,11 @@
 	- clearav清除日志
 		+ clearev
 
-综合利用工具
+综合扫描和漏洞利用工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + LiqunKit
 	- 项目：``https://github.com/Liqunkit/LiqunKit_``
 	- 漏洞辅助工具箱，包含致远OA，泛微OA，万户OA，蓝凌OA，用友OA，通达OA，weblogic，struts2，thinkphp，shiro，数据库综合。
-+ Railgun
-	- 项目地址：``https://github.com/lz520520/railgun``
-	- Railgun为一款GUI界面的渗透工具，将部分人工经验转换为自动化，集成了渗透过程中常用到的一些功能，目前集成了端口扫描、端口爆破、web指纹扫描、漏洞扫描、漏洞利用以及编码转换功能，后续会持续更新。
 
 特定CMS漏洞利用
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
