@@ -6,5 +6,8 @@
    :caption: 内容索引:
 
    site
+   web
+   google
+   crack
    dst
    social

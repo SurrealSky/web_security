@@ -7,5 +7,6 @@ SRC挖掘思路
 
    info
    password
+   frame
    skill
    red

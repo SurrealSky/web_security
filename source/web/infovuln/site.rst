@@ -1,80 +1,71 @@
-站点信息
+资产收集
 ========================================
 
-- 判断网站操作系统
-    - Linux大小写敏感
-    - Windows大小写不敏感
-- 扫描敏感文件
-    - robots.txt
-    - crossdomain.xml
-    - sitemap.xml
-    - xx.tar.gz
-    - xx.bak
-    - 等
-- 确定网站采用的语言
-    - 如PHP / Java / Python等
-    - 找后缀，比如php/asp/jsp
-- 前端框架
-    - 如jQuery / BootStrap / Vue / React / Angular等
-    - 查看源代码
-- 中间服务器
-    - 如 Apache / Nginx / IIS 等
-    - 查看header中的信息
-    - 根据报错信息判断
-    - 根据默认页面判断
-- Web容器服务器
-    - 如Tomcat / Jboss / Weblogic等
-- 后端框架
-    - 根据Cookie判断
-    - 根据CSS / 图片等资源的hash值判断
-    - 根据URL路由判断
-        - 如wp-admin
-    - 根据网页中的关键字判断
-    - 根据响应头中的X-Powered-By
-- CDN信息
-    - 常见的有Cloudflare、yunjiasu
-- 探测有没有WAF，如果有，什么类型的
-    - 有WAF，找绕过方式
-    - 没有，进入下一步
-- 确定网站绝对路径
-	- WEB默认目录
-		+ Apache
-			``Windows：C:\wamp64\www\(Wamp Server)、C:\xampp\htdocs\(XAMPP)、C:\Program Files\Apache Software Foundation\Apachex.x\htdocs\``
-			``Linux：/opt/lampp/htdocs(LAMPP)、/var/www/``
-		+ IIS
-			``C:\inetpub\wwwroot\``
-	- SQL注入点暴路径
-	- 查询特殊变量
-		+ ``secure_file_priv,general_log_file``
-		+ ``select @@VARIABLE_NAME或者 show variables like "VARIABLE_NAME"``
-	- 暴phpinfo信息
-	- Phpmyadmin暴路径
-		+ 在获取Phpmyadmin界面后，可以尝试访问以下子目录，某些版本可能会暴出网站路径信息.
-		+ /phpmyadmin/libraries/lect_lang.lib.php
-		+ /phpmyadmin/index.php?lang[]=1
-		+ /phpmyadmin/phpinfo.php
-		+ /phpmyadmin/libraries/select_lang.lib.php
-		+ /phpmyadmin/libraries/lect_lang.lib.php
-		+ /phpmyadmin/libraries/mcrypt.lib.php
-	- CMS暴路径
-		+ WordPress
-			``/wp-admin/includes/file.php``
-			``/wp-content/themes/twentynineteen/footer.php``
-		+ DedeCMS
-			``/member/templets/menulit.php``
-			``/plus/paycenter/alipay/return_url.php``
-			``/paycenter/nps/config_pay_nps.php``
-		+ ECShop
-			``/api/cron.php``
-			``/wap/goods.php``
-			``/temp/compiled/pages.lbi.php``
-			``/temp/compiled/admin/login.htm.php``
-	- 查看配置文件
-		+ Windows
-			``Wamp Server：C:\wamp64\bin\apache\apache2.4.37\conf\httpd.conf``
-			``XAMPP：C:\xampp\apache\conf\httpd.conf``
-			``IIS：6.0版本之前配置文件在C:\windows\system32\inetsrv\metabase.xml，之后配置文件在C:\windows\system32\inetsrv\config\applicationhost.config``
-		+ Linux
-			``LAMPP：/opt/lampp/etc/httpd.conf``
-			``Apache：/etc/httpd/conf/httpd.conf``
-			``PHP：/etc/php.ini``
+主域名/小程序/公众号/APP
+----------------------------------------
+
+ENScan
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 项目地址：``https://github.com/wgpsec/ENScan_GO``
++ 默认公司：``./enscan -n 小米``
++ 批量查询：``./enscan -f f.txt``
++ 对外投资占股100%的公司：``./enscan -n 小米 -invest 100``
+
+企查查
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+子域爆破
+-----------------------------------------
+- `ESD <https://github.com/FeeiCN/ESD>`_
+	| ``pip install esd``
+	| ``esd -d baidu.com``
+- `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
+	| ``python3 subDomainsBrute.py baidu.com``
+- `broDomain <https://github.com/code-scan/BroDomain>`_
+	+ 查询域名注册邮箱,查询备案号
+	+ 通过备案号查询域名,反查注册邮箱,注册人
+	+ 通过注册人查询到的域名在查询邮箱
+	+ 通过上一步邮箱去查询域名
+	+ 查询以上获取出的域名的子域名
+- `aiodnsbrute <https://github.com/blark/aiodnsbrute>`_
+	| ``pip install aiodnsbrute``
+	| ``aiodnsbrute -w wordlist.txt -vv -t 1024 domain.com``
+- OneForAll
+	+ 项目地址：``https://github.com/shmilylty/OneForAll``
+	+ ``python3 oneforall.py --target baidu.com run``
+	+ ``python3 oneforall.py --targets ./domains.txt run``
+- bbot
+	+ 项目地址：``https://github.com/blacklanternsecurity/bbot``
+	+ 安装：``cd bbot , pip install -e .``
+	+ 子域寻找：``bbot -t evilcorp.com -p subdomain-enum`` ，``bbot -t evilcorp.com -p subdomain-enum -rf passive``
+	+ 网页爬虫：``bbot -t evilcorp.com -p spider``
+	+ 邮箱收集：``bbot -t evilcorp.com -p email-enum``
+	+ 网页扫描：``bbot -t www.evilcorp.com -p web-basic`` , ``bbot -t www.evilcorp.com -p web-thorough`` 
+	+ 综合扫描：``bbot -t evilcorp.com -p kitchen-sink --allow-deadly`` , ``bbot -t evilcorp.com -p subdomain-enum cloud-enum code-enum email-enum spider web-basic paramminer dirbust-light web-screenshots --allow-deadly``
+- subfinder
+	+ 安装： ``go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest``
+	+ ``subfinder -d yuanqisousou.com -o subdomains.txt``
+- alterx
+	+ 子域名枚举工具
+	+ 可根据一个域名列表生成一个子域名列表，即字典
+	+ 安装：``go install -v github.com/alterx/alterx/cmd/alterx@latest``
+- `wydomain <https://github.com/ring04h/wydomain>`_
+- `chaos <https://github.com/projectdiscovery/chaos-client>`_
+
+CDN判别
+----------------------------------------
+- 在线多地超级ping
+	+ 多地ping得到不同的IP地址，基本判断为开启了CDN。
+	+ ``https://ping.chinaz.com/``
+- dig/nslookup
+	+ 多个IP则可能开启了CDN。
+- DNS历史记录查询
+	+ ``https://www.dnsdb.io/zh-cn/`` 
+	+ ``https://viewdns.info/`` 
+- cdncheck
+	+ 安装：``go install -v github.com/projectdiscovery/cdncheck/cmd/cdncheck@latest``
+	+ 示例
+		::
+		
+			echo hackerone.com| cdncheck -resp
+			subfinder -d hackerone.com| cdncheck -resp

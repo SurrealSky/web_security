@@ -33,6 +33,13 @@
     
         https://cert.sh/
 + virustotal API
++ 联动命令
+    ::
+
+        subfinder -d example.com -all -recursive | alterx | dnsx -silent | tee -a subdomains.txt
+        chaos -d example.com | dnsx | httpx | nuclei
+
+        httpx -silent -status-code -title -tech-detect -follow-redirects -ports 80,8080,443,8000 -mc 200,302,403,401,500
 
 JS信息搜集
 ----------------------------------------
