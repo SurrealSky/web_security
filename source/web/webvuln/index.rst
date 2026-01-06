@@ -18,6 +18,7 @@
    fileupload
    fileinclude
    logic
+   cloud
    xxe
    cors
    ssti

@@ -9,3 +9,4 @@ AI安全
    aisec
    aiforsec
    aisafety
+   attack

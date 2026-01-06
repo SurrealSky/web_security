@@ -65,6 +65,17 @@ CORS漏洞
     - 如果目标域是 example.com，尝试：https://example.com.evil.com 或 https://evilexample.com
     - 尝试将 Origin 从 https 改为 http，或改变端口号。
 
+CORS与CSRF区别
+--------------------------------------
++ CSRF不是通过跨域进行攻击的
+    - 不涉及同源，跨域
+    - CSRF对于浏览器是一个正常的请求
+    - 对于前后端分离项目，天然免受CSRF攻击，因为前后端分离项目，后端一般通过token进行鉴权
++ CORS是访问非同源网站的规则
+    - 涉及同源，跨域
+    - 浏览器在进行跨域请求（如AJAX）时，会强行发一个预检（OPTION）请求，询问网站是否允许跨域访问。
+
+
 相关工具
 --------------------------------------
 + CORS Misconfigurations Scanner (Burp Suite 扩展)
