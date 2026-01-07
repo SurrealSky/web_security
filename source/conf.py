@@ -106,7 +106,7 @@ latex_elements = {
 # 设置文档
 latex_documents = [
     (master_doc, 'WebSec.tex', u'\\unexpanded{网络安全}',
-     u'\\unexpanded{王子翰}', 'manual', True),
+     u'\\unexpanded{Surreal}', 'manual', True),
 ]
 
 #latex_docclass = {'howto':'jsarticle','manual' : 'jsbook'}

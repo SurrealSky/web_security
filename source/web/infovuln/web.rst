@@ -1,75 +1,154 @@
 ﻿web系统
 ========================================
 
-网站特点
+HTTP Probing 收集
 ----------------------------------------
-- 确定网站采用的语言
-    - 如PHP / Java / Python等
-    - 找后缀，比如php/asp/jsp
-- 前端框架
-    - 如jQuery / BootStrap / Vue / React / Angular等
-    - 查看源代码
-- 中间服务器
-    - 如 Apache / Nginx / IIS 等
-    - 查看header中的信息
-    - 根据报错信息判断
-    - 根据默认页面判断
-- Web容器服务器
-    - 如Tomcat / Jboss / Weblogic等
-- 后端框架
-    - 根据Cookie判断
-    - 根据CSS / 图片等资源的hash值判断
-    - 根据URL路由判断
-        - 如wp-admin
-    - 根据网页中的关键字判断
-    - 根据响应头中的X-Powered-By
-- CDN信息
-    - 常见的有Cloudflare、yunjiasu
-- 探测有没有WAF，如果有，什么类型的
-    - 有WAF，找绕过方式
-    - 没有，进入下一步
-- 确定网站绝对路径
-	- WEB默认目录
-		+ Apache
-			``Windows：C:\wamp64\www\(Wamp Server)、C:\xampp\htdocs\(XAMPP)、C:\Program Files\Apache Software Foundation\Apachex.x\htdocs\``
-			``Linux：/opt/lampp/htdocs(LAMPP)、/var/www/``
-		+ IIS
-			``C:\inetpub\wwwroot\``
-	- SQL注入点暴路径
-	- 查询特殊变量
-		+ ``secure_file_priv,general_log_file``
-		+ ``select @@VARIABLE_NAME或者 show variables like "VARIABLE_NAME"``
-	- 暴phpinfo信息
-	- Phpmyadmin暴路径
-		+ 在获取Phpmyadmin界面后，可以尝试访问以下子目录，某些版本可能会暴出网站路径信息.
-		+ /phpmyadmin/libraries/lect_lang.lib.php
-		+ /phpmyadmin/index.php?lang[]=1
-		+ /phpmyadmin/phpinfo.php
-		+ /phpmyadmin/libraries/select_lang.lib.php
-		+ /phpmyadmin/libraries/lect_lang.lib.php
-		+ /phpmyadmin/libraries/mcrypt.lib.php
-	- CMS暴路径
-		+ WordPress
-			``/wp-admin/includes/file.php``
-			``/wp-content/themes/twentynineteen/footer.php``
-		+ DedeCMS
-			``/member/templets/menulit.php``
-			``/plus/paycenter/alipay/return_url.php``
-			``/paycenter/nps/config_pay_nps.php``
-		+ ECShop
-			``/api/cron.php``
-			``/wap/goods.php``
-			``/temp/compiled/pages.lbi.php``
-			``/temp/compiled/admin/login.htm.php``
-	- 查看配置文件
-		+ Windows
-			``Wamp Server：C:\wamp64\bin\apache\apache2.4.37\conf\httpd.conf``
-			``XAMPP：C:\xampp\apache\conf\httpd.conf``
-			``IIS：6.0版本之前配置文件在C:\windows\system32\inetsrv\metabase.xml，之后配置文件在C:\windows\system32\inetsrv\config\applicationhost.config``
-		+ Linux
-			``LAMPP：/opt/lampp/etc/httpd.conf``
-			``Apache：/etc/httpd/conf/httpd.conf``
-			``PHP：/etc/php.ini``
++ httpx
+	- 快速http请求
+	- 项目地址：``https://github.com/projectdiscovery/httpx``
+	- 安装：``go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest``
+	- ``cat subdomain.txt | httpx -ports 80,443,8080,8000,8888 -threads 200 > subdomains_alive.txt``
+	- ``cat subdomain.txt | httpx -sc -title -server -td -ports 80,443,8080,8000,8888 -threads 200``
++ aquatone
+	- 项目地址：``https://github.com/michenriksen/aquatone``
+	- ``cat hosts.txt | aquatone``
+	- ``cat hosts.txt | aquatone -ports 80,443,8000,8080,8443``
+	- ``cat hosts.txt | aquatone -ports 80,81,443,591,2082,2087,2095,2096,3000,8000,8001,8008,8080,8083,8443,8834,8888``
+
+URL 收集
+----------------------------------------
+
+主动 Crawling
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ Katana
+	- 项目地址： ``https://github.com/projectdiscovery/katana``
+	- 安装： ``CGO_ENABLED=1 go install github.com/projectdiscovery/katana/cmd/katana@latest``
+	- ``katana -u livesubdomains.txt -d 2 -o urls.txt``
++ Hakrawler
+	- 项目地址： ``https://github.com/hakluke/hakrawler``
+	- 安装： ``go install github.com/hakluke/hakrawler@latest``
+	- ``cat urls.txt | hakrawler -u > urls3.txt``
+
+被动 Crawling
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ gau
+	- 项目地址： ``https://github.com/lc/gau``
+	- 安装： ``$ go install github.com/lc/gau/v2/cmd/gau@latest``
+	- ``cat livesubdomains.txt | gau | sort -u > urls2.txt``
+	- ``echo notion.so | gau --mc 200 | urldedupe > urls.txt``
++ UrlFinder
+	- 项目地址：https://github.com/pingc0y/URLFinder
+	- 介绍：快速、全面、易用的页面信息提取工具，用于分析页面中的js与url,查找隐藏在其中的敏感信息或未授权api接口
+	- 用法
+		::
+
+			显示全部状态码
+			URLFinder.exe -u http://www.baidu.com -s all -m 3
+
+			显示200和403状态码
+			URLFinder.exe -u http://www.baidu.com -s 200,403 -m 3
+
+			导出全部
+			URLFinder.exe -s all -m 3 -f url.txt -o .
+			只导出html
+			URLFinder.exe -s all -m 3 -f url.txt -o res.html
+			结果统一保存
+			URLFinder.exe -s all -m 3 -ff url.txt -o .
+			
+			urlfinder -d notion.so | sort -u > urls3.txt
++ gospider：``https://github.com/jaeles-project/gospider``
++ crawlergo：``https://github.com/0Kee-Team/crawlergo``
+
+目录扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 注意
+	+ 注意在目录探测中，对于关键的目录，需要递归进行扫描。
+	+ 可根据robots.txt中的目录进行扫描。
+- dirbuster
+	+ dirbuster -H headless方式启动
+	+ dirbuster ，默认GUI方式启动
+	+ ``dirbuster -H -u http://www.xxx.com -l SecLists/Discovery/Web-Content/raft-large-directories.txt``
+- dirmap
+	+ 项目地址：``https://github.com/H4ckForJob/dirmap.git``
+	+ 安装：``python3 -m pip install -r requirement.txt``
+	+ 扫描单个目标：``python3 dirmap.py -i https://site.com -lcf`` 
+	+ 扫描多个目标：``python3 dirmap.py -iF urls.txt -lcf`` 
+- dirb
+	+ ``穷举特定扩展名文件：dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
+	+ ``使用代理：dirb http://192.168.1.116  -p 46.17.45.194:5210`` 
+	+ ``添加UA和cookie：dirb http://192.168.1.116 -a "***" -c "***"`` 
+	+ ``扫描目录：dirb http://192.168.91.133 common.txt -N 404`` 
+- `dirsearch <https://github.com/maurosoria/dirsearch>`_
+	+ -u 指定网址
+	+ -e 指定网站语言
+	+ -w 指定字典
+	+ -r 递归目录（跑出目录后，继续跑目录下面的目录）
+	+ -random-agents 使用随机UA
+	+ -x 排除指定响应码
+	+ -i 包含指定响应码
+- nikto
+	+ ``常规扫描：nikto -host/-h http://www.example.com`` 
+	+ ``指定端口(https)：nikto -h http://www.example.com -p 443 -ssl`` 
+	+ ``指定目录：nikto -host/-h http://www.example.com -c /dvma`` 
+	+ ``绕过IDS检测：nikto -host/-h http://www.example.com -evasion`` 
+	+ ``Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host -`` 
+	+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080`` 
+- gobuster
+	+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
+	+ ``文件扫描：gobuster dir -u http://192.168.100.106 -w /home/kali/Downloads/SecLists/Discovery/Web-Content/directory-list-1.0.txt -x php``
+	+ ``不包含特定长度：--exclude-length 280``
+	+ 批量脚本
+	
+		::
+		
+			trap "echo Terminating...; exit;" SIGINT SIGTERM
+
+			if [ $# -eq 0 ]; then
+				echo "Usage: ott http://host threads optionalExtensions"
+				exit 1
+			fi
+
+			for f in /usr/share/dirb/wordlists/common.txt /usr/share/dirb/wordlists/big.txt /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt /usr/share/wordlists/raft/data/wordlists/raft-large-directories-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-files-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-words-lowercase.txt
+			do
+			  echo "Scanning: " $f
+			  echo "Extensions: " $3
+			  if [ -z "$3" ]; then
+				gobuster -t $2 dir -f --url $1 --wordlist $f | grep "Status"
+			  else
+				gobuster -t $2 dir -f --url $1 --wordlist $f -x $3 | grep "Status"
+			  fi
+			done
+		
+		+ example:
+		+ ott http://192.168.56.121 50
+		+ ott http://192.168.56.121 50 .phtml,.php,.txt,.html
+		
+
+- `DirBrute <https://github.com/Xyntax/DirBrute>`_
+- auxiliary/scanner/http/dir_scanner
+- auxiliary/scanner/http/dir_listing
+- auxiliary/scanner/http/brute_dirs
+- DirBuster
+
+其它工具
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ urldedupe
+	- url快速去重工具
+	- 项目地址： ``https://github.com/ameenmaali/urldedupe``
+	- 安装
+		::
+
+			git clone https://github.com/ameenmaali/urldedupe.git
+			cd urldedupe
+			cmake CMakeLists.txt
+			make
+	- ``echo notion.so | gau --mc 200 | urldedupe > urls.txt``
++ Extract URLs with Parameters : ``cat allurls.txt | grep '=' | urldedupe | tee output.txt``
++ Parameter Pattern Matching : ``cat allurls.txt | grep -E '\?[^=]+=.+$' | tee output.txt``
++ Filter URLs potentially vulnerable to SQL injection: ``cat allurls.txt | gf sqli``
++ Basic Sensitive Files: ``cat allurls.txt | grep -E "\.xls|\.xml|\.xlsx|\.json|\.pdf|\.sql|\.doc|\.docx|\.pptx|\.txt|\.zip|\.tar\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5"``
++ Extended Sensitive Files: ``cat allurls.txt | grep -E "\.(xls|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|zip|tar\.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|tar|xz|7zip|p12|pem|key|crt|csr|sh|pl|py|java|class|jar|war|ear|sqlitedb|sqlite3|dbf|db3|accdb|mdb|sqlcipher|gitignore|env|ini|conf|properties|plist|cfg)$"``
+
 
 综合扫描
 ----------------------------------------
@@ -178,13 +257,20 @@
 	- 需要配置 ceye.io的key
 	- ``afrog -t http://127.0.0.1 -config config.yaml -o 1.html``
 	- ``afrog -T result.txt -config config.yaml -o 1.html``
-+ httpx
-	- 快速http请求
-	- 项目地址：``https://github.com/projectdiscovery/httpx``
-	- 安装：``go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest``
 
 漏洞扫描
 ----------------------------------
++ Nuclei
+	+ 项目地址： ``https://github.com/projectdiscovery/nuclei``
+	+ 安装： ``go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest``
+	+ ``nuclei -u https://notion.so -bs 50 -c 30``
+	+ ``nuclei -l live_domains.txt -bs 50 -c 30``
+	+ ``nuclei -l live_domains.txt -s critical,high -bs 50 -c 30``
++ poc
+	- 项目地址：``https://github.com/tr0uble-mAker/POC-bomber``
+	- 验证模式：``python3 pocbomber.py -u http://xxx.xxx``
+	- 攻击模式：``python3 pocbomber.py -u http://xxx.xxx --poc="thinkphp2_rce.py" --attack``
+	- -f :指定目标url文件(这里有bug，文件中的url必须http(s)://开头)
 + xray【web】
 	- 全局配置
 		+ --config 用于指定配置文件的位置，默认加载同目录的 config.yaml
@@ -227,11 +313,7 @@
 			- ``xray_darwin_amd64 --log_level debug webscan --plugins xss,cmd_injection --basic-crawler http://example.com --json-output 1.json``
 			- ``xray_darwin_amd64 webscan --url http://example.com --data "x=y" --html-output 2.html --json-output 1.json``
 			- ``xray_darwin_amd64 webscan --url http://example.com/ --webhook-output http://host:port/path``
-+ poc
-	- 项目地址：``https://github.com/tr0uble-mAker/POC-bomber``
-	- 验证模式：``python3 pocbomber.py -u http://xxx.xxx``
-	- 攻击模式：``python3 pocbomber.py -u http://xxx.xxx --poc="thinkphp2_rce.py" --attack``
-	- -f :指定目标url文件(这里有bug，文件中的url必须http(s)://开头)
+
 
 Waf指纹
 -----------------------------------------
@@ -255,112 +337,25 @@ js信息搜集
 + Packer Fuzzer
 	- 项目地址：https://github.com/hyr0ky/PackerFuzzer
 	- 介绍：针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具.
-+ UrlFinder
-	- 项目地址：https://github.com/pingc0y/URLFinder
-	- 介绍：快速、全面、易用的页面信息提取工具，用于分析页面中的js与url,查找隐藏在其中的敏感信息或未授权api接口
-	- 用法
-		::
-
-			显示全部状态码
-			URLFinder.exe -u http://www.baidu.com -s all -m 3
-
-			显示200和403状态码
-			URLFinder.exe -u http://www.baidu.com -s 200,403 -m 3
-
-			导出全部
-			URLFinder.exe -s all -m 3 -f url.txt -o .
-			只导出html
-			URLFinder.exe -s all -m 3 -f url.txt -o res.html
-			结果统一保存
-			URLFinder.exe -s all -m 3 -ff url.txt -o .
 + JSINFO-SCAN
 	- 递归爬取域名 (netloc/domain)，以及递归从 JS 中获取信息的工具。
-	- 项目地址：``https://github.com/p1g3/JSINFO-SCAN``
+	- 项目地址： ``https://github.com/p1g3/JSINFO-SCAN``
 + JSFinder
 	- 快速在网站的js文件中提取URL，子域名的工具。
-	- 项目地址：``https://github.com/Threezh1/JSFinder``
+	- 项目地址： ``https://github.com/Threezh1/JSFinder``
 	- 用法：
 		+ 简单爬取: ``python JSFinder.py -u http://www.mi.com``
 		+ 深度爬取: ``python JSFinder.py -u http://www.mi.com -d``
 + js_info_finder
-	- 项目地址：``https://github.com/laohuan12138/js_info_finder``
+	- 项目地址： ``https://github.com/laohuan12138/js_info_finder``
+
+敏感文件扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ weakfilescan
+	- 项目地址： ``https://github.com/ring04h/weakfilescan``
++ Google Dork for Files: ``site:*.notion.so (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
 
 备份文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + ihoneyBakFileScan_Modify
 	- 项目地址：https://github.com/VMsec/ihoneyBakFileScan_Modify
-
-路径及文件扫描
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- 注意
-	+ 注意在目录探测中，对于关键的目录，需要递归进行扫描。
-	+ 可根据robots.txt中的目录进行扫描。
-- 路径爬虫
-	+ gospider：``https://github.com/jaeles-project/gospider``
-	+ crawlergo：``https://github.com/0Kee-Team/crawlergo``
-	+ weakfilescan: ``https://github.com/ring04h/weakfilescan``
-- dirbuster
-	+ dirbuster -H headless方式启动
-	+ dirbuster ，默认GUI方式启动
-	+ ``dirbuster -H -u http://www.xxx.com -l SecLists/Discovery/Web-Content/raft-large-directories.txt``
-- dirmap
-	+ 项目地址：``https://github.com/H4ckForJob/dirmap.git``
-	+ 安装：``python3 -m pip install -r requirement.txt``
-	+ 扫描单个目标：``python3 dirmap.py -i https://site.com -lcf`` 
-	+ 扫描多个目标：``python3 dirmap.py -iF urls.txt -lcf`` 
-- dirb
-	+ ``穷举特定扩展名文件：dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
-	+ ``使用代理：dirb http://192.168.1.116  -p 46.17.45.194:5210`` 
-	+ ``添加UA和cookie：dirb http://192.168.1.116 -a "***" -c "***"`` 
-	+ ``扫描目录：dirb http://192.168.91.133 common.txt -N 404`` 
-- `dirsearch <https://github.com/maurosoria/dirsearch>`_
-	+ -u 指定网址
-	+ -e 指定网站语言
-	+ -w 指定字典
-	+ -r 递归目录（跑出目录后，继续跑目录下面的目录）
-	+ -random-agents 使用随机UA
-	+ -x 排除指定响应码
-	+ -i 包含指定响应码
-- nikto
-	+ ``常规扫描：nikto -host/-h http://www.example.com`` 
-	+ ``指定端口(https)：nikto -h http://www.example.com -p 443 -ssl`` 
-	+ ``指定目录：nikto -host/-h http://www.example.com -c /dvma`` 
-	+ ``绕过IDS检测：nikto -host/-h http://www.example.com -evasion`` 
-	+ ``Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host -`` 
-	+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080`` 
-- gobuster
-	+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
-	+ ``文件扫描：gobuster dir -u http://192.168.100.106 -w /home/kali/Downloads/SecLists/Discovery/Web-Content/directory-list-1.0.txt -x php``
-	+ ``不包含特定长度：--exclude-length 280``
-	+ 批量脚本
-	
-		::
-		
-			trap "echo Terminating...; exit;" SIGINT SIGTERM
-
-			if [ $# -eq 0 ]; then
-				echo "Usage: ott http://host threads optionalExtensions"
-				exit 1
-			fi
-
-			for f in /usr/share/dirb/wordlists/common.txt /usr/share/dirb/wordlists/big.txt /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt /usr/share/wordlists/raft/data/wordlists/raft-large-directories-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-files-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-words-lowercase.txt
-			do
-			  echo "Scanning: " $f
-			  echo "Extensions: " $3
-			  if [ -z "$3" ]; then
-				gobuster -t $2 dir -f --url $1 --wordlist $f | grep "Status"
-			  else
-				gobuster -t $2 dir -f --url $1 --wordlist $f -x $3 | grep "Status"
-			  fi
-			done
-		
-		+ example:
-		+ ott http://192.168.56.121 50
-		+ ott http://192.168.56.121 50 .phtml,.php,.txt,.html
-		
-
-- `DirBrute <https://github.com/Xyntax/DirBrute>`_
-- auxiliary/scanner/http/dir_scanner
-- auxiliary/scanner/http/dir_listing
-- auxiliary/scanner/http/brute_dirs
-- DirBuster
