@@ -48,6 +48,10 @@ IP信息
 
 端口扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- naabu
+	+ 项目地址： ``https://github.com/projectdiscovery/naabu``
+	+ 安装： ``go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest``
+	+ ``cat ips.txt | naabu -top-ports 100 | tee -a ports.txt``
 - `nmap <https://github.com/nmap/nmap>`_
 	+ 扫描方式
 		- ``TCP:-sT``

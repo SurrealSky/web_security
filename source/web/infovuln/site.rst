@@ -32,11 +32,6 @@ ENScan
 - `aiodnsbrute <https://github.com/blark/aiodnsbrute>`_
 	| ``pip install aiodnsbrute``
 	| ``aiodnsbrute -w wordlist.txt -vv -t 1024 domain.com``
-- OneForAll
-	+ ``需要配置``
-	+ 项目地址：``https://github.com/shmilylty/OneForAll``
-	+ ``python3 oneforall.py --target baidu.com run``
-	+ ``python3 oneforall.py --targets ./domains.txt run``
 - bbot
 	+ 项目地址：``https://github.com/blacklanternsecurity/bbot``
 	+ 安装：``cd bbot , pip install -e .``
@@ -57,9 +52,16 @@ ENScan
 	+ ``python sublist3r.py -v -d example.com -p 80,443``
 	+ 爆破： ``python sublist3r.py -b -d example.com``
 	+ ``sublist3r -d example.com -e baidu,yahoo,google,bing,ask,netcraft,virustotal,threatcrowd,crtsh,passivedns -v -o sublist3r.txt``
-- amass
+- amass(需要配置api-key)
+	+  配置方法： ``https://medium.com/offensive-black-hat-hacking-security/amass-new-config-file-update-e95d09b6eb70``
 	+ 下载安装：``https://github.com/owasp-amass/amass/releases``
 	+ ``amass enum -passive -d example.com | cut -d']' -f 2 | awk '{print $1}' | sort -u > amass.txt``
+- virustotal
+	+ ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.subdomains[]' > vt.txt``
+- urlscan.io
+	+ ``curl -s "https://urlscan.io/api/v1/search/?q=domain:example.com&size=10000" | jq -r '.results[]?.page?.domain' | sort -u > urlscan.txt``
+- alienvault OTX
+	+ ``curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.subdomains[]' | sed 's/\.example\.com$//g' > otx.txt``
 - crtsh
 	+ ``curl -s https://crt.sh\?q\=\example.com\&output\=json | jq -r '.[].name_value' | grep -Po '(\w+\.\w+\.\w+)$' >crtsh.txt``
 - Wayback Machine
@@ -75,7 +77,23 @@ ENScan
 		- ``echo example.com | alterx -enrich | dnsx``
 		- ``echo example.com | alterx -pp word=/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt | dnsx``
 - 子域名处理
-	+ Merge & Deduplicate： ``cat *.txt | sort -u > final.txt``
+	+ 合并去重： ``cat *.txt | sort -u > final.txt``
+
+综合资产收集
+----------------------------------------
++ magicRecon
+	- 项目地址：``https://github.com/robotshell/magicRecon``
+	- all: ``./magicrecon.sh -d domain.com -a``
+	- 被动扫描： ``./magicrecon.sh -l domainlist.txt -p``
+	- 主动扫描： ``./magicrecon.sh -d domain.com -x``
+	- 递归： ``./magicrecon.sh -d domain.com -r``
+	- 递归漏扫： ``./magicrecon.sh -d domain.com -r -v``
+	- 泛域名: ``./magicrecon.sh -w domain.com``
+	- 泛域名递归漏扫: ``./magicrecon.sh -w domain.com -m``
++ OneForAll(需要配置api-key)
+	- 项目地址：``https://github.com/shmilylty/OneForAll``
+	- ``python3 oneforall.py --target baidu.com run``
+	- ``python3 oneforall.py --targets ./domains.txt run``
 
 IP收集
 ----------------------------------------

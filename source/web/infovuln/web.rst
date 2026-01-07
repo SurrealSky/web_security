@@ -7,9 +7,11 @@ HTTP Probing 收集
 	- 快速http请求
 	- 项目地址：``https://github.com/projectdiscovery/httpx``
 	- 安装：``go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest``
+	- ``cat subdomain.txt | httpx -title -sc -cl -location -fr -threads 200 -o httpx.txt``
 	- ``cat subdomain.txt | httpx -ports 80,443,8080,8000,8888 -threads 200 > subdomains_alive.txt``
 	- ``cat subdomain.txt | httpx -sc -title -server -td -ports 80,443,8080,8000,8888 -threads 200``
 + aquatone
+	- 抓取存活域名的网页截图
 	- 项目地址：``https://github.com/michenriksen/aquatone``
 	- ``cat hosts.txt | aquatone``
 	- ``cat hosts.txt | aquatone -ports 80,443,8000,8080,8443``
@@ -17,6 +19,7 @@ HTTP Probing 收集
 
 URL 收集
 ----------------------------------------
+在进行URL收集时，需要先进行子域名（包括top端口）存活检测，获取存活的子域名列表，然后再进行URL收集。
 
 主动 Crawling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,7 +38,7 @@ URL 收集
 	- 项目地址： ``https://github.com/lc/gau``
 	- 安装： ``$ go install github.com/lc/gau/v2/cmd/gau@latest``
 	- ``cat livesubdomains.txt | gau | sort -u > urls2.txt``
-	- ``echo notion.so | gau --mc 200 | urldedupe > urls.txt``
+	- ``echo example.com | gau --mc 200 | urldedupe > urls.txt``
 + UrlFinder
 	- 项目地址：https://github.com/pingc0y/URLFinder
 	- 介绍：快速、全面、易用的页面信息提取工具，用于分析页面中的js与url,查找隐藏在其中的敏感信息或未授权api接口
@@ -55,7 +58,7 @@ URL 收集
 			结果统一保存
 			URLFinder.exe -s all -m 3 -ff url.txt -o .
 			
-			urlfinder -d notion.so | sort -u > urls3.txt
+			urlfinder -u example.com | sort -u > urls3.txt
 + gospider：``https://github.com/jaeles-project/gospider``
 + crawlergo：``https://github.com/0Kee-Team/crawlergo``
 
@@ -86,6 +89,8 @@ URL 收集
 	+ -random-agents 使用随机UA
 	+ -x 排除指定响应码
 	+ -i 包含指定响应码
+	+ ``dirsearch -u https://example.com --full-url --deep-recursive -r``
+	+ ``dirsearch -u https://example.com -e php,cgi,htm,html,shtm,shtml,js,txt,bak,zip,old,conf,log,pl,asp,aspx,jsp,sql,db,sqlite,mdb,tar,gz,7z,rar,json,xml,yml,yaml,ini,java,py,rb,php3,php4,php5 --random-agent --recursive -R 3 -t 20 --exclude-status=404 --follow-redirects --delay=0.1``
 - nikto
 	+ ``常规扫描：nikto -host/-h http://www.example.com`` 
 	+ ``指定端口(https)：nikto -h http://www.example.com -p 443 -ssl`` 
@@ -130,6 +135,14 @@ URL 收集
 - auxiliary/scanner/http/brute_dirs
 - DirBuster
 
+隐藏参数扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ Arjun
+	- 项目地址： ``https://github.com/s0md3v/Arjun``
+	- 安装： ``pip3 install arjun``
+	- 被动扫描： ``arjun -u https://example.com/endpoint.php -oT arjun_output.txt -t 10 --rate-limit 10 --passive -m GET,POST --headers "User-Agent: Mozilla/5.0"``
+	- 主动扫描： ``arjun -u https://example.com/endpoint.php -oT arjun_output.txt -m GET,POST -w /usr/share/wordlists/seclists/Discovery/Web-Content/burp-parameter-names.txt -t 10 --rate-limit 10 --headers "User-Agent: Mozilla/5.0"``
+
 其它工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + urldedupe
@@ -142,12 +155,85 @@ URL 收集
 			cd urldedupe
 			cmake CMakeLists.txt
 			make
-	- ``echo notion.so | gau --mc 200 | urldedupe > urls.txt``
-+ Extract URLs with Parameters : ``cat allurls.txt | grep '=' | urldedupe | tee output.txt``
-+ Parameter Pattern Matching : ``cat allurls.txt | grep -E '\?[^=]+=.+$' | tee output.txt``
-+ Filter URLs potentially vulnerable to SQL injection: ``cat allurls.txt | gf sqli``
-+ Basic Sensitive Files: ``cat allurls.txt | grep -E "\.xls|\.xml|\.xlsx|\.json|\.pdf|\.sql|\.doc|\.docx|\.pptx|\.txt|\.zip|\.tar\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5"``
-+ Extended Sensitive Files: ``cat allurls.txt | grep -E "\.(xls|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|zip|tar\.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|tar|xz|7zip|p12|pem|key|crt|csr|sh|pl|py|java|class|jar|war|ear|sqlitedb|sqlite3|dbf|db3|accdb|mdb|sqlcipher|gitignore|env|ini|conf|properties|plist|cfg)$"``
+	- ``echo example.com | gau --mc 200 | urldedupe > urls.txt``
++ uro
+	- 智能过滤URL列表，去重和剔除无用内容，保留安全测试中有价值的URL。
+	- 项目地址： ``https://github.com/s0md3v/uro``
+	- 安装： ``pipx install uro``
+	- ``cat urls.txt | uro``
++ 提取有参数的URL 
+	- ``cat allurls.txt | grep '=' | urldedupe | tee output.txt``
+	- ``cat allurls.txt | grep -E '\?[^=]+=.+$' | tee output.txt``
++ Gf-Patterns
+	- 项目地址： ``https://github.com/1ndianl33t/Gf-Patterns``
+	- 安装
+		::
+
+			先要安装waybackurls & Gf
+			go install github.com/tomnomnom/waybackurls@latest
+			go install github.com/tomnomnom/gf@latest
+			安装MY Gf Patterns installation
+			git clone https://github.com/1ndianl33t/Gf-Patterns
+			mkdir ~/.gf
+			mv ./Gf-Patterns/*.json ~/.gf
+	- ``cat subdomains.txt | waybackurls | sort -u >> waybackdata | gf ssrf | tee -a ssfrparams.txt``
+	- ``cat urls.txt | gf redirect | tee -a redirect.txt``
+	- ``gf ssrf,gf redirect,gf lfi,gf rce,gf ssti,gf idor,gf xxe,gf debug_logic``
++ 敏感格式文件提取
+	- js文件： ``cat allurls.txt | grep '\.js$'|tee jsurls.txt``
+	- ``cat allurls.txt | grep -E "\.xls|\.xml|\.xlsx|\.json|\.pdf|\.sql|\.doc|\.docx|\.pptx|\.txt|\.zip|\.tar\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5"``
+	- ``cat allurls.txt | grep -E "\.(xls|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|zip|tar\.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|tar|xz|7zip|p12|pem|key|crt|csr|sh|pl|py|java|class|jar|war|ear|sqlitedb|sqlite3|dbf|db3|accdb|mdb|sqlcipher|gitignore|env|ini|conf|properties|plist|cfg)$"``
+
+敏感信息
+------------------------------------------
+
+js信息搜集
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ mantra
+	- 项目地址： ``https://github.com/brosck/mantra``
+	- 安装： ``go install github.com/Brosck/mantra@latest``
+	- ``cat js.txt|mantra -d |grep '+'``
++ hanz0
+	- 项目地址： ``https://github.com/r3dcl1ff/hanz0``
+	- 安装
+		::
+
+			git clone https://github.com/your-username/hanz0.git
+			cd hanz0go build main.go -o hanz0
+	- ``cat js.txt | ./hanz0 -s High,Medium``
++ jssf
+	- 项目地址： ``https://github.com/h6nt3r/jssf``
+	- 安装： ``go install -v github.com/h6nt3r/jssf@latest``
+	- ``jssf -u "http://testphp.vulnweb.com/medias/js/common_functions.js" -secrets -o out.txt``
+	- ``jssf -f js.txt -secrets -o jssf_output.txt``
++ FindSomething
+	- 项目地址：https://github.com/momosecurity/FindSomething
+	- 介绍：浏览器插件，全面的敏感信息被动提取。
++ Packer Fuzzer
+	- 项目地址：https://github.com/hyr0ky/PackerFuzzer
+	- 介绍：针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具.
++ JSINFO-SCAN
+	- 递归爬取域名 (netloc/domain)，以及递归从 JS 中获取信息的工具。
+	- 项目地址： ``https://github.com/p1g3/JSINFO-SCAN``
++ JSFinder
+	- 快速在网站的js文件中提取URL，子域名的工具。
+	- 项目地址： ``https://github.com/Threezh1/JSFinder``
+	- 用法：
+		+ 简单爬取: ``python JSFinder.py -u http://www.mi.com``
+		+ 深度爬取: ``python JSFinder.py -u http://www.mi.com -d``
++ js_info_finder
+	- 项目地址： ``https://github.com/laohuan12138/js_info_finder``
+
+敏感文件扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ weakfilescan
+	- 项目地址： ``https://github.com/ring04h/weakfilescan``
++ Google Dork for Files: ``site:*.example.com (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
+
+备份文件扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ ihoneyBakFileScan_Modify
+	- 项目地址：https://github.com/VMsec/ihoneyBakFileScan_Modify
 
 
 综合扫描
@@ -263,7 +349,7 @@ URL 收集
 + Nuclei
 	+ 项目地址： ``https://github.com/projectdiscovery/nuclei``
 	+ 安装： ``go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest``
-	+ ``nuclei -u https://notion.so -bs 50 -c 30``
+	+ ``nuclei -u https://example.com -bs 50 -c 30``
 	+ ``nuclei -l live_domains.txt -bs 50 -c 30``
 	+ ``nuclei -l live_domains.txt -s critical,high -bs 50 -c 30``
 + poc
@@ -325,37 +411,3 @@ Waf指纹
 	+ ``--script=http-waf-fingerprint``
 - sqlmap
 	+ ``sqlmap -u “www.xxx.com/xxx?id=1” --identify-waf``
-
-敏感信息
-------------------------------------------
-
-js信息搜集
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ FindSomething
-	- 项目地址：https://github.com/momosecurity/FindSomething
-	- 介绍：浏览器插件，全面的敏感信息被动提取。
-+ Packer Fuzzer
-	- 项目地址：https://github.com/hyr0ky/PackerFuzzer
-	- 介绍：针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具.
-+ JSINFO-SCAN
-	- 递归爬取域名 (netloc/domain)，以及递归从 JS 中获取信息的工具。
-	- 项目地址： ``https://github.com/p1g3/JSINFO-SCAN``
-+ JSFinder
-	- 快速在网站的js文件中提取URL，子域名的工具。
-	- 项目地址： ``https://github.com/Threezh1/JSFinder``
-	- 用法：
-		+ 简单爬取: ``python JSFinder.py -u http://www.mi.com``
-		+ 深度爬取: ``python JSFinder.py -u http://www.mi.com -d``
-+ js_info_finder
-	- 项目地址： ``https://github.com/laohuan12138/js_info_finder``
-
-敏感文件扫描
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ weakfilescan
-	- 项目地址： ``https://github.com/ring04h/weakfilescan``
-+ Google Dork for Files: ``site:*.notion.so (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
-
-备份文件扫描
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ ihoneyBakFileScan_Modify
-	- 项目地址：https://github.com/VMsec/ihoneyBakFileScan_Modify

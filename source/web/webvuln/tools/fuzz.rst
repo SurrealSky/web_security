@@ -24,6 +24,8 @@ Web Fuzz
 	+ 延迟：``-p 延迟多长时间``
 	+ 详细模式：``-v``
 	+ 线程：``-t``
+	+ ``ffuf -u "https://FUZZ.notion.so" -w ../../SecLists/Discovery/Web-Content/raft-medium-words.txt -mc 200,301,302 > ffuf.txt``
+	+ ``ffuf -w seclists/Discovery/Web-Content/directory-list-2.3-big.txt -u https://notion.so/FUZZ -fc 400,401,402,403,404,429,500,501,502,503 -recursion -recursion-depth 2 -e .html,.php,.txt,.pdf,.js,.css,.zip,.bak,.old,.log,.json,.xml,.config,.env,.asp,.aspx,.jsp,.gz,.tar,.sql,.db -ac -c -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0" -t 10``
 	
 - `wfuzz <https://github.com/xmendez/wfuzz>`_
 	+ ``-c:Output with colors``
