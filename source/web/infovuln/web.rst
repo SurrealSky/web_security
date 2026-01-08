@@ -189,6 +189,30 @@ URL 收集
 
 js信息搜集
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ js_info_finder
+	- 项目地址： ``https://github.com/laohuan12138/js_info_finder``
+	- url扫描： ``python js_info_finder.py -u http://example.com``
+	- js url: ``python js_info_finder.py -j http://example.com/js/app.js``
+	- url文件： ``python js_info_finder.py -f urls.txt``
++ jssf
+	- 项目地址： ``https://github.com/h6nt3r/jssf``
+	- 安装： ``go install -v github.com/h6nt3r/jssf@latest``
+	- js url: ``jssf -u "http://testphp.vulnweb.com/medias/js/common_functions.js" -secrets -o out.txt``
+	- url文件： ``jssf -f js.txt -secrets -o jssf_output.txt``
++ JSFinder
+	- 快速在网站的js文件中提取 **URL，子域名** 的工具。
+	- 项目地址： ``https://github.com/Threezh1/JSFinder``
+	- 用法：
+		+ 简单爬取: ``python JSFinder.py -u http://www.mi.com``
+		+ 深度爬取: ``python JSFinder.py -u http://www.mi.com -d``
++ JSINFO-SCAN
+	- 递归爬取域名，以及递归从 JS 中获取信息的工具。
+	- 项目地址： ``https://github.com/p1g3/JSINFO-SCAN``
+	- ``python jsinfo.py --target https://www.example.com --keywords example``
+	- 注：递归速度比较慢，适合单个url或者js，不输入https，它会默认使用http，失败的话在末尾添加/index.html
++ FindSomething
+	- 项目地址：https://github.com/momosecurity/FindSomething
+	- 介绍：浏览器插件，全面的敏感信息被动提取。
 + mantra
 	- 项目地址： ``https://github.com/brosck/mantra``
 	- 安装： ``go install github.com/Brosck/mantra@latest``
@@ -198,31 +222,12 @@ js信息搜集
 	- 安装
 		::
 
-			git clone https://github.com/your-username/hanz0.git
-			cd hanz0go build main.go -o hanz0
+			git clone https://github.com/r3dcl1ff/hanz0
+			cd hanz0 && go build hanz0.go
 	- ``cat js.txt | ./hanz0 -s High,Medium``
-+ jssf
-	- 项目地址： ``https://github.com/h6nt3r/jssf``
-	- 安装： ``go install -v github.com/h6nt3r/jssf@latest``
-	- ``jssf -u "http://testphp.vulnweb.com/medias/js/common_functions.js" -secrets -o out.txt``
-	- ``jssf -f js.txt -secrets -o jssf_output.txt``
-+ FindSomething
-	- 项目地址：https://github.com/momosecurity/FindSomething
-	- 介绍：浏览器插件，全面的敏感信息被动提取。
 + Packer Fuzzer
 	- 项目地址：https://github.com/hyr0ky/PackerFuzzer
 	- 介绍：针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具.
-+ JSINFO-SCAN
-	- 递归爬取域名 (netloc/domain)，以及递归从 JS 中获取信息的工具。
-	- 项目地址： ``https://github.com/p1g3/JSINFO-SCAN``
-+ JSFinder
-	- 快速在网站的js文件中提取URL，子域名的工具。
-	- 项目地址： ``https://github.com/Threezh1/JSFinder``
-	- 用法：
-		+ 简单爬取: ``python JSFinder.py -u http://www.mi.com``
-		+ 深度爬取: ``python JSFinder.py -u http://www.mi.com -d``
-+ js_info_finder
-	- 项目地址： ``https://github.com/laohuan12138/js_info_finder``
 
 敏感文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
