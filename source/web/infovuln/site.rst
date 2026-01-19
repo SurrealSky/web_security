@@ -57,15 +57,17 @@ ENScan
 	+ 下载安装：``https://github.com/owasp-amass/amass/releases``
 	+ ``amass enum -passive -d example.com | cut -d']' -f 2 | awk '{print $1}' | sort -u > amass.txt``
 - virustotal
-	+ ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.subdomains[]' > vt.txt``
+	+ 提取子域名： ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.subdomains[]' > vt.txt``
+	+ 提取URL: 
+- Wayback Machine
+	+ 提取子域名： ``curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" |sort| sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sort -u > wayback.txt``
+	+ 提取URL: 
 - urlscan.io
 	+ ``curl -s "https://urlscan.io/api/v1/search/?q=domain:example.com&size=10000" | jq -r '.results[]?.page?.domain' | sort -u > urlscan.txt``
 - alienvault OTX
-	+ ``curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.subdomains[]' | sed 's/\.example\.com$//g' > otx.txt``
+	+ 提取子域名： ``curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.url_list[].hostname' | sort -u | grep "\.streamlabs\.com$" > otx_subdomains.txt``
 - crtsh
 	+ ``curl -s https://crt.sh\?q\=\example.com\&output\=json | jq -r '.[].name_value' | grep -Po '(\w+\.\w+\.\w+)$' >crtsh.txt``
-- Wayback Machine
-	+ ``curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" |sort| sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sort -u > wayback.txt``
 - FFUF Subdomain Bruteforce
 	+ 安装：``go install -v github.com/ffuf/ffuf@latest``
 	+ ``ffuf -u "https://FUZZ.example.com" -w wordlist.txt -mc 200,301,302``

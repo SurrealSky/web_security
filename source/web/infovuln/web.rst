@@ -58,7 +58,15 @@ URL 收集
 			结果统一保存
 			URLFinder.exe -s all -m 3 -ff url.txt -o .
 			
-			urlfinder -u example.com | sort -u > urls3.txt
+			URLFinder -u example.com | sort -u > urls3.txt
++ virustotal
+	- 提取子域名： ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.subdomains[]' > vt.txt``
+	- 提取URL: 
++ Wayback Machine
+	- 提取子域名： ``curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" |sort| sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sort -u > wayback.txt``
+	- 提取URL: 
++ alienvault OTX
+	- 提取URL: ``curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.url_list[].url'``
 + gospider：``https://github.com/jaeles-project/gospider``
 + crawlergo：``https://github.com/0Kee-Team/crawlergo``
 
@@ -231,8 +239,6 @@ js信息搜集
 
 敏感文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ weakfilescan
-	- 项目地址： ``https://github.com/ring04h/weakfilescan``
 + Google Dork for Files: ``site:*.example.com (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
 
 备份文件扫描

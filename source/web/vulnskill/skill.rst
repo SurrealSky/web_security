@@ -55,11 +55,16 @@ XSS
 + 存储型XSS与换绑验证码组合
     - 通过存储型XSS与换绑的验证码输出在前端的组合，实现任意账户无感换绑。
 + 文件上传型
-    - pdf 文件上传XSS
+    - pdf 文件上传XSS:需要google浏览器
     - svg文件上传XSS
     - html文件上传XSS
     - swf文件上传XSS
     - xml文件上传XSS
+    - 上传图片
+        ::
+
+            如果上传数据是：data:image/png;base64,PGltZyBzcmM9MSBvbmVycm9yPWFsZXJ0KDEpPg==
+            可以修改为：data:text/html;base64,PGltZyBzcmM9MSBvbmVycm9yPWFsZXJ0KDEpPg==
 + 常见场景
     - 在线客服
     - 个人资料修改
@@ -197,8 +202,9 @@ SSRF漏洞
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + **MySQL数据截断** ：insert into数据长度溢出时截断数据，导致注册时的任意用户覆盖。
 + **账号激活链接未加密** ：通过构造激活链接实现任意用户注册。
-+ **userGroupId遍历** ：通过遍历userGroupId以更高权限注册，提升权限。
++ **第三方登录** ：修改第三方登录返回包中的uid，实现任意用户登录。
 + **存在缺陷的二级校验** ：如短信验证码、邮箱验证码等二级校验存在缺陷（提交注册和验证是分开的流程，可以绕开验证），导致任意用户注册。
++ **越权** ：添加 ``&userlevel=1`` ``&userrank=1`` ``&usertype=1`` 等参数实现越权注册。
 
 验证码
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

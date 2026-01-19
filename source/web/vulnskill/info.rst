@@ -10,7 +10,7 @@
 + 优先级
     - APP>小程序>web网站>其他
 
-顶级域名
+顶级域名收集
 ----------------------------------------
 + ICP备案查询
     + 通过ICP备案号查询注册的域名，比如百度的备案号是 ``京ICP证030173号``
@@ -22,17 +22,20 @@
 + firefly: ``https://firefly-src.geekyoung.com``
 + 零零信安暴露面检测：``https://0.zone/exposure``
 
-子域名
+子域名收集
 ----------------------------------------
 + 使用oneforall扫描获取子域名
 + 使用fofa搜索子域名
 + 使用Layer挖掘机进行
 + 使用arl灯塔
-+ 使用Certsh获取子域名
-    ::
-    
-        https://cert.sh/
-+ virustotal API
++ 命令行工具
+    - crtsh: ``curl -s https://crt.sh\?q\=\example.com\&output\=json | jq -r '.[].name_value' | grep -Po '(\w+\.\w+\.\w+)$' >crtsh.txt``
+    - virustotal: ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.subdomains[]' > vt.txt``
+    - waybackurls: ``curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" |sort| sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sort -u > wayback.txt``
+    - alienvault OTX: ``curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.subdomains[]' | sed 's/\.example\.com$//g' > otx.txt``
+    - sublist3r: ``sublist3r -d example.com -e baidu,yahoo,google,bing,ask,netcraft,virustotal,threatcrowd,crtsh,passivedns -v -o sublist3r.txt``
+    - subfinder: ``subfinder -d yuanqisousou.com -o subdomains.txt``
+    - urlscan: ``curl -s "https://urlscan.io/api/v1/search/?q=domain:example.com&size=10000" | jq -r '.results[]?.page?.domain' | sort -u > urlscan.txt``
 + 联动命令
     ::
 
@@ -40,12 +43,59 @@
         chaos -d example.com | dnsx | httpx | nuclei
 
         httpx -silent -status-code -title -tech-detect -follow-redirects -ports 80,8080,443,8000 -mc 200,302,403,401,500
++ 合并去重 ： ``cat *.txt | sort -u > all_subdomains.txt``
 
-JS信息搜集
+批量端口扫描
 ----------------------------------------
-+ JSFinder
++ naabu： ``cat all_subdomains.txt | naabu -top-ports 100 | tee -a ports.txt``
 
-小程序/公众号
+web指纹识别
+----------------------------------------
++ whatweb
+    - 项目地址： ``https://github.com/urbanadventurer/WhatWeb/wiki/Installation``
+    - 安装： ``sudo yum install whatweb``
+    - 使用： ``whatweb -t 50 -i ports.txt --log-brief=whatweb.txt``
+    - 详细用法： ``whatweb -t 50 -i ports.txt --log-brief=whatweb.txt --aggressive``
+
+URL爬取
+----------------------------------------
++ 主动爬取
+    ::
+
+        katana -u ports.txt -d 2 -o url1.txt
+
+        执行hakrawler，需要在url前加上http://
+        sed 's/^/http:\/\//' ports.txt > ports_http.txt
+        cat ports.txt | hakrawler -u > url2.txt
+
++ 被动爬取
+    ::
+
+        echo example.com | gau --mc 200 | urldedupe > url3.txt
+        urlfinder -u example.com | sort -u > url4.txt
+
+        curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" > vt_all.txt
+        curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.url_list[].url' > otx_urls.txt
+        curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" | sort > wayback_all.txt
+
+web资产
+----------------------------------------
+
+js敏感信息收集
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+帮助手册/演示视频
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 泄露用户名/密码
++ 泄露API
+
+PC资产
+----------------------------------------
+
+APP资产
+----------------------------------------
+
+小程序公众号资产
 ----------------------------------------
 + 小程序抓包、APP抓包参考链接：
     ::
@@ -54,11 +104,6 @@ JS信息搜集
         https://mp.weixin.qq.com/s/45YF4tBaR-TUsHyF5RvEsw
         https://mp.weixin.qq.com/s/M5xu_-_6fgp8q0KjpzvjLg
         https://mp.weixin.qq.com/s/Mfkbxtrxv5AvY-n_bMU7ig
-
-帮助手册/演示视频
-----------------------------------------
-+ 泄露用户名/密码
-+ 泄露API
 
 推荐网站
 ----------------------------------------

