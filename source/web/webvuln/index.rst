@@ -25,5 +25,6 @@
    xpath
    graphql
    captcha
+   webcachepoisoning
    other/index
    tools/index

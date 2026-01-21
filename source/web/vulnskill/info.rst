@@ -78,11 +78,26 @@ URL爬取
         curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.url_list[].url' > otx_urls.txt
         curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" | sort > wayback_all.txt
 
++ URL清洗
+    - ``cat *.txt | uro | sort -u >uro.txt``
+
 web资产
 ----------------------------------------
 
+URL敏感信息提取
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ gf
+    ::
+        debug_logic,idor,img-traversal,interestingEXT,interestingparams,interestingsubs
+        jsvar,lfi,rce,redirect,sqli,ssrf,ssti,xss
+        cat url*.txt | gf xss | sort -u > xss.txt
++ ``cat *.txt | grep -E "\.xls|\.xml|\.xlsx|\.json|\.pdf|\.sql|\.doc|\.docx|\.pptx|\.txt|\.zip|\.tar\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5"``
++ ``cat *.txt | grep -E "\.(xls|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|zip|tar\.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|tar|xz|7zip|p12|pem|key|crt|csr|sh|pl|py|java|class|jar|war|ear|sqlitedb|sqlite3|dbf|db3|accdb|mdb|sqlcipher|gitignore|env|ini|conf|properties|plist|cfg)$"``
++ google hacker: ``site:*.example.com (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
+
 js敏感信息收集
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ ``python js_info_finder.py -u http://example.com``
 
 帮助手册/演示视频
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

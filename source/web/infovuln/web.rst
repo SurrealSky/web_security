@@ -186,11 +186,7 @@ URL 收集
 			mv ./Gf-Patterns/*.json ~/.gf
 	- ``cat subdomains.txt | waybackurls | sort -u >> waybackdata | gf ssrf | tee -a ssfrparams.txt``
 	- ``cat urls.txt | gf redirect | tee -a redirect.txt``
-	- ``gf ssrf,gf redirect,gf lfi,gf rce,gf ssti,gf idor,gf xxe,gf debug_logic``
-+ 敏感格式文件提取
-	- js文件： ``cat allurls.txt | grep '\.js$'|tee jsurls.txt``
-	- ``cat allurls.txt | grep -E "\.xls|\.xml|\.xlsx|\.json|\.pdf|\.sql|\.doc|\.docx|\.pptx|\.txt|\.zip|\.tar\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5"``
-	- ``cat allurls.txt | grep -E "\.(xls|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|zip|tar\.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|tar|xz|7zip|p12|pem|key|crt|csr|sh|pl|py|java|class|jar|war|ear|sqlitedb|sqlite3|dbf|db3|accdb|mdb|sqlcipher|gitignore|env|ini|conf|properties|plist|cfg)$"``
+	- ``debug_logic,idor,img-traversal,interestingEXT,interestingparams,interestingsubs,jsvar,lfi,rce,redirect,sqli,ssrf,ssti,xss``
 
 敏感信息
 ------------------------------------------
