@@ -17,96 +17,62 @@ DOM XSS
 --------------------------------
 DOM型XSS不同之处在于DOM型XSS一般和服务器的解析响应没有直接关系，而是在JavaScript脚本动态执行的过程中产生的。
 
-例如
++ 例如
 
-::
+	::
 
-    <html>
-    <head>
-    <title>DOM Based XSS Demo</title>
-    <script>
-    function xsstest()
-    {
-        var str = document.getElementById("input").value;
-        document.getElementById("output").innerHTML = "<img src='"+str+"'></img>";
-    }
-    </script>
-    </head>
-    <body>
-    <div id="output"></div>
-    <input type="text" id="input" size=50 value="" />
-    <input type="button" value="submit" onclick="xsstest()" />
-    </body>
-    </html>
+		<html>
+		<head>
+		<title>DOM Based XSS Demo</title>
+		<script>
+		function xsstest()
+		{
+			var str = document.getElementById("input").value;
+			document.getElementById("output").innerHTML = "<img src='"+str+"'></img>";
+		}
+		</script>
+		</head>
+		<body>
+		<div id="output"></div>
+		<input type="text" id="input" size=50 value="" />
+		<input type="button" value="submit" onclick="xsstest()" />
+		</body>
+		</html>
 
-输入 ``x' onerror='javascript:alert(/xss/)`` 即可触发。
+	输入 ``x' onerror='javascript:alert(/xss/)`` 即可触发。
++ 工具
+	- autovader
+		+ 项目地址：https://github.com/portswigger/autovader
+		+ burp商店自带
 
 Blind XSS
 --------------------------------
 Blind XSS是储存型XSS的一种，它保存在某些存储中，当一个“受害者”访问这个页面时执行，并且在文档对象模型（DOM）中呈现payload。 它被归类为盲目的原因是因为它通常发生在通常不暴露给用户的功能上。
 
-HTTP响应拆分
+postmessage型
 --------------------------------
-造成http响应头截断漏洞的主要原因是对用户提交的非法字符没有进行严格的过滤，尤 其是CR,LF字符的输入。攻击者通过发送一经过精心构造的request，迫使服务器认为其返回的数据是两个响应，而不是常规的一个响应。基本技术http响应头截断攻击重点在于可以在http头中输入数据，构造特殊字符形成截断。最可能的是在Location字段,还有在Set-Cookie字段中。
+postMessage漏洞利用了 **window.postMessage** 方法的 **跨域通信** 特性，攻击者可以伪造消息，向不安全的接收端发送恶意数据，从而实现XSS攻击等。
 
+产生原理
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 跨域通信：postMessage允许不同源的窗口之间安全地传递信息。
++ 缺乏验证：如果接收方没有正确验证消息的来源或内容，攻击者可以发送伪造的消息，导致执行恶意代码或篡改应用行为。
 
-例如
+挖掘技巧
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 识别易受攻击的应用：
+	- 查找使用window.postMessage进行跨域通信的功能。
+	- 确认接收方是否对接收的消息进行源校验。
++ 构造恶意消息：
+	- 制作与合法消息格式相似的伪造消息。
+	- 利用浏览器开发者工具（如F12）或JavaScript控制台手动发送消息。
++ 测试响应处理：
+	- 观察应用如何处理接收到的消息，尝试注入恶意脚本。
+	- 检查是否有未经过滤的输出，将恶意数据注入到DOM中。
 
-::
-
-		<% Response.sendRedirect(“/by_lang.jsp?lang=”+request.getParameter(“lang”)); %>
-
-		当提交english作为参数时，会转到/by_lang.jsp?lang=english,常规的响应如下：
-		HTTP/1.1 302 Moved Temporarily
-		Date:Wed,24 Dec 2003 12:53:28 
-		Location: http://10.1.1.1/by_lang.jsp?lang=english
-		Server: WebLogic XMLX Module 8.1 SP1 Fir Jun 20 23:06:40 PDT
-		2003 271009 with
-		Content-Type: text/html
-		Set-Cookie:    JSESSIONID=1PMRZOIQQzZIE6iivsREG82pq9B017h4YoHZ62RXjApqwBE!-
-		12510119693;path=/  Connection:Close
-
-		……………………….略
-		
-从以上可以看到的是：输入的参数已经提交到http头中，这样我们就可以构造特殊的字 符来截断http头，并到其后追加 一个自己构造的头:
-
-::
-
-		/redir_lang.jsp?lang=foobar%0d%0aContent-Length:%200%0d%0a%0d%oaHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0a%Content-Length:%2019%0d%0a%0d%0a<html>Shazam</html>
-		
-服务器返回的数:
-
-::
-
-		HTTP/1.1 302 Moved Temporarily
-		Date:Wed,24 Dec 2003 15:26:41 GMT 
-		Location: http://10.1.1.1/by_lang.jsp?lang=foobar   
-		Content-Length:0
-
-		HTTP/1.1 200 OK
-		Content-Type: text/html
-		Content-length: 1
-		<html>Shazam</html>
-		Server: WebLogic XMLX Module 8.1 SP1 Fir Jun 20 23:06:40 PDT
-		2003 271009 with
-		Content-Type: text/html
-		Set-Cookie: JSESSIONID=1PMRZOIQQzZIE6iivsREG82pq9B017h4YoHZ62RXjApqwBE!-12510119693;path=/
-		Connection:Close
-		
-1、第一个响应是302 response，2、第二个响应是自己构造的200 response， 3、（在 报头之外的数据都略掉了，其实原文是存在的，而且在实际中该段是要给与考虑的）
-这样我们就可以发送两个请求：
-
-::
-
-		这样服务器对于第一个请求返回：
-		HTTP/1.1 302 Moved Temporar
-		Date:Wed,24 Dec 2003 15:26:41 GMT 
-		Location: http://10.1.1.1/by_lang.jsp?lang=foobar   
-		Content-Length:0
-		对于第二个请求返回：
-		HTTP/1.1 200 OK
-		Content-Type: text/html
-		Content-length: 19
-
-		<html>Shamaz</html>
-		这样就达到了欺骗目标服务器的目的
+相关工具
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ postmessage Tracker
++ FancyTracker
+	- 项目地址：https://github.com/Zeetaz/FancyTracker
+	- firefox插件：FancyTracker

