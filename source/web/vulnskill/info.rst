@@ -45,9 +45,28 @@
         httpx -silent -status-code -title -tech-detect -follow-redirects -ports 80,8080,443,8000 -mc 200,302,403,401,500
 + 合并去重 ： ``cat *.txt | sort -u > all_subdomains.txt``
 
+ip收集
+---------------------------------------
++ httpx: ``httpx -l subdomains.txt -ip -slient |sed -nE 's/.*[([0-9.]+)].*/1/p' |sort -u > ip.txt``
+
 批量端口扫描
 ----------------------------------------
-+ naabu： ``cat all_subdomains.txt | naabu -top-ports 100 | tee -a ports.txt``
++ naabu
+    - ``cat all_subdomains.txt | naabu -top-ports 100 | tee -a ports.txt``
+    - ``nabbu -l ip.txt -top-ports 100 -rate 1500 -verfy -silent -o nabbu.txt``
+
+端口服务探测
+----------------------------------------
++ naabutonmap.py
+    - 地址： ``https://github.com/coffinxp/scripts/blob/main/naabutonmap.py``
+    - 原理： 调用nmap进行
+    - 命令： ``python3 naabutonmap.py -i naabu.txt``
+    - 结果解析
+        ::
+
+            https://github.com/ernw/nmap-parse-output
+            ./nmap-parse-output nmap-out/20260121_153728 html > scan_out.html
+            浏览器打开scan_out.html
 
 web指纹识别
 ----------------------------------------
@@ -67,6 +86,9 @@ URL爬取
         执行hakrawler，需要在url前加上http://
         sed 's/^/http:\/\//' ports.txt > ports_http.txt
         cat ports.txt | hakrawler -u > url2.txt
+
+        模糊测试：
+        ffuf -w ip.txt:SUB -w /home/coffinxp/payloads/back_files_only.txt:FILE -u https://SUB/FILE -mc 200 -rate 50 -fs 0 -c -fw 3,117
 
 + 被动爬取
     ::

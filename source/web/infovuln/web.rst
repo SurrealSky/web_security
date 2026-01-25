@@ -4,9 +4,6 @@
 HTTP Probing 收集
 ----------------------------------------
 + httpx
-	- 快速http请求
-	- 项目地址：``https://github.com/projectdiscovery/httpx``
-	- 安装：``go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest``
 	- ``cat subdomain.txt | httpx -title -sc -cl -location -fr -threads 200 -o httpx.txt``
 	- ``cat subdomain.txt | httpx -ports 80,443,8080,8000,8888 -threads 200 > subdomains_alive.txt``
 	- ``cat subdomain.txt | httpx -sc -title -server -td -ports 80,443,8080,8000,8888 -threads 200``

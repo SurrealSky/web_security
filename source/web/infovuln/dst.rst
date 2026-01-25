@@ -52,6 +52,7 @@ IP信息
 	+ 项目地址： ``https://github.com/projectdiscovery/naabu``
 	+ 安装： ``go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest``
 	+ ``cat ips.txt | naabu -top-ports 100 | tee -a ports.txt``
+	+ ``nabbu -l ip.txt -top-ports 100 -rate 1500 -verfy -silent -o nabbu.txt``
 - `nmap <https://github.com/nmap/nmap>`_
 	+ 扫描方式
 		- ``TCP:-sT``

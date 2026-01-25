@@ -19,8 +19,14 @@ ENScan
 - `ESD <https://github.com/FeeiCN/ESD>`_
 	| ``pip install esd``
 	| ``esd -d baidu.com``
-- - `wydomain <https://github.com/ring04h/wydomain>`_
-- `chaos <https://github.com/projectdiscovery/chaos-client>`_
+- wydomain 
+	+ 原理：工具主要分为两个模块，dnsburte模块和wydomain模块，dnsburte模块通过用户自定义字典发送dns查询，最后筛选出符合条件的域名。而wydomain模块则是通过调用多个第三方网站的公开api获取子域名数据。
+	+ 注意： **无需配置API-KEY** 。
+	+ 项目地址： ``https://github.com/ring04h/wydomain``
+- chaos 
+	+ 原理：通过 **集成Chaos API** ，能够快速响应并执行子域名枚举任务。
+	+ 注意： **需要配置API-KEY** https://cloud.projectdiscovery.io 。
+	+ 项目地址： ``https://github.com/projectdiscovery/chaos-client``
 - `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
 	| ``python3 subDomainsBrute.py baidu.com``
 - `broDomain <https://github.com/code-scan/BroDomain>`_
@@ -97,22 +103,8 @@ ENScan
 	- ``python3 oneforall.py --target baidu.com run``
 	- ``python3 oneforall.py --targets ./domains.txt run``
 
-IP收集
-----------------------------------------
-+ ASN Discovery
-	- 安装： ``go install -v github.com/projectdiscovery/asnmap/cmd/asnmap@latest``
-	- ``asnmap -d example.com | dnsx -silent -resp-only``
-+ amass
-	- Amass Intel by Organization: ``amass intel -org "organization_name"``
-	- Amass Intel by CIDR:  ``amass intel -active -cidr 159.69.129.82/32``
-	- Amass Intel by ASN: ``amass intel -active -asn [asnno]``
-+ VirusTotal IP Lookup: ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.. | .ip_address? // empty' | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'``
-+ AlienVault OTX: ``curl -s "https://otx.alienvault.com/api/v1/indicators/hostname/example.com/url_list?limit=500&page=1" | jq -r '.url_list[]?.result?.urlworker?.ip // empty' | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'``
-+ URLScan.io: ``curl -s "https://urlscan.io/api/v1/search/?q=domain:example.com&size=10000" | jq -r '.results[]?.page?.ip // empty' | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'``
-+ Shodan SSL Search: ``shodan search Ssl.cert.subject.CN:"example.com" 200 --fields ip_str | httpx -sc -title -server -td``
-
 CDN判别
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------
 - 在线多地超级ping
 	+ 多地ping得到不同的IP地址，基本判断为开启了CDN。
 	+ ``https://ping.chinaz.com/``
@@ -128,3 +120,22 @@ CDN判别
 		
 			echo hackerone.com| cdncheck -resp
 			subfinder -d hackerone.com| cdncheck -resp
+
+IP收集
+----------------------------------------
++ httpx
+	- 快速http请求
+	- 项目地址：``https://github.com/projectdiscovery/httpx``
+	- 安装：``go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest``
+	- ``httpx -l subdomains.txt -ip -slient |sed -nE 's/.*[([0-9.]+)].*/1/p' |sort -u > ip.txt``
++ ASN Discovery
+	- 安装： ``go install -v github.com/projectdiscovery/asnmap/cmd/asnmap@latest``
+	- ``asnmap -d example.com | dnsx -silent -resp-only``
++ amass
+	- Amass Intel by Organization: ``amass intel -org "organization_name"``
+	- Amass Intel by CIDR:  ``amass intel -active -cidr 159.69.129.82/32``
+	- Amass Intel by ASN: ``amass intel -active -asn [asnno]``
++ VirusTotal IP Lookup: ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.. | .ip_address? // empty' | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'``
++ AlienVault OTX: ``curl -s "https://otx.alienvault.com/api/v1/indicators/hostname/example.com/url_list?limit=500&page=1" | jq -r '.url_list[]?.result?.urlworker?.ip // empty' | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'``
++ URLScan.io: ``curl -s "https://urlscan.io/api/v1/search/?q=domain:example.com&size=10000" | jq -r '.results[]?.page?.ip // empty' | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'``
++ Shodan SSL Search: ``shodan search Ssl.cert.subject.CN:"example.com" 200 --fields ip_str | httpx -sc -title -server -td``
