@@ -47,13 +47,13 @@
 
 ip收集
 ---------------------------------------
-+ httpx: ``httpx -l subdomains.txt -ip -slient |sed -nE 's/.*[([0-9.]+)].*/1/p' |sort -u > ip.txt``
++ httpx: ``httpx -l subdomains.txt -ip | sed -nE 's/.*\[([0-9.]+)\].*/\1/p'|sort -u > ip.txt``
 
 批量端口扫描
 ----------------------------------------
 + naabu
     - ``cat all_subdomains.txt | naabu -top-ports 100 | tee -a ports.txt``
-    - ``nabbu -l ip.txt -top-ports 100 -rate 1500 -verfy -silent -o nabbu.txt``
+    - ``naabu -l ip.txt -top-ports 100 -rate 1500 -verify -silent -o naabu.txt``
 
 端口服务探测
 ----------------------------------------
@@ -65,7 +65,7 @@ ip收集
         ::
 
             https://github.com/ernw/nmap-parse-output
-            ./nmap-parse-output nmap-out/20260121_153728 html > scan_out.html
+            ./nmap-parse-output nmap-out.xml html > scan_out.html
             浏览器打开scan_out.html
 
 web指纹识别

@@ -127,7 +127,7 @@ IP收集
 	- 快速http请求
 	- 项目地址：``https://github.com/projectdiscovery/httpx``
 	- 安装：``go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest``
-	- ``httpx -l subdomains.txt -ip -slient |sed -nE 's/.*[([0-9.]+)].*/1/p' |sort -u > ip.txt``
+	- ``httpx -l subdomains.txt -ip | sed -nE 's/.*\[([0-9.]+)\].*/\1/p'|sort -u > ip.txt``
 + ASN Discovery
 	- 安装： ``go install -v github.com/projectdiscovery/asnmap/cmd/asnmap@latest``
 	- ``asnmap -d example.com | dnsx -silent -resp-only``
