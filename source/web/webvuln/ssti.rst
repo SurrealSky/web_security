@@ -3,13 +3,72 @@
 
 简介
 ----------------------------------------
-模板引擎用于使用动态数据呈现内容。此上下文数据通常由用户控制并由模板进行格式化，以生成网页、电子邮件等。模板引擎通过使用代码构造（如条件语句、循环等）处理上下文数据，允许在模板中使用强大的语言表达式，以呈现动态内容。如果攻击者能够控制要呈现的模板，则他们将能够注入可暴露上下文数据，甚至在服务器上运行任意命令的表达式。
+模板引擎用于使用动态数据呈现内容。 **模板引擎** 通过使用代码构造（如条件语句、循环等）处理上下文数据，允许在模板中使用强大的语言表达式，以呈现动态内容。如果攻击者能够控制要呈现的模板，则他们将能够注入可暴露上下文数据，甚至在服务器上 **运行任意命令** 的表达式。
 
-测试方法
+模版引擎
 ----------------------------------------
++ python
+	- Jinja2 : 常用于Flask/Django等常用
+	- Django Template
+	- Mako
+	- Tornado Template
++ java
+	- FreeMarker
+	- Velocity
+	- Thymeleaf : 常用于Spring boot等，默认情况下相对安全，表达式语言（SPEL/OGNL）在标准视图中是沙箱化的。
++ JavaScript (Node.js)
+	- Pug（原Jade）
+	- Handlebars
+	- EJS (Embedded JavaScript)
+	- Nunjucks: 用于node.js环境
++ php
+	- Twig（Symfony常用）
+	- Smarty
++ Ruby
+	- ERB（Ruby on Rails默认）
+
+信息收集
+---------------------------------------
+
+HTTP响应头与Cookies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ Set-Cookie：查看Cookie名称和格式
+	- sessionid= → Django
+	- flask → Flask (可能使用Jinja2)
+	- JSESSIONID → Java应用
+	- PHPSESSID → PHP应用
++ Server头（可能被隐藏或修改）
+	- Werkzeug/X.X Python/X.X.X → Flask开发服务器
+	- WSGIServer/X.X Python/X.X.X → Django开发服务器
+	- Apache-Coyote/X.X → Java Tomcat
+	- nginx/X.X.x → 反向代理，无法直接判断
+
+URL路径和参数
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 查看URL中是否有模板文件扩展名
+	- .jsp → Java JSP
+	- .php → PHP
+	- .do, .action → Struts (Java)
+	- .aspx → ASP.NET
+	- .twig → Twig (PHP/Symfony)
++ URL路由模式
+	- /user/<id> → Flask/Vue等都可能，但可做参考
+	- RESTful API风格可能指向特定框架
++ 静态文件路径
+	- /static/ → Django/Flask常见
+	- /public/ → Node.js应用常见
+	- /resources/ → Java应用常见
+	- /vendor/ → PHP应用常见
+
+测试思路
+----------------------------------------
+- 模糊测试
+	+ 在输入点尝试 ``{{7*7}} {{7*'7'}}`` 、 ``${7*7}`` 、 ``<%= 7*7 %>`` 、 ``${{7*7}}`` 、 ``#{7*7}`` 、 ``$a{{7*7}}b`` 等，观察是否被计算为 49。
 - 确定使用的引擎
-- 查看引擎相关的文档，确定其安全机制以及自带的函数和变量
-- 需找攻击面，尝试攻击
+	+ 根据报错信息、语法成功/失败的情况判断引擎类型。
+- 测试Payload
+	+ 根据识别的引擎，构造相应的属性链或代码执行Payload。
+
 
 测试用例
 ----------------------------------------

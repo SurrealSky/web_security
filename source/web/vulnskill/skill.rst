@@ -81,6 +81,9 @@ XSS
             &#x253C;script&#x253E;alert(1)&#x253C;/script&#x3E;
             \u003Cscript\u003Ealert(1)\u003C/script\u003E
             %26%2360;/u%26%2362;
++ 命令
+    - ``echo https://www.example.com/ | gau | gf xss| uro | gxss | kxss | tee xss_output.txt``
+    - ``python loxs.py``
 
 CSRF
 ----------------------------------------
