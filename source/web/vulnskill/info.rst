@@ -110,6 +110,7 @@ URL敏感信息提取
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + gf
     ::
+        
         debug_logic,idor,img-traversal,interestingEXT,interestingparams,interestingsubs
         jsvar,lfi,rce,redirect,sqli,ssrf,ssti,xss
         cat url*.txt | gf xss | sort -u > xss.txt

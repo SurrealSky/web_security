@@ -24,6 +24,7 @@ URL 收集
 	- 项目地址： ``https://github.com/projectdiscovery/katana``
 	- 安装： ``CGO_ENABLED=1 go install github.com/projectdiscovery/katana/cmd/katana@latest``
 	- ``katana -u livesubdomains.txt -d 2 -o urls.txt``
+	- 爬取js文件中的连接： ``-jc``
 + Hakrawler
 	- 项目地址： ``https://github.com/hakluke/hakrawler``
 	- 安装： ``go install github.com/hakluke/hakrawler@latest``
@@ -60,6 +61,7 @@ URL 收集
 	- 提取子域名： ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.subdomains[]' > vt.txt``
 	- 提取URL: 
 + Wayback Machine
+	- 互联网档案馆：一些网站的历史文件比如pdf之类的访问404，可以通过 ``web.archive.org`` 下载历史文件。
 	- 提取子域名： ``curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" |sort| sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sort -u > wayback.txt``
 	- 提取URL: 
 + alienvault OTX
