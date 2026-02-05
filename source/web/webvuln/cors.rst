@@ -20,10 +20,21 @@ CORS漏洞
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 响应头设置为 true 
     - 表示允许跨域请求携带Cookies、HTTP认证等凭证信息。
-+ 最危险的组合
+
+危险组合
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 最危险
     - ``Access-Control-Allow-Origin: [某个具体的恶意网站]``
     - ``Access-Control-Allow-Credentials: true``
     - 这意味着攻击者的网站可以带着受害用户的凭证（比如会话Cookie）去访问目标API，完全以用户的身份进行操作，窃取最敏感的数据。
++ 可利用
+    - ``Access-Control-Allow-Origin: null``
+    - ``Access-Control-Allow-Credentials: true``
++ 不可利用1
+    - ``Access-Control-Allow-Origin: *``
+    - ``Access-Control-Allow-Credentials: true``
++ 不可利用2
+    - ``Access-Control-Allow-Origin: *``
 
 攻击步骤
 --------------------------------------
@@ -75,8 +86,13 @@ CORS与CSRF区别
     - 涉及同源，跨域
     - 浏览器在进行跨域请求（如AJAX）时，会强行发一个预检（OPTION）请求，询问网站是否允许跨域访问。
 
+手动测试
+-------------------------------------
++ 观察响应头是否包含了指定的Origin头： ``curl https://test.victim.com -H "Origin: https://geekboy.ninja" -I``
 
 相关工具
 --------------------------------------
-+ CORS Misconfigurations Scanner (Burp Suite 扩展)
-+ CORStest： ``https://github.com/RUB-NDS/CORStest``
++ CORScanner
+    - 项目地址： ``https://github.com/chenjj/CORScanner``
+    - 安装： ``sudo pip install corscanner``
++ 在线工具： ``https://corsfix.com/tools/cors-tester``
