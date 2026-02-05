@@ -15,11 +15,12 @@
 + 可写服务二进制路径（Weak Service Permissions）
     - 服务对应的可执行文件exe，其它低权限用户可读写。
 + 服务路径漏洞（Unquoted Service Path）
-	- CreateProcess执行该路径时未加引号，同时lpApplicationName为NULL，系统会按以下方式依次解析该路径：
-		+ 解析:``c:\program files\sub dir\1.exe``
-		+ c:\\program.exe：系统首先会尝试将路径从字符串的开始部分截断，解析为 c:\\program.exe。
-		+ c:\\program files\\sub.exe：如果第一个解析失败，系统会尝试将路径解析为 c:\\program files\\sub.exe。
-		+ 最后系统尝试解析整个路径，认为 1.exe 是可执行文件名，并尝试执行它。
+    - CreateProcess执行该路径时未加引号，同时lpApplicationName为NULL，系统会按以下方式依次解析该路径：
+        + 解析: ``c:\program files\sub dir\1.exe``
+        + c:\\program.exe：系统首先会尝试将路径从字符串的开始部分截断，解析为 c:\\program.exe。
+        + c:\\program files\\sub.exe：如果第一个解析失败，系统会尝试将路径解析为 c:\\program files\\sub.exe。
+        + 最后系统尝试解析整个路径，认为 1.exe 是可执行文件名，并尝试执行它。
+    - 命令： ``wmic service get name,Displayname,pathname | findstr /i Program``
 + 不安全的服务操作（Insecure SERVICE_CHANGE_CONFIG）
 	- 某些服务可能被配置为允许低权限用户对其进行控制，例如启动、停止、修改配置。
 	- 利用方法：使用 sc sdshow <servicename> 命令可以查看服务的权限字符串。如果其中包含 (WD)（Everyone）的 RCWP（特别是 WP - Write Permission）权限，则存在风险。攻击者可以使用 sc config 等命令修改服务配置，指向恶意负载。

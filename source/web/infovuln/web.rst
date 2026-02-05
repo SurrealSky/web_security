@@ -149,6 +149,13 @@ URL 收集
 	- 安装： ``pip3 install arjun``
 	- 被动扫描： ``arjun -u https://example.com/endpoint.php -oT arjun_output.txt -t 10 --rate-limit 10 --passive -m GET,POST --headers "User-Agent: Mozilla/5.0"``
 	- 主动扫描： ``arjun -u https://example.com/endpoint.php -oT arjun_output.txt -m GET,POST -w /usr/share/wordlists/seclists/Discovery/Web-Content/burp-parameter-names.txt -t 10 --rate-limit 10 --headers "User-Agent: Mozilla/5.0"``
++ ParamSpider
+	- 项目地址：``https://github.com/devanshbatham/ParamSpider``
+	- 介绍：fetch URLs related to any domain or a list of domains from Wayback achives。
+	- 主动扫描
+		+ 命令： ``paramspider -d example.com``
+		+ 文件： ``paramspider -l domains.txt``
+		+ FUZZ (default: "FUZZ"): ``paramspider -d example.com -p '"><h1>reflection</h1>'``
 
 其它工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

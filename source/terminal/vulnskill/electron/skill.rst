@@ -37,3 +37,18 @@ webview攻击
     
         var $input2 = $("<input type='text' value='"+value+"' name='value' class='form-control' style=' width:20%; display: inline-block;' placeholder='value'>");
         分析拼接的输入点是否用户可控，查看是否有xss漏洞。
+
+相关工具
+----------------------------------------
+
+electronegativity
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 项目地址： ``https://github.com/doyensec/electronegativity``
++ 介绍：静态代码分析工具。
++ 安装： ``npm install @doyensec/electronegativity -g``
++ 分析目录： ``electronegativity -i /path/to/electron/app``
++ 分析ASAR： ``electronegativity -i /path/to/asar/archive -o result.csv``
+
+相关资料
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 空闲时间学习： ``https://github.com/doyensec/awesome-electronjs-hacking``

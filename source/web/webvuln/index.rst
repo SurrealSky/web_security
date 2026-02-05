@@ -24,6 +24,7 @@
    ssti
    xpath
    graphql
+   websocket
    captcha
    webcachepoisoning
    other/index
