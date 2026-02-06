@@ -95,4 +95,10 @@ CORS与CSRF区别
 + CORScanner
     - 项目地址： ``https://github.com/chenjj/CORScanner``
     - 安装： ``sudo pip install corscanner``
+    - 命令
+        ::
+            
+            corscanner -u example.com 
+            corscanner -i subdomains.txt -t 100
+            corscanner -u example.com -p http://127.0.0.1:8080
 + 在线工具： ``https://corsfix.com/tools/cors-tester``

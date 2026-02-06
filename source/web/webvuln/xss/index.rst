@@ -6,6 +6,5 @@ XSS
    :caption: 内容索引:
 
    classify
-   security
    skill
    payload
