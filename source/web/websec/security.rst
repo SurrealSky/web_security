@@ -34,8 +34,8 @@ SOP
 + 安全对抗
     - 对抗CSRF
         - 验证码
-        - Token验证：实现复杂，需要在所有表单和AJAX请求中添加
-        - Referer验证
+        - Token验证：实现复杂，需要在所有表单和AJAX请求中添加。
+        - Referer验证: 只能防御站外类型的CSRF攻击。
     - 对抗点击劫持
         - X-Frame-Options头
             - DENY

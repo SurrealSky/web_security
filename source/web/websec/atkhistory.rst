@@ -111,7 +111,16 @@ fetch API
         Accept: */*
         Accept-Language: zh-CN,zh;q=0.9
         Sec-Fetch-Mode: cors
+            cors	跨域请求，期望CORS检查	fetch('https://api.com')
+            navigate	页面导航请求	点击链接、地址栏输入
+            no-cors	不需要CORS的跨域请求（如图片）	<img src="...">
+            same-origin	同源请求，不允许跨域	fetch('/api', {mode: 'same-origin'})
+            websocket	WebSocket连接请求	new WebSocket('wss://...')
         Sec-Fetch-Site: same-origin
+            same-origin	完全同源请求	app.com → app.com/api
+            same-site	同站但不同源（相同eTLD+1）	blog.app.com → api.app.com
+            cross-site	完全跨站请求	evil.com → bank.com/api
+            none	    浏览器直接发起的请求（如地址栏输入）	直接访问 bank.com
 
         # 根据body类型自动设置
         # 发送JSON时
@@ -122,6 +131,7 @@ fetch API
 
         # 发送URLSearchParams时
         Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+
 + 缺点
     - fetch 不会自动处理 HTTP 请求中的错误状态码（如 404 或 500），需要开发者手动处理。
     - fetch 的默认行为 **不支持跨域请求时的 Cookie** ，因此需要手动设置 credentials 选项。
