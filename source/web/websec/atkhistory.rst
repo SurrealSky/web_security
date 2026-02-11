@@ -34,6 +34,8 @@
         Content-Type: application/x-www-form-urlencoded
         # 或对于文件上传
         Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryxxx
+        #Origin头
+        Origin头可能是null或者不存在。
 + 缺点：每次提交表单都会导致页面刷新，用户体验较差。
 
 资源引用加载
@@ -151,3 +153,9 @@ axios
     - XSS
     - CORS配置错误
     - Spectre类攻击
+
+预检请求
+----------------------------------------
++  **表单提交不受CORS限制** ，CORS仅适用于 **AJAX/Fetch等API** 发起的请求。
++ 跨域请求是一种常见的需求，当需要从不同域名的 API 获取数据时。浏览器出于安全考虑，默认不允许跨域请求。为了解决这个问题，开发者可以使用 CORS（跨域资源共享）技术。
++ CORS 技术在某些情况下需要使用预检请求。当使用某些 **非简单请求（如 POST、PUT、DELETE 等）** ， **自定义请求头** ， **非简单Content-Type** 时，浏览器会自动发送预检请求。
