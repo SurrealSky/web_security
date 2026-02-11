@@ -141,6 +141,11 @@ JSON格式的CSRF
 		- POC: ``https://www.0xdawn.cn/swf_json_csrf/test.swf?endpoint=https://sim.ecloud.10086.cn:8085/simauth/app/updateAppInfo&reqmethod=POST&ct=application/json;charset=UTF-8&jsonData={%22appId%22:%22300016001555%22,%22appName%22:%220xdawn%22}&php_url=https://www.0xdawn.cn/swf_json_csrf/test.php``
 		- 相关工具： swf csrf tool（https://github.com/appsecco/json-flash-csrf-poc）
 
+自动化工具
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ Bolt 
+	- 项目地址： ``https://github.com/s0md3v/Bolt``
+
 参考链接
 --------------------------------
 
