@@ -1,43 +1,16 @@
 文件上传
 ========================================
 
-检测方法
+客户端检测
 ----------------------------------------
+- 文件扩展名检测
+	+ burpsuite抓包修改网络请求中文件扩展名绕过
+- MIME类型检测
+	+ burpsuite抓包网络请求中http头部Content-Type值绕过
 
-	|fileupload|
-
-攻击流程
+服务端检测
 ----------------------------------------
-
-	|fileuploadattack1|
-	|fileuploadattack2|
-
-
-检测绕过
-----------------------------------------
-
-更改请求绕过
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- 客户端文件扩展名检测
-
-::
-
-	burpsuite抓包修改网络请求中文件扩展名绕过
-
-- 服务端MIME类型检测
-
-::
-
-	burpsuite抓包网络请求中http头部Content-Type值绕过
-
-
-服务端目录路径检测
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- 00截断绕过
-
- ``www.xxx.com/qq.php%00.jpg => www.xxx.com/qq.php`` 
+- 00截断绕过 ： ``www.xxx.com/qq.php%00.jpg => www.xxx.com/qq.php`` 
 
 ::
 
@@ -45,98 +18,250 @@
 	所以只能通过burpsuite修改hex值为00（URLdecode）进行截断。
 
 
-服务端文件扩展名检测
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-::
-
-	服务器文件扩展名检测一般有黑名单和白名单检测，白名单比黑名单的安全性高，攻击的手法较少。
-	
-- 黑名单
-- 白名单
++ 文件扩展名检测：一般有黑名单和白名单检测，白名单比黑名单的安全性高，攻击的手法较少。
+	- 黑名单
+	- 白名单
 
 
-文件内容检测
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 文件内容检测
+	- 文件头Magic检测绕过
+		有的站点使用文件头来检测文件类型，这种检查可以在Shell前加入对应的字节以绕过检查。几种常见的文件类型的头字节如下表所示
 
-- 文件头Magic检测绕过
-	有的站点使用文件头来检测文件类型，这种检查可以在Shell前加入对应的字节以绕过检查。几种常见的文件类型的头字节如下表所示
+		==============      ============================
+		类型                二进制值
+		==============      ============================
+		JPG                 FF D8 FF E0 00 10 4A 46 49 46
+		GIF                 47 49 46 38 39 61
+		PNG                 89 50 4E 47
+		TIF                 49 49 2A 00
+		BMP                 42 4D
+		==============      ============================
 
-	==============      ============================
-	类型                二进制值
-	==============      ============================
-	JPG                 FF D8 FF E0 00 10 4A 46 49 46
-	GIF                 47 49 46 38 39 61
-	PNG                 89 50 4E 47
-	TIF                 49 49 2A 00
-	BMP                 42 4D
-	==============      ============================
+	- 文件加载检测
+		即文件加载通过调用API重新渲染图片，测试图片加载是否成功，一般分为两种：
 
-- 文件加载检测
-	即文件加载通过调用API重新渲染图片，测试图片加载是否成功，一般分为两种：
+		- 渲染/加载测试
 
-	- 渲染/加载测试
+		::
+		
+			代码注入绕过
+			相关工具(edjpgcom图片插入一句话工具)
+			利用前提：
+			1.存在文件包含漏洞,如/test.php?file=1.jpg
+			2.nginx和php配置错误,访问/1.jpg/00000000000000.php,当php-fpm找不到00000000000000.php，
+			然后向前查找，把1.jpg当成php文件访问。
 
+		附件：`webshellimg.jpg <..//_static//webshellimg.jpg>`_
+
+		- 二次渲染
+
+		::
+		
+			攻击文件加载器自身
+			参考：https://paper.seebug.org/387/#2-php-gdwebshell
+			https://github.com/RickGray/Bypass-PHP-GD-Process-To-RCE
+			http://www.secgeek.net/bookfresh-vulnerability/
+
++ WAF绕过
+	- filename
+		针对早期版本的安全狗，可以多加一个filename来绕过，
+
+			|fileuploadfilename1|
+
+		或者可以通过吧filename放在非常规的位置来绕过（这里的filename指在http请求头中上传的文件名字）。
+
+			|fileuploadfilename2|
+
+		另外，Waf和Web系统对 ``boundary`` 的处理不一致，可以使用错误的 ``boundary`` 来完成绕过。 
+
+	- 竞争上传绕过
+		有的服务器采用了先保存，再删除不合法文件的方式，在这种服务器中，可以反复上传一个会生成Web Shell的文件并尝试访问，多次之后即可获得Shell。
+
+渗透测试
+---------------------------------------
++ 识别上传点
 	::
-	
-		代码注入绕过
-		相关工具(edjpgcom图片插入一句话工具)
-		利用前提：
-		1.存在文件包含漏洞,如/test.php?file=1.jpg
-		2.nginx和php配置错误,访问/1.jpg/00000000000000.php,当php-fpm找不到00000000000000.php，
-		然后向前查找，把1.jpg当成php文件访问。
 
-	附件：`webshellimg.jpg <..//_static//webshellimg.jpg>`_
+		# Common upload locations to investigate
+		POST /upload
+		POST /file-upload 
+		POST /api/v1/media
+		POST /profile/image
+		POST /documents/import
+		POST /attachments/add
 
-	- 二次渲染
+		# Look for
+		- Profile/avatar changes
+		- Ticket/file attachments
+		- CSV/Excel imports
+		- Content management systems
+		- Form builders
 
++ 服务端技术
 	::
-	
-		攻击文件加载器自身
-		参考：https://paper.seebug.org/387/#2-php-gdwebshell
-		https://github.com/RickGray/Bypass-PHP-GD-Process-To-RCE
-		http://www.secgeek.net/bookfresh-vulnerability/
 
-后缀配置错误
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-php由于历史原因，部分解释器可能支持符合正则 ``/ph(p[2-7]?|t(ml)?)/`` 的后缀，如 ``php`` / ``php5`` / ``pht`` / ``phtml`` / ``shtml`` / ``pwml`` / ``phtm`` 等 可在禁止上传php文件时测试该类型。
+		# Identify server technology from responses
+		$ curl -I https://target.com/upload
+		Server: Apache → .htaccess testing possible
+		Server: nginx → configuration review
+		X-Powered-By: PHP → PHP-specific behaviors
+		X-AspNet-Version → ASP.NET patterns
 
-jsp引擎则可能会解析 ``jspx`` / ``jspf`` / ``jspa`` / ``jsw`` / ``jsv`` / ``jtml`` 等后缀，asp支持 ``asa`` / ``asax`` / ``cer`` / ``cdx`` / ``aspx`` / ``ascx`` / ``ashx`` / ``asmx`` / ``asp{80-90}`` 等后缀。
++ 文件名变形
+	::
 
-除了这些绕过，其他的后缀同样可能带来问题，如 ``vbs`` / ``asis`` / ``sh`` / ``reg`` / ``cgi`` / ``exe`` / ``dll`` / ``com`` / ``bat`` / ``pl`` / ``cfc`` / ``cfm`` / ``ini`` 等。
+		# Test Cases - Observe Server Behavior
+		test.jpg # Baseline
+		TEST.JPG # Case sensitivity
+		test.jpeg # Alternative extension
+		test. # Trailing dot 
+		test.jpg # Trailing space
+		test.jpg/ # Trailing slash
+		test.jpg; # Trailing semicolon
 
-系统命名绕过
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-在Windows系统中，上传 ``index.php.`` 会重命名为 ``.`` ，可以绕过后缀检查。
-也可尝试 ``index.php%20`` ， ``index.php:1.jpg`` ``index.php::$DATA`` 等。
-在Linux系统中，可以尝试上传名为 ``index.php/.`` 或 ``./aa/../index.php/.`` 的文件
++ Content-Type变形
+	::
 
-.user.ini
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-在php执行的过程中，除了主 ``php.ini`` 之外，PHP 还会在每个目录下扫描 INI 文件，从被执行的 PHP 文件所在目录开始一直上升到 web 根目录（$_SERVER['DOCUMENT_ROOT'] 所指定的）。如果被执行的 PHP 文件在 web 根目录之外，则只扫描该目录。 ``.user.ini`` 中可以定义除了PHP_INI_SYSTEM以外的模式的选项，故可以使用 ``.user.ini`` 加上非php后缀的文件构造一个shell，比如 ``auto_prepend_file=01.gif`` 。
+		# Send same file with different Content-Type headers
+		Content-Type: image/jpeg
+		Content-Type: image/png 
+		Content-Type: application/octet-stream
+		Content-Type: multipart/form-data
+		Content-Type: text/plain
 
-WAF绕过
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 扩展名逻辑
+	::
 
-- 大小上限
+		# Systematic Extension Testing Matrix
+		┌─────────────────┬─────────────────┬─────────────────┐
+		│ Category        │ Test Values     │ Expected        │
+		├─────────────────┼─────────────────┼─────────────────┤
+		│ Baseline        │ test.jpg        │ 200 OK          │
+		├─────────────────┼─────────────────┼─────────────────┤
+		│ Double Ext      │ test.php.jpg    │ Should reject   │
+		│                 │ test.asp.png    │                 │
+		├─────────────────┼─────────────────┼─────────────────┤
+		│ Case Manipulate │ test.pHp        │ Should reject   │
+		│                 │ test.PhP        │                 │
+		├─────────────────┼─────────────────┼─────────────────┤
+		│ Special Chars   │ test.php;.jpg   │ Should reject   │
+		│                 │ test.php..jpg   │                 │
+		├─────────────────┼─────────────────┼─────────────────┤
+		│ Alternative     │ test.php5       │ Should reject   │
+		│                 │ test.phtml      │                 │
+		└─────────────────┴─────────────────┴─────────────────┘
 
-有的waf在编写过程中考虑到性能原因，只处理一部分数据，这时可以通过加入大量垃圾数据来绕过其处理函数。
++ 上传路径Fuzz
+	::
 
-- filename
+		# Common Upload Paths to Fuzz
+		/upload
+		/file-upload
+		/api/v1/media
+		/profile/image
+		/documents/import
+		/attachments/add
+		/uploads/
+		/files/
+		/media/
+		/static/uploads/
+		/content/uploads/
+		/images/profile/
+		/attachments/
+		/storage/
+		/assets/
 
-针对早期版本的安全狗，可以多加一个filename来绕过，
++ 服务端配置漏洞
+	::
 
-	|fileuploadfilename1|
+		# What to Test
+		Apache:
+		- Is .htaccess honored in upload directories?
+		- Can .htaccess files be uploaded?
+		- Directory indexing enabled?
 
-或者可以通过吧filename放在非常规的位置来绕过（这里的filename指在http请求头中上传的文件名字）。
+		Nginx:
+		- Try to upload nginx.conf
+		- Test for alias traversal
+		- Check try_files behavior
 
-	|fileuploadfilename2|
+		IIS:
+		- web.config upload attempts
+		- ASP.NET request filtering
+		- Handler mappings
 
-另外，Waf和Web系统对 ``boundary`` 的处理不一致，可以使用错误的 ``boundary`` 来完成绕过。 
+		Cloud Storage:
+		- Public read/write permissions
+		- Bucket policy misconfigurations
+		- Object versioning
 
-竞争上传绕过
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-有的服务器采用了先保存，再删除不合法文件的方式，在这种服务器中，可以反复上传一个会生成Web Shell的文件并尝试访问，多次之后即可获得Shell。
++ 文件元数据测试
+	::
+
+		# Information Disclosure Through Metadata
+		Test uploading files with:
+		- Long filenames (500+ characters)
+		- Unicode/UTF-8 characters
+		- Emoji in filename
+		- Newlines in filename
+		- Path separators in filename
+
+		Document:
+		- How are filenames displayed?
+		- Is there reflected XSS in filename?
+		- Are filenames used in HTML without encoding?
+		- Is metadata stripped or preserved?
+
++ 漏洞利用链测试
+	::
+
+		Chain 1: Upload → Stored XSS
+		├── Upload SVG with embedded script
+		├── Upload HTML file
+		├── Upload file with XSS in filename
+		└── Access file triggers JavaScript
+
+		Chain 2: Upload → Path Traversal
+		├── Upload with zip/tar
+		├── Contains ../../ paths
+		├── Extraction writes outside target dir
+		└── Overwrite sensitive files
+
+		Chain 3: Upload → SQL Injection
+		├── Filename contains SQL payload
+		├── Filename stored in database
+		├── Unsafe query construction
+		└── Payload executes in DB
+
+		Chain 4: Upload → SSRF
+		├── Upload profile from URL feature
+		├── Supply internal IP addresses
+		├── Server fetches from internal network
+		└── Access cloud metadata services
+
++ 业务逻辑漏洞测试
+	::
+
+		# Test These Scenarios
+		1. Privilege Escalation(权限提升):
+		- Upload as low-privilege user
+		- Access file as admin/higher privilege
+		- Does access control fail?
+
+		2. Quota Bypass（配额绕过测试）:
+		- Fill storage quota
+		- Find alternative upload paths
+		- Bypass per-user limits
+
+		3. Content Spoofing（内容欺骗）:
+		- Upload PDF with malicious links
+		- Upload document with credential forms
+		- Social engineering potential
+
+		4. Cache Poisoning（）:
+		- Upload file with version parameter
+		- Manipulate caching headers
+		- Serve old content
 
 攻击技巧
 ----------------------------------------
@@ -169,8 +294,5 @@ Apache可根据是否允许重定向考虑上传.htaccess
 ----------------------------------------
 - `构造优质上传漏洞Fuzz字典 <https://www.freebuf.com/articles/web/188464.html>`_
 
-.. |fileupload| image:: ../../images/fileupload.jpg
-.. |fileuploadattack1| image:: ../../images/fileuploadattack1.jpg
-.. |fileuploadattack2| image:: ../../images/fileuploadattack2.jpg
 .. |fileuploadfilename1| image:: ../../images/fileuploadfilename1.png
 .. |fileuploadfilename2| image:: ../../images/fileuploadfilename2.jpg

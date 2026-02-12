@@ -26,6 +26,8 @@
    graphql
    websocket
    captcha
+   dpConfusion
+   httpcode
    webcachepoisoning
    other/index
    tools/index
