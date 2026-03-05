@@ -14,3 +14,4 @@
    drivervuln
    comvuln
    pipe
+   reg
