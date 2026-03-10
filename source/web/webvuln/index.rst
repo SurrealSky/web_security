@@ -29,5 +29,6 @@
    dpConfusion
    httpcode
    webcachepoisoning
+   defi
    other/index
    tools/index
