@@ -1,18 +1,43 @@
 资产收集
 ========================================
 
-主域名/小程序/公众号/APP
+站点信息查询
+----------------------------------------
++ 企查查：持股100%的公司，ICP备案信息，注册官网址，注册邮箱，APP，小程序
++ 天眼查：持股100%的公司，ICP备案信息，注册官网址，注册邮箱
++ 爱企查：持股100%的公司，ICP备案信息，注册官网址，注册邮箱
++ 快查：持股100%的公司、ICP备案信息、注册官网址、APP
++ 凤鸟：持股100%的公司
++ 七麦数据：APP,ICP备案信息
++ 企查猫：持股100%的公司
++ aldzs 阿拉丁: 小程序
++ coolapk 酷安市场: APP
++ qimai 七麦数据: APP
+
+相关工具
 ----------------------------------------
 
 ENScan
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 项目地址：``https://github.com/wgpsec/ENScan_GO``
-+ 默认公司：``./enscan -n 小米``
-+ 批量查询：``./enscan -f f.txt``
-+ 对外投资占股100%的公司：``./enscan -n 小米 -invest 100``
++ 需要配置 **API-KEY** ，支持企查查、天眼查、爱企查、凤鸟、七麦数据、企查猫等多个平台。
++ 项目地址： ``https://github.com/wgpsec/ENScan_GO``
++ 默认公司： ``./enscan -n 小米``
++ 对外投资占股100%的公司： ``./enscan -n 小米 -invest 100``
++ 查询备案信息： ``./enscan -n 小米 -field icp -invest 100  --branch``
++ 查询小程序/APP信息： ``./enscan -n 小米 -field app,wx_app -invest 100  --branch``
++ 限定查询源： ``./enscan -n 小米 -invest 100  -type tyc,aqc,kc(快查),rb（风鸟）,all``
 
-企查查
+ICPMainDomainFinder.py
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 原理：通过 ``https://beian.miit.gov.cn/`` 网站查询备案信息，获取主域名。
++ 脚本介绍：ICP备案，注册网站，PP，小程序，快应用
++ 命令：py -3 ICPMainDomainFinder.py -n xxxx科技股份有限公司
+
+FireflyDomainCrawler.py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 原理：通过 ``https://firefly-src.geekyoung.com/`` 网站查询主域名，备案号等。
++ 命令：py -3 FireflyDomainCrawler.py
+
 
 子域爆破
 -----------------------------------------
