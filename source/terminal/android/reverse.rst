@@ -163,6 +163,9 @@ adb调试
 		adb shell df：获取手机存储信息
 		adb shell screenrecord <存放路径/xxx.mp4>：录屏，命名以.mp4结尾
 		adb shell screenrecord --time-limit 10 <存放路径/xxx.mp4>：录屏时间为10秒
+		#查看安卓内核版本
+		uname -a
+		cat /proc/version 
 
 动态分析
 ----------------------------------------
@@ -245,8 +248,4 @@ DDMS日志分析
 			adb forward tcp:27043 tcp:27043
 + 常用命令
 	- 查看APP包名：frida-ps -Uai
-+ 
 + 通杀加密
-
-SSL Pinning绕过
-----------------------------------------
