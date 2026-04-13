@@ -232,20 +232,37 @@ DDMS日志分析
 			Frida 12.8.1 	Android 5.0 - 5.1
 			Frida 12.9.7 	Android 6.0 - 6.0.1
 			Frida 12.9.8 	Android 7.0 - 7.1
-			Frida 12.10.4 	Android 8.0 - 8.1
-			Frida 12.11.7 	Android 9
-			Frida 12.12.0 	Android 10
-			Frida 12.12.2 	Android 11
+			Frida 14.0.0+ 	Android 9.0+(API 28+)
+			Frida 16.0.0+ 	Android 10+(API 29+)
 + 环境部署
+	- 查看手机系统版本：
+		::
+
+			adb shell getprop ro.build.version.release
+			adb shell getprop ro.product.cpu.abi
 	- PC端安装python，frida-tools
 	- 手机端abd push安装frida-server
-	- 增加权限: chmod 777 frida-server
+		::
+
+			adb push frida-server /data/local/tmp/
+			mv frida-server /data/tmp/frida-server
+			增加权限: chmod 777 frida-server
 	- 执行./frida-server
 	- 监听端口
 		::
 		
 			adb forward tcp:27042 tcp:27042
 			adb forward tcp:27043 tcp:27043
+	- 测试 
+		- ``frida-ps -R``
+		- 通过USB连接： ``frida-ps -Uai``
+		- 通过SOCKET连接： ``frida-ps -H 127.0.0.1:27042``
 + 常用命令
-	- 查看APP包名：frida-ps -Uai
-+ 通杀加密
+	- 查看APP包名：frida-ps -Rai
++ 增强工具
+	- objection
+		+ 项目地址：https://github.com/sensepost/objection
+		+ 帮助文档：https://github.com/sensepost/objection/wiki
+		+ 安装
+			- pip install objection
+			- 通过frida-server连接手机： ``objection -N -n <包名> start -s "android sslpinning disable"``

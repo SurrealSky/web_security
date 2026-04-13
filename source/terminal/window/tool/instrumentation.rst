@@ -124,13 +124,137 @@ frida
 	- frida框架分为两部分，一部分是运行在系统上的交互工具frida CLI; 另一部分是运行在目标机器上的代码注入工具 frida-server。
 + server端
 	- github下载：https://github.com/frida/frida/releases
+	- 下载不同平台的server，可通过不同方式进行远程连接。
+	- frida-server版本说明
+		.. list-table:: 运行时可执行文件 / 动态库（日常使用）
+			:header-rows: 1
+			:widths: 20 35 25 20
+			:width: 800px
+
+			* 	- 组件
+				- 说明
+				- 文件后缀/格式
+				- 典型使用场景
+			* 	- frida-server
+				- 在设备上运行的守护进程，通过 TCP 与 PC 端 Frida 通信。
+				- 	- android-\*.xz
+					- linux-\*.xz
+					- windows-\*.exe.xz
+					- macos-\*.xz
+					- freebsd-\*.xz
+					- qnx-\*.xz
+				- 安卓/iOS/嵌入式设备的远程调试（最常见）
+			* 	- frida-gadget
+				- 可嵌入目标 App 的动态库，实现应用内 Hook。
+				-	- android-\*.so.xz
+					- ios-\*.dylib.xz
+					- linux-\*.so.xz
+					- windows-\*.dll.xz
+					- macos-\*.dylib.xz
+				- 免 frida-server 的隐蔽注入，或 iOS 重打包
+			* 	- frida-inject
+				- 命令行工具，动态将 frida-gadget 注入到运行中的进程。
+				- 	- android-\*.xz
+					- linux-\*.xz
+					- windows-\*.exe.xz
+					- macos-\*.xz
+				- 无需重启目标进程即可注入脚本
+			* 	- frida-portal
+				- 设备端服务，让多个 frida-gadget 实例主动注册，用于大规模集群管理。
+				- 	- android-\*.xz
+					- linux-\*.xz
+					- windows-\*.exe.xz
+					- macos-\*.xz
+				- 云真机、自动化测试农场等大规模设备管理
+		.. list-table:: 开发包（DevKit）—— 用于二次开发
+			:header-rows: 1
+			:widths: 20 35 25 20
+			:width: 800px
+
+			* 	- 组件
+				- 说明
+				- 体积特征
+				- 用途
+			* 	- frida-core-devkit
+				- 完整的 Frida Core（注入、会话管理、脚本运行等）
+				- 30~55 MB
+				- 构建自定义的 frida-server 或 frida-inject 类工具
+			*	- frida-gum-devkit	
+				- 仅 Gum 引擎（Hook、内存操作、代码跟踪）	
+				- 7~10 MB	
+				- 开发轻量级插桩工具，不依赖 JS 引擎
+			* 	- frida-gumjs-devkit	
+				- Gum + 嵌入式 QuickJS 引擎	
+				- 18~27 MB	
+				- 需要运行 JavaScript 脚本的自定义插桩工具
+		.. list-table:: 编程语言绑定 / 扩展
+			:header-rows: 1
+			:widths: 35 65
+			:width: 800px
+
+			* 	- 文件
+				- 说明
+			* 	- frida-17.3.2-cp37-abi3-freebsd_14_2_release_amd64.whl
+				- Python Wheel 包，用于 pip install，支持 FreeBSD 14.2 amd64
+			*	- 	- frida-clr-17.3.2-windows-x86.dll.xz
+					- frida-clr-17.3.2-windows-x86_64.dll.xz	
+				- .NET / CLR 绑定，供 C# 等语言调用 Frida
+			*	- frida-qml-\*.tar.xz	
+				- Qt QML 绑定（Linux/macOS/Windows）
+			*	- 	- frida_17.3.2_iphoneos-\*.deb
+					- frida_17.3.2_appletvos-arm64.deb	
+				- 越狱 iOS/tvOS 设备的 Cydia 安装包
+		.. list-table:: Node.js N-API 模块
+			:header-rows: 1
+			:widths: 35 65
+			:width: 800px
+
+			* 	- 文件
+				- 说明
+			* 	- frida-v17.3.2-napi-v8-\*.tar.gz
+				- 使用 V8 引擎的 Node.js 原生模块（N-API），支持 require('frida') 在 Node 中调用 Frida API。平台包括：darwin (arm64/x64), freebsd (x64), linux (arm64/armv7l/ia32/x64), win32 (arm64/x64)。
+		.. list-table:: 平台架构命名规则
+			:header-rows: 1
+			:widths: 35 65
+			:width: 800px
+
+			* 	- 字符串
+				- 含义
+			* 	- android-arm	
+				- Android 32位 ARMv7
+			*	- android-arm64	
+				- Android 64位 ARMv8
+			*	- android-x86	
+				- Android 32位 x86
+			*	- android-x86_64	
+				- Android 64位 x86_64
+			*	- ios-arm64 / ios-arm64e	
+				- iOS 64位（包括 A12+ 的 arm64e）
+			*	- ios-universal	
+				- iOS 通用动态库（多架构合并）
+			*	- linux-arm64	
+				- Linux 64位 ARM
+			*	- linux-x86_64	
+				- Linux 64位 x86
+			*	- windows-x86_64	
+				- Windows 64位
+			*	- macos-arm64	
+				- Apple Silicon Mac
+			*	- macos-x86_64	
+				- Intel Mac
+			*	- freebsd-x86_64	
+				- FreeBSD 64位
+			*	- qnx-armeabi	
+				- QNX 实时系统（ARM 32位）
+			*	- tvos-\* / watchos-\*	
+				- Apple TV / Watch
+
 + client端
 	- 安装方式
 		+ pip install frida
 		+ pip install frida-tools
-	- frida-server
-		+ 下载不同平台的server，可通过不同方式进行远程连接。
-		+ socket示例：``frida-server -l 127.0.0.1:1234``
+		+ 注：如果使用python安装，请注意区分是32位还是64位的python环境（py -3-32 -m pip install frida/py -3-64 -m pip install frida/）
+		+ 查看frida环境： ``frida --version , where frida``
 	- frida全局参数
 		+ -U：通过USB连接远程设备
 		+ -R：连接远程机器

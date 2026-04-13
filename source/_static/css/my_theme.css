@@ -2,3 +2,23 @@
 .wy-nav-content {
     max-width: 1200px !important;
 }
+
+/* 1. 移除主题默认的滚动条容器行为 */
+.wy-table-responsive {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+
+/* 2. 让表格整体宽度自适应父容器 */
+.wy-table-responsive table {
+    width: 100%;
+    display: table;   /* 恢复为标准表格布局 */
+}
+
+/* 3. 强制表格单元格内文本换行 */
+.wy-table-responsive table td,
+.wy-table-responsive table th {
+    white-space: normal !important;
+    word-wrap: break-word;
+    word-break: break-word;
+}
