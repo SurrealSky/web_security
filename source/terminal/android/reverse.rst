@@ -245,9 +245,9 @@ DDMS日志分析
 		::
 
 			adb push frida-server /data/local/tmp/
-			mv frida-server /data/tmp/frida-server
-			增加权限: chmod 777 frida-server
-	- 执行./frida-server
+			adb shell "chmod 755 /data/local/tmp/frida-server"
+			# 以 root 权限启动 frida-server（需要 Root 设备）
+			adb shell "su -c '/data/local/tmp/frida-server -D &'"
 	- 监听端口
 		::
 		
