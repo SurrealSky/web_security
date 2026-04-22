@@ -43,7 +43,7 @@ PyInstaller打包
 pyc反编译
 -----------------------------------------
 + uncompyle6
-	- 命令： ``uncompyle6 -o test.py test.pyc``
+	- 命令： ``uncompyle6 test.pyc -o .``
 + pycdc
 	- 命令： ``pycdc test.pyc > test.py``
 + 在线工具
