@@ -9,5 +9,6 @@
    linux/index
    android/index
    ios/index
+   python/index
    vuln/index
    vulnskill/index

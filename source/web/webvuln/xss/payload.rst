@@ -165,6 +165,7 @@ Payload
 + 利用特殊字符绕过过滤。例如 ``<img src=x onmouseover="ｐｒｏｍｐｔ(1)">``
 + 利用内联事件绑定绕过过滤。例如：
     ::
+        
         <img src=x>
         <script>
         document.querySelector('img').onmouseover = function() { prompt(1) }
