@@ -183,19 +183,21 @@ DeviceIoControl函数
 		Method表示3环与0环通信中的内存访问方式。
 		
 		Method部分又有四种内存访问方式：
-		METHOD_BUFFERED(0):对I/O进行缓冲 
-		从ring3输入数据：在Win32 API DeviceIoControl函数的内部，用户提供的输入缓冲区的内容被复制到ring 0 IRP的pIRP->AssociatedIrp.SystemBuffer的内存地址，复制的字节是有DeviceControl指定的输入字节数。
-		从ring0输出数据：系统将AssociatedIrp.SystemBuffer的数据复制到DeviceIoControl提供的输出缓冲区，复制的字节数由pIrp->IoStatus.Information指定，DeviceIoControl也可以通过参数lpBytesReturned得到复制的字节数。       
-		这种方式避免了驱动程序在内核态直接操作用户态内存地址的问题，过程比较安全。
-		
-		METHOD_IN_DIRECT(1):对输入不进行缓冲 
+		METHOD_BUFFERED(0):对I/O进行缓冲，不会直接使用用户提供的地址，驱动从 SystemBuffer 读取/写入。     
+						   这种方式避免了驱动程序在内核态直接操作用户态内存地址的问题，过程比较安全。
+		METHOD_IN_DIRECT(1):对输入不进行缓冲
 		METHOD_OUT_DIRECT(2):对输出不进行缓冲 
-		
 		METHOD_NEITHER(3):都不缓冲 
-		很少被用到，直接访问用户模式地址，要求调用DeviceIoControl的线程和派遣函数运行在同一个线程设备上下文中。
-		往驱动中Input数据：通过I/O堆栈的Parameters.DeviceIoControl.Type3InputBuffer得到DeviceIoControl提供的输入缓冲区地址，Parameters.DeviceIoControl.InputBufferLength得到其长度。
-		  由于不能保证传递过来的地址合法，所以需要先要结果ProbeRead函数进行判断。
-		从驱动中Output数据：通过pIrp->UserBuffer得到DeviceIoControl函数提供的输出缓冲区地址，再通过Parameters.DeviceIoControl.OutputBufferLength得到输出缓冲区大小。同样的要用ProbeWrite函数先进行判断。
+
++ METHOD_NEITHER漏洞
+	- 驱动可以不遵守 ``Method声明`` ,在 IRP_MJ_DEVICE_CONTROL 分发函数中忽略 IoControlCode 的低 2 位，自行决定如何获取缓冲区指针。
+	- 准确判断
+		+ 静态代码分析： 查看分发函数中是否直接使用 ``Type3InputBuffer / UserBuffer`` ，且没有 ProbeForXxx 或 __try。
+		+ 动态测试：提供无效用户地址（如 0x1）作为缓冲区，观察是否蓝屏（PAGE_FAULT）或返回 STATUS_ACCESS_VIOLATION。
+		+ METHOD_BUFFERED:不会直接使用用户提供的地址，驱动从 SystemBuffer 读取/写入， ``Irp->AssociatedIrp.SystemBuffer`` （输入和输出共用同一个系统缓冲区）。
+		+ METHOD_IN_DIRECT：输入是缓冲的，输出是直接映射的，Irp->AssociatedIrp.SystemBuffer（输入）， ``Irp->MdlAddress`` （输出，需 ``MmGetSystemAddressForMdlSafe`` ）。
+		+ METHOD_OUT_DIRECT：同上，但输入/输出角色相反。
+		+ METHOD_NEITHER：不经过系统缓冲区，也不使用 MDL，直接使用用户提供的虚拟地址，直接从 ``irpSp->Parameters.DeviceIoControl.Type3InputBuffer`` 或 ``Irp->UserBuffer`` 获取用户地址。
 
 挖掘思路
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
