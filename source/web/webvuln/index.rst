@@ -30,5 +30,6 @@
    httpcode
    webcachepoisoning
    defi
+   llm
    other/index
    tools/index
