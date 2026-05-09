@@ -8,10 +8,10 @@
    basic
    core
    bin
-   skill/index
-   iotvuln
+   pc/index
    electron/index
    android
    ios
+   iotvuln
    tools/index
 

