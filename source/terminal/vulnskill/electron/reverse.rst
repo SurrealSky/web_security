@@ -3,21 +3,21 @@
 
 asar文件
 ----------------------------------------
-+ 程序解包
-    ::
-    
-        windows系统安装node.js
-        在其目录中执行：npm install asar -g
-        asar e app.asar app //解压拿到源码
-+ 程序打包
-    ::
-    
-        asar p app app.asar //重新打包
-+ js格式美化
-    ::
-    
-        npm install uglify-js -g
-        uglifyjs main.js -b -o _main.js
+
+程序解包
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
++ windows系统安装node.js
++ 在其目录中执行：npm install asar -g
++ asar e app.asar app //解压拿到源码
+
+程序打包
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
++ asar p app app.asar
+
+js格式美化
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ npm install uglify-js -g
++ uglifyjs main.js -b -o _main.js
 + 注意
     - app.asar一般都没有做进一步的加密处理，所以拿到源码不难
     - 不排除有的厂商可能在这方面做了一定的保护，就需要我们自己去逆向找到解密方法了，可以参考coco2d等。
@@ -26,17 +26,17 @@ asar文件
 
 信息收集
 ----------------------------------------
-+ 查看版本
+
+查看版本
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ Devtool查看法
+    - 前提是App启用了node Integration属性。
+    - Devtool控制台输入：process.versions.electron
++ UA查看法
+    - 使用Devtool查看网络通信数据，查看User Agent头。
++ 修改代码法
     ::
-    
-        Devtool查看法：
-        前提是App启用了node Integration属性。
-        Devtool控制台输入：process.versions.electron
-        
-        UA查看法：
-        使用Devtool查看网络通信数据，查看User Agent头。
-        
-        修改代码法：
+
         var fs = require("fs");
         var querystring= require('querystring');
 
@@ -58,67 +58,77 @@ asar文件
         保存以上js内容为getVersionInfo.js，保存于解包后的文件夹中
         修改package.json的main字段为getVersionInfo.js
         重新封包，替换原来的.asar文件。
-+ 功能特性
-    - 查看特性: ``npx @electron/fuses read --app *.exe``
-    - **runAsNode** ：是否考虑ELECTRON_RUN_AS_NODE环境变量。
-    - **cookieEncryption** :磁盘上的cookie存储是否使用操作系统级别的加密密钥进行加密。
-    - **nodeOptions** ：是否遵守--inspect、--inspect-brk 等标志。
-    - **embeddedAsarIntegrityValidation** ：macOS上的一项实验性功能，该功能在加载app.asar文件时验证其内容。
-    - **onlyLoadAppFromAsar** ： 改变了Electron用来定位应用程序代码的搜索系统。默认情况下，Electron将按照以下顺序搜索 app.asar -> app -> default_app.asar。
-    - **loadBrowserProcessSpecificV8Snapshot** ：更改浏览器进程使用的V8快照文件。
-    - **grantFileProtocolExtraPrivileges** ：从 file:// 协议加载的页面是否被赋予超出它们在传统Web浏览器中所获得的权限的权限。
-    - 总结
-        + **绕过验证** ：开启 EnableEmbeddedAsarIntegrityValidation 让程序在启动时检查 .asar 文件的完整性。程序执行时会读取.asar文件的头部，计算hash后和二进制程序内部的值进行对比，如果对比通过了就加载.asar文件进行执行。问题在于，程序只会校验头部计算后的hash，但不会校验头部中的记录的hash是否有效，因此如果修改了文件内容，文件大小不变，偏移也就不会变（偏移在头部），就能够绕过验证。
-        + **asar劫持** ：onlyLoadAppFromAsar关闭后，劫持优先级高的文件。
-+ Sandbox（沙箱）
-    - 即Chromium的沙盒特性，如果开启了这个选项， 渲染进程将运行在沙箱中，限制了大多数系统资源的访问，包括文件读写，新进程启动等， preload.js和网页中的js都会受到这个选项的影响
-    - 该选项会随着Node Integration的开启而关闭
-    - Sandbox选项从Electron 20开始默认为开启状态
-    - 检查方法
-        ::
-        
-            1.查找 app.enableSandbox()函数调用
-            2.查找sandbox: 选项设置，一般如下代码：
-            const win = new BrowserWindow({
-                webPreferences: {
-                  sandbox: false
-                }
-              })
-+ Node Integration（Node集成）
-    - Node集成，是否开启网页Js Nodej共享库的访问，如果开启的话，网页js将拥有直接Nodejs的执行权限，包括进程启动，文件加载等
-    - preload.js Node集成是一直开启的，不受这个选项影响
-    - 即使这个选项开启，上下文隔离选项开启的话，网页Js仍然无法访问Nodejs共享库
-    - 检查方法
-        ::
-        
-            查找nodeIntegration: 选项设置，一般如下代码：
-            const win = new BrowserWindow({
-                webPreferences: {
-                  nodeIntegration: true
-                }
-              })
-+ Context Isolation（上下文隔离）
-    - Electron的特性，使用了与Chromium相同的Content Scripts技术来实现。确保preload脚本和网页js在一个独立的上下文环境中
-    - 开启后渲染页面的js中无法引入Electron和Node中的各种模块
-    - 如果想在其中使用这部分功能，需要配置preload.js，使用contextBridge来暴露全局接口到渲染页面的脚本中
-    - Electron 12开始默认启用
-    - 检查方法
-        ::
-        
-            查找contextIsolation: 选项设置
-+ js敏感信息扫描
-    - jsluice：``go install github.com/BishopFox/jsluice/cmd/jsluice@latest``
-    - 查找urls
-        ::
-        
-            linux:
-            find . -type f -name "*.js" | jsluice urls | jq -r '.url' | sort -u
-            windows:
-            for /r C:/Users/Administrator/Desktop/app %i in (*.js) do @echo %i|jsluice urls
-    - 查找敏感信息
-        ::
-        
-            for /r C:/Users/Administrator/Desktop/app %i in (*.js) do @echo %i|jsluice secrets
+
+功能特性
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 查看特性: ``npx @electron/fuses read --app *.exe``
+- **runAsNode** ：是否考虑ELECTRON_RUN_AS_NODE环境变量。
+- **cookieEncryption** :磁盘上的cookie存储是否使用操作系统级别的加密密钥进行加密。
+- **nodeOptions** ：是否遵守--inspect、--inspect-brk 等标志。
+- **embeddedAsarIntegrityValidation** ：macOS上的一项实验性功能，该功能在加载app.asar文件时验证其内容。
+- **onlyLoadAppFromAsar** ： 改变了Electron用来定位应用程序代码的搜索系统。默认情况下，Electron将按照以下顺序搜索 app.asar -> app -> default_app.asar。
+- **loadBrowserProcessSpecificV8Snapshot** ：更改浏览器进程使用的V8快照文件。
+- **grantFileProtocolExtraPrivileges** ：从 file:// 协议加载的页面是否被赋予超出它们在传统Web浏览器中所获得的权限的权限。
+- 总结
+    + **绕过验证** ：开启 EnableEmbeddedAsarIntegrityValidation 让程序在启动时检查 .asar 文件的完整性。程序执行时会读取.asar文件的头部，计算hash后和二进制程序内部的值进行对比，如果对比通过了就加载.asar文件进行执行。问题在于，程序只会校验头部计算后的hash，但不会校验头部中的记录的hash是否有效，因此如果修改了文件内容，文件大小不变，偏移也就不会变（偏移在头部），就能够绕过验证。
+    + **asar劫持** ：onlyLoadAppFromAsar关闭后，劫持优先级高的文件。
+
+Sandbox（沙箱）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- 即Chromium的沙盒特性，如果开启了这个选项， 渲染进程将运行在沙箱中，限制了大多数系统资源的访问，包括文件读写，新进程启动等， preload.js和网页中的js都会受到这个选项的影响
+- 该选项会随着Node Integration的开启而关闭
+- Sandbox选项从Electron 20开始默认为开启状态
+- 检查方法
+    ::
+    
+        1.查找 app.enableSandbox()函数调用
+        2.查找sandbox: 选项设置，一般如下代码：
+        const win = new BrowserWindow({
+            webPreferences: {
+                sandbox: false
+            }
+            })
+
+Node Integration（Node集成）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Node集成，是否开启网页Js Nodej共享库的访问，如果开启的话，网页js将拥有直接Nodejs的执行权限，包括进程启动，文件加载等
+- preload.js Node集成是一直开启的，不受这个选项影响
+- 即使这个选项开启，上下文隔离选项开启的话，网页Js仍然无法访问Nodejs共享库
+- 检查方法
+    ::
+    
+        查找nodeIntegration: 选项设置，一般如下代码：
+        const win = new BrowserWindow({
+            webPreferences: {
+                nodeIntegration: true
+            }
+            })
+
+Context Isolation（上下文隔离）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Electron的特性，使用了与Chromium相同的Content Scripts技术来实现。确保preload脚本和网页js在一个独立的上下文环境中
+- 开启后渲染页面的js中无法引入Electron和Node中的各种模块
+- 如果想在其中使用这部分功能，需要配置preload.js，使用contextBridge来暴露全局接口到渲染页面的脚本中
+- Electron 12开始默认启用
+- 检查方法
+    ::
+    
+        查找contextIsolation: 选项设置
+
+js敏感信息扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- jsluice：``go install github.com/BishopFox/jsluice/cmd/jsluice@latest``
+- 查找urls
+    ::
+    
+        linux:
+        find . -type f -name "*.js" | jsluice urls | jq -r '.url' | sort -u
+        windows:
+        for /r C:/Users/Administrator/Desktop/app %i in (*.js) do @echo %i|jsluice urls
+- 查找敏感信息
+    ::
+    
+        for /r C:/Users/Administrator/Desktop/app %i in (*.js) do @echo %i|jsluice secrets
 
 内存分析
 ----------------------------------------
@@ -178,67 +188,72 @@ asar文件
 
 程序调试
 ----------------------------------------
-+ 添加代码法
+
+添加代码法
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+    asar extract app.asar app //解压拿到源码
+    根据package.json文件main节点，查看入口代码文件：
+    插入mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools({mode:'right'})；
+    mainWindow.webContents.openDevTools({mode:'bottom'})；
+    mainWindow.webContents.openDevTools({mode:'left'})；
+    mainWindow.webContents.openDevTools({mode:'detach'})
+    mainWindow.webContents.openDevTools({mode:'undocked'})
+    注：如果代码进行了混淆，无法找到BowserWindow创建位置，就在文件头部或者末尾添加：
+    let {BrowserWindow} = require('electron');
+    let timer = null;
+    timer = setInterval(()=>{
+        let windows = BrowserWindow.getAllWindows();
+        if(windows.length > 0){
+            windows.forEach(v=>{
+                if(v){
+                    v.webContents.openDevTools();
+                }
+            })
+            clearInterval(timer);
+        }
+    },5000);
+    //重新打包，替换原始app.asar
+    asar pack app app.asar 
+    注：这里调试的是渲染进程。
+    假如打开程序5s后，程序关闭，那么可能是对devtool窗口有监控，则可以关闭devtool打开的事件监听：
+            let {BrowserWindow} = require('electron');
+    let timer = null;
+    timer = setInterval(()=>{
+        let windows = BrowserWindow.getAllWindows();
+        if(windows.length > 0){
+            windows.forEach(v=>{
+                if(v){
+                    v.webContents.removeAllListeners('devtools-opened');
+                    v.webContents.openDevTools();
+                }
+            })
+            clearInterval(timer);
+        }
+    },5000);
+    或者添加以下代码将窗口的close置空：
+    v.close = () =>{};
+
+端口调试法
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 调试渲染进程
+    - 命令行启动目标程序 \*.exe -remote-debugging-port=9222
+    - 浏览器中即可出现对应的页面，点击inspect调试
++ 调试主进程
     ::
-    
-        asar extract app.asar app //解压拿到源码
-        根据package.json文件main节点，查看入口代码文件：
-        插入mainWindow.webContents.openDevTools();
-        mainWindow.webContents.openDevTools({mode:'right'})；
-        mainWindow.webContents.openDevTools({mode:'bottom'})；
-        mainWindow.webContents.openDevTools({mode:'left'})；
-        mainWindow.webContents.openDevTools({mode:'detach'})
-        mainWindow.webContents.openDevTools({mode:'undocked'})
-        注：如果代码进行了混淆，无法找到BowserWindow创建位置，就在文件头部或者末尾添加：
-        let {BrowserWindow} = require('electron');
-        let timer = null;
-        timer = setInterval(()=>{
-            let windows = BrowserWindow.getAllWindows();
-            if(windows.length > 0){
-                windows.forEach(v=>{
-                    if(v){
-                        v.webContents.openDevTools();
-                    }
-                })
-                clearInterval(timer);
-            }
-        },5000);
-        //重新打包，替换原始app.asar
-        asar pack app app.asar 
-        注：这里调试的是渲染进程。
-        假如打开程序5s后，程序关闭，那么可能是对devtool窗口有监控，则可以关闭devtool打开的事件监听：
-                let {BrowserWindow} = require('electron');
-        let timer = null;
-        timer = setInterval(()=>{
-            let windows = BrowserWindow.getAllWindows();
-            if(windows.length > 0){
-                windows.forEach(v=>{
-                    if(v){
-                        v.webContents.removeAllListeners('devtools-opened');
-                        v.webContents.openDevTools();
-                    }
-                })
-                clearInterval(timer);
-            }
-        },5000);
-        或者添加以下代码将窗口的close置空：
-        v.close = () =>{};
-+ 端口调试法
-    ::
-    
-        调试渲染进程：
-        命令行启动目标程序 *.exe -remote-debugging-port=9222
-        浏览器中即可出现对应的页面，点击inspect调试
         
-        调试主进程：
         下载对应版本的node和electron，然后将node添加到环境变量中。
         配置electron下载源，全局安装npm install -g electron@17.1.2 --arch=ia32
         npm config set ELECTRON_MIRROR https://npm.taobao.org/mirrors/electron/
         使用Electron提供的 ​--inspect​ 和 ​--inspect-brk​ 开关以调试模式打开程序。
         --inspect-brk=[port] 和--inspector 一样，但是会在JavaScript 系统脚本的main.js第一行暂停运行。
+        
         1.第一种方法是在调试的js脚本文件前面插入console.log('debug');重新调试。
         输出日志之后，会在命令窗口出现调试的文件
         点击文件之后，再下断点，重新调试即可。
+        
         2.第二种方式是在调试的js脚本文件前面插入debugger;即可。
         使用以下命令：
         electron --inspect[=5858] your/app
@@ -248,6 +263,7 @@ asar文件
         安装chrome浏览器，打开chrome://inspect
         配置Discover network targets，添加9222，9229端口或自定义的端口
         加载源码，在js入口处添加断点。
++ 注:无论是调试主进程还是渲染进程，electron程序都是服务端，chrome是客户端主动连接。
 + 初始调试法
     ::
     

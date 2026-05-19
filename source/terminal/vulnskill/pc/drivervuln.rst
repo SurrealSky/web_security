@@ -2,6 +2,9 @@
 ========================================
 
 分类
+----------------------------------------
+
+功能和层次分类
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 总线驱动 (Bus Driver)
 	- 职责： 负责管理物理总线控制器或逻辑总线适配器。它是最底层的驱动。
@@ -60,8 +63,26 @@
 		+ 作为内核扩展，用于监控或修改系统行为（如某些安全产品、调试工具）。
 	- 位置： 可以存在于各种设备栈中，或者作为独立的驱动对象存在。
 
-核心概念
+驱动模型分类
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ Windows 驱动模型 (WDM - Windows Driver Model)
+	- 这是 Windows 2000 引入的传统驱动模型，支持所有类型的设备和驱动层次结构。
+	- 驱动开发需要直接处理 IRP、同步/异步 I/O、即插即用和电源管理等复杂细节。
+	- 适用于需要最大灵活性和性能的驱动，但开发难度较大。
++ Windows 驱动框架 (WDF - Windows Driver Framework)
+	- 这是 Microsoft 提供的现代驱动开发框架，分为内核模式驱动框架 (KMDF) 和用户模式驱动框架 (UMDF)。
+	- WDF 提供了更高级别的抽象，简化了驱动开发，自动处理许多常见的驱动任务（如 IRP 分发、同步、即插即用、电源管理）。
+	- 适用于大多数设备和驱动类型，尤其是那些不需要极端性能优化的场景。
+	- KMDF 驱动仍然运行在内核模式，但使用 WDF 的对象模型和事件驱动机制来简化开发。
+	- **WDF驱动是基于WDM的**，它在WDM的基础上提供了更高层次的抽象和便利，但底层仍然是WDM机制。
+
+
+
+核心概念
+----------------------------------------
+
+相关名词
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 设备对象
 	- 驱动对象创建设备对象，设备名称形如（ **\\Device\\设备名** ）
 	- 只能在内核访问，用户态不可见/不可用。
@@ -79,7 +100,7 @@
 	- 不是所有驱动都使用符号链接和用户层进行通信，有很多驱动不是以这种方式和用户进行数据交换
 
 用户态和驱动通信方式
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + I/O 控制代码 (IOCTL - I/O Control Code)
 	- 核心机制： 最常用、最标准、最推荐的驱动与用户态通信方式。
 	- 原理：
@@ -121,7 +142,7 @@ DeviceIoControl函数
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 基础
 	- MajorFunctions数组存储了驱动程序设备的行为调度例程。
-	- MajorFunctions数组特殊索引，它定义为IRP_MJ_DEVICE_CONTROL。
+	- MajorFunctions数组特殊索引，它定义为IRP_MJ_DEVICE_CONTROL(14/0x0e)。
 	- 它指向在驱动程序的设备上调用DeviceIoControl API后被调用的调度例程的函数指针。
 		::
 		
@@ -199,8 +220,9 @@ DeviceIoControl函数
 		+ METHOD_OUT_DIRECT：同上，但输入/输出角色相反。
 		+ METHOD_NEITHER：不经过系统缓冲区，也不使用 MDL，直接使用用户提供的虚拟地址，直接从 ``irpSp->Parameters.DeviceIoControl.Type3InputBuffer`` 或 ``Irp->UserBuffer`` 获取用户地址。
 
-挖掘思路
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+WDM驱动挖掘思路
+-----------------------------------------
 + 信息搜集
 	- 符号连接
 		::
@@ -231,5 +253,27 @@ DeviceIoControl函数
 	- 变异策略
 		+ Method != METHOD_NEITHER：由于输入输出都有系统保护，因此修改地址没有意义，需要变异的数据只有：输入数据，输入长度，输出长度。
 		+ Method == NMETHOD_NEITHER：驱动中可能直接访问输入输出地址，而没有探测是否可写，因此需要变异的数据有：输入地址，输入数据，输出地址，输出长度。
+
+WDF驱动挖掘思路
+----------------------------------------
++ 关键结构定位
+	- WDF_DRIVER_CONFIG（在 DriverEntry 中）：提取 EvtDriverDeviceAdd 回调地址，这是驱动的主要入口。
+	- WDFDEVICE 创建（在 EvtDriverDeviceAdd 中）：会调用 WdfDeviceCreate，并传入 WDFDEVICE_INIT 和 WDF_OBJECT_ATTRIBUTES（包含上下文类型信息）。
+	- WDF_IO_QUEUE_CONFIG：设置了 EvtIoDeviceControl、EvtIoRead、EvtIoWrite 等回调，即实际处理 I/O 请求的函数。
++ 关键函数
+	- WdfDriverCreate / WdfVersionBind：驱动初始化，绑定到 WDF 框架
+	- WdfDeviceCreate：创建框架设备对象
+	- WdfIoQueueCreate：创建 I/O 队列，并绑定回调
+	- WdfRequestComplete / WdfRequestCompleteWithInformation：完成 I/O 请求
+	- WdfRequestSend：将请求转发到下层队列/驱动
+	- WdfDeviceInitAssignWdmXxx 系列：获取底层 WDM 对象
+	- WdfObjectGetTypedContext：获取设备/队列上下文（驱动自定义数据）
+	- WdfTimerCreate：创建定时器
+	- WdfWaitLockCreate：创建锁
++ 分析流程
+	- 起始：在 DriverEntry 中找到 WdfDriverCreate 或 WdfVersionBind，提取 WDF_DRIVER_CONFIG 中的 EvtDriverDeviceAdd 地址。
+	- 设备创建：进入 EvtDriverDeviceAdd，定位 WdfDeviceCreate 调用，查看 WDF_OBJECT_ATTRIBUTES 的 ContextSizeOverride 和 EvtCleanupCallback，推测设备上下文结构大小和清理函数。查看后续 WdfIoQueueCreate 调用，得到 I/O 队列的回调表。
+	- I/O 处理：找到 EvtIoDeviceControl 函数（或 EvtIoRead/Write）：提取 IOCTL 码，分析分支逻辑。注意 WdfRequestRetrieveInputBuffer / WdfRequestRetrieveOutputBuffer 获取用户缓冲区。
+	- 其他回调：寻找 EvtDeviceXxx（如 EvtDevicePrepareHardware、EvtDeviceD0Entry）了解电源/PnP 行为。
 
 	.. |ioctl1| image:: ../../../images/ioctl1.png

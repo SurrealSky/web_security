@@ -57,11 +57,24 @@
         
 自定义协议
 ----------------------------------------
-+ electron应用可以注册自己的url协议，例如custom://。
-+ 这样可以通过浏览器直接打开应用，如果对url协议的处理不当可能导致rce等。
++ 系统级协议处理器
+    - app.setAsDefaultProtocolClient ：将应用程序注册为系统级协议处理器
+    - 如果主进程js中没有处理参数的地方，那么这个协议就只是一个“空壳”，仅用于激活应用窗口，不构成安全风险。
++ 内部协议处理器
+    - registerFileProtocol：注册一个协议来加载本地文件
+    - registerBufferProtocol：注册一个协议来加载内存中的数据
+    - registerStringProtocol：注册一个协议来加载字符串数据
+    - registerHttpProtocol：注册一个协议来加载远程资源
+    - registerStandardSchemes：注册一个协议来加载远程资源，并且支持跨域请求
+    - registerServiceWorkerSchemes：注册一个协议来加载远程资源，并且支持Service Worker
+    - registerPrivilegedSchemes：注册一个协议来加载远程资源，并且支持跨域请求和Service Worker
+    - registerSchemesAsPrivileged：注册一个协议来加载远程资源，并且支持跨域请求和Service Worker
++ 漏洞利用
+    - registerFileProtocol和registerBufferProtocol等协议，攻击者可以通过构造恶意的url，来访问本地文件或者内存中的数据。
+    - registerHttpProtocol等协议，攻击者可以通过构造恶意的url，来访问远程资源。
 + 检测方法
-    - 代码查找法：查找 **registerHttpProtocol** 方法调用
-    - 工具： **UrlProtocolView**
+    - 代码查找法：查找 **registerHttpProtocol** 等方法调用
++ 注：这些是服务于 Electron 应用"内部"的协议。它们只能由在应用内运行的 HTML 或 JavaScript 发起，无法从外部浏览器直接触发。
 
 代码审计
 ----------------------------------------

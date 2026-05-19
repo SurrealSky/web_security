@@ -13,6 +13,7 @@
    jsonp
    codeexec
    cmdinjection
+   rce_component
    pathtraversal
    fileread
    fileupload
@@ -22,6 +23,7 @@
    xxe
    cors
    ssti
+   deserialization
    xpath
    graphql
    websocket

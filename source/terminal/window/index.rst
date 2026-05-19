@@ -13,4 +13,5 @@
    reverse
    enc
    pri
+   capture
    tool/index

