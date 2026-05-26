@@ -197,7 +197,7 @@ URL 收集
 敏感信息
 ------------------------------------------
 
-js信息搜集
+js信息搜集-URL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + js_info_finder
 	- 项目地址： ``https://github.com/laohuan12138/js_info_finder``
@@ -220,11 +220,6 @@ js信息搜集
 	- 项目地址： ``https://github.com/p1g3/JSINFO-SCAN``
 	- ``python jsinfo.py --target https://www.example.com --keywords example``
 	- 注：递归速度比较慢，适合单个url或者js，不输入https，它会默认使用http，失败的话在末尾添加/index.html
-+ FindSomething
-	- 项目地址：https://github.com/momosecurity/FindSomething
-	- 介绍：浏览器插件，全面的敏感信息被动提取。
-+ GAP
-	- 项目地址：burp自带插件
 + mantra
 	- 项目地址： ``https://github.com/brosck/mantra``
 	- 安装： ``go install github.com/Brosck/mantra@latest``
@@ -237,11 +232,19 @@ js信息搜集
 			git clone https://github.com/r3dcl1ff/hanz0
 			cd hanz0 && go build hanz0.go
 	- ``cat js.txt | ./hanz0 -s High,Medium``
+
+js信息搜集-插件
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ FindSomething
+	- 项目地址：https://github.com/momosecurity/FindSomething
+	- 介绍：浏览器插件，全面的敏感信息被动提取。
++ GAP
+	- 项目地址：burp自带插件
 + Packer Fuzzer
 	- 项目地址：https://github.com/hyr0ky/PackerFuzzer
 	- 介绍：针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具.
 
-敏感文件扫描
+敏感文件扫描-GOOGLE语法
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + Google Dork for Files: ``site:*.example.com (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
 
@@ -250,6 +253,19 @@ js信息搜集
 + ihoneyBakFileScan_Modify
 	- 项目地址：https://github.com/VMsec/ihoneyBakFileScan_Modify
 
+
+本地文件扫描
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ titus
+	- 项目地址： ``https://github.com/praetorian-inc/titus``
+	- ``titus scan path/to/directory --validate``
+	- ``titus scan github.com/org/repo``
++ trufflehog
+	- 项目地址： ``https://github.com/trufflesecurity/trufflehog``
+	- ``trufflehog.exe filesystem /path/directory --no-update``
++ PowerShell
+	- 搜索URL： ``Get-ChildItem -Path D:\ -Recurse -Filter *.js | Select-String -Pattern '(https?|ftp)://[^\s''"]+' -AllMatches | ForEach-Object { $_.Matches.Value }``
+	- 包含changyan的域名： ``Get-ChildItem -Path D:\ -Recurse -Filter *.js | Select-String -Pattern '(https?|ftp)://[^\s''"]*changyan[^\s''"]*' -AllMatches | ForEach-Object { $_.Matches.Value }``
 
 综合扫描
 ----------------------------------------

