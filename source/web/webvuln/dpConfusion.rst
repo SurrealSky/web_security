@@ -229,14 +229,14 @@ Other Companies”报告中首次系统披露。
 工具辅助
 ~~~~~~~~~~~~
 - confused
-  + 项目地址： ``https://github.com/visma-prodsec/confused``
-  + python： ``./confused -l pip requirements.txt``
-  + npm： ``./confused -l npm package.json``
-  + maven: ``./confused -l mvn pom.xml``
-  + ruby: ``./confused -l rubygems Gemfile.lock``
-- **dep-scan**：OWASP维护的依赖混淆扫描工具
-- **snync**：专门用于依赖混淆包名抢注测试的自动化框架
-- **PyPI/npm 命令行工具**：手动查询包名是否被占用
+    + 项目地址： ``https://github.com/visma-prodsec/confused``
+    + python： ``./confused -l pip requirements.txt``
+    + npm： ``./confused -l npm package.json``
+    + maven: ``./confused -l mvn pom.xml``
+    + ruby: ``./confused -l rubygems Gemfile.lock``
+- dep-scan：OWASP维护的依赖混淆扫描工具
+- snync：专门用于依赖混淆包名抢注测试的自动化框架
+- PyPI/npm 命令行工具：手动查询包名是否被占用
 
 .. code-block:: bash
    

@@ -58,8 +58,16 @@
 自定义协议
 ----------------------------------------
 + 系统级协议处理器
-    - app.setAsDefaultProtocolClient ：将应用程序注册为系统级协议处理器
+    - 应用内注册：app.setAsDefaultProtocolClient
     - 如果主进程js中没有处理参数的地方，那么这个协议就只是一个“空壳”，仅用于激活应用窗口，不构成安全风险。
+    - 处理方式
+        ::
+            
+            process.argv.forEach((arg) => {
+                if (arg.startsWith('myapp://')) {
+                    // 处理协议参数
+                }
+            });
 + 内部协议处理器
     - registerFileProtocol：注册一个协议来加载本地文件
     - registerBufferProtocol：注册一个协议来加载内存中的数据

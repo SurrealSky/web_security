@@ -53,5 +53,5 @@
 |electron1|
 |electron2|
 
-.. |electron1| image:: ../../../images/electron1.webp
-.. |electron2| image:: ../../../images/electron2.png
+.. |electron1| image:: ../../images/electron1.webp
+.. |electron2| image:: ../../images/electron2.png

@@ -266,6 +266,7 @@ js信息搜集-插件
 + PowerShell
 	- 搜索URL： ``Get-ChildItem -Path D:\ -Recurse -Filter *.js | Select-String -Pattern '(https?|ftp)://[^\s''"]+' -AllMatches | ForEach-Object { $_.Matches.Value }``
 	- 包含changyan的域名： ``Get-ChildItem -Path D:\ -Recurse -Filter *.js | Select-String -Pattern '(https?|ftp)://[^\s''"]*changyan[^\s''"]*' -AllMatches | ForEach-Object { $_.Matches.Value }``
+	- 包含特定关键词的数据： ``Get-ChildItem -Path "C:\Program Files (x86)\zhwk" -Recurse -Filter *.js | Select-String -Pattern 'appSecret' -AllMatches | ForEach-Object { $f=$_.Path;$l=$_.Line;foreach($m in $_.Matches){$s=[Math]::Max(0,$m.Index-30);$e=[Math]::Min($l.Length,$m.Index+$m.Length+30);Write-Host "$f : $($l.Substring($s,$e-$s))" } }``
 
 综合扫描
 ----------------------------------------
