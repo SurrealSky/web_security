@@ -84,7 +84,7 @@ XInclude
     <data xmlns:xi="http://www.w3.org/2001/XInclude"><xi:include href="http://publicServer.com/file.xml"></xi:include></data>
 
 
-利用场景
+利用技巧
 --------------------------------------
 
 登录（Content-type宽容解析）

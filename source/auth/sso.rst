@@ -42,6 +42,112 @@ SSO
 + 后台换信：应用B的后台拿着新凭证去IdP后台校验（校验绑定关系、时效）。
 + 登录成功：应用B建立自己的本地Session。
 
+示例
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ SP-A SSO登录，重定向到IDP，IDP要求用户登录
+
+::
+
+    POST /login?service=https://b.AAA.com HTTP/2
+    Host: sso.AAA.com
+    Cookie: SESSION=a1eef5fe-98df-42dc-a3dc-01f6179f4423;
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
+    Accept-Encoding: gzip, deflate, br
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: NUMBER
+    Origin: https://sso.AAA.com
+    Referer: https://sso.AAA.com/login?service=https://b.AAA.com/cas
+    Upgrade-Insecure-Requests: 1
+    Sec-Fetch-Dest: document
+    Sec-Fetch-Mode: navigate
+    Sec-Fetch-Site: same-origin
+    Sec-Fetch-User: ?1
+    Priority: u=0, i
+    Te: trailers
+
+    tenantCode=AAA&username=xxxx&password=xxxxxxx&lt=
+
+    HTTP/2 302 Found
+    Date: Thu, 08 Oct 2026 12:04:27 GMT
+    Content-Length: 0
+    Location: https://b.AAA.com/cas?ticket=ST-477487-3DyrBjRlJ5x1nIaxZTj7-www.AAA.com
+    Access-Control-Allow-Origin: https://sso.AAA.com
+    Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE,PUT
+    Access-Control-Max-Age: 3600
+    Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+    Access-Control-Allow-Credentials: true
+    Cache-Control: no-store
+    Set-Cookie: CASPRIVACY=""; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; Secure
+    Set-Cookie: tgt_cn=TGT-134834-oKeAtakShPiZXTdv1Y7A2XjVlUwd2FMZqXIT57GgZDxQeeZAvd-www.AAA.com; Path=/; Domain=AAA.com;
+    Set-Cookie: TGC=VEdULTEzNDgzNC1vS2VBdGFrU2hQaVpYVGR2MVk3QTJYalZsVXdkMkZNWnFYSVQ1N0dnWkR4UWVlWkF2ZC13d3cuQUFBLmNvbUAxLjEuMS4xQE1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjE1Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzE1Ny4w; Path=/; SameSite=None; Secure
+
+    注意：TGC是编码后的TGT，TGT是IdP的全局会话凭证，类似于Cookie。浏览器拿到TGC后，会在后续访问IdP时自动携带，触发免密登录。
+
++ IDP根据service参数，重定向浏览器回SP-A，并附带一次性临时凭证ST
+
+::
+
+    GET /login?service=https://b.AAA.com/cas HTTP/2
+    Host: sso.AAA.com
+    Cookie: TGC=VEdULTEzNDgzNC1vS2VBdGFrU2hQaVpYVGR2MVk3QTJYalZsVXdkMkZNWnFYSVQ1N0dnWkR4UWVlWkF2ZC13d3cuQUFBLmNvbUAxLjEuMS4xQE1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjE1Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzE1Ny4w
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
+    Accept-Encoding: gzip, deflate, br
+    Referer: https://b.AAA.com/site/home
+    Upgrade-Insecure-Requests: 1
+    Sec-Fetch-Dest: document
+    Sec-Fetch-Mode: navigate
+    Sec-Fetch-Site: same-site
+    Sec-Fetch-User: ?1
+    Priority: u=0, i
+    Te: trailers
+
+    HTTP/2 302 Found
+    Date: Thu, 08 Oct 2026 12:11:37 GMT
+    Content-Length: 0
+    Location: https://b.AAA.com/cas?ticket=ST-477594-LvUvZe6RS5dJ0emg5woR-www.AAA.com
+    Cache-Control: no-store
+    Set-Cookie: SESSION=ff40acd6-df6d-4f70-ae1f-cb7553eefd3b; Path=/; HttpOnly
+
++ SP-A拿到ST后，后台去IdP验证ST，并换取用户信息(这里换取SESSION)
+
+::
+
+    GET /cas?ticket=ST-477594-LvUvZe6RS5dJ0emg5woR-www.AAA.com HTTP/2
+    Host: b.AAA.com
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
+    Accept-Encoding: gzip, deflate, br
+    Referer: https://sso.AAA.com/
+    Upgrade-Insecure-Requests: 1
+    Sec-Fetch-Dest: document
+    Sec-Fetch-Mode: navigate
+    Sec-Fetch-Site: same-site
+    Sec-Fetch-User: ?1
+    Priority: u=0, i
+    Te: trailers
+
+    HTTP/2 302 Found
+    Date: Thu, 08 Oct 2026 12:11:47 GMT
+    Content-Length: 0
+    Location: https://b.AAA.com
+    Set-Cookie: rememberMe=deleteMe; Path=/; Max-Age=0; Expires=Wed, 07-Oct-2026 12:11:47 GMT; SameSite=lax
+    X-Content-Type-Options: nosniff
+    X-Xss-Protection: 1; mode=block
+    Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+    Pragma: no-cache
+    Expires: 0
+    X-Frame-Options: DENY
+    Set-Cookie: SESSION=YzA0NmU5OTMtNzQwMC00YmNhLWE3N2QtN2IyODBlZjZmMDM3; Path=/; Secure; HttpOnly; SameSite=Lax
+
+    https://b.AAA.com网站的授权就是SESSION=YzA0NmU5OTMtNzQwMC00YmNhLWE3N2QtN2IyODBlZjZmMDM3
+
+
+
 安全基石
 ----------------------------------------
 + 双层会话隔离：IdP管全局（Cookie），SP管本地（Session）。即使你拿到SP的票据，没有IdP的全局Cookie，也无法触发自动发券流程。

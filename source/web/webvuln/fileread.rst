@@ -15,6 +15,11 @@
 - 应用的配置文件
     - /etc/apache2/apache2.conf
     - /etc/nginx/nginx.conf
+    - /etc/hosts
+    - /etc/passwd
+    - /etc/shadow
+    - /etc/mysql/my.cnf
+    - /etc%5cnetworks%00
 
 - 应用的日志文件
     - /var/log/apache2/access.log

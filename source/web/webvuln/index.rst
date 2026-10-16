@@ -9,8 +9,9 @@
    sql/index
    xss/index
    csrf
-   ssrf
+   cors
    jsonp
+   ssrf
    codeexec
    cmdinjection
    rce_component
@@ -23,7 +24,6 @@
    logic
    cloud
    xxe
-   cors
    ssti
    deserialization
    xpath

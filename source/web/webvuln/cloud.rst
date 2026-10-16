@@ -10,10 +10,12 @@ bucket权限配置错误
 
 任意文件上传
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ 权限配置成了oss:PutObject，利用PUT上传
-+ 一般脚本文件不会解析，没有执行权限
-+ 尝试html文件是否解析
-+ 篡改网站的图片，视频资源等
++ 未授权PUT/DELETE：权限配置成了oss:PutObject，利用PUT上传
++ 存储xss：尝试html文件是否解析,修改 Content-type 为 text/html
++ 覆写：网站的图片，视频资源，安装包等
++ 策略注入
+    - sts注入漏洞一般发生在云租户允许用户去自定义权限字符串（Policy）中的部分元素时存在；
+    - 如： ``ext=txt"]},{"effect": "allow","action":[""],"resource":["qcs::cos:","qcs::cvm:*``
 
 Bucket桶爆破
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

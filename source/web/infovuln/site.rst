@@ -145,6 +145,10 @@ CDN判别
 		
 			echo hackerone.com| cdncheck -resp
 			subfinder -d hackerone.com| cdncheck -resp
+- 寻找真实IP
+	+ 确定网站图标： ``https://favicons.teamtailor-cdn.com/``
+	+ 选择图标url，输入计算图标HASH： ``https://favicons.teamtailor-cdn.com/``
+	+ 如选择 ``censys`` 通过hash搜索，在搜索结果中找到真实IP地址。
 
 IP收集
 ----------------------------------------
