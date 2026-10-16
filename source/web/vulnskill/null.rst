@@ -34,7 +34,7 @@ github搜索大法
 	- 限定时间范围： ``&from=20260101&to=20261231``
 	- 404打法
 		+ 寻找历史页面： ``curl -G "https://web.archive.org/cdx/search/cdx" --data-urlencode "url=*.target.com/*" --data-urlencode "collapse=urlkey" --data-urlencode "output=text" --data-urlencode "fl=original" > out.txt``
-		+ 提取敏感页面： ``cat out.txt | grep -a -E '^[[:print:]]+$' ||uro | grep -E '\.xls|\.xml|\.xlsx|\.json|\.pdf|\.sql|\.doc|\.docx|\.pptx|\.txt|\.zip|\.tar|\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5|\.exe|\.dll|\.bin|\.ini|\.bat|\.sh|\.tar|\.deb|\.rpm|\.iso|\.img|\.apk|\.msi|\.dmg|\.tmp|\.crt|\.pem|\.key|\.pub|\.asc'`` 
+		+ 提取敏感页面： ``cat out.txt | grep -a -E '^[[:print:]]+$' | urldedupe | grep -E '\.xml|\.json|\.sql|\.txt|\.zip|\.tar|\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5|\.ini|\.bat|\.sh|\.tar|\.deb|\.rpm|\.iso|\.img|\.tmp|\.crt|\.pem|\.key|\.pub|\.asc'`` 
 		+ 直接在https://web.archive.org/搜索404页面url，选择时间范围，查看是否有历史页面。
 		+ 其它404页面搜索方法
 			- ``https://otx.alienvault.com/api/v1/indicators/hostname/target.com/url_list?limit=500&page=1``
@@ -51,9 +51,9 @@ github搜索大法
 host碰撞
 ---------------------------------------
 + 搜集IP：这里是外网IP
-    - ARL->资产搜索->IP->内网
+    - ARL->资产搜索->IP->公网->导出
 + 搜集内网域名：子域名暴力破解
-    - ARL->资产搜索->IP->内网
+    - ARL->资产搜索->IP->内网->导出
 + 相关工具： ``https://github.com/fofapro/Hosts_scan``
 
 
