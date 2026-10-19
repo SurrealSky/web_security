@@ -89,7 +89,9 @@ FireflyDomainCrawler.py
 		+ 提取子域名： ``curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.url_list[].hostname' | sort -u | grep "\.streamlabs\.com$" > otx_subdomains.txt``
 	- crtsh
 		+ ``curl -s https://crt.sh\?q\=\example.com\&output\=json | jq -r '.[].name_value' | grep -Po '(\w+\.\w+\.\w+)$' >crtsh.txt``
-
+	- Subdomain-Enum
+		+ 基于 ``https://securitytrails.com/`` 网站，需要注册获取 **API KEY**
+		+ 工具地址： ``https://github.com/chaitanyakrishna/subdomain-enum``
 - 相关域名生成
 	+ alterx
 		- 可根据一个域名列表生成一个子域名列表，即字典
