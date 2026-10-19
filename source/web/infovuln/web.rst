@@ -69,20 +69,57 @@ URL 收集
 - 注意
 	+ 注意在目录探测中，对于关键的目录，需要递归进行扫描。
 	+ 可根据robots.txt中的目录进行扫描。
-- dirbuster
-	+ dirbuster -H headless方式启动
-	+ dirbuster ，默认GUI方式启动
-	+ ``dirbuster -H -u http://www.xxx.com -l SecLists/Discovery/Web-Content/raft-large-directories.txt``
+- 主力使用
+	- feroxbuster
+		- **默认使用内置字典**
+		- 项目地址： ``https://github.com/epi052/feroxbuster``
+		- 安装： ``sudo apt update && sudo apt install -y feroxbuster``
+		- 命令： ``feroxbuster -u http://127.1 -x pdf -x js,html -x php txt json,docx``
+	- ffuf
+		- **指定字典**
+		- 命令： ``ffuf -w /usr/share/wordlists/dirb/common.txt -u http://127.1/FUZZ -mc 200,204,301,302,307,401,403``
+- 快速摸底
+	- nikto
+		+ ``常规扫描：nikto -host/-h http://www.example.com`` 
+		+ ``指定端口(https)：nikto -h http://www.example.com -p 443 -ssl`` 
+		+ ``指定目录：nikto -host/-h http://www.example.com -c /dvma`` 
+		+ ``绕过IDS检测：nikto -host/-h http://www.example.com -evasion`` 
+		+ ``Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host -`` 
+		+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080``
+	- gobuster
+		+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
+		+ ``文件扫描：gobuster dir -u http://192.168.100.106 -w /home/kali/Downloads/SecLists/Discovery/Web-Content/directory-list-1.0.txt -x php``
+		+ ``不包含特定长度：--exclude-length 280``
+		+ 批量脚本
+		
+			::
+			
+				trap "echo Terminating...; exit;" SIGINT SIGTERM
+
+				if [ $# -eq 0 ]; then
+					echo "Usage: ott http://host threads optionalExtensions"
+					exit 1
+				fi
+
+				for f in /usr/share/dirb/wordlists/common.txt /usr/share/dirb/wordlists/big.txt /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt /usr/share/wordlists/raft/data/wordlists/raft-large-directories-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-files-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-words-lowercase.txt
+				do
+				echo "Scanning: " $f
+				echo "Extensions: " $3
+				if [ -z "$3" ]; then
+					gobuster -t $2 dir -f --url $1 --wordlist $f | grep "Status"
+				else
+					gobuster -t $2 dir -f --url $1 --wordlist $f -x $3 | grep "Status"
+				fi
+				done
+			
+			+ example:
+			+ ott http://192.168.56.121 50
+			+ ott http://192.168.56.121 50 .phtml,.php,.txt,.html
 - dirmap
 	+ 项目地址：``https://github.com/H4ckForJob/dirmap.git``
 	+ 安装：``python3 -m pip install -r requirement.txt``
 	+ 扫描单个目标：``python3 dirmap.py -i https://site.com -lcf`` 
 	+ 扫描多个目标：``python3 dirmap.py -iF urls.txt -lcf`` 
-- dirb
-	+ ``穷举特定扩展名文件：dirb http://172.16.100.102 /usr/share/wordlists/dirb/common.txt -X .pcap`` 
-	+ ``使用代理：dirb http://192.168.1.116  -p 46.17.45.194:5210`` 
-	+ ``添加UA和cookie：dirb http://192.168.1.116 -a "***" -c "***"`` 
-	+ ``扫描目录：dirb http://192.168.91.133 common.txt -N 404`` 
 - `dirsearch <https://github.com/maurosoria/dirsearch>`_
 	+ -u 指定网址
 	+ -e 指定网站语言
@@ -93,69 +130,29 @@ URL 收集
 	+ -i 包含指定响应码
 	+ ``dirsearch -u https://example.com --full-url --deep-recursive -r``
 	+ ``dirsearch -u https://example.com -e php,cgi,htm,html,shtm,shtml,js,txt,bak,zip,old,conf,log,pl,asp,aspx,jsp,sql,db,sqlite,mdb,tar,gz,7z,rar,json,xml,yml,yaml,ini,java,py,rb,php3,php4,php5 --random-agent --recursive -R 3 -t 20 --exclude-status=404 --follow-redirects --delay=0.1``
-- nikto
-	+ ``常规扫描：nikto -host/-h http://www.example.com`` 
-	+ ``指定端口(https)：nikto -h http://www.example.com -p 443 -ssl`` 
-	+ ``指定目录：nikto -host/-h http://www.example.com -c /dvma`` 
-	+ ``绕过IDS检测：nikto -host/-h http://www.example.com -evasion`` 
-	+ ``Nikto配合Nmap扫描：nmap -p80 x.x.x.x -oG - \|nikto -host -`` 
-	+ ``使用代理：nikto -h URL -useproxy http://127.0.0.1:1080`` 
-- gobuster
-	+ ``目录扫描: gobuster dir -u http://192.168.100.106 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt``
-	+ ``文件扫描：gobuster dir -u http://192.168.100.106 -w /home/kali/Downloads/SecLists/Discovery/Web-Content/directory-list-1.0.txt -x php``
-	+ ``不包含特定长度：--exclude-length 280``
-	+ 批量脚本
-	
-		::
-		
-			trap "echo Terminating...; exit;" SIGINT SIGTERM
-
-			if [ $# -eq 0 ]; then
-				echo "Usage: ott http://host threads optionalExtensions"
-				exit 1
-			fi
-
-			for f in /usr/share/dirb/wordlists/common.txt /usr/share/dirb/wordlists/big.txt /usr/share/wordlists/dirbuster/directory-list-lowercase-2.3-medium.txt /usr/share/wordlists/raft/data/wordlists/raft-large-directories-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-files-lowercase.txt /usr/share/wordlists/raft/data/wordlists/raft-large-words-lowercase.txt
-			do
-			  echo "Scanning: " $f
-			  echo "Extensions: " $3
-			  if [ -z "$3" ]; then
-				gobuster -t $2 dir -f --url $1 --wordlist $f | grep "Status"
-			  else
-				gobuster -t $2 dir -f --url $1 --wordlist $f -x $3 | grep "Status"
-			  fi
-			done
-		
-		+ example:
-		+ ott http://192.168.56.121 50
-		+ ott http://192.168.56.121 50 .phtml,.php,.txt,.html
-		
-
-- `DirBrute <https://github.com/Xyntax/DirBrute>`_
-- auxiliary/scanner/http/dir_scanner
-- auxiliary/scanner/http/dir_listing
-- auxiliary/scanner/http/brute_dirs
-- DirBuster
-
+ 
 隐藏参数扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 优先需要参数模糊测试场景
 	- 403禁止页面以及重定向页面
 	- 登录页面，类似login.php、login.jsp、login.asp等
 	- 空白页面
-+ Arjun
-	- 项目地址： ``https://github.com/s0md3v/Arjun``
-	- 安装： ``pip3 install arjun``
-	- 被动扫描： ``arjun -u https://example.com/endpoint.php -oT arjun_output.txt -t 10 --rate-limit 10 --passive -m GET,POST --headers "User-Agent: Mozilla/5.0"``
-	- 主动扫描： ``arjun -u https://example.com/endpoint.php -oT arjun_output.txt -m GET,POST -w /home/temp/SecLists/Discovery/Web-Content/burp-parameter-names.txt -t 10 --rate-limit 10 --headers "User-Agent: Mozilla/5.0"``
-+ ParamSpider
-	- 项目地址：``https://github.com/devanshbatham/ParamSpider``
-	- 介绍：fetch URLs related to any domain or a list of domains from Wayback achives。
-	- 主动扫描
-		+ 命令： ``paramspider -d example.com``
-		+ 文件： ``paramspider -l domains.txt``
-		+ FUZZ (default: "FUZZ"): ``paramspider -d example.com -p '"><h1>reflection</h1>'``
-+ gap-burpsuite
++ 工具类
+	+ Arjun
+		- 项目地址： ``https://github.com/s0md3v/Arjun``
+		- 安装： ``pip3 install arjun``
+		- 被动扫描： ``arjun -u https://example.com/endpoint.php -oT arjun_output.txt -t 10 --rate-limit 10 --passive -m GET,POST --headers "User-Agent: Mozilla/5.0"``
+		- 主动扫描： ``arjun -u https://example.com/endpoint.php -oT arjun_output.txt -m GET,POST -w /home/temp/SecLists/Discovery/Web-Content/burp-parameter-names.txt -t 10 --rate-limit 10 --headers "User-Agent: Mozilla/5.0"``
+	+ ParamSpider
+		- 项目地址：``https://github.com/devanshbatham/ParamSpider``
+		- 介绍：fetch URLs related to any domain or a list of domains from Wayback achives。
+		- 主动扫描
+			+ 命令： ``paramspider -d example.com``
+			+ 文件： ``paramspider -l domains.txt``
+			+ FUZZ (default: "FUZZ"): ``paramspider -d example.com -p '"><h1>reflection</h1>'``
++ burp插件类
+	+ gap
+	+ param miner
 
 其它工具
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -197,56 +194,53 @@ URL 收集
 敏感信息
 ------------------------------------------
 
-js信息搜集-URL
+js信息搜集
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ js_info_finder
-	- 项目地址： ``https://github.com/laohuan12138/js_info_finder``
-	- url扫描： ``python js_info_finder.py -u http://example.com``
-	- js url: ``python js_info_finder.py -j http://example.com/js/app.js``
-	- url文件： ``python js_info_finder.py -f urls.txt``
-+ jssf
-	- 项目地址： ``https://github.com/h6nt3r/jssf``
-	- 安装： ``go install -v github.com/h6nt3r/jssf@latest``
-	- js url: ``jssf -u "http://testphp.vulnweb.com/medias/js/common_functions.js" -secrets -o out.txt``
-	- url文件： ``jssf -f js.txt -secrets -o jssf_output.txt``
-+ JSFinder
-	- 快速在网站的js文件中提取 **URL，子域名** 的工具。
-	- 项目地址： ``https://github.com/Threezh1/JSFinder``
-	- 用法：
-		+ 简单爬取: ``python JSFinder.py -u http://www.mi.com``
-		+ 深度爬取: ``python JSFinder.py -u http://www.mi.com -d``
-+ JSINFO-SCAN
-	- 递归爬取域名，以及递归从 JS 中获取信息的工具。
-	- 项目地址： ``https://github.com/p1g3/JSINFO-SCAN``
-	- ``python jsinfo.py --target https://www.example.com --keywords example``
-	- 注：递归速度比较慢，适合单个url或者js，不输入https，它会默认使用http，失败的话在末尾添加/index.html
-+ mantra
-	- 项目地址： ``https://github.com/brosck/mantra``
-	- 安装： ``go install github.com/Brosck/mantra@latest``
-	- ``cat js.txt|mantra -d |grep '+'``
-+ hanz0
-	- 项目地址： ``https://github.com/r3dcl1ff/hanz0``
-	- 安装
-		::
++ 脚本类
+	+ jsscout
+		- 项目地址： ``https://github.com/eonun/jsscout``
+		- 安装： ``go install github.com/eonun/jsscout@latest``
+	+ jssf
+		- 项目地址： ``https://github.com/h6nt3r/jssf``
+		- 安装： ``go install -v github.com/h6nt3r/jssf@latest``
+		- js url: ``jssf -u "http://testphp.vulnweb.com/medias/js/common_functions.js" -secrets -o out.txt``
+		- url文件： ``jssf -f js.txt -secrets -o jssf_output.txt``
+	+ Packer Fuzzer
+		- 项目地址：https://github.com/hyr0ky/PackerFuzzer
+		- 介绍：针对 **Webpack** 等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具.
+	+ JSINFO-SCAN
+		- 递归爬取域名，以及递归从 JS 中获取信息的工具。
+		- 项目地址： ``https://github.com/p1g3/JSINFO-SCAN``
+		- ``python jsinfo.py --target https://www.example.com --keywords example``
+		- 注：递归速度比较慢，适合单个url或者js，不输入https，它会默认使用http，失败的话在末尾添加/index.html
 
-			git clone https://github.com/r3dcl1ff/hanz0
-			cd hanz0 && go build hanz0.go
-	- ``cat js.txt | ./hanz0 -s High,Medium``
-+ 接口搜索
-	- 控制台输入（输出到页面）： ``javascript:(function(){var scripts=document.getElementsByName("script"),regex=/(?<=(\"|\%27|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\%60))/g;const results=new Set;for(var i=0;i<scripts.length;i++){var t=scripts[i].src;""!=t&&fetch(t).then(function(t){return t.text()}).then(function(t){var e=t.matchAll(regex);for(let r of e)results.add(r[0])}).catch(function(t){console.log("An error occurred:",t)})}var pageContent=document.documentElement.outerHTML,matches=pageContent.matchAll(regex);for(const match of matches)results.add(match[0]);function writeResults(){results.forEach(function(t){document.write(t+"<br>")})}setTimeout(writeResults,3e3);})();``
-	- 控制台输入（输出到控制台）： ``javascript:(function(){var scripts=document.getElementsByName("script"),regex=/(?<=(\"|\%27|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\%60))/g;const results=new Set;for(var i=0;i<scripts.length;i++){var t=scripts[i].src;""!=t&&fetch(t).then(function(t){return t.text()}).then(function(t){var e=t.matchAll(regex);for(let r of e)results.add(r[0])}).catch(function(t){console.log("An error occurred:",t)})}var pageContent=document.documentElement.outerHTML,matches=pageContent.matchAll(regex);for(const match of matches)results.add(match[0]);function writeResults(){results.forEach(function(t){console.log(t)})}setTimeout(writeResults,3e3);})();``
-	- 搜索框输入： ``(['"])(?:\/(?:api|v[0-9]+))(?:\/[^'"\s?#]+)+\1`` ,注意勾选使用正则表达式。
++ 管道式工具
+	+ mantra
+		- 项目地址： ``https://github.com/brosck/mantra``
+		- 安装： ``go install github.com/Brosck/mantra@latest``
+		- ``cat js.txt|mantra -d |grep '+'``
+	+ hanz0
+		- 项目地址： ``https://github.com/r3dcl1ff/hanz0``
+		- 安装
+			::
 
-js信息搜集-插件
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ FindSomething
-	- 项目地址：https://github.com/momosecurity/FindSomething
-	- 介绍：浏览器插件，全面的敏感信息被动提取。
-+ GAP
-	- 项目地址：burp自带插件
-+ Packer Fuzzer
-	- 项目地址：https://github.com/hyr0ky/PackerFuzzer
-	- 介绍：针对Webpack等前端打包工具所构造的网站进行快速、高效安全检测的扫描工具.
+				git clone https://github.com/r3dcl1ff/hanz0
+				cd hanz0 && go build hanz0.go
+		- ``cat js.txt | ./hanz0 -s High,Medium``
++ 浏览器插件类
+	+ FindSomething
+		- 项目地址：https://github.com/momosecurity/FindSomething
+		- 介绍：浏览器插件，全面的敏感信息被动提取。
+	+ LoveJS
+		- firefox插件，提取js中的敏感信息。
+	+ Js Recon Buddy
+		- firefox插件，提取js中的敏感信息。 
+	+ 接口搜索
+		- 控制台输入（输出到页面）： ``javascript:(function(){var scripts=document.getElementsByName("script"),regex=/(?<=(\"|\%27|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\%60))/g;const results=new Set;for(var i=0;i<scripts.length;i++){var t=scripts[i].src;""!=t&&fetch(t).then(function(t){return t.text()}).then(function(t){var e=t.matchAll(regex);for(let r of e)results.add(r[0])}).catch(function(t){console.log("An error occurred:",t)})}var pageContent=document.documentElement.outerHTML,matches=pageContent.matchAll(regex);for(const match of matches)results.add(match[0]);function writeResults(){results.forEach(function(t){document.write(t+"<br>")})}setTimeout(writeResults,3e3);})();``
+		- 控制台输入（输出到控制台）： ``javascript:(function(){var scripts=document.getElementsByName("script"),regex=/(?<=(\"|\%27|\`))\/[a-zA-Z0-9_?&=\/\-\#\.]*(?=(\"|\'|\%60))/g;const results=new Set;for(var i=0;i<scripts.length;i++){var t=scripts[i].src;""!=t&&fetch(t).then(function(t){return t.text()}).then(function(t){var e=t.matchAll(regex);for(let r of e)results.add(r[0])}).catch(function(t){console.log("An error occurred:",t)})}var pageContent=document.documentElement.outerHTML,matches=pageContent.matchAll(regex);for(const match of matches)results.add(match[0]);function writeResults(){results.forEach(function(t){console.log(t)})}setTimeout(writeResults,3e3);})();``
+		- 搜索框输入： ``(['"])(?:\/(?:api|v[0-9]+))(?:\/[^'"\s?#]+)+\1`` ,注意勾选使用正则表达式。
++ burp插件
+	+ GAP
 
 备份文件扫描
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

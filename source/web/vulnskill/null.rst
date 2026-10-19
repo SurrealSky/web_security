@@ -8,7 +8,14 @@ google 搜索大法
 + 针对php站点,查找所有存在 XenAPI SQL 注入漏洞的站点: ``site:github.com ext:php inurl:"api.php?action="``
 + 列出了可能暴露的 API 密钥: ``site:github.com intitle:"index of" api_key OR "api key" OR apiKey -pool``
 + 敏感文件: ``site:*.example.com (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
-
++ dork查询： `dork_queries.txt <../../_static/dork_queries.txt>`_
++ 相关工具
+	- 项目地址： ``https://github.com/ritchiemwewa/oxdork``
+	- 安装： ``pip install oxdork``
+	- 简单查询： ``oxdork "site:example.com filetype:pdf"``
+	- 指定结果数量： ``oxdork -c 50 "site:example.com filetype:pdf"``
+	- 保存结果到文件: ``oxdork -o results.txt "site:example.com filetype:pdf"``
+	- 批量查询: ``oxdork queries.txt``
 
 github搜索大法
 ---------------------------------------
@@ -44,6 +51,10 @@ github搜索大法
 
 参数fuzz大法
 ---------------------------------------
++ 优先场景
+	- 403禁止页面以及重定向到另外一个页面的场景
+	- 登录页面，类似login.php?这种页面
+	- 空白页面
 + 根据目标收集对应的路径和参数制作自己的字典
     - ``cat taobao_urls.txt | unfurl paths >> api.txt``
     - ``cat taobao_urls.txt | unfurl keys  >> param.txt``
@@ -51,7 +62,13 @@ github搜索大法
 host碰撞
 ---------------------------------------
 + 搜集IP：这里是外网IP
-    - ARL->资产搜索->IP->公网->导出
+    - 方法1： ARL->资产搜索->IP->公网->导出
+	- 方法2
+		+ 收集asn： ``https://bgp.he.net/search?search%5Bsearch%5D=alibaba&commit=Search``
+		+ 收集IP范围： ``cat asn.txt| asnmap | tee ipscope.txt``
+		+ 收集IP： ``cat ipscope.txt | mapcidr | tee ips.txt``
+	- 作用1：检测有效域名: ``for i in $(cat ips.txt); do ffuf -w subs.txt -u https://$i -H "HOST: FUZZ" -of csv -o $i.csv; done``
+	- 作用2：host碰撞
 + 搜集内网域名：子域名暴力破解
     - ARL->资产搜索->IP->内网->导出
 + 相关工具： ``https://github.com/fofapro/Hosts_scan``

@@ -244,4 +244,4 @@ B步骤中，认证服务器向客户端发送访问令牌，例如：
 ----------------------------------------
 - `rfc6749 <http://www.rfcreader.com/#rfc6749>`_
 - `理解OAuth <http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html>`_
-- `Doyensec_OAuth_CheatSheet <..//_static//Doyensec_OAuth_CheatSheet.pdf>`_
+- `Doyensec_OAuth_CheatSheet <../_static/Doyensec_OAuth_CheatSheet.pdf>`_

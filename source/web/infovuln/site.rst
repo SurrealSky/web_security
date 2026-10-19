@@ -41,28 +41,27 @@ FireflyDomainCrawler.py
 
 子域爆破
 -----------------------------------------
-- `ESD <https://github.com/FeeiCN/ESD>`_
-	| ``pip install esd``
-	| ``esd -d baidu.com``
-- wydomain 
-	+ 原理：工具主要分为两个模块，dnsburte模块和wydomain模块，dnsburte模块通过用户自定义字典发送dns查询，最后筛选出符合条件的域名。而wydomain模块则是通过调用多个第三方网站的公开api获取子域名数据。
-	+ 注意： **无需配置API-KEY** 。
-	+ 项目地址： ``https://github.com/ring04h/wydomain``
+- dns爆破
+	+ `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
+		- 能力基于字典  
+		- ``python3 subDomainsBrute.py baidu.com``
+	+ `aiodnsbrute <https://github.com/blark/aiodnsbrute>`_
+		- 能力基于字典
+		-  ``pip install aiodnsbrute``
+		-  ``aiodnsbrute -w wordlist.txt -vv -t 1024 domain.com``
+- FFUF Subdomain Bruteforce
+	+ 能力基于字典
+	+ 安装：``go install -v github.com/ffuf/ffuf@latest``
+	+ ``ffuf -u "https://FUZZ.example.com" -w wordlist.txt -mc 200,301,302``
 - chaos 
 	+ 原理：通过 **集成Chaos API** ，能够快速响应并执行子域名枚举任务。
 	+ 注意： **需要配置API-KEY** https://cloud.projectdiscovery.io 。
 	+ 项目地址： ``https://github.com/projectdiscovery/chaos-client``
-- `subDomainsBrute <https://github.com/lijiejie/subDomainsBrute>`_
-	| ``python3 subDomainsBrute.py baidu.com``
-- `broDomain <https://github.com/code-scan/BroDomain>`_
-	+ 查询域名注册邮箱,查询备案号
-	+ 通过备案号查询域名,反查注册邮箱,注册人
-	+ 通过注册人查询到的域名在查询邮箱
-	+ 通过上一步邮箱去查询域名
-	+ 查询以上获取出的域名的子域名
-- `aiodnsbrute <https://github.com/blark/aiodnsbrute>`_
-	| ``pip install aiodnsbrute``
-	| ``aiodnsbrute -w wordlist.txt -vv -t 1024 domain.com``
+- amass
+	+ 注意： **需要配置api-key**
+	+  配置方法： ``https://medium.com/offensive-black-hat-hacking-security/amass-new-config-file-update-e95d09b6eb70``
+	+ 下载安装：``https://github.com/owasp-amass/amass/releases``
+	+ ``amass enum -passive -d example.com | cut -d']' -f 2 | awk '{print $1}' | sort -u > amass.txt``
 - bbot
 	+ 项目地址：``https://github.com/blacklanternsecurity/bbot``
 	+ 安装：``cd bbot , pip install -e .``
@@ -77,31 +76,20 @@ FireflyDomainCrawler.py
 - Assetfinder
 	+ 安装：``go install -v github.com/tomnomnom/assetfinder@latest``
 	+ ``assetfinder --subs-only baidu.com``
-- Sublist3r
-	+ 安装：``git clone https://github.com/aboul3la/Sublist3r.git``
-	+ ``python sublist3r.py -v -d example.com``
-	+ ``python sublist3r.py -v -d example.com -p 80,443``
-	+ 爆破： ``python sublist3r.py -b -d example.com``
-	+ ``sublist3r -d example.com -e baidu,yahoo,google,bing,ask,netcraft,virustotal,threatcrowd,crtsh,passivedns -v -o sublist3r.txt``
-- amass(需要配置api-key)
-	+  配置方法： ``https://medium.com/offensive-black-hat-hacking-security/amass-new-config-file-update-e95d09b6eb70``
-	+ 下载安装：``https://github.com/owasp-amass/amass/releases``
-	+ ``amass enum -passive -d example.com | cut -d']' -f 2 | awk '{print $1}' | sort -u > amass.txt``
-- virustotal
-	+ 提取子域名： ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.subdomains[]' > vt.txt``
-	+ 提取URL: 
-- Wayback Machine
-	+ 提取子域名： ``curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" |sort| sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sort -u > wayback.txt``
-	+ 提取URL: 
-- urlscan.io
-	+ ``curl -s "https://urlscan.io/api/v1/search/?q=domain:example.com&size=10000" | jq -r '.results[]?.page?.domain' | sort -u > urlscan.txt``
-- alienvault OTX
-	+ 提取子域名： ``curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.url_list[].hostname' | sort -u | grep "\.streamlabs\.com$" > otx_subdomains.txt``
-- crtsh
-	+ ``curl -s https://crt.sh\?q\=\example.com\&output\=json | jq -r '.[].name_value' | grep -Po '(\w+\.\w+\.\w+)$' >crtsh.txt``
-- FFUF Subdomain Bruteforce
-	+ 安装：``go install -v github.com/ffuf/ffuf@latest``
-	+ ``ffuf -u "https://FUZZ.example.com" -w wordlist.txt -mc 200,301,302``
+- 被动类
+	- virustotal
+		+ 提取子域名： ``curl -s "https://www.virustotal.com/vtapi/v2/domain/report?domain=example.com&apikey=[api-key]" | jq -r '.subdomains[]' > vt.txt``
+		+ 提取URL: 
+	- Wayback Machine
+		+ 提取子域名： ``curl -s "http://web.archive.org/cdx/search/cdx?url=*.example.com/*&output=text&fl=original&collapse=urlkey" |sort| sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sort -u > wayback.txt``
+		+ 提取URL: 
+	- urlscan.io
+		+ ``curl -s "https://urlscan.io/api/v1/search/?q=domain:example.com&size=10000" | jq -r '.results[]?.page?.domain' | sort -u > urlscan.txt``
+	- alienvault OTX
+		+ 提取子域名： ``curl -s "https://otx.alienvault.com/api/v1/indicators/domain/example.com/url_list?limit=500&page=1" | jq -r '.url_list[].hostname' | sort -u | grep "\.streamlabs\.com$" > otx_subdomains.txt``
+	- crtsh
+		+ ``curl -s https://crt.sh\?q\=\example.com\&output\=json | jq -r '.[].name_value' | grep -Po '(\w+\.\w+\.\w+)$' >crtsh.txt``
+
 - 相关域名生成
 	+ alterx
 		- 可根据一个域名列表生成一个子域名列表，即字典

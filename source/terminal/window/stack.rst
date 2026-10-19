@@ -109,7 +109,7 @@
  | 编译选项：
  | 无全程序优化
  | 禁用安全检查 (/GS-)
- | 附件：`stacksample.rar <..//_static//stacksample.rar>`_
+ | 附件：`stacksample.rar <../../_static/stacksample.rar>`_
 
 运行堆栈
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
