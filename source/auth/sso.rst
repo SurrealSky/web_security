@@ -42,109 +42,9 @@ SSO
 + 后台换信：应用B的后台拿着新凭证去IdP后台校验（校验绑定关系、时效）。
 + 登录成功：应用B建立自己的本地Session。
 
-示例
+示例(CAS协议)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+ SP-A SSO登录，重定向到IDP，IDP要求用户登录
 
-::
-
-    POST /login?service=https://b.AAA.com HTTP/2
-    Host: sso.AAA.com
-    Cookie: SESSION=a1eef5fe-98df-42dc-a3dc-01f6179f4423;
-    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
-    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-    Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
-    Accept-Encoding: gzip, deflate, br
-    Content-Type: application/x-www-form-urlencoded
-    Content-Length: NUMBER
-    Origin: https://sso.AAA.com
-    Referer: https://sso.AAA.com/login?service=https://b.AAA.com/cas
-    Upgrade-Insecure-Requests: 1
-    Sec-Fetch-Dest: document
-    Sec-Fetch-Mode: navigate
-    Sec-Fetch-Site: same-origin
-    Sec-Fetch-User: ?1
-    Priority: u=0, i
-    Te: trailers
-
-    tenantCode=AAA&username=xxxx&password=xxxxxxx&lt=
-
-    HTTP/2 302 Found
-    Date: Thu, 08 Oct 2026 12:04:27 GMT
-    Content-Length: 0
-    Location: https://b.AAA.com/cas?ticket=ST-477487-3DyrBjRlJ5x1nIaxZTj7-www.AAA.com
-    Access-Control-Allow-Origin: https://sso.AAA.com
-    Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE,PUT
-    Access-Control-Max-Age: 3600
-    Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
-    Access-Control-Allow-Credentials: true
-    Cache-Control: no-store
-    Set-Cookie: CASPRIVACY=""; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; Secure
-    Set-Cookie: tgt_cn=TGT-134834-oKeAtakShPiZXTdv1Y7A2XjVlUwd2FMZqXIT57GgZDxQeeZAvd-www.AAA.com; Path=/; Domain=AAA.com;
-    Set-Cookie: TGC=VEdULTEzNDgzNC1vS2VBdGFrU2hQaVpYVGR2MVk3QTJYalZsVXdkMkZNWnFYSVQ1N0dnWkR4UWVlWkF2ZC13d3cuQUFBLmNvbUAxLjEuMS4xQE1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjE1Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzE1Ny4w; Path=/; SameSite=None; Secure
-
-    注意：TGC是编码后的TGT，TGT是IdP的全局会话凭证，类似于Cookie。浏览器拿到TGC后，会在后续访问IdP时自动携带，触发免密登录。
-
-+ IDP根据service参数，重定向浏览器回SP-A，并附带一次性临时凭证ST
-
-::
-
-    GET /login?service=https://b.AAA.com/cas HTTP/2
-    Host: sso.AAA.com
-    Cookie: TGC=VEdULTEzNDgzNC1vS2VBdGFrU2hQaVpYVGR2MVk3QTJYalZsVXdkMkZNWnFYSVQ1N0dnWkR4UWVlWkF2ZC13d3cuQUFBLmNvbUAxLjEuMS4xQE1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjE1Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzE1Ny4w
-    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
-    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-    Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
-    Accept-Encoding: gzip, deflate, br
-    Referer: https://b.AAA.com/site/home
-    Upgrade-Insecure-Requests: 1
-    Sec-Fetch-Dest: document
-    Sec-Fetch-Mode: navigate
-    Sec-Fetch-Site: same-site
-    Sec-Fetch-User: ?1
-    Priority: u=0, i
-    Te: trailers
-
-    HTTP/2 302 Found
-    Date: Thu, 08 Oct 2026 12:11:37 GMT
-    Content-Length: 0
-    Location: https://b.AAA.com/cas?ticket=ST-477594-LvUvZe6RS5dJ0emg5woR-www.AAA.com
-    Cache-Control: no-store
-    Set-Cookie: SESSION=ff40acd6-df6d-4f70-ae1f-cb7553eefd3b; Path=/; HttpOnly
-
-+ SP-A拿到ST后，后台去IdP验证ST，并换取用户信息(这里换取SESSION)
-
-::
-
-    GET /cas?ticket=ST-477594-LvUvZe6RS5dJ0emg5woR-www.AAA.com HTTP/2
-    Host: b.AAA.com
-    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
-    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-    Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
-    Accept-Encoding: gzip, deflate, br
-    Referer: https://sso.AAA.com/
-    Upgrade-Insecure-Requests: 1
-    Sec-Fetch-Dest: document
-    Sec-Fetch-Mode: navigate
-    Sec-Fetch-Site: same-site
-    Sec-Fetch-User: ?1
-    Priority: u=0, i
-    Te: trailers
-
-    HTTP/2 302 Found
-    Date: Thu, 08 Oct 2026 12:11:47 GMT
-    Content-Length: 0
-    Location: https://b.AAA.com
-    Set-Cookie: rememberMe=deleteMe; Path=/; Max-Age=0; Expires=Wed, 07-Oct-2026 12:11:47 GMT; SameSite=lax
-    X-Content-Type-Options: nosniff
-    X-Xss-Protection: 1; mode=block
-    Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-    Pragma: no-cache
-    Expires: 0
-    X-Frame-Options: DENY
-    Set-Cookie: SESSION=YzA0NmU5OTMtNzQwMC00YmNhLWE3N2QtN2IyODBlZjZmMDM3; Path=/; Secure; HttpOnly; SameSite=Lax
-
-    https://b.AAA.com网站的授权就是SESSION=YzA0NmU5OTMtNzQwMC00YmNhLWE3N2QtN2IyODBlZjZmMDM3
 
 
 
@@ -160,7 +60,128 @@ SSO
 票据代理模式
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + 特点：认证中心（CAS Server）不直接告诉业务应用“用户是谁”，而是给浏览器一张“一次性兑换券（ST）”。业务应用的后台拿着券去认证中心后台兑换用户信息。
-+ 代表：CAS协议、SAML 2.0（常用于企业级跨域联邦认证）。
++ 代表
+    - CAS协议
+        + 基本概念
+            - TGT: 存在CAS Server服务端,代表用户的全局 SSO 会话，是服务端的“会话本体”，但由于历史原因，可能会以cookie形式存在于主域。
+            - TGC：浏览器CAS域自动携带，发往 CAS Server，是 TGT 的“钥匙/索引”，用来向 CAS Server 证明“这个浏览器已经登录过”。
+            - ST（service ticket）：作为 URL 参数在浏览器与 SP 之间传递，一次性的服务票据，专门用来向某一个 SP 证明“这个用户已经被 CAS 认证过”。
+            - TGC 和 TGT 的关系，类似于 Cookie 和 Session 的关系：TGC 是浏览器里的那个 Cookie 值，TGT 是服务端对应的会话对象。
+        + 第一次登录（还没有 TGC）
+            - 浏览器访问受保护的 SP-A，SP-A 发现自己没有该用户的局部会话，把浏览器重定向到 CAS Server 的登录地址。
+            - CAS Server 发现请求里没有 TGC，返回登录页面，要求用户输入凭据。
+            - 凭据验证通过后，CAS Server 在服务端创建 TGT，同时向浏览器下发 TGC Cookie（通常名为 CASTGC，Domain 在 CAS Server 域），并生成一个 ST。
+            - 浏览器被重定向回 SP-A，URL 上带着 ?ticket=ST-...。
+            - SP-A 的后端拿着这个 ST 去 CAS Server 验证。验证成功后，CAS Server 立即销毁这个 ST（一次性），SP-A 在自己的服务端建立局部会话，并给浏览器下发SP-A 自己的业务 Cookie。
+        + 访问另一个 SP（SSO 生效）
+            - 浏览器访问 SP-B，SP-B 同样没有局部会话，重定向到 CAS Server。
+            - 浏览器访问 CAS Server 时，自动带上了 TGC。
+            - CAS Server 用 TGC 查到对应的 TGT，确认全局 SSO 会话仍然有效，不再要求用户输入密码，直接生成一个新的 ST 给 SP-B。
+            - SP-B 拿 ST 去 CAS Server 验证，成功后建立自己的局部会话。
+        + 示例
+            - SP-A SSO登录，重定向到CAS，CAS要求用户登录
+
+            ::
+
+                POST /login?service=https://b.AAA.com HTTP/2
+                Host: sso.AAA.com
+                Cookie: SESSION=a1eef5fe-98df-42dc-a3dc-01f6179f4423;
+                User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+                Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
+                Accept-Encoding: gzip, deflate, br
+                Content-Type: application/x-www-form-urlencoded
+                Content-Length: NUMBER
+                Origin: https://sso.AAA.com
+                Referer: https://sso.AAA.com/login?service=https://b.AAA.com/cas
+                Upgrade-Insecure-Requests: 1
+                Sec-Fetch-Dest: document
+                Sec-Fetch-Mode: navigate
+                Sec-Fetch-Site: same-origin
+                Sec-Fetch-User: ?1
+                Priority: u=0, i
+                Te: trailers
+
+                tenantCode=AAA&username=xxxx&password=xxxxxxx&lt=
+
+                HTTP/2 302 Found
+                Date: Thu, 08 Oct 2026 12:04:27 GMT
+                Content-Length: 0
+                Location: https://b.AAA.com/cas?ticket=ST-477487-3DyrBjRlJ5x1nIaxZTj7-www.AAA.com
+                Access-Control-Allow-Origin: https://sso.AAA.com
+                Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE,PUT
+                Access-Control-Max-Age: 3600
+                Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+                Access-Control-Allow-Credentials: true
+                Cache-Control: no-store
+                Set-Cookie: CASPRIVACY=""; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; Secure
+                Set-Cookie: tgt_cn=TGT-134834-oKeAtakShPiZXTdv1Y7A2XjVlUwd2FMZqXIT57GgZDxQeeZAvd-www.AAA.com; Path=/; Domain=AAA.com;
+                Set-Cookie: TGC=VEdULTEzNDgzNC1vS2VBdGFrU2hQaVpYVGR2MVk3QTJYalZsVXdkMkZNWnFYSVQ1N0dnWkR4UWVlWkF2ZC13d3cuQUFBLmNvbUAxLjEuMS4xQE1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjE1Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzE1Ny4w; Path=/; SameSite=None; Secure
+
+                注意：TGC是编码后的TGT，TGT是IdP的全局会话凭证，类似于Cookie。浏览器拿到TGC后，会在后续访问IdP时自动携带，触发免密登录。
+
+            + CAS根据service参数，重定向浏览器回SP-A，并附带一次性临时凭证ST
+
+            ::
+
+                GET /login?service=https://b.AAA.com/cas HTTP/2
+                Host: sso.AAA.com
+                Cookie: TGC=VEdULTEzNDgzNC1vS2VBdGFrU2hQaVpYVGR2MVk3QTJYalZsVXdkMkZNWnFYSVQ1N0dnWkR4UWVlWkF2ZC13d3cuQUFBLmNvbUAxLjEuMS4xQE1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjE1Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzE1Ny4w
+                User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+                Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
+                Accept-Encoding: gzip, deflate, br
+                Referer: https://b.AAA.com/site/home
+                Upgrade-Insecure-Requests: 1
+                Sec-Fetch-Dest: document
+                Sec-Fetch-Mode: navigate
+                Sec-Fetch-Site: same-site
+                Sec-Fetch-User: ?1
+                Priority: u=0, i
+                Te: trailers
+
+                HTTP/2 302 Found
+                Date: Thu, 08 Oct 2026 12:11:37 GMT
+                Content-Length: 0
+                Location: https://b.AAA.com/cas?ticket=ST-477594-LvUvZe6RS5dJ0emg5woR-www.AAA.com
+                Cache-Control: no-store
+                Set-Cookie: SESSION=ff40acd6-df6d-4f70-ae1f-cb7553eefd3b; Path=/; HttpOnly
+
+            + SP-A拿到ST后，后台去CAS验证ST，并换取用户信息(这里换取SESSION)
+
+            ::
+
+                GET /cas?ticket=ST-477594-LvUvZe6RS5dJ0emg5woR-www.AAA.com HTTP/2
+                Host: b.AAA.com
+                User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+                Accept-Language: zh-CN,zh;q=0.9,zh-TW;q=0.8,zh-HK;q=0.7,en-US;q=0.6,en;q=0.5
+                Accept-Encoding: gzip, deflate, br
+                Referer: https://sso.AAA.com/
+                Upgrade-Insecure-Requests: 1
+                Sec-Fetch-Dest: document
+                Sec-Fetch-Mode: navigate
+                Sec-Fetch-Site: same-site
+                Sec-Fetch-User: ?1
+                Priority: u=0, i
+                Te: trailers
+
+                HTTP/2 302 Found
+                Date: Thu, 08 Oct 2026 12:11:47 GMT
+                Content-Length: 0
+                Location: https://b.AAA.com
+                Set-Cookie: rememberMe=deleteMe; Path=/; Max-Age=0; Expires=Wed, 07-Oct-2026 12:11:47 GMT; SameSite=lax
+                X-Content-Type-Options: nosniff
+                X-Xss-Protection: 1; mode=block
+                Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+                Pragma: no-cache
+                Expires: 0
+                X-Frame-Options: DENY
+                Set-Cookie: SESSION=YzA0NmU5OTMtNzQwMC00YmNhLWE3N2QtN2IyODBlZjZmMDM3; Path=/; Secure; HttpOnly; SameSite=Lax
+
+                https://b.AAA.com网站的授权就是SESSION=YzA0NmU5OTMtNzQwMC00YmNhLWE3N2QtN2IyODBlZjZmMDM3
+                
+    - SAML 2.0（常用于企业级跨域联邦认证）
 + 优势：安全性极高，用户密码永远不经过业务系统，且票据强绑定来源。
 
 直接令牌模式

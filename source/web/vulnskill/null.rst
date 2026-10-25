@@ -7,7 +7,32 @@ google 搜索大法
 + 查找潜在有问题的 API 目录: ``site:github.com inurl:"/api/v1" intext:"index of /"``
 + 针对php站点,查找所有存在 XenAPI SQL 注入漏洞的站点: ``site:github.com ext:php inurl:"api.php?action="``
 + 列出了可能暴露的 API 密钥: ``site:github.com intitle:"index of" api_key OR "api key" OR apiKey -pool``
-+ 敏感文件: ``site:*.example.com (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
++ 敏感类型文件: ``site:*.example.com (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:ppt OR ext:pptx OR ext:csv OR ext:xls OR ext:xlsx OR ext:txt OR ext:xml OR ext:json OR ext:zip OR ext:rar OR ext:md OR ext:log OR ext:bak OR ext:conf OR ext:sql)``
++ 敏感文件：
+	::
+
+		intitle:"Index of" .sh_history
+		intitle:"index of" etc/shadow
+		intitle:"index of" spwd
+		inurl:service.pwd
++ 后台查找
+	::
+
+		inurl:login.asp
+		inurl:admin.asp
+		inurl:"/login.php" intitle:"admin"
+		inurl:443ext:php inurl:login
+		"This system" inurl:login
+		site:.edu inurl:login"Admin"
+		site:*.gov. ininurl:login.jsp
+		site:.edu.in inurl:login.php
+		inurl:login.net
+		"You have accessed a private computer system" inurl:login
+		inurl:login.jsp in title:login
+		site:目标网站 intitle:管理/后台/登陆/管理员
+		site:目标网站 inurl:login/admin/guanlidenglu
+		site: 目标网站 intext: 管理/后台/登陆/管理员
+
 + dork查询： `dork_queries.txt <../../_static/dork_queries.txt>`_
 + 相关工具
 	- 项目地址： ``https://github.com/ritchiemwewa/oxdork``

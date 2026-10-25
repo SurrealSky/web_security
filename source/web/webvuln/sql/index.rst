@@ -8,7 +8,7 @@ SQL注入
    basic
    method
    cheatsheet/index
-   tricks
    bypass
+   tricks
    precompile
    ref
