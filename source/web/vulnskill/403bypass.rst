@@ -51,6 +51,25 @@ nginx配置示例
 深入测试的现象
 ----------------------------------------
 
+核心原则
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 404页面进行目录枚举，以发现403的页面
+    ::
+
+        直接打一波，目录实时更新
+        /console
+        /api
+        /admin
+        /login
+        /html
+        /js
+        /css
+        /.htaccess
+        /secret
+        /secret.txt
+
++ 一旦发现403页面开始进行绕过
+
 404->403
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + ``https://target.com/admin`` -> ``https://target.com/admin;/test``
@@ -66,6 +85,21 @@ spring boot
 
 403/404响应绕过
 ----------------------------------------
+
+边缘403绕过
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 403 可能来自 CDN/WAF 边缘层，而不是源站，通过 DNS 查被拦子域的 CNAME 链，找到它背后的真实后端/源站，然后直连该目标并带上原 Host 头，对比响应，判断能否绕过边缘规则。
++ 测试步骤
+    - 先确认 403 来源： ``curl -I https://redacted.blank.com`` ,记录状态码、Server、Via、X-Cache、X-Tengine-Error 等头,有 Via/X-Cache/CDN 特征 → 优先怀疑边缘层；响应体是 WAF 拦截页 → 边缘 WAF。
+    - DNS 侦察被拦子域（不是主域）: CNAME 是否指向非 CDN 域名（对象存储、负载均衡、其他业务域、内网域名）；是否指向悬空目标（S3/Heroku 默认页等，另属接管问题）；A 记录是否与主域/CDN 节点不同。
+    - 直连 CNAME 目标，带原 Host 头
+    - 若拿到源站 IP，改 hosts 直连复验
++ 结论定性
+    - 原域名 403，CNAME 目标/源站 IP 200：边缘 403 被绕过，403 来自 CDN/WAF
+    - 原域名 403，直连也 403：源站 403，DNS 绕过无效，转应用层逻辑测试
+    - CNAME 指向活 CDN zone，无源站：不可绕，非接管（如 download-wenku）
+    - CNAME 悬空到 S3/Heroku 默认页：子域接管候选，另立专项
+    - 直连 404/无路由：后端存在但匿名面关闭，需会话或换路径
 
 请求头篡改
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -147,11 +181,12 @@ URL绕过
     - ``curl -http1.0 https://example.com/config``     # 尝试用 HTTP/1.0 访问 /config 配置文件
     - ``curl -http1.0 https://example.com/dashboard``  # 尝试用 HTTP/1.0 访问管理后台仪表盘
 
-PATCH绕过
+HTTP方法绕过
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 + ``GET /api/v5/users/9`` -> ``PATCH /api/v5/users/9``
 + ``GET /api/v5/users/9`` -> ``POST /api/v5/users/9``
 + ``GET /api/v5/users/9`` -> ``PUT /api/v5/users/9``
++ ``GET /api/v5/users/9`` -> ``TRACE /api/v5/users/9``
 
 路径规范化引起的绕过
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -166,6 +201,9 @@ PATCH绕过
     + ``GET /admin%a0``
     + ``GET /admin%0c``
 
+相关工具
+---------------------------------------
++ ``https://github.com/yunemse48/403bypasser``
 
 
 .. |403-1| image:: ../../images/403-1.png
