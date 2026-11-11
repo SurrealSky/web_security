@@ -1,14 +1,38 @@
 ﻿权限提升（LPE）漏洞
 =========================================
 
-方式
+形式
 -----------------------------------------
-+ 传统权限提升
-	- 攻击者最初只需要一个普通的用户权限（甚至有时只需要一个低权限的网络访问）。
-	- 直接从低权限级别（如普通用户 user）提升到最高权限级别（如 SYSTEM 或 NT AUTHORITY\SYSTEM）。它跨越了最大的权限鸿沟。
-+ UAC绕过
-	- 攻击者必须已经获取了一个管理员组成员的用户会话（即使当前是以标准用户令牌运行）。如果一个用户完全不属于 Administrators 组，UAC绕过技术对此用户无效。
-	- 从受限制的管理员账户（管理员权限被UAC“过滤”或“分割”的状态）提升到完整的管理员权限。它跨越的是UAC这个“安全护栏”，而不是用户组的根本边界。
++ 账户组变更（垂直提权）-标准用户 → Administrators
+    - 典型原理：低权可写的位置被高权进程消费。
+    - 典型利用方式：
+        - 服务/驱动的二进制路径可写、ACL 过松、未加引号路径（C:\Program Files\... 带空格）
+        - DLL 侧加载（高权进程从可写目录加载 DLL）、PATH / 工作目录劫持
+        - 计划任务可写、COM 注册（InprocServer32/LocalServer32）指向可写路径
+        - AlwaysInstallElevated、无人值守安装文件、凭据泄露
+        - 安装目录 / 更新目录 / 配置文件低权可写，而安装器、更新器、修复程序以高权运行
++ UAC 绕过（水平提权）— 管理员 Medium → High，账户不变
+    - 前提：用户已经在 Administrators 组，只是 filtered token。目的是免掉点「是」。
+    - 典型利用方式：
+        - 利用 autoElevate 白名单程序的注册表 / COM / 环境变量劫持（fodhelper、sdclt、computerdefaults 等）
+        - Elevated COM 接口（ICMLuaUtil、CMSTPLUA 等）自动批准
+        - 模拟 UI：UIPI 绕过、向 UAC 同意框发窗口消息、模拟点击
+        - 某些程序从用户可控路径读 DLL、配置或命令
+    - 注意：纯粹的 UAC bypass（管理员 Medium → High）一般不算成立漏洞；
++ 任意用户 → SYSTEM(跳过 UAC 和 Administrators，直接拿最高令牌)
+    - UAC原理：UAC提权就是需要 **Administrators组用户使用自身High IL令牌调用CreateProcessAsUser创建新进程**
+    - 典型利用方式：
+        - 命名管道模拟（Potato 家族：Juicy / Rotten / PrintSpoofer / EFSPotato 等），依赖 SeImpersonatePrivilege
+        - 服务 / 计划任务本身就是 SYSTEM，低权用户能改其配置或动作
+        - 令牌窃取（SeDebugPrivilege、SeImpersonatePrivilege、SeTakeOwnership、SeRestore、SeBackup、SeLoadDriver）
+        - 内核驱动漏洞（用户态 → 内核）
+    - 注意：客户端设备上这条链特别常见：软件装了 SYSTEM 运行的更新服务 / 守护服务，而它的配置、日志、临时文件用户可写 → 直接 SYSTEM，全程不需要管理员批准。
++ 沙箱 / AppContainer 逃逸（客户端特有）
+    - 浏览器渲染进程、Electron renderer、CEF 子进程通常跑在 Low IL / AppContainer / 受限令牌下。从渲染进程逃到主进程，就等价于「提权」：
+        - Electron：nodeIntegration、contextIsolation 缺失、preload 暴露危险 API、IPC 无 sender 校验 → 渲染进程执行 JS → 主进程 RCE
+        - CEF / Chromium：sandbox 逃逸 + 宿主进程权限
++ 用户态 → 内核
+    - 驱动 / 内核组件漏洞：IOCTL 无校验、任意写、符号链接攻击、UAF。
 
 攻击面
 -----------------------------------------
