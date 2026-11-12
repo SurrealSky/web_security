@@ -81,6 +81,10 @@ ACL与ACE
 	+ SACL（System Access Control List）：用于审计，记录对对象的访问尝试。
 - 访问控制条目（ACE）
 	+ ACL中的每个条目，指定一个用户或组的权限（如读取、写入、执行等）以及继承规则。
+- 由谁设置？
+	+ DACL在 **对象被创建时** 由 **内核对象管理器 + 创建者(creator) 提供的安全描述符** 共同决定
+	+ 大多数情况下是 **继承父容器的可继承 ACE** 
+	+ 系统装的时候给 **C:\\、C:\\Windows、C:\\Program Files、C:\\ProgramData 等预设默认 DACL** （安装安全模板 + 继承链），之后新建目录/文件都从它们继承。
 
 NTFS权限类型
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,6 +152,159 @@ icacls 命令示例
 	BUILTIN\Administrators:(OI)(CI)(F)：管理员组对文件夹及其子对象具有完全控制权限。
 	NT AUTHORITY\SYSTEM:(OI)(CI)(F)：系统账户具有完全控制权限。
 	BUILTIN\Users:(OI)(CI)(RX)：用户组具有读取和执行权限。
+
+系统核心区（用户只读，TrustedInstaller 属主）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+    :header-rows: 1
+    :widths: 32 24 26 18
+
+    *   - 目录
+        - 属主
+        - Users / Auth Users
+        - 用户能否写
+    *   - ``C:\``
+        - TrustedInstaller
+        - 读+执行；可在根下建文件夹
+        - ⚠️ 只能建目录，不能建文件
+    *   - ``C:\Windows``
+        - TrustedInstaller
+        - 读+执行
+        - ❌
+    *   - ``C:\Windows\System32``
+        - TrustedInstaller
+        - 读+执行
+        - ❌（文件还受 WRP 保护）
+    *   - ``C:\Windows\SysWOW64``
+        - TrustedInstaller
+        - 读+执行
+        - ❌
+    *   - ``C:\Windows\WinSxS``
+        - TrustedInstaller
+        - 读（受限）
+        - ❌
+    *   - ``C:\Windows\System32\config``
+        - SYSTEM/TrustedInstaller
+        - 无
+        - ❌（SAM/SECURITY/SYSTEM hive）
+    *   - ``C:\Windows\System32\drivers``
+        - TrustedInstaller
+        - 读
+        - ❌（驱动文件，WRP）
+    *   - ``C:\Windows\System32\Tasks``
+        - SYSTEM
+        - 受限
+        - ❌（计划任务 XML）
+    *   - ``C:\Windows\Installer``
+        - SYSTEM
+        - 读
+        - ❌（MSI 缓存，历史上是提权土壤）
+    *   - ``C:\Windows\System32\spool\drivers``
+        - SYSTEM/TrustedInstaller
+        - 读
+        - ❌（部分子目录历史上有写权限问题）
+
+.. note::
+
+    这些位置即使提权到 Administrators，改系统文件还受 **WRP / TrustedInstaller**
+    限制（owner 不是你 → 需 ``SeTakeOwnership``）。
+
+程序区（顶层只读，用户可以「在根下建目录」）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+    :header-rows: 1
+    :widths: 34 22 28 16
+
+    *   - 目录
+        - 属主
+        - Users
+        - 用户能否写
+    *   - ``C:\Program Files``
+        - TrustedInstaller
+        - 读+执行；根下可建文件夹
+        - ⚠️ 只能建新目录，不能写已有内容
+    *   - ``C:\Program Files (x86)``
+        - 同上
+        - 同上
+        - ⚠️ 同上
+    *   - ``C:\Program Files\WindowsApps``
+        - TrustedInstaller
+        - 极受限
+        - ❌（MSIX 专用）
+
+.. note::
+
+    **这里才是重点**：顶层标准 ACL 挡住你，但安装器常给子目录显式放权
+    （``config`` / ``logs`` / ``update`` / ``cache`` 加 ``Users: Modify``）——
+    这些子目录 Medium 就能写。
+
+数据 / 共享区（默认就有用户可写的位置）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+    :header-rows: 1
+    :widths: 26 24 28 22
+
+    *   - 目录
+        - 属主
+        - Users
+        - 用户能否写 / 说明
+    *   - ``C:\ProgramData``
+        - SYSTEM/TrustedInstaller
+        - 读+执行；可在根下建目录
+        - ⚠️ 根下建目录，且自建目录归自己 Full（经典提权面）
+    *   - ``C:\Windows\Temp``
+        - SYSTEM
+        - Modify（可写）
+        - ✅ 用户可写，系统/高权进程也用
+    *   - ``C:\Users\Public``
+        - SYSTEM
+        - Modify/写
+        - ✅ 设计上就是共享可写
+    *   - ``C:\PerfLogs``
+        - SYSTEM
+        - 部分版本可写
+        - ⚠️ 需实测
+    *   - ``C:\$Recycle.Bin``
+        - SYSTEM
+        - 自己范围内
+        - ⚠️ 按 SID 分目录
+
+.. warning::
+
+    ``C:\ProgramData`` 根下 Users 可建目录、且自建目录归 CREATOR OWNER Full。
+    高权服务若用固定路径且不校验目录归属，用户可**预创建同名目录投毒**。
+
+用户范围（完全可控，本来就不需要提权）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+    :header-rows: 1
+    :widths: 40 26 34
+
+    *   - 目录
+        - 属主
+        - 用户权限
+    *   - ``C:\Users\<你>``
+        - 你自己
+        - **Full**
+    *   - ``AppData\Local`` / ``Roaming`` / ``LocalLow``
+        - 你
+        - **Full**
+    *   - ``AppData\Local\Temp``
+        - 你
+        - **Full**
+    *   - ``C:\Users\Default``
+        - SYSTEM
+        - 读（新用户模板）
+
+.. note::
+
+    这些位置是「设计上的用户范围」，不是提权。真正的风险在：
+    **用户范围 ↔ 高权进程的交界处** （比如高权服务去读 ``%LOCALAPPDATA%``
+    或 ``%TEMP%`` 里的文件）。
 
 三者之间的关系与协作流程
 ------------------------------------------
