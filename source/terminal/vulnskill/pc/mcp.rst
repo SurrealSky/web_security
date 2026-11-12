@@ -23,3 +23,4 @@ Windows-MCP
     - 运行程序： ``powershell.exe``
     - 参数： ``-WindowStyle Hidden -Command "& {python.exe -m windows_mcp serve --transport sse --host 0.0.0.0 --port 9811 --auth-key "你的令牌"}"``
     - 这样开机就能自动启动。
++ 注意：宿主机的共享目录，mcp工具看不到。
